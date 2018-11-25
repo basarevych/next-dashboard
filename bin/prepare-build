@@ -1,0 +1,27 @@
+#!/usr/bin/env node
+
+/**
+ * Remove previous build directories prior to building
+ */
+
+"use strict";
+
+const fs = require("fs-extra");
+const path = require("path");
+
+const root = path.join.bind(path, path.resolve(__dirname), "..");
+
+async function prepareBuild() {
+  if (await fs.pathExists(root("node_modules/.cache")))
+    await fs.remove(root("node_modules/.cache"));
+  if (await fs.pathExists(root("node_modules/.tmp")))
+    await fs.remove(root("node_modules/.tmp"));
+
+  await fs.remove(root(".next"));
+  await fs.remove(root("static/assets"));
+}
+
+prepareBuild().catch(error => {
+  console.error(error);
+  process.exit(1);
+});

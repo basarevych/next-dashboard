@@ -1,0 +1,221 @@
+import React from "react";
+import PropTypes from "prop-types";
+import isRouteAllowed from "../../../common/isRouteAllowed";
+import { intlShape, FormattedMessage } from "react-intl";
+import { withStyles } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
+import MenuList from "@material-ui/core/MenuList";
+import MenuItem from "@material-ui/core/MenuItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import DashboardIcon from "@material-ui/icons/Dashboard";
+import FormsIcon from "@material-ui/icons/Ballot";
+import ChartsIcon from "@material-ui/icons/InsertChart";
+import TablesIcon from "@material-ui/icons/TableChart";
+import MapsIcon from "@material-ui/icons/Map";
+import NotificationsIcon from "@material-ui/icons/SpeakerNotes";
+import TypographyIcon from "@material-ui/icons/BrightnessAuto";
+import IconsIcon from "@material-ui/icons/Pets";
+import UsersIcon from "@material-ui/icons/People";
+import constants from "../../../common/constants";
+
+const styles = theme => ({
+  root: {
+    height: "100%",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "stretch"
+  },
+  grow: {
+    flex: 1
+  },
+  link: {
+    display: "block",
+    margin: "1rem",
+    textAlign: "center",
+    color: theme.sidebar.color,
+    textDecoration: "none",
+    "&:hover": {
+      color: theme.palette.secondary.main
+    }
+  },
+  list: {
+    width: theme.sidebar.width * theme.spacing.unit,
+    padding: 0
+  },
+  avatar: {
+    margin: "1rem 0",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center"
+  },
+  item: {
+    background: [theme.sidebar.background, "!important"],
+    color: [theme.sidebar.color, "!important"],
+    justifyContent: "center",
+    "& svg, & span": {
+      color: [theme.sidebar.color, "!important"]
+    },
+    "&:hover": {
+      background: [theme.sidebar.backgroundHover, "!important"],
+      color: [theme.sidebar.colorHover, "!important"],
+      "& svg, & span": {
+        color: [theme.sidebar.colorHover, "!important"]
+      }
+    }
+  },
+  itemSelected: {
+    background: [theme.sidebar.backgroundSelected, "!important"],
+    color: [theme.sidebar.colorSelected, "!important"],
+    "& svg, & span": {
+      color: [theme.sidebar.colorSelected, "!important"]
+    },
+    "&:hover": {
+      background: [theme.sidebar.backgroundSelectedHover, "!important"],
+      color: [theme.sidebar.colorSelectedHover, "!important"],
+      "& svg, & span": {
+        color: [theme.sidebar.colorSelectedHover, "!important"]
+      }
+    }
+  }
+});
+
+class Sidebar extends React.Component {
+  static propTypes = {
+    router: PropTypes.object.isRequired,
+    intl: intlShape.isRequired,
+    theme: PropTypes.object.isRequired,
+    classes: PropTypes.object.isRequired,
+    roles: PropTypes.array.isRequired,
+    onMenuClick: PropTypes.func.isRequired
+  };
+
+  handleMenuClick(path) {
+    this.props.router.push(path);
+    this.props.onMenuClick();
+  }
+
+  renderHeader() {
+    return (
+      <div className={this.props.classes.avatar}>
+        <img src={`${constants.apiBase}/avatars/0`} />
+        {_.includes(this.props.roles, constants.roles.ANONYMOUS) && (
+          <Typography variant="subtitle1">
+            <FormattedMessage id="SIDEBAR_ANONYMOUS" />
+          </Typography>
+        )}
+      </div>
+    );
+  }
+
+  renderItem(path) {
+    if (
+      !path ||
+      !constants.pages[path] ||
+      !isRouteAllowed(path, this.props.roles)
+    ) {
+      return null;
+    }
+
+    const { icon, menu } = constants.pages[path];
+    if (!icon && !menu) return null;
+
+    return (
+      <MenuItem
+        key={`page-${path}`}
+        classes={{
+          root: this.props.classes.item,
+          selected: this.props.classes.itemSelected
+        }}
+        selected={this.props.router.pathname === path}
+        onClick={() => this.handleMenuClick(path)}
+      >
+        {icon === "dashboard" && (
+          <ListItemIcon>
+            <DashboardIcon />
+          </ListItemIcon>
+        )}
+        {icon === "forms" && (
+          <ListItemIcon>
+            <FormsIcon />
+          </ListItemIcon>
+        )}
+        {icon === "charts" && (
+          <ListItemIcon>
+            <ChartsIcon />
+          </ListItemIcon>
+        )}
+        {icon === "tables" && (
+          <ListItemIcon>
+            <TablesIcon />
+          </ListItemIcon>
+        )}
+        {icon === "maps" && (
+          <ListItemIcon>
+            <MapsIcon />
+          </ListItemIcon>
+        )}
+        {icon === "notifications" && (
+          <ListItemIcon>
+            <NotificationsIcon />
+          </ListItemIcon>
+        )}
+        {icon === "typography" && (
+          <ListItemIcon>
+            <TypographyIcon />
+          </ListItemIcon>
+        )}
+        {icon === "icons" && (
+          <ListItemIcon>
+            <IconsIcon />
+          </ListItemIcon>
+        )}
+        {icon === "users" && (
+          <ListItemIcon>
+            <UsersIcon />
+          </ListItemIcon>
+        )}
+
+        {!!menu && (
+          <ListItemText primary={this.props.intl.formatMessage({ id: menu })} />
+        )}
+      </MenuItem>
+    );
+  }
+
+  render() {
+    return (
+      <div className={this.props.classes.root}>
+        <MenuList
+          classes={{ root: this.props.classes.list }}
+          subheader={this.renderHeader()}
+        >
+          {_.map(_.keys(constants.pages), path => this.renderItem(path))}
+        </MenuList>
+        <div className={this.props.classes.grow} />
+        <div>
+          <a
+            href="javascript:void(0)"
+            className={this.props.classes.link}
+            onClick={() =>
+              window.open(`${constants.apiBase}/redirect/benchmarks`)
+            }
+          >
+            <FormattedMessage id="SIDEBAR_BENCHMARKS_LINK" />
+          </a>
+          <a
+            href="javascript:void(0)"
+            className={this.props.classes.link}
+            onClick={() =>
+              window.open(`${constants.apiBase}/redirect/responsiveness`)
+            }
+          >
+            <FormattedMessage id="SIDEBAR_RESPONSIVENESS_LINK" />
+          </a>
+        </div>
+      </div>
+    );
+  }
+}
+
+export default withStyles(styles, { withTheme: true })(Sidebar);

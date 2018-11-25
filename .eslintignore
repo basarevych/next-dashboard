@@ -1,0 +1,8 @@
+vendor/
+node_modules/
+.next/
+.tmp/
+static/
+out/
+*.config.js
+**/__mocks__/
