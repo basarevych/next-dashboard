@@ -8,7 +8,7 @@ import Hidden from "@material-ui/core/Hidden";
 import Drawer from "@material-ui/core/Drawer";
 import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
 import Sidebar from "../../containers/Layout/Sidebar";
-import Header from "./Header";
+import Header from "../../containers/Layout/Header";
 import AppAuthModal from "../../containers/Modals/AppAuthModal";
 
 import "../../styles";
@@ -41,8 +41,8 @@ const styles = theme => ({
     position: "relative"
   },
   backdrop: {
-    background: theme.sidebar.background,
-    opacity: 0.5,
+    background: theme.palette.background.default,
+    opacity: 0.8,
     zIndex: 10000,
     position: "fixed",
     top: 0,
@@ -55,7 +55,8 @@ const styles = theme => ({
     width: 60,
     top: "50vh",
     left: "50vw",
-    transform: "translate3d(-50%, -50%, 0)"
+    transform: "translate3d(-50%, -50%, 0)",
+    color: theme.palette.primary.contrastText
   },
   sidebar: _.merge(
     {
@@ -167,7 +168,7 @@ class Layout extends React.Component {
         {!this.props.isStarted && !this.props.isError && (
           <div className={this.props.classes.backdrop}>
             <div className={this.props.classes.spinner}>
-              <CircularProgress color="primary" size={60} />
+              <CircularProgress color="inherit" size={60} />
             </div>
           </div>
         )}

@@ -51,7 +51,7 @@ module.exports = {
   },
   sidebar: {
     computerWidth: 30,
-    tabletWidth: 10,
+    tabletWidth: 20,
     phoneWidth: 20,
     background: "rgba(0, 0, 0, 0.5)",
     color: textNormal,

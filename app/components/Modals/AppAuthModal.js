@@ -36,7 +36,7 @@ const styles = theme => ({
   },
   credentialsPaper: {
     height: "100%",
-    padding: "1rem"
+    padding: "1rem 1rem 2rem"
   },
   credentialsLabel: {
     marginTop: "0.5rem",
@@ -227,7 +227,7 @@ class AppAuthModal extends Form {
   render() {
     return (
       <Dialog
-        maxWidth={"sm"}
+        maxWidth="md"
         fullWidth
         classes={{ paper: this.props.classes.paper }}
         open={this.props.isOpen}
@@ -265,7 +265,8 @@ class AppAuthModal extends Form {
               justify="center"
               item
               xs={12}
-              sm={5}
+              sm={6}
+              md={5}
             >
               <Grid item>
                 <Button
@@ -276,7 +277,7 @@ class AppAuthModal extends Form {
                   onClick={this.handleAnonymous}
                 >
                   <AnonymousIcon />
-                  &nbsp;&nbsp;&nbsp;
+                  &nbsp;&nbsp;
                   <FormattedMessage id="APP_AUTH_ANONYMOUS_BUTTON" />
                 </Button>
               </Grid>
@@ -290,7 +291,7 @@ class AppAuthModal extends Form {
                 {this.renderButton(constants.oauthProviders.TWITTER)}
               </Grid>
             </Grid>
-            <Grid item xs={12} sm={7}>
+            <Grid item xs={12} sm={6} md={7}>
               <Paper className={this.props.classes.credentialsPaper}>
                 <Grid container spacing={8} direction="column">
                   <Grid item>

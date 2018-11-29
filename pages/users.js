@@ -1,4 +1,4 @@
-import UsersPage from "../app/containers/UsersPage";
+import UsersPage from "../app/containers/Pages/UsersPage";
 import { usersOperations } from "../app/state/users";
 
 UsersPage.getInitialProps = async ({ store, req }) => {

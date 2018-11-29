@@ -9,13 +9,17 @@ function parse(source) {
 
 module.exports = {
   defaultLocale: "en",
-  locales: ["en"],
-  flags: { en: "US" },
-  names: { en: "English" },
+  locales: ["en", "ru"],
+  flags: { en: "US", ru: "RU" },
+  names: { en: "English", ru: "Русский язык" },
   messages: {
-    en: parse(require("./en"))
+    en: parse(require("./en")),
+    ru: parse(require("./ru"))
   },
   getLocaleData() {
-    return [require("react-intl/locale-data/en.js")];
+    return [
+      require("react-intl/locale-data/en.js"),
+      require("react-intl/locale-data/ru.js")
+    ];
   }
 };
