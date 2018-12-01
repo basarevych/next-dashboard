@@ -1,4 +1,5 @@
 import { connect } from "react-redux";
+import { injectIntl } from "react-intl";
 import HeaderComponent from "../../components/Layout/Header";
 import { appSelectors, appOperations } from "../../state/app";
 import { authOperations } from "../../state/auth";
@@ -17,9 +18,11 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-const Header = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(HeaderComponent);
+const Header = injectIntl(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(HeaderComponent)
+);
 
 export default Header;

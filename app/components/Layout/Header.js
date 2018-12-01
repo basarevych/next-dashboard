@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { FormattedMessage } from "react-intl";
+import { intlShape, FormattedMessage } from "react-intl";
 import { withStyles } from "@material-ui/core/styles";
 import { fade } from "@material-ui/core/styles/colorManipulator";
 import Hidden from "@material-ui/core/Hidden";
@@ -13,6 +13,8 @@ import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
+import ListItemAvatar from "@material-ui/core/ListItemAvatar";
+import Avatar from "@material-ui/core/Avatar";
 import Badge from "@material-ui/core/Badge";
 import SearchIcon from "@material-ui/icons/Search";
 import MailIcon from "@material-ui/icons/Mail";
@@ -22,6 +24,8 @@ import LogoutIcon from "@material-ui/icons/PowerSettingsNew";
 import Flag from "react-flags";
 import l10n from "../../../common/locales";
 import themes from "../../../common/themes";
+import moment from "../../../common/moment";
+import constants from "../../../common/constants";
 
 const styles = theme => ({
   root: {
@@ -87,15 +91,39 @@ const styles = theme => ({
     }
   },
   menu: {
+    width: "100%",
+    maxWidth: theme.spacing.unit * 45,
     background: theme.palette.primary.main,
     "& svg": {
       color: [theme.palette.primary.contrastText, "!important"]
+    },
+    [theme.breakpoints.down("xs")]: {
+      width: "90%",
+      maxWidth: "90%"
     }
+  },
+  menuItem: {
+    height: "auto"
+  },
+  inboxAvatar: {
+    width: 60,
+    height: 60
+  },
+  inboxName: {
+    fontSize: "120%"
+  },
+  inboxDate: {
+    fontSize: "80%"
+  },
+  inboxPreview: {
+    display: "inline",
+    whiteSpace: "normal"
   }
 });
 
 class Header extends React.PureComponent {
   static propTypes = {
+    intl: intlShape,
     theme: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired,
     cookie: PropTypes.object.isRequired,
@@ -110,6 +138,7 @@ class Header extends React.PureComponent {
     this.state = {
       isWrapperHovered: false,
       isBarHovered: false,
+      anchorInbox: null,
       anchorLocales: null,
       anchorThemes: null
     };
@@ -121,6 +150,7 @@ class Header extends React.PureComponent {
     this.handleWrapperClick = this.handleWrapperClick.bind(this);
     this.handleBarMouseEnter = this.handleBarMouseEnter.bind(this);
     this.handleBarMouseLeave = this.handleBarMouseLeave.bind(this);
+    this.handleInboxOpen = this.handleInboxOpen.bind(this);
     this.handleLocalesOpen = this.handleLocalesOpen.bind(this);
     this.handleThemesOpen = this.handleThemesOpen.bind(this);
     this.handleMenuClose = this.handleMenuClose.bind(this);
@@ -158,6 +188,10 @@ class Header extends React.PureComponent {
     if (this.state.isBarHovered) this.setState({ isBarHovered: false });
   }
 
+  handleInboxOpen(event) {
+    this.setState({ anchorInbox: event.currentTarget });
+  }
+
   handleLocalesOpen(event) {
     this.setState({ anchorLocales: event.currentTarget });
   }
@@ -180,6 +214,7 @@ class Header extends React.PureComponent {
 
   handleMenuClose() {
     this.setState({
+      anchorInbox: null,
       anchorLocales: null,
       anchorThemes: null,
       isWrapperHovered: false,
@@ -191,13 +226,183 @@ class Header extends React.PureComponent {
     this.props.onSignOut();
   }
 
+  renderInbox() {
+    return (
+      <Menu
+        classes={{ paper: this.props.classes.menu }}
+        anchorEl={this.state.anchorInbox}
+        anchorOrigin={{ vertical: "top", horizontal: "left" }}
+        transformOrigin={{ vertical: "top", horizontal: "left" }}
+        open={!!this.state.anchorInbox}
+        onClose={this.handleMenuClose}
+      >
+        <MenuItem
+          className={this.props.classes.menuItem}
+          onClick={this.handleMenuClose}
+        >
+          <ListItemAvatar>
+            <Avatar
+              className={this.props.classes.inboxAvatar}
+              alt="Mitch Stigall"
+              src={`${constants.apiBase}/avatars/1`}
+            />
+          </ListItemAvatar>
+          <ListItemText
+            primary={
+              <React.Fragment>
+                <div className={this.props.classes.inboxName}>
+                  Mitch Stigall
+                </div>
+                <div className={this.props.classes.inboxDate}>
+                  {this.props.intl.formatDate(
+                    moment("2030-03-21 09:31:40").toDate(),
+                    {
+                      weekday: "long",
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                      hour: "numeric",
+                      minute: "numeric"
+                    }
+                  )}
+                </div>
+              </React.Fragment>
+            }
+            secondary={
+              <span className={this.props.classes.inboxPreview}>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                eiusmod tempor incididunt ut labore et dolore magna aliqua.
+              </span>
+            }
+          />{" "}
+        </MenuItem>
+        <MenuItem
+          className={this.props.classes.menuItem}
+          onClick={this.handleMenuClose}
+        >
+          <ListItemAvatar>
+            <Avatar
+              className={this.props.classes.inboxAvatar}
+              alt="Marie Wineinger"
+              src={`${constants.apiBase}/avatars/2`}
+            />
+          </ListItemAvatar>
+          <ListItemText
+            primary={
+              <React.Fragment>
+                <div className={this.props.classes.inboxName}>
+                  Marie Wineinger
+                </div>
+                <div className={this.props.classes.inboxDate}>
+                  {this.props.intl.formatDate(
+                    moment("2030-03-21 10:03:12").toDate(),
+                    {
+                      weekday: "long",
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                      hour: "numeric",
+                      minute: "numeric"
+                    }
+                  )}
+                </div>
+              </React.Fragment>
+            }
+            secondary={
+              <span className={this.props.classes.inboxPreview}>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                eiusmod tempor incididunt ut labore et dolore magna aliqua.
+              </span>
+            }
+          />{" "}
+        </MenuItem>
+        <MenuItem
+          className={this.props.classes.menuItem}
+          onClick={this.handleMenuClose}
+        >
+          <ListItemAvatar>
+            <Avatar
+              className={this.props.classes.inboxAvatar}
+              alt="Ted Eriksson"
+              src={`${constants.apiBase}/avatars/3`}
+            />
+          </ListItemAvatar>
+          <ListItemText
+            primary={
+              <React.Fragment>
+                <div className={this.props.classes.inboxName}>Ted Eriksson</div>
+                <div className={this.props.classes.inboxDate}>
+                  {this.props.intl.formatDate(
+                    moment("2030-03-21 10:27:42").toDate(),
+                    {
+                      weekday: "long",
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                      hour: "numeric",
+                      minute: "numeric"
+                    }
+                  )}
+                </div>
+              </React.Fragment>
+            }
+            secondary={
+              <span className={this.props.classes.inboxPreview}>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                eiusmod tempor incididunt ut labore et dolore magna aliqua.
+              </span>
+            }
+          />{" "}
+        </MenuItem>
+        <MenuItem
+          className={this.props.classes.menuItem}
+          onClick={this.handleMenuClose}
+        >
+          <ListItemAvatar>
+            <Avatar
+              className={this.props.classes.inboxAvatar}
+              alt="Martin Murry"
+              src={`${constants.apiBase}/avatars/4`}
+            />
+          </ListItemAvatar>
+          <ListItemText
+            primary={
+              <React.Fragment>
+                <div className={this.props.classes.inboxName}>Martin Murry</div>
+                <div className={this.props.classes.inboxDate}>
+                  {this.props.intl.formatDate(
+                    moment("2030-03-21 11:35:09").toDate(),
+                    {
+                      weekday: "long",
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                      hour: "numeric",
+                      minute: "numeric"
+                    }
+                  )}
+                </div>
+              </React.Fragment>
+            }
+            secondary={
+              <span className={this.props.classes.inboxPreview}>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                eiusmod tempor incididunt ut labore et dolore magna aliqua.
+              </span>
+            }
+          />{" "}
+        </MenuItem>
+      </Menu>
+    );
+  }
+
   renderLocales() {
     return (
       <Menu
         classes={{ paper: this.props.classes.menu }}
         anchorEl={this.state.anchorLocales}
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-        transformOrigin={{ vertical: "top", horizontal: "right" }}
+        anchorOrigin={{ vertical: "top", horizontal: "left" }}
+        transformOrigin={{ vertical: "top", horizontal: "left" }}
         open={!!this.state.anchorLocales}
         onClose={this.handleMenuClose}
       >
@@ -226,8 +431,8 @@ class Header extends React.PureComponent {
       <Menu
         classes={{ paper: this.props.classes.menu }}
         anchorEl={this.state.anchorThemes}
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-        transformOrigin={{ vertical: "top", horizontal: "right" }}
+        anchorOrigin={{ vertical: "top", horizontal: "left" }}
+        transformOrigin={{ vertical: "top", horizontal: "left" }}
         open={!!this.state.anchorThemes}
         onClose={this.handleMenuClose}
       >
@@ -264,7 +469,7 @@ class Header extends React.PureComponent {
       >
         <Toolbar>
           <Hidden smDown>
-            <Button color="inherit">
+            <Button color="inherit" onClick={this.handleInboxOpen}>
               <Badge badgeContent={4} color="secondary">
                 <MailIcon />
               </Badge>
@@ -293,7 +498,7 @@ class Header extends React.PureComponent {
             </Button>
           </Hidden>
           <Hidden mdUp>
-            <IconButton color="inherit">
+            <IconButton color="inherit" onClick={this.handleInboxOpen}>
               <Badge badgeContent={4} color="secondary">
                 <MailIcon />
               </Badge>
@@ -335,6 +540,7 @@ class Header extends React.PureComponent {
             <LogoutIcon />
           </IconButton>
         </Toolbar>
+        {this.renderInbox()}
         {this.renderLocales()}
         {this.renderThemes()}
       </AppBar>

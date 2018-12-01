@@ -116,8 +116,8 @@ class AvatarsRoute extends BaseRoute {
     };
 
     getRandomAvatar(true);
-    getRandomAvatar(true);
     getRandomAvatar(false);
+    getRandomAvatar(true);
     getRandomAvatar(true);
     this.selectTime = Date.now();
   }
@@ -193,6 +193,8 @@ class AvatarsRoute extends BaseRoute {
         } else {
           url = this.selected[parseInt(req.params.id) - 1];
         }
+      } else {
+        url = this.selected[parseInt(req.params.id) - 1];
       }
 
       if (!url) {
