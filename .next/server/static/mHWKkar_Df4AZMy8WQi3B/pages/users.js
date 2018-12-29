@@ -6189,7 +6189,6 @@ function (_Form) {
 
       return _react.default.createElement(_Dialog.default, {
         maxWidth: "xs",
-        fullWidth: true,
         classes: {
           paper: this.props.classes.paper
         },

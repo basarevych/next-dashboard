@@ -205,7 +205,7 @@
       "publicPath": "/_next/static/chunks/commons.95990b021146050b06e5.js"
     }
   ],
-  "./withTheme": [
+  "../styles/withTheme": [
     {
       "id": 314,
       "name": "./node_modules/@material-ui/core/styles/withTheme.js",
@@ -405,7 +405,7 @@
       "publicPath": "/_next/static/chunks/commons.95990b021146050b06e5.js"
     }
   ],
-  "../colors/grey": [
+  "./grey": [
     {
       "id": 1069,
       "name": "./node_modules/@material-ui/core/colors/grey.js",

@@ -14,8 +14,8 @@ import MoreIcon from "@material-ui/icons/KeyboardArrowDown";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import Checkbox from "@material-ui/core/Checkbox";
-import EditUserModal from "../../containers/Users/EditUserModal";
-import ConfirmModal from "../Modals/ConfirmModal";
+import EditUserModal from "../containers/Modals/EditUserModal";
+import ConfirmModal from "./Modals/ConfirmModal";
 
 const styles = () => ({
   checkbox: {

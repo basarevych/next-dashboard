@@ -1,7 +1,7 @@
 import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
-import { usersSelectors, usersOperations } from "../../state/users";
-import UsersComponent from "../../components/Users";
+import { usersSelectors, usersOperations } from "../state/users";
+import UsersComponent from "../components/Users";
 
 const mapStateToProps = state => {
   return {

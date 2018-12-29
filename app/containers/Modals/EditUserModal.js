@@ -4,7 +4,7 @@ import { getFormValues, getFormAsyncErrors } from "redux-form/immutable";
 import { startAsyncValidation, stopAsyncValidation } from "redux-form";
 import { usersSelectors, usersOperations } from "../../state/users";
 import createForm from "../../lib/createForm";
-import EditUserModalComponent from "../../components/Users/EditUserModal";
+import EditUserModalComponent from "../../components/Modals/EditUserModal";
 
 const formName = EditUserModalComponent.formName;
 

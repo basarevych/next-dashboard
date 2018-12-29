@@ -147,7 +147,6 @@ class EditUserModal extends Form {
     return (
       <Dialog
         maxWidth="xs"
-        fullWidth
         classes={{ paper: this.props.classes.paper }}
         open={this.props.isOpen}
         onClose={this.props.onCancel}
