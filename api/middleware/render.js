@@ -12,7 +12,7 @@ const numPages = _.keys(constants.pages).length * locales.length;
 let usersCache = null;
 
 async function getRender({ app, req, res, page, query, user, force }) {
-  const id = user && user._id.toString();
+  const id = user && user.id;
   const name = (user && user.login) || "unauthenticated";
   const cache = usersCache.has(id)
     ? usersCache.get(id).cache
@@ -61,7 +61,7 @@ async function preCachePages(app, { user, path }) {
   try {
     let promises = [];
 
-    const { setHelpers } = helpers(app);
+    const { setHelpers } = await helpers(app);
 
     const pages = _.isUndefined(path)
       ? _.keys(constants.pages)
@@ -85,7 +85,7 @@ async function preCachePages(app, { user, path }) {
             getUser: () =>
               new Promise(resolve => setTimeout(() => resolve(user)))
           };
-          setHelpers(req);
+          setHelpers(req, {});
           let { page, query } = await app.analyzeRequest(req);
           let render = getRender({
             app,
@@ -107,7 +107,7 @@ async function preCachePages(app, { user, path }) {
   }
 }
 
-module.exports = function(app) {
+module.exports = async app => {
   if (!usersCache) usersCache = new LRU(app.config.appOnlineUsers);
 
   return {

@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { intlShape, FormattedMessage } from "react-intl";
 import { withStyles } from "@material-ui/core/styles";
-import { fade } from "@material-ui/core/styles/colorManipulator";
+import { fade, lighten } from "@material-ui/core/styles/colorManipulator";
 import Hidden from "@material-ui/core/Hidden";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -28,21 +28,22 @@ import moment from "../../../common/moment";
 import constants from "../../../common/constants";
 
 const styles = theme => ({
-  root: {
+  wrapper: {
     position: "fixed",
+    left: 0,
     right: 0,
-    top: 0,
-    height: 50,
-    left: theme.sidebar.computerWidth * theme.spacing.unit,
-    [theme.breakpoints.between("sm", "md")]: {
-      left: theme.sidebar.tabletWidth * theme.spacing.unit
-    },
-    [theme.breakpoints.down("xs")]: {
-      left: 0
-    }
+    top: 0
+  },
+  barContainer: {
+    transition: "all 0.25s ease-in-out"
   },
   bar: {
-    transition: "all 0.25s ease-in-out"
+    background: theme.palette.background.paper,
+    boxShadow: "none"
+  },
+  barItem: {
+    marginLeft: "0.5rem",
+    marginRight: "0.5rem"
   },
   grow: {
     flexGrow: 1
@@ -93,7 +94,7 @@ const styles = theme => ({
   menu: {
     width: "100%",
     maxWidth: theme.spacing.unit * 45,
-    background: theme.palette.primary.main,
+    background: lighten(theme.palette.background.paper, 0.1),
     "& svg": {
       color: [theme.palette.primary.contrastText, "!important"]
     },
@@ -138,12 +139,16 @@ class Header extends React.PureComponent {
     this.state = {
       isWrapperHovered: false,
       isBarHovered: false,
+      barHeight: 0,
+      barWidth: 0,
       anchorInbox: null,
       anchorLocales: null,
       anchorThemes: null
     };
 
     this.isDestroyed = false;
+
+    this.bar = React.createRef();
 
     this.handleWrapperMouseEnter = this.handleWrapperMouseEnter.bind(this);
     this.handleWrapperMouseLeave = this.handleWrapperMouseLeave.bind(this);
@@ -155,6 +160,28 @@ class Header extends React.PureComponent {
     this.handleThemesOpen = this.handleThemesOpen.bind(this);
     this.handleMenuClose = this.handleMenuClose.bind(this);
     this.handleSignOut = this.handleSignOut.bind(this);
+  }
+
+  componentDidMount() {
+    if (this.bar.current) {
+      this.setState({
+        barHeight: this.bar.current.offsetHeight,
+        barWidth: this.bar.current.offsetWidth
+      });
+    }
+  }
+
+  componentDidUpdate() {
+    if (
+      this.bar.current &&
+      (this.state.barHeight !== this.bar.current.offsetHeight ||
+        this.state.barWidth !== this.bar.current.offsetWidth)
+    ) {
+      this.setState({
+        barHeight: this.bar.current.offsetHeight,
+        barWidth: this.bar.current.offsetWidth
+      });
+    }
   }
 
   componentWillUnmount() {
@@ -451,106 +478,205 @@ class Header extends React.PureComponent {
     );
   }
 
+  renderShadow() {
+    let boundary =
+      this.props.theme.sidebar.computerWidth * this.props.theme.spacing.unit;
+    return (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width={this.state.barWidth}
+        height="30"
+      >
+        <defs>
+          <clipPath id="appBarClipLeft">
+            <rect x="0" y="0" width={boundary} height="30" />
+          </clipPath>
+          <filter
+            id="appBarShadowLeft"
+            x="-10"
+            y="-10"
+            width={this.state.barWidth + 20}
+            height="60"
+          >
+            <feGaussianBlur in="SourceAlpha" stdDeviation="10" />
+            <feOffset dx="0" dy="6" result="offsetblur" />
+            <feFlood floodColor="rgba(0, 0, 0, 0.85)" />
+            <feComposite in2="offsetblur" operator="in" />
+            <feMerge>
+              <feMergeNode />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+          <clipPath id="appBarClipRight">
+            <rect
+              x={boundary}
+              y="0"
+              width={this.state.barWidth - boundary}
+              height="30"
+            />
+          </clipPath>
+          <filter
+            id="appBarShadowRight"
+            x="-10"
+            y="-10"
+            width={this.state.barWidth + 20}
+            height="60"
+          >
+            <feGaussianBlur in="SourceAlpha" stdDeviation="5" />
+            <feOffset dx="0" dy="3" result="offsetblur" />
+            <feFlood floodColor="rgba(0, 0, 0, 0.5)" />
+            <feComposite in2="offsetblur" operator="in" />
+            <feMerge>
+              <feMergeNode />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+        </defs>
+        <g clipPath="url(#appBarClipLeft)">
+          <rect
+            x="-10"
+            y="-16"
+            width={boundary + 20}
+            height="20"
+            fill={this.props.theme.palette.secondary.main}
+            filter="url(#appBarShadowLeft)"
+          />
+        </g>
+        <g clipPath="url(#appBarClipRight)">
+          <rect
+            x={boundary - 10}
+            y="-16"
+            width={this.state.barWidth - boundary + 20}
+            height="20"
+            fill={this.props.theme.palette.secondary.main}
+            filter="url(#appBarShadowRight)"
+          />
+        </g>
+      </svg>
+    );
+  }
+
   renderBar(isPermanent) {
     const isVisible =
       isPermanent || this.state.isWrapperHovered || this.state.isBarHovered;
 
     return (
-      <AppBar
-        className={this.props.classes.bar}
-        elevation={10}
-        position="static"
-        color={isVisible ? "primary" : "secondary"}
-        onMouseEnter={this.handleBarMouseEnter}
-        onMouseLeave={this.handleBarMouseLeave}
+      <div
+        className={this.props.classes.barContainer}
         style={{
-          transform: `translate3d(0, ${isVisible ? "0" : "-95%"}, 0)`
+          transform: `translate3d(0, ${
+            isVisible ? "0" : `-${this.state.barHeight}px`
+          }, 0)`
         }}
       >
-        <Toolbar>
-          <Hidden smDown>
-            <Button color="inherit" onClick={this.handleInboxOpen}>
-              <Badge badgeContent={4} color="secondary">
-                <MailIcon />
-              </Badge>
-              &nbsp;&nbsp;
-              <FormattedMessage id="HEADER_INBOX_LABEL" />
-            </Button>
-            <Button color="inherit">
-              <ProfileIcon />
-              &nbsp;&nbsp;
-              <FormattedMessage id="HEADER_PROFILE_LABEL" />
-            </Button>
-            <Button color="inherit" onClick={this.handleLocalesOpen}>
-              <Flag
-                name={l10n.flags[this.props.locale]}
-                format="png"
-                pngSize={24}
-                basePath={process.env.APP_STATIC + "/static/img/flags"}
-              />
-              &nbsp;&nbsp;
-              {_.upperCase(this.props.locale)}
-            </Button>
-            <Button color="inherit" onClick={this.handleThemesOpen}>
-              <ThemeIcon />
-              &nbsp;&nbsp;
-              {_.upperFirst(this.props.theme.name)}
-            </Button>
-          </Hidden>
-          <Hidden mdUp>
-            <IconButton color="inherit" onClick={this.handleInboxOpen}>
-              <Badge badgeContent={4} color="secondary">
-                <MailIcon />
-              </Badge>
-            </IconButton>
-            <IconButton color="inherit">
-              <ProfileIcon />
-            </IconButton>
-            <IconButton color="inherit" onClick={this.handleLocalesOpen}>
-              <Flag
-                name={l10n.flags[this.props.locale]}
-                format="png"
-                pngSize={24}
-                basePath={process.env.APP_STATIC + "/static/img/flags"}
-              />
-            </IconButton>
-            <IconButton color="inherit" onClick={this.handleThemesOpen}>
-              <ThemeIcon />
-            </IconButton>
-          </Hidden>
-          <Hidden smDown>
-            <div className={this.props.classes.grow} />
-          </Hidden>
-          <div className={this.props.classes.search}>
-            <div className={this.props.classes.searchIcon}>
-              <SearchIcon />
-            </div>
-            <InputBase
-              placeholder="Search…"
-              classes={{
-                root: this.props.classes.inputRoot,
-                input: this.props.classes.inputInput
-              }}
-            />
-          </div>
-          <Hidden smDown>
-            <div className={this.props.classes.grow} />
-          </Hidden>
-          <IconButton color="inherit" onClick={this.handleSignOut}>
-            <LogoutIcon />
-          </IconButton>
-        </Toolbar>
-        {this.renderInbox()}
-        {this.renderLocales()}
-        {this.renderThemes()}
-      </AppBar>
+        <div ref={this.bar}>
+          <AppBar
+            className={this.props.classes.bar}
+            elevation={10}
+            position="static"
+            color={isVisible ? "primary" : "secondary"}
+            onMouseEnter={this.handleBarMouseEnter}
+            onMouseLeave={this.handleBarMouseLeave}
+          >
+            <Toolbar>
+              <Hidden smDown>
+                <Button
+                  color="inherit"
+                  className={this.props.classes.barItem}
+                  onClick={this.handleInboxOpen}
+                >
+                  <Badge badgeContent={4} color="secondary">
+                    <MailIcon />
+                  </Badge>
+                  &nbsp;&nbsp;
+                  <FormattedMessage id="HEADER_INBOX_LABEL" />
+                </Button>
+                <Button color="inherit" className={this.props.classes.barItem}>
+                  <ProfileIcon />
+                  &nbsp;&nbsp;
+                  <FormattedMessage id="HEADER_PROFILE_LABEL" />
+                </Button>
+                <Button
+                  color="inherit"
+                  className={this.props.classes.barItem}
+                  onClick={this.handleLocalesOpen}
+                >
+                  <Flag
+                    name={l10n.flags[this.props.locale]}
+                    format="png"
+                    pngSize={24}
+                    basePath={process.env.APP_STATIC + "/static/img/flags"}
+                  />
+                  &nbsp;&nbsp;
+                  {_.upperCase(this.props.locale)}
+                </Button>
+                <Button
+                  color="inherit"
+                  className={this.props.classes.barItem}
+                  onClick={this.handleThemesOpen}
+                >
+                  <ThemeIcon />
+                  &nbsp;&nbsp;
+                  {_.upperFirst(this.props.theme.name)}
+                </Button>
+              </Hidden>
+              <Hidden mdUp>
+                <IconButton color="inherit" onClick={this.handleInboxOpen}>
+                  <Badge badgeContent={4} color="secondary">
+                    <MailIcon />
+                  </Badge>
+                </IconButton>
+                <IconButton color="inherit">
+                  <ProfileIcon />
+                </IconButton>
+                <IconButton color="inherit" onClick={this.handleLocalesOpen}>
+                  <Flag
+                    name={l10n.flags[this.props.locale]}
+                    format="png"
+                    pngSize={24}
+                    basePath={process.env.APP_STATIC + "/static/img/flags"}
+                  />
+                </IconButton>
+                <IconButton color="inherit" onClick={this.handleThemesOpen}>
+                  <ThemeIcon />
+                </IconButton>
+              </Hidden>
+              <Hidden smDown>
+                <div className={this.props.classes.grow} />
+              </Hidden>
+              <div className={this.props.classes.search}>
+                <div className={this.props.classes.searchIcon}>
+                  <SearchIcon />
+                </div>
+                <InputBase
+                  placeholder="Search…"
+                  classes={{
+                    root: this.props.classes.inputRoot,
+                    input: this.props.classes.inputInput
+                  }}
+                />
+              </div>
+              <Hidden smDown>
+                <div className={this.props.classes.grow} />
+              </Hidden>
+              <IconButton color="inherit" onClick={this.handleSignOut}>
+                <LogoutIcon />
+              </IconButton>
+            </Toolbar>
+            {this.renderInbox()}
+            {this.renderLocales()}
+            {this.renderThemes()}
+          </AppBar>
+        </div>
+        {!isPermanent && this.renderShadow()}
+      </div>
     );
   }
 
   render() {
     return (
       <div
-        className={this.props.classes.root}
+        className={this.props.classes.wrapper}
         onMouseEnter={this.handleWrapperMouseEnter}
         onMouseLeave={this.handleWrapperMouseLeave}
         onClick={this.handleWrapperClick}

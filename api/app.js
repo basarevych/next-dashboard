@@ -2,12 +2,11 @@
 
 if (!global._) global._ = require("lodash");
 
-const nextApp = require("next");
 const Injectt = require("injectt");
+const nextApp = require("next");
 const path = require("path");
 const express = require("express");
 const compression = require("compression");
-const favicon = require("serve-favicon");
 const logger = require("morgan");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
@@ -32,7 +31,7 @@ if (!process.env.NODE_ENV) process.env.NODE_ENV = "production";
 
 let appHost = process.env.APP_HOST || "0.0.0.0";
 let appPort = parseInt(process.env.APP_PORT, 10) || 3000;
-let appOrigins = process.env.APP_ORIGINS || `["http://localhost:${appPort}"]`;
+let appOrigins = process.env.APP_ORIGINS;
 let appStatic = process.env.APP_STATIC || "";
 let appTrustProxy = process.env.APP_TRUST_PROXY === "true" ? 1 : 0;
 let appOnlineUsers = parseInt(process.env.APP_ONLINE_USERS, 10) || 50;
@@ -55,6 +54,7 @@ let googleAuthSecret = process.env.GOOGLE_AUTH_SECRET;
 let twitterAuthKey = process.env.TWITTER_AUTH_KEY;
 let twitterAuthSecret = process.env.TWITTER_AUTH_SECRET;
 let googleMapsKey = process.env.GOOGLE_MAPS_KEY;
+
 /**
  * The application
  */
@@ -68,22 +68,25 @@ class App {
       process.exit(1);
     }
 
-    let originsApp; // parse allowed origins of our app
-    try {
-      originsApp = JSON.parse(appOrigins);
-      if (!_.isArray(originsApp))
-        throw new Error(
-          "APP_ORIGINS env variable should be a JSON string of array of strings"
-        );
-    } catch (error) {
-      console.error("Could not parse APP_ORIGINS: ", error.message);
-      process.exit(1);
+    if (appOrigins) {
+      try {
+        if (_.isString(appOrigins)) appOrigins = JSON.parse(appOrigins);
+        if (!_.isArray(appOrigins))
+          throw new Error(
+            "APP_ORIGINS env variable should be a JSON string of array of strings"
+          );
+      } catch (error) {
+        console.error("Could not parse APP_ORIGINS: ", error.message);
+        process.exit(1);
+      }
+    } else {
+      appOrigins = [`http://localhost:${appPort}`];
     }
 
     this.config = {
       appHost,
       appPort,
-      appOrigins: originsApp,
+      appOrigins,
       appStatic,
       appTrustProxy,
       appOnlineUsers,
@@ -126,7 +129,7 @@ class App {
     this.di.registerInstance(this.store.dispatch.bind(this.store), "dispatch");
 
     // Next page renderer and cacher
-    const { renderPage, preCachePages } = render(this);
+    const { renderPage, preCachePages } = await render(this);
     server.once("listening", () => preCachePages({ user: null }));
     this.renderPage = renderPage;
     this.preCachePages = preCachePages;
@@ -139,10 +142,7 @@ class App {
     );
 
     // Initialize the singletons
-    await this.di.get("db").init();
-    await this.di.get("mailer").init();
-    await this.di.get("ws").init();
-    await this.di.get("auth").init();
+    await Promise.all(_.invokeMap(this.di.singletons(), "init"));
 
     // Routes
     this.routes = routes(this);
@@ -158,11 +158,9 @@ class App {
     for (let route of _.keys(this.routes)) await this.routes[route].init();
 
     // Early middleware first
-    if (process.env.NODE_ENV === "production") this.express.use(cors(this));
+    if (process.env.NODE_ENV === "production")
+      this.express.use(await cors(this));
     this.express.use(compression());
-    this.express.use(
-      favicon(path.join(__dirname, "..", "static", "favicon.ico"))
-    );
 
     // Logger
     if (process.env.NODE_ENV !== "test") this.express.use(logger("dev"));
@@ -176,6 +174,15 @@ class App {
       "/static",
       express.static(path.join(__dirname, "..", "static"), { maxAge: "10d" })
     );
+    this.express.use(
+      "/favicon.ico",
+      express.static(
+        path.join(__dirname, "..", "static", "img", "favicon.ico"),
+        {
+          maxAge: "10d"
+        }
+      )
+    );
 
     // Parse request
     this.express.use(bodyParser.json());
@@ -183,7 +190,7 @@ class App {
     this.express.use(cookieParser());
 
     // Session
-    const sessionMiddleware = session(this);
+    const sessionMiddleware = await session(this);
     this.express.use(sessionMiddleware.express);
     this.di.get("ws").io.use(sessionMiddleware.socket);
 
@@ -191,15 +198,15 @@ class App {
     if (process.env.NODE_ENV === "production") this.express.use(csrf());
 
     // Set default headers
-    this.express.use(headers());
+    this.express.use(await headers());
 
     // Alias app services on request object
-    const helpersMiddleware = helpers(this);
+    const helpersMiddleware = await helpers(this);
     this.express.use(helpersMiddleware.express);
     this.di.get("ws").io.use(helpersMiddleware.socket);
 
     // GraphQL API at /graphql
-    this.express.use(constants.graphqlBase, graphql(this));
+    this.express.use(constants.graphqlBase, await graphql(this));
 
     // REST API is /api/*
     for (let route of _.keys(this.routes))
@@ -209,10 +216,10 @@ class App {
     this.express.get("*", this.renderPage);
 
     // Throw 404 if we haven't sent anything yet
-    this.express.use(throw404(this));
+    this.express.use(await throw404(this));
 
     // Catch errors thrown anywhere in above
-    this.express.use(error(this));
+    this.express.use(await error(this));
   }
 
   /**

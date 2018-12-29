@@ -9,12 +9,7 @@ export const hideEditModal = actions.hideEditModal;
 export const load = ({ req } = {}) => async dispatch => {
   let users;
   if (req) {
-    users = _.map(await req.di.get("repository.users").getUsers(req), user =>
-      _.assign({}, user, {
-        whenCreated: user.whenCreated.valueOf(),
-        whenUpdated: user.whenUpdated.valueOf()
-      })
-    );
+    users = await req.di.get("repository.users").getUsers(req);
   } else {
     let response = await dispatch(
       appOperations.gqlQuery(
@@ -39,7 +34,7 @@ export const create = ({
   name,
   email,
   password,
-  isAdmin,
+  isAdmin
 }) => async dispatch => {
   let result = false;
 
@@ -57,9 +52,7 @@ export const create = ({
           name,
           email,
           password,
-          roles: _.compact([
-            isAdmin && constants.roles.ADMIN,
-          ])
+          roles: _.compact([isAdmin && constants.roles.ADMIN])
         }
       )
     );
@@ -68,8 +61,14 @@ export const create = ({
       await dispatch(actions.hideEditModal());
       return true;
     } else {
-      let error = response && _.get(response, "errors.0", null);
-      if (error && error.code === "E_VALIDATION") result = error.details;
+      result = {};
+      let errors = response && _.get(response, "errors", []);
+      for (let error of errors) {
+        if (error && error.code === "E_VALIDATION")
+          _.merge(result, error.details);
+        else result._error = (result._error || []).concat([error.message]);
+      }
+      if (!_.keys(result).length) result = { _error: "EDIT_USER_FAILED" };
     }
   } catch (error) {
     console.error(error);
@@ -83,7 +82,7 @@ export const edit = ({
   name,
   email,
   password,
-  isAdmin,
+  isAdmin
 }) => async dispatch => {
   let result = false;
 
@@ -102,9 +101,7 @@ export const edit = ({
           name,
           email,
           password,
-          roles: _.compact([
-            isAdmin && constants.roles.ADMIN,
-          ])
+          roles: _.compact([isAdmin && constants.roles.ADMIN])
         }
       )
     );
@@ -113,8 +110,14 @@ export const edit = ({
       await dispatch(actions.hideEditModal());
       return true;
     } else {
-      let error = response && _.get(response, "errors.0", null);
-      if (error && error.code === "E_VALIDATION") result = error.details;
+      result = {};
+      let errors = response && _.get(response, "errors", []);
+      for (let error of errors) {
+        if (error && error.code === "E_VALIDATION")
+          _.merge(result, error.details);
+        else result._error = (result._error || []).concat([error.message]);
+      }
+      if (!_.keys(result).length) result = { _error: "EDIT_USER_FAILED" };
     }
   } catch (error) {
     console.error(error);
@@ -138,7 +141,5 @@ export const remove = ({ id }) => async dispatch => {
       }
     )
   );
-  let success =
-    (response && _.get(response, "data.deleteUser.success")) || false;
-  return success;
+  return (response && _.get(response, "data.deleteUser.success")) || false;
 };

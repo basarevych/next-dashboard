@@ -65,6 +65,9 @@ module.exports = function normalize(
           result += tmp[i];
         }
         break;
+      case "integer":
+        result = _.replace(result, /[^0-9]+/g, "");
+        break;
       case "phone":
         // converts input to internations phone number format
         // props of the form should have getCallingCodes() selector function

@@ -44,8 +44,9 @@ const typeDefs = `
     id: String!
     whenCreated: Date!
     whenUpdated: Date!
-    name: String
     email: String!
+    isEmailVerified: Boolean!
+    name: String
     roles: [UserRole]!
   }
 

@@ -17,7 +17,6 @@
   "TITLE_ICONS": "Icons",
   "MENU_USERS": "Users",
   "TITLE_USERS": "Users",
-  "SIDEBAR_ANONYMOUS": "Anonymous",
   "SIDEBAR_BENCHMARKS_LINK": "Benchmark Results",
   "SIDEBAR_RESPONSIVENESS_LINK": "Responsiveness Test",
   "HEADER_INBOX_LABEL": "Inbox",
@@ -51,6 +50,7 @@
   "APP_AUTH_SERVICE_BUTTON": "Sign In with",
   "APP_AUTH_SUBMIT": "Sign In",
   "APP_AUTH_FAILED": "Invalid credentials",
+  "OPERATION_FAILED": "Operation failed",
   "ERROR_FIELD_REQUIRED": "This field is required",
   "ERROR_INVALID_EMAIL": "Please provide a valid email address",
   "ERROR_INVALID_PASSWORD": "Password length must be at least 6 characters"

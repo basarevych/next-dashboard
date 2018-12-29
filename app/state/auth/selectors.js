@@ -11,6 +11,8 @@ export const isAdmin = state =>
   state.getIn(["auth", "roles"]).includes(constants.roles.ADMIN);
 /* eslint-enable */
 
+export const getName = state => state.getIn(["auth", "name"]);
+
 export const getEmail = state => state.getIn(["auth", "email"]);
 
 export const getRoles = createSelector(

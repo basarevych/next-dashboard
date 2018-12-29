@@ -29,6 +29,14 @@ class AvatarsRoute extends BaseRoute {
     this.avatars = {};
     this.selected = [];
     this.cache = new LRU(50);
+    this.anonymous = path.join(
+      __dirname,
+      "..",
+      "..",
+      "static",
+      "img",
+      "anonymous.png"
+    );
 
     this.timer = null;
     this.fetchTime = 0;
@@ -116,6 +124,7 @@ class AvatarsRoute extends BaseRoute {
     };
 
     getRandomAvatar(true);
+    getRandomAvatar(true);
     getRandomAvatar(false);
     getRandomAvatar(true);
     getRandomAvatar(true);
@@ -178,8 +187,9 @@ class AvatarsRoute extends BaseRoute {
       let url;
 
       if (req.params.id === "0") {
+        // own avatar
         let user = await req.getUser();
-        if (user) {
+        if (user && !_.includes(user.roles, constants.roles.ANONYMOUS)) {
           for (let provider of user.providers) {
             if (provider.profile.photos && provider.profile.photos.length)
               url = provider.profile.photos[0].value;
@@ -191,22 +201,14 @@ class AvatarsRoute extends BaseRoute {
             if (url) break;
           }
         } else {
-          url = this.selected[parseInt(req.params.id) - 1];
+          url = this.selected[0];
         }
       } else {
-        url = this.selected[parseInt(req.params.id) - 1];
+        // random avatar
+        url = this.selected[parseInt(req.params.id)];
       }
 
-      if (!url) {
-        url = path.join(
-          __dirname,
-          "..",
-          "..",
-          "static",
-          "img",
-          "anonymous.png"
-        );
-      }
+      if (!url) url = this.anonymous;
 
       if (this.cache.has(url)) {
         image = this.cache.get(url);
@@ -221,12 +223,9 @@ class AvatarsRoute extends BaseRoute {
         res.set("content-type", image.type);
         res.send(req.params.id === "0" ? image.dataLarge : image.dataSmall);
       } else {
-        res.set("content-type", "image/svg+xml; charset=us-ascii");
-        res.send(
-          await fs.readFile(
-            path.join(__dirname, "..", "..", "static", "img", "react-icon.svg")
-          )
-        );
+        let error = new Error("Not Found");
+        error.status = 404;
+        throw error;
       }
     } catch (error) {
       return next(error);

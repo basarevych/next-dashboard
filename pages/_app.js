@@ -1,5 +1,5 @@
 import React from "react";
-import App, { Container, createUrl } from "next/app";
+import App, { Container } from "next/app";
 import Router from "next/router";
 import { Provider } from "react-redux";
 import { MuiThemeProvider, jssPreset } from "@material-ui/core/styles";
@@ -33,7 +33,7 @@ class MyApp extends App {
       await store.dispatch(
         appOperations.create({
           status: req && req.getAuthStatus && (await req.getAuthStatus()),
-          googleMapsKey: req && req.googleMapsKey
+          googleMapsKey: query && query.googleMapsKey
         })
       );
     }
@@ -93,7 +93,6 @@ class MyApp extends App {
 
   render() {
     const { router, Component, pageProps } = this.props;
-    const url = createUrl(router);
     const path = router.pathname;
     const title = constants.pages[path] && constants.pages[path].title;
 
@@ -115,12 +114,7 @@ class MyApp extends App {
                 >
                   <CssBaseline />
                   <Layout title={title}>
-                    <Component
-                      {...pageProps}
-                      url={url}
-                      store={this.store}
-                      pageContext={this.pageContext}
-                    />
+                    <Component {...pageProps} pageContext={this.pageContext} />
                   </Layout>
                 </MuiThemeProvider>
               </JssProvider>

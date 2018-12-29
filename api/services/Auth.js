@@ -34,24 +34,6 @@ class Auth extends EventEmitter {
     return "singleton";
   }
 
-  static async checkPassword(password, hash) {
-    return new Promise((resolve, reject) => {
-      bcrypt.compare(password, hash, (error, res) => {
-        if (error) return reject(error);
-        resolve(res);
-      });
-    });
-  }
-
-  static async encryptPassword(password) {
-    return new Promise((resolve, reject) => {
-      bcrypt.hash(password, 10, (error, hash) => {
-        if (error) return reject(error);
-        resolve(hash);
-      });
-    });
-  }
-
   /**
    * Facebook OAuth provider
    */
@@ -125,13 +107,31 @@ class Auth extends EventEmitter {
     ]);
   }
 
+  async checkPassword(password, hash) {
+    return new Promise((resolve, reject) => {
+      bcrypt.compare(password, hash, (error, res) => {
+        if (error) return reject(error);
+        resolve(res);
+      });
+    });
+  }
+
+  async encryptPassword(password) {
+    return new Promise((resolve, reject) => {
+      bcrypt.hash(password, 10, (error, hash) => {
+        if (error) return reject(error);
+        resolve(hash);
+      });
+    });
+  }
+
   async init() {
     /*
      * Return functions ID property from a functions object
      */
     this.passport.serializeUser(async (user, next) => {
       try {
-        return next(null, user ? user._id.toString() : false);
+        return next(null, user ? user.id : false);
       } catch (error) {
         return next(error, false);
       }
@@ -142,9 +142,7 @@ class Auth extends EventEmitter {
      */
     this.passport.deserializeUser(async (id, next) => {
       try {
-        let user = await this.db.UserModel.findOne({
-          _id: this.db.ObjectId(id)
-        });
+        let user = await this.db.UserModel.findById(id);
         return next(null, user ? user : false);
       } catch (error) {
         return next(error, false);
@@ -185,7 +183,6 @@ class Auth extends EventEmitter {
 
               // Look for a user in the database associated with this account.
               let user = await this.db.UserModel.findOne({
-                // eslint-disable-line lodash/prefer-lodash-method
                 "providers.name": provider.providerName,
                 "providers.profile.id": profile.id
               });
@@ -195,7 +192,7 @@ class Auth extends EventEmitter {
 
                 if (user) {
                   // This section handles if the user is already logged in
-                  if (req.user._id === user._id) {
+                  if (req.user.id === user.id) {
                     // This section handles if the user is already logged in and is
                     // already linked to local account they are signed in with.
                     // If they are, all we need to do is update the Refresh Token
@@ -210,9 +207,7 @@ class Auth extends EventEmitter {
                         item.profile = profile;
                         item.accessToken = accessToken;
                         item.refreshToken = refreshToken;
-                        item.whenUpdated = Date.now();
 
-                        user.whenUpdated = Date.now();
                         await user.validate();
                         await user.save();
 
@@ -248,20 +243,19 @@ class Auth extends EventEmitter {
 
                   // Save Profile ID, Access Token and Refresh Token values
                   // to the users local account, which links the accounts.
-                  req.user.providers.push(
-                    new this.db.ProviderModel(
-                      this.db.providerTemplate({
-                        name: provider.providerName,
-                        profile: profile,
-                        accessToken: accessToken,
-                        refreshToken: refreshToken
-                      })
-                    )
-                  );
+                  let provider = new this.db.ProviderModel({
+                    name: provider.providerName,
+                    profile: profile,
+                    accessToken: accessToken,
+                    refreshToken: refreshToken
+                  });
+                  await provider.validate();
 
-                  req.user.whenUpdated = Date.now();
+                  req.user.providers.push(provider);
+
                   await req.user.validate();
                   await req.user.save();
+
                   return next(null, req.user);
                 }
               } else {
@@ -283,7 +277,6 @@ class Auth extends EventEmitter {
                         item.profile = profile;
                         item.accessToken = accessToken;
                         item.refreshToken = refreshToken;
-                        item.whenUpdated = Date.now();
                         found = true;
                         break;
                       }
@@ -292,7 +285,6 @@ class Auth extends EventEmitter {
                       // never happens
                       return next(null, false);
 
-                    user.whenUpdated = Date.now();
                     await user.validate();
                     await user.save();
                   }
@@ -326,23 +318,23 @@ class Auth extends EventEmitter {
 
                   // If an account does not exist, create one for them and return
                   // a user object to passport, which will sign them in.
-                  user = new this.db.UserModel(
-                    this.db.userTemplate({
-                      email: email,
-                      name: profile.displayName,
-                      providers: [
-                        this.db.providerTemplate({
-                          name: provider.providerName,
-                          profile: profile,
-                          accessToken: accessToken,
-                          refreshToken: refreshToken
-                        })
-                      ]
-                    })
-                  );
+                  let provider = new this.db.ProviderModel({
+                    name: provider.providerName,
+                    profile: profile,
+                    accessToken: accessToken,
+                    refreshToken: refreshToken
+                  });
+                  await provider.validate();
+
+                  user = new this.db.UserModel({
+                    email: email,
+                    name: profile.displayName,
+                    providers: [provider]
+                  });
 
                   await user.validate();
                   await user.save();
+
                   return next(null, user);
                 }
               }
@@ -400,7 +392,7 @@ class Auth extends EventEmitter {
   }
 
   async signOut(req) {
-    let userId = req.user._id.toString();
+    let userId = req.user.id;
 
     try {
       req.logout();

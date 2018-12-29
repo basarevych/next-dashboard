@@ -94,7 +94,7 @@ class WebSocket extends EventEmitter {
         return process.nextTick(() => socket.disconnect(true));
       }
 
-      const userId = user._id.toString();
+      const userId = user.id;
       const sessionId = socket.request.session.id;
       const socketId = uuid.v4();
 

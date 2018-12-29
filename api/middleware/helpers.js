@@ -3,7 +3,7 @@
 const styles = require("../../common/themes");
 
 // Alias app services on request object
-module.exports = app => {
+module.exports = async app => {
   const auth = app.di.get("auth");
 
   const setHelpers = req => {
@@ -13,7 +13,7 @@ module.exports = app => {
       app.di.get("auth").getStatus(await req.getUser());
   };
 
-  const setLocale = req => {
+  const setLocale = (req, res) => {
     let locale = null;
 
     const i18n = app.di.get("i18n");
@@ -27,6 +27,9 @@ module.exports = app => {
     if (!locale) locale = i18n.defaultLocale;
 
     req.locale = locale;
+
+    res.locals.translate = (key, values, locale = req.locale) =>
+      app.di.get("i18n").translate(key, values, locale);
   };
 
   const setTheme = req => {
@@ -41,16 +44,16 @@ module.exports = app => {
     req.theme = theme;
   };
 
-  const loadUser = async req =>
+  const loadUser = async (req, res) =>
     new Promise(resolve => {
-      auth.passport.initialize()(req, req.res, error => {
+      auth.passport.initialize()(req, res, error => {
         if (error) {
           console.error(`While initializing session user: ${error.message}`);
           req.user = null;
           resolve(null);
         }
 
-        auth.passport.session()(req, req.res, error => {
+        auth.passport.session()(req, res, error => {
           if (error) {
             console.error(`While loading session user: ${error.message}`);
             req.user = null;
@@ -99,18 +102,20 @@ module.exports = app => {
 
   return {
     setHelpers,
+    setLocale,
+    setTheme,
     express: (req, res, next) => {
       try {
-        setHelpers(req);
-        setLocale(req);
-        setTheme(req);
+        setHelpers(req, res);
+        setLocale(req, res);
+        setTheme(req, res);
 
-        req.recreateSession = async () => recreateSession(req);
-        req.saveSession = async () => saveSession(req);
-        req.loadSession = async () => loadSession(req);
+        req.recreateSession = async () => recreateSession(req, res);
+        req.saveSession = async () => saveSession(req, res);
+        req.loadSession = async () => loadSession(req, res);
 
         req.getSession = async () => req.session;
-        req.getUser = async () => loadUser(req);
+        req.getUser = async () => loadUser(req, res);
 
         return next();
       } catch (error) {
@@ -120,17 +125,23 @@ module.exports = app => {
     },
     socket: (socket, next) => {
       try {
-        setHelpers(socket.request);
+        setHelpers(socket.request, socket.request.res);
 
         socket.request.recreateSession = async () =>
-          recreateSession(socket.request);
-        socket.request.saveSession = async () => saveSession(socket.request);
-        socket.request.loadSession = async () => loadSession(socket.request);
+          recreateSession(socket.request, socket.request.res);
+        socket.request.saveSession = async () =>
+          saveSession(socket.request, socket.request.res);
+        socket.request.loadSession = async () =>
+          loadSession(socket.request, socket.request.res);
 
         socket.request.getSession = async () =>
-          loadSession(socket.request).then(() => socket.request.session);
+          loadSession(socket.request, socket.request.res).then(
+            () => socket.request.session
+          );
         socket.request.getUser = async () =>
-          loadSession(socket.request).then(() => socket.request.user);
+          loadSession(socket.request, socket.request.res).then(
+            () => socket.request.user
+          );
 
         return next();
       } catch (error) {

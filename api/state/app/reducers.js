@@ -5,7 +5,7 @@ const types = require("./types");
 
 /* State Shape
 Map({
-  di: DiContainer,
+  di: Injectt,
 })
 */
 

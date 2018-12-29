@@ -6,7 +6,11 @@ import { authSelectors } from "../../state/auth";
 
 const mapStateToProps = state => {
   return {
-    roles: authSelectors.getRoles(state)
+    roles: authSelectors.getRoles(state),
+    name:
+      authSelectors.getName(state) ||
+      authSelectors.getEmail(state) ||
+      "anonymous"
   };
 };
 

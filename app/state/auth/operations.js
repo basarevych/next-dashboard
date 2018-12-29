@@ -103,8 +103,14 @@ export const signIn = ({ email, password }) => async (dispatch, getState) => {
         await window.__NEXT_PAGE_INIT({ store: window.__NEXT_REDUX_STORE__ });
       return true;
     } else {
-      let error = response && _.get(response, "errors.0", null);
-      if (error && error.code === "E_VALIDATION") result = error.details;
+      result = {};
+      let errors = response && _.get(response, "errors", []);
+      for (let error of errors) {
+        if (error && error.code === "E_VALIDATION")
+          _.merge(result, error.details);
+        else result._error = (result._error || []).concat([error.message]);
+      }
+      if (!_.keys(result).length) result = { _error: "APP_AUTH_FAILED" };
     }
   } catch (error) {
     console.error(error);
@@ -139,8 +145,14 @@ export const signUp = ({ email, password }) => async dispatch => {
         await window.__NEXT_PAGE_INIT({ store: window.__NEXT_REDUX_STORE__ });
       return true;
     } else {
-      let error = response && _.get(response, "errors.0", null);
-      if (error && error.code === "E_VALIDATION") result = error.details;
+      result = {};
+      let errors = response && _.get(response, "errors", []);
+      for (let error of errors) {
+        if (error && error.code === "E_VALIDATION")
+          _.merge(result, error.details);
+        else result._error = (result._error || []).concat([error.message]);
+      }
+      if (!_.keys(result).length) result = { _error: "OPERATION_FAILED" };
     }
   } catch (error) {
     console.error(error);
@@ -150,6 +162,8 @@ export const signUp = ({ email, password }) => async dispatch => {
 };
 
 export const signOut = () => async dispatch => {
+  let result = false;
+
   try {
     let response = await dispatch(
       appOperations.gqlQuery(
@@ -163,11 +177,13 @@ export const signOut = () => async dispatch => {
       )
     );
 
-    if (response && _.get(response, "data.signOut.success", false))
-      return dispatch(setStatus());
+    result = (response && _.get(response, "data.signOut.success")) || false;
+    if (result) await dispatch(setStatus());
   } catch (error) {
     console.error(error);
   }
+
+  return result;
 };
 
 export const loadProfile = ({ onChange }) => async (dispatch, getState) => {
@@ -180,6 +196,8 @@ export const loadProfile = ({ onChange }) => async (dispatch, getState) => {
 };
 
 export const requestProfileVerification = () => async dispatch => {
+  let result = false;
+
   try {
     let response = await dispatch(
       appOperations.gqlQuery(
@@ -193,15 +211,14 @@ export const requestProfileVerification = () => async dispatch => {
       )
     );
 
-    return (
-      response &&
-      _.get(response, "data.requestEmailVerification.success", false)
-    );
+    result =
+      (response && _.get(response, "data.requestEmailVerification.success")) ||
+      false;
   } catch (error) {
     console.error(error);
   }
 
-  return false;
+  return result;
 };
 
 export const finishProfileVerification = ({ token }) => async dispatch => {
@@ -223,7 +240,7 @@ export const finishProfileVerification = ({ token }) => async dispatch => {
       )
     );
 
-    result = response && _.get(response, "data.verifyEmail.success", false);
+    result = (response && _.get(response, "data.verifyEmail.success")) || false;
     if (result) await dispatch(setStatus());
   } catch (error) {
     console.error(error);
@@ -260,10 +277,16 @@ export const updateProfile = ({
 
     if (response && _.get(response, "data.updateProfile.success", false)) {
       await dispatch(loadProfile(onChange));
-      result = true;
+      return true;
     } else {
-      let error = response && _.get(response, "errors.0", null);
-      if (error && error.code === "E_VALIDATION") result = error.details;
+      result = {};
+      let errors = response && _.get(response, "errors", []);
+      for (let error of errors) {
+        if (error && error.code === "E_VALIDATION")
+          _.merge(result, error.details);
+        else result._error = (result._error || []).concat([error.message]);
+      }
+      if (!_.keys(result).length) result = { _error: "OPERATION_FAILED" };
     }
   } catch (error) {
     console.error(error);
@@ -304,13 +327,9 @@ export const unlinkProvider = ({ provider }) => async dispatch => {
       )
     );
 
-    if (response && _.get(response, "data.unlinkProvider.success", false)) {
-      await dispatch(setStatus());
-      result = true;
-    } else {
-      let error = response && _.get(response, "errors.0", null);
-      if (error && error.code === "E_VALIDATION") result = error.details;
-    }
+    result =
+      (response && _.get(response, "data.unlinkProvider.success")) || false;
+    if (result) await dispatch(setStatus());
   } catch (error) {
     console.error(error);
   }
@@ -319,6 +338,8 @@ export const unlinkProvider = ({ provider }) => async dispatch => {
 };
 
 export const deleteProfile = () => async dispatch => {
+  let result = false;
+
   try {
     let response = await dispatch(
       appOperations.gqlQuery(
@@ -332,14 +353,15 @@ export const deleteProfile = () => async dispatch => {
       )
     );
 
-    if (response && _.get(response, "data.deleteProfile.success", false)) {
+    result =
+      (response && _.get(response, "data.deleteProfile.success")) || false;
+    if (result) {
       await dispatch(appOperations.stop());
       window.location.href = "/";
-      return true;
     }
   } catch (error) {
     console.error(error);
   }
 
-  return false;
+  return result;
 };

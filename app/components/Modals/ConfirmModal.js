@@ -39,7 +39,6 @@ class ConfirmModal extends React.PureComponent {
     return (
       <Dialog
         maxWidth="xs"
-        fullWidth
         classes={{ paper: this.props.classes.paper }}
         open={this.props.isOpen}
         onClose={this.props.onCancel}

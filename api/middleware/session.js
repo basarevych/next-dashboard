@@ -3,7 +3,7 @@
 const session = require("express-session");
 const MongoStore = require("connect-mongo")(session);
 
-module.exports = app => {
+module.exports = async app => {
   const db = app.di.get("db");
 
   const store = new MongoStore({
@@ -27,7 +27,7 @@ module.exports = app => {
   return {
     express: sessionMiddleware,
     socket: (socket, next) =>
-      socket.request.res
+      _.get(socket, "request.res")
         ? sessionMiddleware(socket.request, socket.request.res, next)
         : next()
   };

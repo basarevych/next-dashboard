@@ -1,6 +1,6 @@
 "use strict";
 
-module.exports = () => (err, req, res, next) => {
+module.exports = async () => (err, req, res, next) => {
   let status;
   if (err.status) status = err.status;
   else if (res.statusCode !== 200) status = res.statusCode;

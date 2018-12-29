@@ -2,7 +2,7 @@
 
 const cors = require("cors");
 
-module.exports = app => {
+module.exports = async app => {
   let error = new Error("Not allowed by CORS");
   error.status = 403;
 

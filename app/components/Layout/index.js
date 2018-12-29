@@ -22,13 +22,7 @@ const styles = theme => ({
     body: _.merge(
       {
         fontFamily: theme.typography.fontFamily,
-        background:
-          theme.palette.background.default +
-          (theme.main.wallpaper
-            ? ` url("${
-                theme.main.wallpaper
-              }") top left / 100vw 100vh no-repeat fixed`
-            : ""),
+        background: theme.palette.background.default,
         color: theme.palette.text.primary
       },
       styledScroll(theme)
@@ -61,6 +55,7 @@ const styles = theme => ({
   sidebar: _.merge(
     {
       background: theme.sidebar.background,
+      border: "none",
       overflowX: "hidden",
       width: theme.sidebar.computerWidth * theme.spacing.unit,
       [theme.breakpoints.between("sm", "md")]: {
@@ -73,10 +68,11 @@ const styles = theme => ({
     styledScroll(theme)
   ),
   main: {
+    background: theme.main.background,
     minHeight: "100vh",
     display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
+    alignItems: "stretch",
+    justifyContent: "stretch",
     marginLeft: theme.sidebar.computerWidth * theme.spacing.unit,
     [theme.breakpoints.between("sm", "md")]: {
       marginLeft: theme.sidebar.tabletWidth * theme.spacing.unit
@@ -84,6 +80,21 @@ const styles = theme => ({
     [theme.breakpoints.down("xs")]: {
       marginLeft: 0
     }
+  },
+  content: {
+    boxShadow: "-2px -2px 8px rgba(0, 0, 0, 0.3)",
+    zIndex: 1300,
+    flex: 1,
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center"
+  },
+  anonymous: {
+    background: theme.palette.background.paper,
+    minHeight: "100vh",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center"
   }
 });
 
@@ -133,37 +144,41 @@ class Layout extends React.Component {
         )}
 
         {this.props.isAuthenticated && (
-          <Hidden implementation="css" smUp>
-            <SwipeableDrawer
-              open={this.state.isSidebarOpen}
-              onOpen={this.handleSidebarToggle}
-              onClose={this.handleSidebarClose}
-            >
-              <Sidebar onMenuClick={this.handleSidebarClose} />
-            </SwipeableDrawer>
-          </Hidden>
+          <React.Fragment>
+            <Hidden implementation="css" smUp>
+              <SwipeableDrawer
+                open={this.state.isSidebarOpen}
+                onOpen={this.handleSidebarToggle}
+                onClose={this.handleSidebarClose}
+              >
+                <Sidebar onMenuClick={this.handleSidebarClose} />
+              </SwipeableDrawer>
+            </Hidden>
+
+            <Hidden implementation="css" xsDown>
+              <Drawer
+                variant="permanent"
+                open
+                classes={{ paper: this.props.classes.sidebar }}
+              >
+                <Sidebar onMenuClick={this.handleSidebarClose} />
+              </Drawer>
+            </Hidden>
+
+            <div className={this.props.classes.main}>
+              <main className={this.props.classes.content}>
+                {!this.props.isError && <Header />}
+                {this.props.children}
+              </main>
+            </div>
+          </React.Fragment>
         )}
 
-        {this.props.isAuthenticated && (
-          <Hidden implementation="css" xsDown>
-            <Drawer
-              variant="permanent"
-              open
-              classes={{ paper: this.props.classes.sidebar }}
-            >
-              <Sidebar onMenuClick={this.handleSidebarClose} />
-            </Drawer>
-          </Hidden>
-        )}
-
-        {this.props.isAuthenticated && (
-          <main className={this.props.classes.main}>
-            {!this.props.isError && <Header />}
+        {!this.props.isAuthenticated && (
+          <main className={this.props.classes.anonymous}>
             {this.props.children}
           </main>
         )}
-
-        {!this.props.isAuthenticated && this.props.children}
 
         {!this.props.isStarted && !this.props.isError && (
           <div className={this.props.classes.backdrop}>

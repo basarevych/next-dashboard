@@ -1,19 +1,24 @@
 "use strict";
 
-const primary = "#4c5066";
-const secondary = "#b33711";
+const {
+  darken,
+  lighten,
+  fade
+} = require("@material-ui/core/styles/colorManipulator");
+const { red, blueGrey } = require("@material-ui/core/colors");
+
+const primary = "#707484";
+const secondary = "#af441d";
 
 const bgPage = "#000000";
-
-const bgNormal = "#2b2c33";
-const bgLight = "#3b3c43";
-const bgDisabled = "#2b2c2c";
-const bgContrast = "#5b5c63";
+const bgNormal = "#484e5e";
 
 const textNormal = "rgba(255, 255, 255, 0.87)";
 const textDark = "rgba(255, 255, 255, 0.54)";
 const textDisabled = "rgba(255, 255, 255, 0.38)";
 const textContrast = "#ffffff";
+const textError = red[500];
+const textInfo = blueGrey[500];
 
 const fontSize = 14;
 
@@ -31,7 +36,7 @@ module.exports = {
     },
     background: {
       default: bgPage,
-      paper: bgLight
+      paper: bgNormal
     },
     text: {
       primary: textNormal,
@@ -53,27 +58,59 @@ module.exports = {
     computerWidth: 30,
     tabletWidth: 20,
     phoneWidth: 20,
-    background: "rgba(0, 0, 0, 0.5)",
-    color: textNormal,
-    backgroundHover: "rgba(255, 255, 255, 0.05)",
-    colorHover: textContrast,
-    backgroundSelected: "rgba(255, 255, 255, 0.1)",
-    colorSelected: textContrast,
-    backgroundSelectedHover: "rgba(255, 255, 255, 0.15)",
-    colorSelectedHover: textContrast
+    background:
+      "linear-gradient(to bottom, #484e5e 0, #161920 80%, #161920 100%)",
+    itemBackground: "transparent",
+    itemBorder: `4px solid transparent`,
+    itemColor: textDark,
+    itemHoverBackground: bgNormal,
+    itemHoverColor: textNormal,
+    itemHoverBorder: `4px solid ${darken(secondary, 0.3)}`,
+    itemSelectedBackground: lighten(bgNormal, 0.1),
+    itemSelectedColor: textContrast,
+    itemSelectedBorder: `4px solid ${secondary}`,
+    itemSelectedHoverBackground: lighten(bgNormal, 0.15),
+    itemSelectedHoverColor: textContrast,
+    itemSelectedHoverBorder: `4px solid ${lighten(secondary, 0.05)}`
   },
   main: {
-    wallpaper: "/static/img/bg.jpg",
-    background: "linear-gradient(to right bottom, #3d3f4d, #222326)",
-    spacing: 24
+    background:
+      "linear-gradient(to right, #484e5e 0, #484e5e 15%, #20252f 100%)",
+    spacing: 24,
+    error: {
+      background: fade(textError, 0.65),
+      color: "#ffffff",
+      borderRadius: 3,
+      padding: "1rem 2rem"
+    },
+    info: {
+      background: fade(textInfo, 0.65),
+      color: "#ffffff",
+      borderRadius: 3,
+      padding: "1rem 2rem"
+    }
+  },
+  props: {
+    MuiDialog: {
+      scroll: "body"
+    }
   },
   overrides: {
+    MuiPaper: {
+      root: {
+        background: `linear-gradient(to bottom right, ${lighten(
+          bgNormal,
+          0.2
+        )} 0, ${darken(bgNormal, 0.2)} 100%)`
+      }
+    },
     MuiTableRow: {
       root: {
-        height: ["100%", "!important"]
-      },
-      head: {
-        height: ["100%", "!important"]
+        //height: ["100%", "!important"],
+        height: [48, "!important"],
+        "& th": {
+          fontWeight: "bold"
+        }
       }
     },
     MuiTableBody: {
@@ -96,65 +133,83 @@ module.exports = {
       }
     },
     MuiButton: {
-      label: {
-        height: "1em"
-      },
-      contained: {
-        "&:not($containedPrimary):not($containedSecondary)": {
-          background: bgNormal
+      root: {
+        "&$disabled": {
+          "&:not($containedPrimary):not($containedSecondary)": {
+            background: [lighten(bgNormal, 0.05), "!important"],
+            color: [textDisabled, "!important"]
+          },
+          "&$containedPrimary": {
+            background: [darken(primary, 0.15), "!important"],
+            color: [textDisabled, "!important"]
+          },
+          "&$containedSecondary": {
+            background: [darken(secondary, 0.15), "!important"],
+            color: [textDisabled, "!important"]
+          }
         }
-      },
-      disabled: {
-        "&:not($containedPrimary):not($containedSecondary)": {
-          color: [textDark, "!important"],
-          background: [bgDisabled, "!important"],
-          boxShadow: [
-            "0px 1px 5px 0px rgba(0, 0, 0, 0.2),0px 2px 2px 0px rgba(0, 0, 0, 0.14),0px 3px 1px -2px rgba(0, 0, 0, 0.12)",
-            "!important"
-          ]
+      }
+    },
+    MuiIconButton: {
+      root: {
+        "&$disabled": {
+          "&:not($colorPrimary):not($colorSecondary)": {
+            color: [textDisabled, "!important"]
+          }
         }
       }
     },
     MuiInput: {
-      underline: {
-        "&:before": {
-          borderBottom: `2px solid ${textNormal}`
-        },
-        "&:after": {
-          borderBottom: `2px solid ${secondary}`
+      root: {
+        "&$underline": {
+          "&:before": {
+            borderBottom: `2px solid ${textDark}`
+          },
+          "&:after": {
+            borderBottom: `2px solid ${textContrast}`
+          }
         }
       }
     },
     MuiFilledInput: {
       root: {
-        background: [bgLight, "!important"],
+        background: [lighten(bgNormal, 0.1), "!important"],
         borderRadius: 4,
         "&:hover": {
-          background: [bgContrast, "!important"]
-        }
-      },
-      focused: {
-        background: [bgContrast, "!important"]
-      },
-      underline: {
-        "&:before": {
-          borderBottom: ["none", "!important"]
+          background: [lighten(bgNormal, 0.2), "!important"]
         },
-        "&:after": {
-          borderBottom: ["none", "!important"]
+        "&$focused": {
+          background: [lighten(bgNormal, 0.2), "!important"],
+          "&$error": {
+            color: [textError, "!important"]
+          }
+        },
+        "&$underline": {
+          "&:before": {
+            borderBottom: ["none", "!important"]
+          },
+          "&:after": {
+            borderBottom: ["none", "!important"]
+          }
         }
       }
     },
     MuiInputLabel: {
       root: {
         pointerEvents: "none",
-        zIndex: 100
-      },
-      focused: {
-        color: [secondary, "!important"]
-      },
-      filled: {
-        color: [textDark, "!important"]
+        zIndex: 100,
+        "&$focused": {
+          color: [textContrast, "!important"],
+          "&$error": {
+            color: [textError, "!important"]
+          }
+        },
+        "&$filled": {
+          color: [textDark, "!important"],
+          "&$error": {
+            color: [textError, "!important"]
+          }
+        }
       }
     },
     MuiSwitch: {
@@ -165,6 +220,13 @@ module.exports = {
     MuiListItemIcon: {
       root: {
         margin: [0, "!important"]
+      }
+    },
+    MuiCheckbox: {
+      root: {
+        "&$checked": {
+          color: [textNormal, "!important"]
+        }
       }
     }
   }

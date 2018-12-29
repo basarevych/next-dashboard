@@ -1,7 +1,7 @@
 const debug = require("debug")("app:auth");
+const Chance = require("chance");
 const EventEmitter = require("events");
 const ValidationError = require("../../lib/ValidationError");
-const getRandomString = require("../../../common/getRandomString");
 const constants = require("../../../common/constants");
 
 class AuthRepository extends EventEmitter {
@@ -10,6 +10,8 @@ class AuthRepository extends EventEmitter {
 
     this.auth = auth;
     this.db = db;
+
+    this.chance = new Chance();
   }
 
   // eslint-disable-next-line lodash/prefer-constant
@@ -28,6 +30,13 @@ class AuthRepository extends EventEmitter {
     return context.getAuthStatus();
   }
 
+  generateToken() {
+    return this.chance.string({
+      length: 32,
+      pool: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+    });
+  }
+
   async signIn(context, args) {
     debug("signIn");
 
@@ -35,11 +44,17 @@ class AuthRepository extends EventEmitter {
 
     let cur = await context.getUser();
     if (cur) {
-      // already signed in
+      // already signed in, kick the previous user if different
       if (args.email) {
         // normal sign-in
-        if (cur.email === args.email) success = true;
-        else await this.auth.signOut(context);
+        if (
+          _.includes(cur.roles, constants.roles.ANONYMOUS) ||
+          cur.email !== args.email
+        ) {
+          await this.auth.signOut(context);
+        } else {
+          success = true;
+        }
       } else {
         // anonymous sign-in
         if (_.includes(cur.roles, constants.roles.ANONYMOUS)) success = true;
@@ -55,12 +70,10 @@ class AuthRepository extends EventEmitter {
         user = await this.db.UserModel.findOne({ email: args.email });
         if (
           user &&
-          !(await this.auth.constructor.checkPassword(
-            args.password,
-            user.password
-          ))
-        )
+          !(await this.auth.checkPassword(args.password, user.password))
+        ) {
           user = null;
+        }
       } else {
         // anonymous sign-in
         user = await this.db.UserModel.findOne({
@@ -91,13 +104,11 @@ class AuthRepository extends EventEmitter {
 
     if (await context.getUser()) await this.auth.signOut(context);
 
-    let user = new this.db.UserModel(
-      this.db.userTemplate({
-        email: args.email,
-        emailToken: getRandomString(32),
-        password: await this.auth.constructor.encryptPassword(args.password)
-      })
-    );
+    let user = new this.db.UserModel({
+      email: args.email,
+      emailToken: this.generateToken(),
+      password: await this.auth.encryptPassword(args.password)
+    });
 
     await user.validate();
     await user.save();
@@ -133,11 +144,12 @@ class AuthRepository extends EventEmitter {
     debug("requestEmailVerification");
 
     let user = await context.getUser();
-    if (!user || user.emailVerified) return { success: false };
+    if (!user || _.includes(user.roles, constants.roles.ANONYMOUS))
+      return { success: false };
+    if (user.emailVerified) return { success: false };
 
-    user.emailToken = getRandomString(32);
+    user.emailToken = this.generateToken();
     user.isEmailVerified = false;
-    user.whenUpdated = Date.now();
 
     await user.validate();
     await user.save();
@@ -151,11 +163,12 @@ class AuthRepository extends EventEmitter {
     if (!args.token) return { success: false };
 
     let user = await this.db.UserModel.findOne({ emailToken: args.token });
-    if (!user || user.isEmailVerified) return { success: false };
+    if (!user || _.includes(user.roles, constants.roles.ANONYMOUS))
+      return { success: false };
+    if (user.isEmailVerified) return { success: false };
 
     delete user.emailToken;
     user.isEmailVerified = true;
-    user.whenUpdated = Date.now();
 
     await user.validate();
     await user.save();
@@ -175,7 +188,6 @@ class AuthRepository extends EventEmitter {
     for (let provider of user.providers) {
       if (_.lowerCase(provider.name) === _.lowerCase(args.provider)) {
         provider.remove();
-        user.whenUpdated = Date.now();
         await user.validate();
         await user.save();
         context
@@ -195,16 +207,13 @@ class AuthRepository extends EventEmitter {
     if (!user || _.includes(user.roles, constants.roles.ANONYMOUS))
       return { success: false };
 
-    user.whenUpdated = Date.now();
     if (args.email !== user.email) {
       user.email = args.email;
       user.isEmailVerified = false;
     }
     user.name = args.name;
     if (args.password)
-      user.password = await this.auth.constructor.encryptPassword(
-        args.password
-      );
+      user.password = await this.auth.encryptPassword(args.password);
 
     await user.validate();
     await user.save();
@@ -219,7 +228,7 @@ class AuthRepository extends EventEmitter {
     if (!user || _.includes(user.roles, constants.roles.ANONYMOUS))
       return { success: false };
 
-    await this.db.UserModel.findOne({ _id: user._id }).remove();
+    await this.db.UserModel.findById(user.id).remove();
     await this.auth.signOut(context);
     return { success: true };
   }

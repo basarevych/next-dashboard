@@ -4,11 +4,12 @@ const EventEmitter = require("events");
 const moment = require("../../../common/moment");
 const constants = require("../../../common/constants");
 const countries = require("../../lib/countries");
-const fakes = require("../../lib/fakes");
 
 class DashboardRepository extends EventEmitter {
-  constructor() {
+  constructor(fake) {
     super();
+
+    this.fake = fake;
   }
 
   // eslint-disable-next-line lodash/prefer-constant
@@ -18,7 +19,7 @@ class DashboardRepository extends EventEmitter {
 
   // eslint-disable-next-line lodash/prefer-constant
   static get $requires() {
-    return [];
+    return ["fake"];
   }
 
   // eslint-disable-next-line lodash/prefer-constant
@@ -27,13 +28,11 @@ class DashboardRepository extends EventEmitter {
   }
 
   async init() {
-    this.countries = countries;
-
     this.employees = [];
     let usedNames = [];
     let first = true;
     for (let dept of _.keys(constants.depts)) {
-      let max = first ? 10 : fakes.getInt(6, 10);
+      let max = first ? 10 : this.fake.getInt(6, 10);
       first = false;
       for (let i = 0; i < max; i++)
         this.employees.push(this.createEmployee(usedNames, dept));
@@ -44,11 +43,11 @@ class DashboardRepository extends EventEmitter {
     for (let i = 0; i < 7; i++) {
       day.subtract(1, "day");
       let revenues = i
-        ? fakes.getInt(70000, 100000)
-        : fakes.getInt(110000, 120000);
+        ? this.fake.getInt(70000, 100000)
+        : this.fake.getInt(110000, 120000);
       let expenses = i
-        ? fakes.getInt(10000, 50000)
-        : fakes.getInt(10000, 11000);
+        ? this.fake.getInt(10000, 50000)
+        : this.fake.getInt(10000, 11000);
       this.profit.unshift({
         date: day,
         revenues,
@@ -63,7 +62,7 @@ class DashboardRepository extends EventEmitter {
       day.subtract(1, "day");
       this.sales.unshift({
         date: day,
-        sales: i ? fakes.getInt(2000, 5000) : fakes.getInt(5100, 6000)
+        sales: i ? this.fake.getInt(2000, 5000) : this.fake.getInt(5100, 6000)
       });
     }
 
@@ -71,11 +70,13 @@ class DashboardRepository extends EventEmitter {
     day = moment();
     for (let i = 0; i < 7; i++) {
       day.subtract(1, "day");
-      let prevClients = i ? this.clients[0].clients : fakes.getInt(7000, 10000);
+      let prevClients = i
+        ? this.clients[0].clients
+        : this.fake.getInt(7000, 10000);
       this.clients.unshift({
         date: day,
         clients: i
-          ? fakes.getInt(prevClients - 100, prevClients - 700)
+          ? this.fake.getInt(prevClients - 100, prevClients - 700)
           : prevClients
       });
     }
@@ -84,11 +85,13 @@ class DashboardRepository extends EventEmitter {
     day = moment();
     for (let i = 0; i < 7; i++) {
       day.subtract(1, "day");
-      let prevAvgTime = i ? this.avgTime[0].avgTime : fakes.getInt(30, 90) / 10;
+      let prevAvgTime = i
+        ? this.avgTime[0].avgTime
+        : this.fake.getInt(30, 90) / 10;
       this.avgTime.unshift({
         date: day,
         avgTime: i
-          ? fakes.getInt(prevAvgTime * 10 + 10, prevAvgTime * 10 + 200) / 10
+          ? this.fake.getInt(prevAvgTime * 10 + 10, prevAvgTime * 10 + 200) / 10
           : prevAvgTime
       });
     }
@@ -96,7 +99,7 @@ class DashboardRepository extends EventEmitter {
 
   createEmployee(usedNames, dept) {
     let name;
-    do name = fakes.getName();
+    do name = this.fake.getName();
     while (_.includes(usedNames, name));
     usedNames.push(name);
     return {
@@ -104,20 +107,20 @@ class DashboardRepository extends EventEmitter {
       checked: Math.random() > 0.3,
       name,
       dept,
-      title: fakes.getTitle(),
-      country: fakes.getCountry(countries),
-      salary: fakes.getSalary()
+      title: this.fake.getTitle(),
+      country: this.fake.getCountry(),
+      salary: this.fake.getSalary()
     };
   }
 
   getCountries() {
     debug("getCountries");
-    return this.countries;
+    return countries;
   }
 
   getCountry(context, args) {
     debug("getCountry");
-    return this.countries[args.code] || null;
+    return countries[args.code] || null;
   }
 
   getEmployees() {

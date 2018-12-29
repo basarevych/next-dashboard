@@ -17,11 +17,11 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Checkbox from "@material-ui/core/Checkbox";
 import InputLabel from "@material-ui/core/InputLabel";
 import FilledInput from "@material-ui/core/FilledInput";
-import red from "@material-ui/core/colors/red";
+import Input from "@material-ui/core/Input";
 import ErrorIcon from "@material-ui/icons/InfoOutlined";
 import normalize from "../../../common/normalize";
 
-const styles = () => ({
+const styles = theme => ({
   formHelper: {
     margin: 0
   },
@@ -37,7 +37,7 @@ const styles = () => ({
     marginLeft: 0
   },
   error: {
-    color: red[300]
+    color: theme.palette.text.secondary
   }
 });
 
@@ -54,13 +54,10 @@ class FieldComponent extends React.PureComponent {
     label: PropTypes.string.isRequired,
     options: PropTypes.array,
     className: PropTypes.string,
+    variant: PropTypes.string,
     color: PropTypes.string,
     disabled: PropTypes.bool,
     onSubmit: PropTypes.func
-  };
-
-  static defaultProps = {
-    color: "primary"
   };
 
   constructor(props) {
@@ -98,8 +95,9 @@ class FieldComponent extends React.PureComponent {
           if (
             index !== -1 &&
             this.cachedPosition < (this.cachedValue || "").length
-          )
+          ) {
             this.input.current.selectionStart = this.input.current.selectionEnd = index;
+          }
           break;
       }
     }
@@ -140,11 +138,7 @@ class FieldComponent extends React.PureComponent {
             </ListItemIcon>
             <ListItemText
               classes={{ primary: this.props.classes.error }}
-              primary={
-                _.isString(error)
-                  ? error
-                  : this.props.intl.formatMessage(error.toJS())
-              }
+              primary={this.props.intl.formatMessage({ id: error })}
             />
           </ListItem>
         ))}
@@ -160,6 +154,7 @@ class FieldComponent extends React.PureComponent {
         className={this.props.className}
         autoComplete="off"
         fullWidth
+        variant={this.props.variant || "standard"}
         type={this.props.type}
         value={this.props.input.value.toString()}
         label={
@@ -202,7 +197,7 @@ class FieldComponent extends React.PureComponent {
             onFocus={this.handleFocus}
             onBlur={this.handleBlur}
             value="on"
-            color={this.props.color}
+            color={this.props.color || "primary"}
           />
         }
         label={this.props.intl.formatMessage({ id: this.props.label })}
@@ -212,11 +207,12 @@ class FieldComponent extends React.PureComponent {
 
   renderDropdown() {
     const errors = this.renderErrors();
+    const SelectInput = this.props.variant === "filled" ? FilledInput : Input;
 
     return (
       <FormControl
         className={this.props.className}
-        variant="filled"
+        variant={this.props.variant || "standard"}
         fullWidth
         error={!!this.props.meta.error}
       >
@@ -228,7 +224,7 @@ class FieldComponent extends React.PureComponent {
           disabled={this.props.meta.submitting || this.props.disabled}
           onChange={this.handleChange}
           input={
-            <FilledInput
+            <SelectInput
               id={this.props.fieldId}
               inputProps={{
                 onKeyDown: evt => {
@@ -286,6 +282,7 @@ class FormField extends React.Component {
     name: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
     options: PropTypes.array,
+    variant: PropTypes.string,
     color: PropTypes.string,
     disabled: PropTypes.bool,
     onSubmit: PropTypes.func

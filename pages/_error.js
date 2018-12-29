@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Error from "next/error";
+import Error from "../app/components/Pages/ErrorPage";
 import { appSelectors } from "../app/state/app";
 
 class Page extends React.Component {

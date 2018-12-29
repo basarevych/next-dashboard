@@ -33,48 +33,66 @@ const styles = theme => ({
     display: "block",
     margin: "1rem",
     textAlign: "center",
-    color: theme.sidebar.color,
+    color: theme.palette.text.secondary,
     textDecoration: "none",
     "&:hover": {
       color: theme.palette.secondary.main
     }
   },
   list: {
-    width: theme.sidebar.width * theme.spacing.unit,
     padding: 0
   },
   avatar: {
     margin: "1rem 0",
     display: "flex",
     flexDirection: "column",
-    alignItems: "center"
+    alignItems: "center",
+    "& img": {
+      borderRadius: theme.shape.borderRadius
+    }
   },
   item: {
-    background: [theme.sidebar.background, "!important"],
-    color: [theme.sidebar.color, "!important"],
+    background: [theme.sidebar.itemBackground, "!important"],
+    color: [theme.sidebar.itemColor, "!important"],
+    borderTop: ["none", "!important"],
+    borderLeft: [theme.sidebar.itemBorder, "!important"],
+    borderRight: ["none", "!important"],
+    borderBottom: ["none", "!important"],
     justifyContent: "center",
     "& svg, & span": {
-      color: [theme.sidebar.color, "!important"]
+      color: [theme.sidebar.itemColor, "!important"]
     },
     "&:hover": {
-      background: [theme.sidebar.backgroundHover, "!important"],
-      color: [theme.sidebar.colorHover, "!important"],
+      background: [theme.sidebar.itemHoverBackground, "!important"],
+      color: [theme.sidebar.itemHoverColor, "!important"],
+      borderTop: ["none", "!important"],
+      borderLeft: [theme.sidebar.itemHoverBorder, "!important"],
+      borderRight: ["none", "!important"],
+      borderBottom: ["none", "!important"],
       "& svg, & span": {
-        color: [theme.sidebar.colorHover, "!important"]
+        color: [theme.sidebar.itemHoverColor, "!important"]
       }
     }
   },
   itemSelected: {
-    background: [theme.sidebar.backgroundSelected, "!important"],
-    color: [theme.sidebar.colorSelected, "!important"],
+    background: [theme.sidebar.itemSelectedBackground, "!important"],
+    color: [theme.sidebar.itemSelectedColor, "!important"],
+    borderTop: ["none", "!important"],
+    borderLeft: [theme.sidebar.itemSelectedBorder, "!important"],
+    borderRight: ["none", "!important"],
+    borderBottom: ["none", "!important"],
     "& svg, & span": {
-      color: [theme.sidebar.colorSelected, "!important"]
+      color: [theme.sidebar.itemSelectedColor, "!important"]
     },
     "&:hover": {
-      background: [theme.sidebar.backgroundSelectedHover, "!important"],
-      color: [theme.sidebar.colorSelectedHover, "!important"],
+      background: [theme.sidebar.itemSelectedHoverBackground, "!important"],
+      color: [theme.sidebar.itemSelectedHoverColor, "!important"],
+      borderTop: ["none", "!important"],
+      borderLeft: [theme.sidebar.itemSelectedHoverBorder, "!important"],
+      borderRight: ["none", "!important"],
+      borderBottom: ["none", "!important"],
       "& svg, & span": {
-        color: [theme.sidebar.colorSelectedHover, "!important"]
+        color: [theme.sidebar.itemSelectedHoverColor, "!important"]
       }
     }
   }
@@ -86,6 +104,7 @@ class Sidebar extends React.Component {
     intl: intlShape.isRequired,
     theme: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired,
+    name: PropTypes.string.isRequired,
     roles: PropTypes.array.isRequired,
     onMenuClick: PropTypes.func.isRequired
   };
@@ -99,11 +118,7 @@ class Sidebar extends React.Component {
     return (
       <div className={this.props.classes.avatar}>
         <img src={`${constants.apiBase}/avatars/0`} />
-        {_.includes(this.props.roles, constants.roles.ANONYMOUS) && (
-          <Typography variant="subtitle1">
-            <FormattedMessage id="SIDEBAR_ANONYMOUS" />
-          </Typography>
-        )}
+        <Typography variant="subtitle1">{this.props.name}</Typography>
       </div>
     );
   }

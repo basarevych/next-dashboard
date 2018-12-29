@@ -4,7 +4,7 @@ const graphqlHTTP = require("express-graphql");
 const schema = require("../schema");
 const ValidationError = require("../lib/ValidationError");
 
-module.exports = () => (req, res, next) => {
+module.exports = async () => (req, res, next) => {
   res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
   graphqlHTTP({
     schema,
@@ -15,8 +15,9 @@ module.exports = () => (req, res, next) => {
         error.originalError &&
         error.originalError.name === "ValidationError" &&
         !(error.originalError instanceof ValidationError)
-      )
+      ) {
         parsed = ValidationError.fromMongoose(error.originalError);
+      }
 
       return {
         message:

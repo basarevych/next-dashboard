@@ -13,7 +13,6 @@ import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import Hidden from "@material-ui/core/Hidden";
-import red from "@material-ui/core/colors/red";
 import AnonymousIcon from "@material-ui/icons/VisibilityOff";
 import Form from "../Forms/Form";
 import Field from "../Forms/Field";
@@ -23,12 +22,7 @@ import googleIcon from "../../../static/img/google.svg";
 import twitterIcon from "../../../static/img/twitter.svg";
 
 const styles = theme => ({
-  paper: {
-    background: theme.main.background
-  },
-  error: {
-    color: red[500]
-  },
+  error: theme.main.error,
   actions: {
     paddingLeft: "1rem",
     paddingRight: "1rem",
@@ -127,15 +121,7 @@ class AppAuthModal extends Form {
       );
     }
 
-    if (result && _.isObject(result)) {
-      let errors = {};
-      for (let field of _.keys(result)) {
-        errors[field] = [];
-        for (let message of result[field]) errors[field].push({ id: message });
-      }
-
-      throw new SubmissionError(errors);
-    }
+    if (result && _.isObject(result)) throw new SubmissionError(result);
 
     return result;
   }
@@ -146,9 +132,9 @@ class AppAuthModal extends Form {
     if (prevState.isOpen !== nextProps.isOpen) {
       nextProps.dispatch(nextProps.change("isNewUser", "no"));
       nextProps.dispatch(nextProps.change("password", ""));
-      nextProps.dispatch(nextProps.clearAsyncError("_"));
+      nextProps.dispatch(nextProps.clearAsyncError());
+      nextProps.dispatch(nextProps.clearSubmitErrors());
       state.isOpen = nextProps.isOpen;
-      state.errors = null;
     }
 
     if (nextProps.error && nextProps.error.has("_"))
@@ -161,13 +147,12 @@ class AppAuthModal extends Form {
     super(props);
 
     this.state = {
-      isOpen: props.isOpen,
-      errors: null
+      isOpen: props.isOpen
     };
 
     this.handleAnonymous = this.handleAnonymous.bind(this);
     this.handleProvider = this.handleProvider.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.submit = this.submit.bind(this);
   }
 
   handleAnonymous() {
@@ -177,12 +162,6 @@ class AppAuthModal extends Form {
   handleProvider(provider) {
     this.props.cookie.set("redirect", window.location.pathname, 0.042);
     window.location.href = `${constants.apiBase}/oauth/${_.toLower(provider)}`;
-  }
-
-  async handleSubmit() {
-    this.setState({ errors: null });
-    if (!(await super.submit()) && !this.state.errors)
-      this.setState({ errors: ["APP_AUTH_FAILED"] });
   }
 
   renderButton(provider) {
@@ -226,26 +205,29 @@ class AppAuthModal extends Form {
 
   render() {
     return (
-      <Dialog
-        maxWidth="md"
-        fullWidth
-        classes={{ paper: this.props.classes.paper }}
-        open={this.props.isOpen}
-        onClose={_.noop}
-      >
+      <Dialog maxWidth="sm" open={this.props.isOpen} onClose={_.noop}>
         <DialogTitle>
           <FormattedMessage id="APP_AUTH_TITLE" />
         </DialogTitle>
-        {this.state.errors && (
+        {this.props.error && (
           <DialogContent>
-            {_.map(this.state.errors, (error, index) => (
-              <DialogContentText
-                key={`error-${index}`}
-                classes={{ root: this.props.classes.error }}
-              >
-                <FormattedMessage id={error} />
-              </DialogContentText>
-            ))}
+            {_.map(
+              _.isArray(this.props.error)
+                ? this.props.error
+                : [this.props.error],
+              (error, index) => (
+                <DialogContentText
+                  key={`error-${index}`}
+                  classes={{ root: this.props.classes.error }}
+                >
+                  {_.isArray(error) ? (
+                    <FormattedMessage id={error[0]} values={error[1]} />
+                  ) : (
+                    <FormattedMessage id={error} />
+                  )}
+                </DialogContentText>
+              )
+            )}
           </DialogContent>
         )}
         <DialogContent>
@@ -256,7 +238,7 @@ class AppAuthModal extends Form {
             component="form"
             noValidate
             autoComplete="off"
-            onSubmit={this.handleSubmit}
+            onSubmit={this.submit}
           >
             <Grid
               container
@@ -266,7 +248,6 @@ class AppAuthModal extends Form {
               item
               xs={12}
               sm={6}
-              md={5}
             >
               <Grid item>
                 <Button
@@ -291,7 +272,7 @@ class AppAuthModal extends Form {
                 {this.renderButton(constants.oauthProviders.TWITTER)}
               </Grid>
             </Grid>
-            <Grid item xs={12} sm={6} md={7}>
+            <Grid item xs={12} sm={6}>
               <Paper className={this.props.classes.credentialsPaper}>
                 <Grid container spacing={8} direction="column">
                   <Grid item>
@@ -309,7 +290,7 @@ class AppAuthModal extends Form {
                       name="isNewUser"
                       type="checkbox"
                       color="default"
-                      onSubmit={this.handleSubmit}
+                      onSubmit={this.submit}
                     />
                   </Grid>
                   <Grid item>
@@ -318,7 +299,7 @@ class AppAuthModal extends Form {
                       formProps={this.props}
                       name="email"
                       type="text"
-                      onSubmit={this.handleSubmit}
+                      onSubmit={this.submit}
                     />
                   </Grid>
                   <Grid item>
@@ -327,7 +308,7 @@ class AppAuthModal extends Form {
                       formProps={this.props}
                       name="password"
                       type="password"
-                      onSubmit={this.handleSubmit}
+                      onSubmit={this.submit}
                     />
                   </Grid>
                 </Grid>
@@ -340,7 +321,7 @@ class AppAuthModal extends Form {
             variant="contained"
             color="secondary"
             disabled={this.props.submitting}
-            onClick={this.handleSubmit}
+            onClick={this.submit}
           >
             <FormattedMessage id="APP_AUTH_SUBMIT" />
           </Button>
