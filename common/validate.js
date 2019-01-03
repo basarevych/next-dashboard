@@ -2,6 +2,15 @@
 
 const validator = require("validator");
 
+let allCountries, iso2Lookup;
+try {
+  const phones = require("country-telephone-data");
+  allCountries = phones.allCountries;
+  iso2Lookup = phones.iso2Lookup;
+} catch (unused) {
+  // do nothing
+}
+
 /**
  * Validation function for Redux Form
  * takes input like "command1:param1:param2|command2:param1:param2"
@@ -34,6 +43,7 @@ module.exports = function validate(props, options, value, allValues) {
     for (let command of commands) {
       let success;
       let tmp;
+      let search;
       let normalized;
       switch (command) {
         case "phone":
@@ -43,14 +53,13 @@ module.exports = function validate(props, options, value, allValues) {
             if (normalized.length !== 12) {
               errors.push("ERROR_INVALID_PHONE");
             } else {
-              tmp = props.getCallingCodes(allValues.get("country"));
-              success = !tmp.size;
-              for (let code of tmp) {
-                if (_.startsWith(normalized, code)) {
-                  success = true;
-                  break;
-                }
-              }
+              search =
+                allCountries &&
+                iso2Lookup &&
+                allCountries[iso2Lookup[allValues.get("country")]];
+              if (search && search.dialCode)
+                success = _.startsWith(normalized, search.dialCode);
+              else success = true;
               if (!success) errors.push("ERROR_INVALID_PHONE_COUNTRY");
             }
           }

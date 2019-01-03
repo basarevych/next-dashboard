@@ -3,7 +3,7 @@ const uuid = require("uuid");
 const EventEmitter = require("events");
 const moment = require("../../../common/moment");
 const constants = require("../../../common/constants");
-const countries = require("../../lib/countries");
+const { allCountries, iso2Lookup } = require("country-telephone-data");
 
 class DashboardRepository extends EventEmitter {
   constructor(fake) {
@@ -115,12 +115,23 @@ class DashboardRepository extends EventEmitter {
 
   getCountries() {
     debug("getCountries");
-    return countries;
+    return _.map(allCountries, country => ({
+      name: country.name,
+      code: country.iso2,
+      callingCode: country.dialCode
+    }));
   }
 
   getCountry(context, args) {
     debug("getCountry");
-    return countries[args.code] || null;
+    const country = iso2Lookup[args.code];
+    return country
+      ? {
+          name: country.name,
+          code: country.iso2,
+          callingCode: country.dialCode
+        }
+      : null;
   }
 
   getEmployees() {

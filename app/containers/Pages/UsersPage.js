@@ -1,5 +1,6 @@
 import { connect } from "react-redux";
 import { authSelectors } from "../../state/auth";
+import { usersOperations } from "../../state/users";
 import UsersPageComponent from "../../components/Pages/UsersPage";
 
 const mapStateToProps = state => {
@@ -14,5 +15,9 @@ const UsersPage = connect(
   null,
   { pure: false }
 )(UsersPageComponent);
+
+UsersPage.getInitialProps = async ({ store, req }) => {
+  await store.dispatch(usersOperations.load({ req }));
+};
 
 export default UsersPage;

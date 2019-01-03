@@ -15,7 +15,7 @@ import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import Checkbox from "@material-ui/core/Checkbox";
 import EditUserModal from "../containers/Modals/EditUserModal";
-import ConfirmModal from "./Modals/ConfirmModal";
+import MessageModal from "./Modals/MessageModal";
 
 const styles = () => ({
   checkbox: {
@@ -201,7 +201,7 @@ class Users extends React.Component {
         </div>
 
         <EditUserModal />
-        <ConfirmModal
+        <MessageModal
           isOpen={this.state.isConfirmOpen}
           title="DELETE_USER_TITLE"
           text="DELETE_USER_TEXT"

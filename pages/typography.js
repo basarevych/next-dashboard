@@ -1,3 +1,1 @@
-import TypographyPage from "../app/components/Pages/TypographyPage";
-
-export default TypographyPage;
+export { default } from "../app/components/Pages/TypographyPage";

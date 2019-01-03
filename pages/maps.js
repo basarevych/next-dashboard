@@ -1,3 +1,1 @@
-import MapsPage from "../app/components/Pages/MapsPage";
-
-export default MapsPage;
+export { default } from "../app/components/Pages/MapsPage";

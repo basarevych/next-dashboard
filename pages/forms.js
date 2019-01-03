@@ -1,3 +1,1 @@
-import FormsPage from "../app/components/Pages/FormsPage";
-
-export default FormsPage;
+export { default } from "../app/containers/Pages/FormsPage";

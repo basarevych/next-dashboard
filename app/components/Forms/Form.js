@@ -7,12 +7,11 @@ import validate from "../../../common/validate";
 class FormComponent extends React.Component {
   static propTypes = {
     ...propTypes,
-    fieldValues: PropTypes.object.isRequired,
-    fieldErrors: PropTypes.object.isRequired,
+    getValue: PropTypes.func.isRequired,
+    getError: PropTypes.func.isRequired,
     dispatch: PropTypes.func.isRequired,
     updateValidation: PropTypes.func.isRequired,
-    handleSubmit: PropTypes.func.isRequired,
-    onSubmit: PropTypes.func
+    handleSubmit: PropTypes.func.isRequired
   };
 
   static formName = "baseForm";
@@ -30,10 +29,6 @@ class FormComponent extends React.Component {
 
   static cachedErrors = {};
 
-  static getValue(props, name) {
-    return props.fieldValues[this.formName].get(name);
-  }
-
   static onSubmit(/*values, dispatch, props*/) {}
 
   static onSubmitFail(error, dispatch, submitError /*, props */) {
@@ -47,15 +42,10 @@ class FormComponent extends React.Component {
   }
 
   static onChange(values, dispatch, props, prevValues) {
-    if (!this.cachedErrors[props.form]) return;
-
     // remove error status of the field changed
-    for (let field of values.keys()) {
-      if (
-        this.cachedErrors[props.form][field] &&
-        values.get(field) !== prevValues.get(field)
-      ) {
-        delete this.cachedErrors[props.form][field];
+    for (let field of _.keys(this.cachedErrors[this.formName] || {})) {
+      if (values.get(field) !== prevValues.get(field)) {
+        delete this.cachedErrors[this.formName][field];
         dispatch(props.clearAsyncError(field));
       }
     }
@@ -82,7 +72,6 @@ class FormComponent extends React.Component {
         // transform value first if requested
         if (transform && this.fields[field].transform) {
           let transformed = normalize(
-            props,
             this.fields[field].transform,
             value,
             value,
@@ -102,46 +91,35 @@ class FormComponent extends React.Component {
           errors = validate(props, this.fields[field].validate, value, values);
 
         // cache result
-        if (errors.length) {
-          if (!this.cachedErrors[props.form])
-            this.cachedErrors[props.form] = {};
-          this.cachedErrors[props.form][field] = errors;
-        } else {
-          if (this.cachedErrors[props.form])
-            delete this.cachedErrors[props.form][field];
-        }
+        if (!this.cachedErrors[this.formName])
+          this.cachedErrors[this.formName] = {};
+        if (errors.length) this.cachedErrors[this.formName][field] = errors;
+        else delete this.cachedErrors[this.formName][field];
       }
     } catch (error) {
       console.error(error);
     }
 
-    if (
-      this.cachedErrors[props.form] &&
-      _.keys(this.cachedErrors[props.form]).length
-    )
-      throw _.cloneDeep(this.cachedErrors[props.form]);
+    if (_.keys(this.cachedErrors[this.formName] || {}).length)
+      throw _.cloneDeep(this.cachedErrors[this.formName]);
   }
 
   static async onValidate(...args) {
-    setTimeout(async () => {
-      try {
-        await this.doValidate(...args);
-      } catch (_error) {
-        // do nothing
-      }
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        try {
+          resolve(this.doValidate(...args));
+        } catch (error) {
+          reject(error);
+        }
+      });
     });
   }
 
   constructor(props) {
     super(props);
 
-    this.normalizers = {};
-    for (let field of _.keys(this.constructor.fields)) {
-      let options = this.constructor.fields[field].normalize;
-      if (options)
-        this.normalizers[field] = (...args) =>
-          normalize(this.props, options, ...args);
-    }
+    this.submit = this.submit.bind(this);
   }
 
   async validate() {
@@ -149,7 +127,7 @@ class FormComponent extends React.Component {
     try {
       // validate the form without tranforming values
       await this.constructor.doValidate(
-        this.props.fieldValues[this.props.form],
+        this.props.getValue(),
         this.props.dispatch,
         this.props,
         undefined,

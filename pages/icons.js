@@ -1,3 +1,1 @@
-import IconsPage from "../app/components/Pages/IconsPage";
-
-export default IconsPage;
+export { default } from "../app/components/Pages/IconsPage";

@@ -109,15 +109,15 @@ class AppAuthModal extends Form {
   static async onSubmit(values, dispatch, props) {
     let result;
 
-    if (this.getValue(props, "isNewUser") === "yes") {
+    if (props.getValue("isNewUser")) {
       result = await props.onSignUp(
-        this.getValue(props, "email"),
-        this.getValue(props, "password")
+        props.getValue("email"),
+        props.getValue("password")
       );
     } else {
       result = await props.onSignIn(
-        this.getValue(props, "email"),
-        this.getValue(props, "password")
+        props.getValue("email"),
+        props.getValue("password")
       );
     }
 
@@ -130,15 +130,12 @@ class AppAuthModal extends Form {
     let state = {};
 
     if (prevState.isOpen !== nextProps.isOpen) {
-      nextProps.dispatch(nextProps.change("isNewUser", "no"));
+      nextProps.dispatch(nextProps.change("isNewUser", false));
       nextProps.dispatch(nextProps.change("password", ""));
       nextProps.dispatch(nextProps.clearAsyncError());
       nextProps.dispatch(nextProps.clearSubmitErrors());
       state.isOpen = nextProps.isOpen;
     }
-
-    if (nextProps.error && nextProps.error.has("_"))
-      state.errors = nextProps.error.get("_");
 
     return _.keys(state).length ? state : null;
   }
@@ -146,13 +143,10 @@ class AppAuthModal extends Form {
   constructor(props) {
     super(props);
 
-    this.state = {
-      isOpen: props.isOpen
-    };
+    this.state = {};
 
     this.handleAnonymous = this.handleAnonymous.bind(this);
     this.handleProvider = this.handleProvider.bind(this);
-    this.submit = this.submit.bind(this);
   }
 
   handleAnonymous() {
@@ -285,8 +279,6 @@ class AppAuthModal extends Form {
                   </Grid>
                   <Grid item>
                     <Field
-                      formFields={this.constructor.fields}
-                      formProps={this.props}
                       name="isNewUser"
                       type="checkbox"
                       color="default"
@@ -294,18 +286,10 @@ class AppAuthModal extends Form {
                     />
                   </Grid>
                   <Grid item>
-                    <Field
-                      formFields={this.constructor.fields}
-                      formProps={this.props}
-                      name="email"
-                      type="text"
-                      onSubmit={this.submit}
-                    />
+                    <Field name="email" type="text" onSubmit={this.submit} />
                   </Grid>
                   <Grid item>
                     <Field
-                      formFields={this.constructor.fields}
-                      formProps={this.props}
                       name="password"
                       type="password"
                       onSubmit={this.submit}

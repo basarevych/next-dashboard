@@ -13,12 +13,12 @@ const secondary = "#af441d";
 const bgPage = "#000000";
 const bgNormal = "#484e5e";
 
-const textNormal = "rgba(255, 255, 255, 0.87)";
-const textDark = "rgba(255, 255, 255, 0.54)";
-const textDisabled = "rgba(255, 255, 255, 0.38)";
+const textNormal = "rgba(255, 255, 255, 0.9)";
+const textDark = "rgba(255, 255, 255, 0.6)";
+const textDisabled = "rgba(255, 255, 255, 0.4)";
 const textContrast = "#ffffff";
-const textError = red[500];
-const textInfo = blueGrey[500];
+const textError = red[400];
+const textInfo = blueGrey[400];
 
 const fontSize = 14;
 
@@ -43,6 +43,9 @@ module.exports = {
       secondary: textDark,
       disabled: textDisabled,
       hint: textDisabled
+    },
+    error: {
+      main: textError
     },
     divider: "rgba(255, 255, 255, 0.12)"
   },
@@ -166,8 +169,27 @@ module.exports = {
             borderBottom: `2px solid ${textDark}`
           },
           "&:after": {
-            borderBottom: `2px solid ${textContrast}`
+            borderBottom: `2px solid ${lighten(secondary, 0.1)}`
           }
+        }
+      }
+    },
+    MuiOutlinedInput: {
+      root: {
+        "& $notchedOutline": {
+          borderWidth: [2, "!important"]
+        },
+        "&:not($disabled):not($error) $notchedOutline": {
+          borderColor: [textDark, "!important"]
+        },
+        "&:not($disabled):not($error):hover:not($focused) $notchedOutline": {
+          borderColor: [textContrast, "!important"]
+        },
+        "&:not($disabled):not($error)$focused $notchedOutline": {
+          borderColor: [lighten(secondary, 0.1), "!important"]
+        },
+        "&$disabled $notchedOutline": {
+          borderColor: [textDisabled, "!important"]
         }
       }
     },
@@ -214,7 +236,12 @@ module.exports = {
     },
     MuiSwitch: {
       icon: {
-        color: textNormal
+        color: textDark
+      }
+    },
+    MuiSelect: {
+      icon: {
+        color: textDark
       }
     },
     MuiListItemIcon: {

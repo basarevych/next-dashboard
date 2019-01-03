@@ -1,6 +1,6 @@
 const Chance = require("chance");
 const EventEmitter = require("events");
-const countries = require("../lib/countries");
+const { allCountries } = require("country-telephone-data");
 
 class Fake extends EventEmitter {
   constructor() {
@@ -35,8 +35,7 @@ class Fake extends EventEmitter {
   }
 
   getCountry() {
-    let codes = _.keys(countries);
-    return countries[codes[this.getInt(0, codes.length - 1)]].name;
+    return allCountries[this.getInt(0, allCountries.length - 1)].name;
   }
 
   getSalary() {

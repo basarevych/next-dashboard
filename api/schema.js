@@ -53,7 +53,7 @@ const typeDefs = `
   type Country {
     code: String!
     name: String!
-    callingCodes: [String]!
+    callingCode: String!
   }
 
   enum Dept {

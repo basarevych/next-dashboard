@@ -28,11 +28,16 @@ import moment from "../../../common/moment";
 import constants from "../../../common/constants";
 
 const styles = theme => ({
+  spacer: {
+    height: "1.5rem"
+  },
   wrapper: {
+    zIndex: 1400,
     position: "fixed",
     left: 0,
     right: 0,
-    top: 0
+    top: 0,
+    height: 30
   },
   barContainer: {
     transition: "all 0.25s ease-in-out"
@@ -498,9 +503,9 @@ class Header extends React.PureComponent {
             width={this.state.barWidth + 20}
             height="60"
           >
-            <feGaussianBlur in="SourceAlpha" stdDeviation="10" />
-            <feOffset dx="0" dy="6" result="offsetblur" />
-            <feFlood floodColor="rgba(0, 0, 0, 0.85)" />
+            <feGaussianBlur in="SourceAlpha" stdDeviation="8" />
+            <feOffset dx="0" dy="2" result="offsetblur" />
+            <feFlood floodColor="rgba(0, 0, 0, 0.9)" />
             <feComposite in2="offsetblur" operator="in" />
             <feMerge>
               <feMergeNode />
@@ -522,8 +527,8 @@ class Header extends React.PureComponent {
             width={this.state.barWidth + 20}
             height="60"
           >
-            <feGaussianBlur in="SourceAlpha" stdDeviation="5" />
-            <feOffset dx="0" dy="3" result="offsetblur" />
+            <feGaussianBlur in="SourceAlpha" stdDeviation="4" />
+            <feOffset dx="0" dy="2" result="offsetblur" />
             <feFlood floodColor="rgba(0, 0, 0, 0.5)" />
             <feComposite in2="offsetblur" operator="in" />
             <feMerge>
@@ -565,7 +570,13 @@ class Header extends React.PureComponent {
         className={this.props.classes.barContainer}
         style={{
           transform: `translate3d(0, ${
-            isVisible ? "0" : `-${this.state.barHeight}px`
+            isVisible
+              ? "0"
+              : `-${
+                  this.state.barHeight
+                    ? this.state.barHeight - 2 + "px"
+                    : "100%"
+                }`
           }, 0)`
         }}
       >
@@ -675,19 +686,22 @@ class Header extends React.PureComponent {
 
   render() {
     return (
-      <div
-        className={this.props.classes.wrapper}
-        onMouseEnter={this.handleWrapperMouseEnter}
-        onMouseLeave={this.handleWrapperMouseLeave}
-        onClick={this.handleWrapperClick}
-      >
+      <React.Fragment>
         <Hidden smUp initialWidth="lg">
           {this.renderBar(true)}
         </Hidden>
         <Hidden xsDown initialWidth="lg">
-          {this.renderBar(false)}
+          <div
+            className={this.props.classes.wrapper}
+            onMouseEnter={this.handleWrapperMouseEnter}
+            onMouseLeave={this.handleWrapperMouseLeave}
+            onClick={this.handleWrapperClick}
+          >
+            {this.renderBar(false)}
+          </div>
         </Hidden>
-      </div>
+        <div className={this.props.classes.spacer} />
+      </React.Fragment>
     );
   }
 }

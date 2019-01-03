@@ -1,3 +1,1 @@
-import TablesPage from "../app/components/Pages/TablesPage";
-
-export default TablesPage;
+export { default } from "../app/components/Pages/TablesPage";

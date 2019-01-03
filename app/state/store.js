@@ -5,13 +5,15 @@ import thunk from "redux-thunk";
 import { reducer as form } from "redux-form/immutable";
 import app from "./app";
 import auth from "./auth";
+import dashboard from "./dashboard";
 import users from "./users";
 
 let rootReducer = combineReducers({
   form,
   app,
   auth,
-  users,
+  dashboard,
+  users
 });
 
 let middleware = applyMiddleware(thunk);

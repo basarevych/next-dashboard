@@ -1,3 +1,1 @@
-import ChartsPage from "../app/components/Pages/ChartsPage";
-
-export default ChartsPage;
+export { default } from "../app/components/Pages/ChartsPage";

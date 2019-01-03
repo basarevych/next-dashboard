@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
+import Wizard from "../../containers/Wizard";
 
 const styles = theme => ({
   layout: {
@@ -25,7 +26,7 @@ class FormsPage extends React.Component {
       <div className={this.props.classes.layout}>
         <Grid container spacing={this.props.theme.main.spacing}>
           <Grid item xs={12}>
-            <div />
+            <Wizard />
           </Grid>
         </Grid>
       </div>
