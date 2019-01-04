@@ -6,21 +6,8 @@ const Injectt = require("injectt");
 const nextApp = require("next");
 const path = require("path");
 const express = require("express");
-const compression = require("compression");
-const logger = require("morgan");
-const cookieParser = require("cookie-parser");
-const bodyParser = require("body-parser");
 const constants = require("../common/constants");
 const styles = require("../common/themes");
-const cors = require("./middleware/cors");
-const session = require("./middleware/session");
-const helpers = require("./middleware/helpers");
-const csrf = require("csurf");
-const graphql = require("./middleware/graphql");
-const render = require("./middleware/render");
-const headers = require("./middleware/headers");
-const throw404 = require("./middleware/throw404");
-const error = require("./middleware/error");
 const getStore = require("./state/store");
 const { appOperations } = require("./state/app");
 const l10n = require("../common/locales");
@@ -120,20 +107,13 @@ class App {
 
   async init({ server }) {
     this.server = server;
-    this.di.load(path.resolve(__dirname, "services"));
+    this.di.load(path.resolve(__dirname, "src"));
 
+    // Create and initialize the store
     this.store = getStore();
     this.di.registerInstance(this.store, "store");
     this.di.registerInstance(this.store.getState.bind(this.store), "getState");
     this.di.registerInstance(this.store.dispatch.bind(this.store), "dispatch");
-
-    // Next page renderer and cacher
-    const { renderPage, preCachePages } = await render(this);
-    server.once("listening", () => preCachePages({ user: null }));
-    this.renderPage = renderPage;
-    this.preCachePages = preCachePages;
-
-    // Initialize the store
     await this.store.dispatch(
       appOperations.init({
         di: this.di
@@ -144,74 +124,14 @@ class App {
     await Promise.all(_.invokeMap(this.di.singletons(), "init"));
 
     // Initialize Next
-    this.next = nextApp({
-      dev: process.env.NODE_ENV === "development"
-    });
+    this.next = nextApp({ dev: process.env.NODE_ENV === "development" });
     await this.next.prepare();
     this.nextHandler = this.next.getRequestHandler();
 
-    // Early middleware first
-    if (process.env.NODE_ENV === "production")
-      this.express.use(await cors(this));
-    this.express.use(compression());
-
-    // Logger
-    if (process.env.NODE_ENV !== "test") this.express.use(logger("dev"));
-
-    // Shortcuts to static
-    this.express.use(
-      "/sw.js",
-      express.static(path.join(__dirname, "..", ".next", "sw.js"))
-    );
-    this.express.use(
-      "/static",
-      express.static(path.join(__dirname, "..", "static"), { maxAge: "10d" })
-    );
-    this.express.use(
-      "/favicon.ico",
-      express.static(
-        path.join(__dirname, "..", "static", "img", "favicon.ico"),
-        {
-          maxAge: "10d"
-        }
-      )
-    );
-
-    // Parse request
-    this.express.use(bodyParser.json());
-    this.express.use(bodyParser.urlencoded({ extended: true }));
-    this.express.use(cookieParser());
-
-    // Session
-    const sessionMiddleware = await session(this);
-    this.express.use(sessionMiddleware.express);
-    this.di.get("ws").io.use(sessionMiddleware.socket);
-
-    // CSRF
-    if (process.env.NODE_ENV === "production") this.express.use(csrf());
-
-    // Set default headers
-    this.express.use(await headers());
-
-    // Alias app services on request object
-    const helpersMiddleware = await helpers(this);
-    this.express.use(helpersMiddleware.express);
-    this.di.get("ws").io.use(helpersMiddleware.socket);
-
-    // GraphQL API at /graphql
-    this.express.use(constants.graphqlBase, await graphql(this));
-
-    // REST API is /api/*
-    await this.di.get("router").use(this.express);
-
-    // Serve the rest of pages using Next
-    this.express.get("*", this.renderPage);
-
-    // Throw 404 if we haven't sent anything yet
-    this.express.use(await throw404(this));
-
-    // Catch errors thrown anywhere in above
-    this.express.use(await error(this));
+    // Express and Socket.IO middleware
+    const middleware = this.di.get("middleware");
+    middleware.express(this.express);
+    middleware.io(this.di.get("ws").io);
   }
 
   /**
