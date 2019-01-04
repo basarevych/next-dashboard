@@ -97,9 +97,10 @@ class EditUserModal extends Form {
     if (prevState.isOpen !== nextProps.isOpen) {
       let name = nextProps.data && nextProps.data.get("name");
       let email = nextProps.data && nextProps.data.get("email");
-      let isAdmin =
+      let isAdmin = !!(
         nextProps.data &&
-        nextProps.data.get("roles").includes(constants.roles.ADMIN);
+        nextProps.data.get("roles").includes(constants.roles.ADMIN)
+      );
       nextProps.dispatch(nextProps.change("name", name || ""));
       nextProps.dispatch(nextProps.change("email", email || ""));
       nextProps.dispatch(nextProps.change("password", ""));
