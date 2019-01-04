@@ -1,18 +1,30 @@
 const debug = require("debug")("app:redirect");
-const moment = require("../../common/moment");
-const BaseRoute = require("./base");
+const EventEmitter = require("events");
+const Router = require("express").Router;
+const moment = require("../../../common/moment");
 
 /**
  * Redirector route
  */
-class RedirectRoute extends BaseRoute {
-  /**
-   * Constructor
-   * @param {App} app
-   */
+class RedirectRoute extends EventEmitter {
   constructor(app) {
-    super(app);
+    super();
 
+    this.app = app;
+    this.router = Router();
+  }
+
+  // eslint-disable-next-line lodash/prefer-constant
+  static get $provides() {
+    return "routes.redirect";
+  }
+
+  // eslint-disable-next-line lodash/prefer-constant
+  static get $requires() {
+    return ["app"];
+  }
+
+  async init() {
     this.router.get("/redirect", this.getRedirect.bind(this));
     this.router.get("/redirect/:name", this.getRedirect.bind(this));
   }

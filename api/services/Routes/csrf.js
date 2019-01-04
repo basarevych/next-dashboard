@@ -1,17 +1,29 @@
 const debug = require("debug")("app:csrf");
-const BaseRoute = require("./base");
+const EventEmitter = require("events");
+const Router = require("express").Router;
 
 /**
  * CSRF route
  */
-class CsrfRoute extends BaseRoute {
-  /**
-   * Constructor
-   * @param {App} app
-   */
+class CsrfRoute extends EventEmitter {
   constructor(app) {
-    super(app);
+    super();
 
+    this.app = app;
+    this.router = Router();
+  }
+
+  // eslint-disable-next-line lodash/prefer-constant
+  static get $provides() {
+    return "routes.csrf";
+  }
+
+  // eslint-disable-next-line lodash/prefer-constant
+  static get $requires() {
+    return ["app"];
+  }
+
+  async init() {
     this.router.get("/csrf", this.getCsrf.bind(this));
   }
 

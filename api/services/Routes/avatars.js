@@ -5,19 +5,19 @@ const fetch = require("isomorphic-unfetch");
 const concat = require("concat-stream");
 const sharp = require("sharp");
 const LRU = require("lru-cache");
-const constants = require("../../common/constants");
-const BaseRoute = require("./base");
+const EventEmitter = require("events");
+const Router = require("express").Router;
+const constants = require("../../../common/constants");
 
 /**
  * Avatars route
  */
-class AvatarsRoute extends BaseRoute {
-  /**
-   * Constructor
-   * @param {App} app
-   */
+class AvatarsRoute extends EventEmitter {
   constructor(app) {
-    super(app);
+    super();
+
+    this.app = app;
+    this.router = Router();
 
     this.tickInterval = 60 * 1000;
     this.fetchInterval = 60;
@@ -33,6 +33,7 @@ class AvatarsRoute extends BaseRoute {
       __dirname,
       "..",
       "..",
+      "..",
       "static",
       "img",
       "anonymous.png"
@@ -41,14 +42,24 @@ class AvatarsRoute extends BaseRoute {
     this.timer = null;
     this.fetchTime = 0;
     this.selectTime = 0;
+  }
 
-    this.router.get("/avatars/:id", this.getAvatar.bind(this));
+  // eslint-disable-next-line lodash/prefer-constant
+  static get $provides() {
+    return "routes.avatars";
+  }
+
+  // eslint-disable-next-line lodash/prefer-constant
+  static get $requires() {
+    return ["app"];
   }
 
   /**
    * Activate route
    */
   async init() {
+    this.router.get("/avatars/:id", this.getAvatar.bind(this));
+
     try {
       await this.fetch();
     } catch (error) {

@@ -1,19 +1,31 @@
 const debug = require("debug")("app:build");
 const path = require("path");
 const fs = require("fs-extra");
-const BaseRoute = require("./base");
+const EventEmitter = require("events");
+const Router = require("express").Router;
 
 /**
  * Build Info route
  */
-class BuildRoute extends BaseRoute {
-  /**
-   * Constructor
-   * @param {App} app
-   */
+class BuildRoute extends EventEmitter {
   constructor(app) {
-    super(app);
+    super();
 
+    this.app = app;
+    this.router = Router();
+  }
+
+  // eslint-disable-next-line lodash/prefer-constant
+  static get $provides() {
+    return "routes.build";
+  }
+
+  // eslint-disable-next-line lodash/prefer-constant
+  static get $requires() {
+    return ["app"];
+  }
+
+  async init() {
     this.router.get("/build.json", this.getBuildInfo.bind(this));
   }
 
@@ -28,7 +40,7 @@ class BuildRoute extends BaseRoute {
     debug("Got request");
 
     try {
-      let root = path.join(__dirname, "..", "..");
+      let root = path.join(__dirname, "..", "..", "..");
       let info = {
         assets: []
       };

@@ -6413,7 +6413,7 @@ function (_Form) {
       if (prevState.isOpen !== nextProps.isOpen) {
         var name = nextProps.data && nextProps.data.get("name");
         var email = nextProps.data && nextProps.data.get("email");
-        var isAdmin = nextProps.data && nextProps.data.get("roles").includes(_constants.default.roles.ADMIN);
+        var isAdmin = !!(nextProps.data && nextProps.data.get("roles").includes(_constants.default.roles.ADMIN));
         nextProps.dispatch(nextProps.change("name", name || ""));
         nextProps.dispatch(nextProps.change("email", email || ""));
         nextProps.dispatch(nextProps.change("password", ""));

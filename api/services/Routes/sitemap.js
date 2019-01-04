@@ -1,18 +1,30 @@
 const debug = require("debug")("app:sitemap");
-const BaseRoute = require("./base");
-const constants = require("../../common/constants");
+const EventEmitter = require("events");
+const Router = require("express").Router;
+const constants = require("../../../common/constants");
 
 /**
  * Sitemap route
  */
-class SitemapRoute extends BaseRoute {
-  /**
-   * Constructor
-   * @param {App} app
-   */
+class SitemapRoute extends EventEmitter {
   constructor(app) {
-    super(app);
+    super();
 
+    this.app = app;
+    this.router = Router();
+  }
+
+  // eslint-disable-next-line lodash/prefer-constant
+  static get $provides() {
+    return "routes.sitemap";
+  }
+
+  // eslint-disable-next-line lodash/prefer-constant
+  static get $requires() {
+    return ["app"];
+  }
+
+  async init() {
     this.router.get("/sitemap.xml", this.getSitemap.bind(this));
   }
 
@@ -26,10 +38,8 @@ class SitemapRoute extends BaseRoute {
     debug("Got request");
 
     let urls = _.flatMap(this.app.config.appOrigins, url =>
-      _.map(
-        constants.pages,
-        (info, path) =>
-          info.roles ? false : "<url><loc>" + url + path + "</loc></url>"
+      _.map(constants.pages, (info, path) =>
+        info.roles ? false : "<url><loc>" + url + path + "</loc></url>"
       ).compact()
     ).join("\n");
 
