@@ -15,7 +15,7 @@ class AuthRoute extends EventEmitter {
 
   // eslint-disable-next-line lodash/prefer-constant
   static get $provides() {
-    return "routes.auth";
+    return "route.auth";
   }
 
   // eslint-disable-next-line lodash/prefer-constant

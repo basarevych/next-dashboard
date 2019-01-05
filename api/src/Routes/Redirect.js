@@ -15,7 +15,7 @@ class RedirectRoute extends EventEmitter {
 
   // eslint-disable-next-line lodash/prefer-constant
   static get $provides() {
-    return "routes.redirect";
+    return "route.redirect";
   }
 
   async init() {

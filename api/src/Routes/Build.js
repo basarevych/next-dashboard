@@ -16,7 +16,7 @@ class BuildRoute extends EventEmitter {
 
   // eslint-disable-next-line lodash/prefer-constant
   static get $provides() {
-    return "routes.build";
+    return "route.build";
   }
 
   async init() {

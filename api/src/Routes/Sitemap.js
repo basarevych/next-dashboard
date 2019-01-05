@@ -7,21 +7,21 @@ const constants = require("../../../common/constants");
  * Sitemap route
  */
 class SitemapRoute extends EventEmitter {
-  constructor(app) {
+  constructor(config) {
     super();
 
-    this.app = app;
+    this.config = config;
     this.router = Router();
   }
 
   // eslint-disable-next-line lodash/prefer-constant
   static get $provides() {
-    return "routes.sitemap";
+    return "route.sitemap";
   }
 
   // eslint-disable-next-line lodash/prefer-constant
   static get $requires() {
-    return ["app"];
+    return ["config"];
   }
 
   async init() {
@@ -40,7 +40,7 @@ class SitemapRoute extends EventEmitter {
   async getSitemap(req, res, next) {
     debug("Got request");
 
-    let urls = _.flatMap(this.app.config.appOrigins, url =>
+    let urls = _.flatMap(this.config.appOrigins, url =>
       _.map(constants.pages, (info, path) =>
         info.roles ? false : "<url><loc>" + url + path + "</loc></url>"
       ).compact()

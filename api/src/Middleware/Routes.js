@@ -26,12 +26,12 @@ class Routes extends EventEmitter {
   // eslint-disable-next-line lodash/prefer-constant
   static get $requires() {
     return [
-      "routes.build",
-      "routes.csrf",
-      "routes.auth",
-      "routes.avatars",
-      "routes.redirect",
-      "routes.sitemap"
+      "route.build",
+      "route.csrf",
+      "route.auth",
+      "route.avatars",
+      "route.redirect",
+      "route.sitemap"
     ];
   }
 

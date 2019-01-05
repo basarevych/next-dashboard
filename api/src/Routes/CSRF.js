@@ -14,7 +14,7 @@ class CsrfRoute extends EventEmitter {
 
   // eslint-disable-next-line lodash/prefer-constant
   static get $provides() {
-    return "routes.csrf";
+    return "route.csrf";
   }
 
   async init() {
