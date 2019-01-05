@@ -7,7 +7,8 @@ const { allCountries, iso2Lookup } = require("country-telephone-data");
  * Validation function for Redux Form
  * takes input like "rule1:param1:param2|rule2:param1:param2|..."
  *
- * re:regexp:flags            value should match the regular expression "regexp", second param is flags
+ * re:regexp:flags:key        value should match the regular expression "regexp", second param is flags,
+ *                            third param is custom translation key used for the error message
  *                            when ":" is needed in the regexp it should be escaped like this "\\:"
  * required                   value is required
  * required:otherField        value is required if otherField is not empty
@@ -69,9 +70,10 @@ module.exports = function validate(props, options, value, allValues) {
       let normalized;
       switch (command) {
         case "re":
-          tmp = new RegExp(rules[command][0], rules[command][1]);
+          tmp = new RegExp(rules[command][0], rules[command][1] || undefined);
           success = value.match(tmp);
-          if (!success) errors.push("ERROR_INVALID_PATTERN");
+          if (!success)
+            errors.push(rules[command][2] || "ERROR_INVALID_PATTERN");
           break;
         case "phone":
           // validate phone number in international format

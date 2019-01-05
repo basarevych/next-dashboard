@@ -21,7 +21,8 @@
  * credit_card:secret         normalizes credit card CVV2 code
  *
  * Validation rules:
- * re:regexp:flags            value should match the regular expression "regexp", second param is flags
+ * re:regexp:flags:key        value should match the regular expression "regexp", second param is flags,
+ *                            third param is custom translation key used for the error message
  *                            when ":" is needed in the regexp it should be escaped like this "\\:"
  * required                   value is required
  * required:otherField        value is required if otherField is not empty
