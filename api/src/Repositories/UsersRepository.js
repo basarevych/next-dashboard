@@ -45,16 +45,10 @@ class UsersRepository extends EventEmitter {
     if (!user || !_.includes(user.roles, accessLevel))
       return { success: false };
 
-    let errors = [];
-    if (!args.login)
-      errors.push({ key: "login", message: "ERROR_FIELD_REQUIRED" });
-    if (!args.password)
-      errors.push({ key: "password", message: "ERROR_FIELD_REQUIRED" });
-    if (errors.length) throw this.di.get("error.validation", errors);
-
     let target = new this.db.UserModel({
-      login: args.login,
-      password: await this.auth.encryptPassword(args.password),
+      email: args.email,
+      password:
+        args.password && (await this.auth.encryptPassword(args.password)),
       roles: args.roles || []
     });
 
@@ -74,13 +68,7 @@ class UsersRepository extends EventEmitter {
     let target = await this.db.UserModel.findById(args.id);
     if (!target) return { success: false };
 
-    if (!args.login) {
-      throw this.di.get("error.validation", [
-        { key: "login", message: "ERROR_FIELD_REQUIRED" }
-      ]);
-    }
-
-    target.login = args.login;
+    target.email = args.email;
     if (args.password)
       target.password = await this.auth.encryptPassword(args.password);
     target.roles = args.roles;

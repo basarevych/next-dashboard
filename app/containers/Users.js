@@ -5,7 +5,9 @@ import UsersComponent from "../components/Users";
 
 const mapStateToProps = state => {
   return {
-    users: usersSelectors.getList(state)
+    users: usersSelectors.getList(state),
+    isAllSelected: usersSelectors.isAllSelected(state),
+    isAllDeselected: usersSelectors.isAllDeselected(state)
   };
 };
 
@@ -13,8 +15,12 @@ const mapDispatchToProps = dispatch => {
   return {
     onLoad: () => dispatch(usersOperations.load()),
     onCreate: () => dispatch(usersOperations.showEditModal()),
-    onEdit: userId => dispatch(usersOperations.showEditModal({ userId })),
-    onDelete: userId => dispatch(usersOperations.remove({ id: userId }))
+    onEdit: () => dispatch(usersOperations.editFirstSelected()),
+    onDelete: userId => dispatch(usersOperations.remove({ id: userId })),
+    onSetSelected: (userId, isSelected) =>
+      dispatch(usersOperations.setSelected({ userId, isSelected })),
+    onSelectAll: () => dispatch(usersOperations.selectAll()),
+    onDeselectAll: () => dispatch(usersOperations.deselectAll())
   };
 };
 

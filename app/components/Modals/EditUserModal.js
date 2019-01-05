@@ -15,6 +15,7 @@ import red from "@material-ui/core/colors/red";
 import Form from "../Forms/Form";
 import Field from "../Forms/Field";
 import constants from "../../../common/constants";
+import fields from "../../../common/forms/user";
 
 const styles = theme => ({
   paper: {
@@ -46,23 +47,7 @@ class EditUserModal extends Form {
 
   static formName = "editUserForm";
 
-  static fields = {
-    name: {
-      label: "EDIT_USER_NAME_LABEL"
-    },
-    email: {
-      normalize: "rows:1|remove:spaces",
-      transform: "trim",
-      validate: "required|email",
-      label: "EDIT_USER_EMAIL_LABEL"
-    },
-    password: {
-      label: "EDIT_USER_PASSWORD_LABEL"
-    },
-    isAdmin: {
-      label: "EDIT_USER_ADMIN_LABEL"
-    }
-  };
+  static fields = fields;
 
   static async onSubmit(values, dispatch, props) {
     let result;

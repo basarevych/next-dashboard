@@ -20,6 +20,7 @@ import constants from "../../../common/constants";
 import facebookIcon from "../../../static/img/facebook.svg";
 import googleIcon from "../../../static/img/google.svg";
 import twitterIcon from "../../../static/img/twitter.svg";
+import fields from "../../../common/forms/auth";
 
 const styles = theme => ({
   error: theme.main.error,
@@ -90,21 +91,7 @@ class AppAuthModal extends Form {
 
   static formName = "signInForm";
 
-  static fields = {
-    isNewUser: {
-      label: "APP_AUTH_NEW_USER_LABEL"
-    },
-    email: {
-      normalize: "rows:1|remove:spaces",
-      transform: "trim",
-      validate: "required|email",
-      label: "APP_AUTH_EMAIL_LABEL"
-    },
-    password: {
-      validate: "required|password",
-      label: "APP_AUTH_PASSWORD_LABEL"
-    }
-  };
+  static fields = fields;
 
   static async onSubmit(values, dispatch, props) {
     let result;

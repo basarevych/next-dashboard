@@ -1,19 +1,22 @@
 "use strict";
 
 const validator = require("validator");
-
-let allCountries, iso2Lookup;
-try {
-  const phones = require("country-telephone-data");
-  allCountries = phones.allCountries;
-  iso2Lookup = phones.iso2Lookup;
-} catch (unused) {
-  // do nothing
-}
+const { allCountries, iso2Lookup } = require("country-telephone-data");
 
 /**
  * Normalizer function for Redux Form
- * takes input like "command1:param1:param2|command2:param1:param2"
+ * takes input like "rule1:param1:param2|rule2:param1:param2|..."
+ *
+ * trim                       remove white space from the beginning and the end of value
+ * compact:spaces             replace multiple occurences of space in a row with a single space
+ * remove:spaces              remove spaces
+ * rows:size                  forces "size" number of rows (1 if size is omitted)
+ * integer                    removes everything except digits
+ * phone                      forces international phone phormat
+ * email                      normalizes email
+ * credit_card:number         normalizes credit card number
+ * credit_card:date           normalizes credit card expiration date
+ * credit_card:secret         normalizes credit card CVV2 code
  */
 module.exports = function normalize(
   options,

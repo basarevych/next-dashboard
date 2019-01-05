@@ -1,6 +1,8 @@
-const validator = require("validator");
+const { fromJS } = require("immutable");
 const EventEmitter = require("events");
 const constants = require("../../../common/constants");
+const fields = require("../../../common/forms/user");
+const validate = require("../../../common/validate");
 
 class UserSchema extends EventEmitter {
   constructor(db, provider) {
@@ -25,6 +27,14 @@ class UserSchema extends EventEmitter {
     return "singleton";
   }
 
+  validate(field, value, allValues, callback) {
+    let rules = fields[field];
+    if (!rules || !rules.validate) return callback(true);
+    let errors = validate({}, rules.validate, value, fromJS(allValues));
+    if (!errors.length) return callback(true);
+    return callback(false, errors.length === 1 ? errors[0] : errors);
+  }
+
   async init() {
     if (this.promise) return this.promise;
 
@@ -32,6 +42,7 @@ class UserSchema extends EventEmitter {
       try {
         await this.provider.init();
 
+        const self = this;
         this.schema = new this.db.mongoose.Schema({
           _id: {
             type: this.db.mongoose.Schema.Types.ObjectId,
@@ -51,8 +62,10 @@ class UserSchema extends EventEmitter {
             type: String,
             required: [true, "ERROR_FIELD_REQUIRED"],
             validate: {
-              validator: value => validator.isEmail(value),
-              message: _.constant("ERROR_INVALID_EMAIL")
+              isAsync: true,
+              validator: function(value, callback) {
+                return self.validate("email", value, this.toObject(), callback);
+              }
             }
           },
           emailToken: {
@@ -63,10 +76,28 @@ class UserSchema extends EventEmitter {
             default: false
           },
           password: {
-            type: String
+            type: String,
+            required: [true, "ERROR_FIELD_REQUIRED"],
+            validate: {
+              isAsync: true,
+              validator: function(value, callback) {
+                return self.validate(
+                  "password",
+                  value,
+                  this.toObject(),
+                  callback
+                );
+              }
+            }
           },
           name: {
-            type: String
+            type: String,
+            validate: {
+              isAsync: true,
+              validator: function(value, callback) {
+                return self.validate("name", value, this.toObject(), callback);
+              }
+            }
           },
           roles: {
             type: [String],

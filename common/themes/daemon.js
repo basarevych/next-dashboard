@@ -101,10 +101,13 @@ module.exports = {
   overrides: {
     MuiPaper: {
       root: {
-        background: `linear-gradient(to bottom right, ${lighten(
-          bgNormal,
-          0.2
-        )} 0, ${darken(bgNormal, 0.2)} 100%)`
+        background: [
+          `linear-gradient(to bottom right, ${lighten(
+            bgNormal,
+            0.2
+          )} 0, ${darken(bgNormal, 0.2)} 100%)`,
+          "!important"
+        ]
       }
     },
     MuiTableRow: {

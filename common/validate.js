@@ -1,26 +1,47 @@
 "use strict";
 
 const validator = require("validator");
-
-let allCountries, iso2Lookup;
-try {
-  const phones = require("country-telephone-data");
-  allCountries = phones.allCountries;
-  iso2Lookup = phones.iso2Lookup;
-} catch (unused) {
-  // do nothing
-}
+const { allCountries, iso2Lookup } = require("country-telephone-data");
 
 /**
  * Validation function for Redux Form
- * takes input like "command1:param1:param2|command2:param1:param2"
+ * takes input like "rule1:param1:param2|rule2:param1:param2|..."
+ *
+ * re:regexp:flags            value should match the regular expression "regexp", second param is flags
+ *                            when ":" is needed in the regexp it should be escaped like this "\\:"
+ * required                   value is required
+ * required:otherField        value is required if otherField is not empty
+ * phone                      value is a phone number
+ * email                      value is an email
+ * password:length            value is a password of "length" characters (6 if omitted)
+ * credit_card:number         value is credit card number
+ * credit_card:date           value is credit card expiration date
+ * credit_card:secret         value is credit card CVV2 code
+ * match:otherField           value should be the same as the value of otherField
  */
 module.exports = function validate(props, options, value, allValues) {
   let rules = {};
   for (let rule of _.split(options, "|")) {
     let params = _.split(_.trim(rule), ":");
     let command = params.shift();
-    rules[command] = params;
+    if (command !== "re") {
+      rules[command] = params;
+    } else {
+      rules[command] = [];
+      let line = params.join(":");
+      let found = false;
+      for (let i = 0; i < line.length; i++) {
+        if (line[i] === ":" && (i > 0 || line[i - 1] !== "\\")) {
+          rules[command].push(line.slice(0, i));
+          rules[command] = rules[command].concat(
+            _.split(line.slice(i + 1), ":")
+          );
+          found = true;
+          break;
+        }
+      }
+      if (!found) rules[command] = params;
+    }
   }
 
   value = _.isUndefined(value) ? "" : _.toString(value);
@@ -40,12 +61,18 @@ module.exports = function validate(props, options, value, allValues) {
       if (failed) errors.push("ERROR_FIELD_REQUIRED");
     }
   } else {
+    // all the other rules only apply to non-empty value
     for (let command of commands) {
       let success;
       let tmp;
       let search;
       let normalized;
       switch (command) {
+        case "re":
+          tmp = new RegExp(rules[command][0], rules[command][1]);
+          success = value.match(tmp);
+          if (!success) errors.push("ERROR_INVALID_PATTERN");
+          break;
         case "phone":
           // validate phone number in international format
           if (!validator.isEmpty(value)) {

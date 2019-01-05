@@ -7,7 +7,9 @@ Map({
   list: List([
     Map({
       id: String,
-      login: String,
+      isSelected: Boolean,
+      name: String,
+      email: String,
       roles: [String],
     })
   ]),
@@ -19,8 +21,27 @@ Map({
 const listReducer = (state = List([]), action) => {
   switch (action.type) {
     case types.SET_LIST:
-      if (!_.isUndefined(action.list)) return fromJS(action.list);
+      if (!_.isUndefined(action.list))
+        // eslint-disable-next-line lodash/prefer-lodash-method
+        return fromJS(action.list).map((item, index) =>
+          item.set("isSelected", !!state.getIn([index, "isSelected"]))
+        );
       break;
+    case types.SET_SELECTED:
+      if (!_.isUndefined(action.userId))
+        return state.withMutations(list => {
+          // eslint-disable-next-line lodash/prefer-lodash-method
+          let index = list.findIndex(item => item.get("id") === action.userId);
+          if (index !== -1)
+            list.setIn([index, "isSelected"], !!action.isSelected);
+        });
+      break;
+    case types.SELECT_ALL:
+      // eslint-disable-next-line lodash/prefer-lodash-method
+      return state.map(item => item.set("isSelected", true));
+    case types.DESELECT_ALL:
+      // eslint-disable-next-line lodash/prefer-lodash-method
+      return state.map(item => item.set("isSelected", false));
   }
   return state;
 };

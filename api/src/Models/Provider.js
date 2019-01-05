@@ -1,3 +1,4 @@
+//const { fromJS } = require("immutable");
 const EventEmitter = require("events");
 
 class Provider extends EventEmitter {
@@ -21,6 +22,16 @@ class Provider extends EventEmitter {
   static get $lifecycle() {
     return "singleton";
   }
+
+  /*
+  validate(field, value, allValues, callback) {
+    let rules = fields[field];
+    if (!rules || !rules.validate) return callback(true);
+    let errors = validate({}, rules.validate, value, fromJS(allValues));
+    if (!errors.length) return callback(true);
+    return callback(false, errors.length === 1 ? errors[0] : errors);
+  }
+  */
 
   async init() {
     if (this.promise) return this.promise;

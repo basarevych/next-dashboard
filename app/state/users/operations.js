@@ -1,10 +1,22 @@
 import * as actions from "./actions";
+import * as selectors from "./selectors";
 import { appOperations } from "../app";
 import constants from "../../../common/constants";
 
 export const showEditModal = actions.showEditModal;
-
 export const hideEditModal = actions.hideEditModal;
+export const setSelected = actions.setSelected;
+export const selectAll = actions.selectAll;
+export const deselectAll = actions.deselectAll;
+
+export const editFirstSelected = () => async (dispatch, getState) => {
+  let selected = selectors.getSelected(getState());
+  if (selected.size) {
+    return dispatch(
+      actions.showEditModal({ userId: selected.first().get("id") })
+    );
+  }
+};
 
 export const load = ({ req } = {}) => async dispatch => {
   let users;
