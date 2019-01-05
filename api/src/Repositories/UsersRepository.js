@@ -5,10 +5,9 @@ const constants = require("../../../common/constants");
 const accessLevel = constants.roles.ADMIN;
 
 class UsersRepository extends EventEmitter {
-  constructor(di, auth, db, getState, dispatch) {
+  constructor(auth, db, getState, dispatch) {
     super();
 
-    this.di = di;
     this.auth = auth;
     this.db = db;
     this.getState = getState;
@@ -22,7 +21,7 @@ class UsersRepository extends EventEmitter {
 
   // eslint-disable-next-line lodash/prefer-constant
   static get $requires() {
-    return ["di", "auth", "db", "getState", "dispatch"];
+    return ["auth", "db", "getState", "dispatch"];
   }
 
   async getUsers(context) {

@@ -1,4 +1,3 @@
-//const { fromJS } = require("immutable");
 const EventEmitter = require("events");
 
 class Provider extends EventEmitter {

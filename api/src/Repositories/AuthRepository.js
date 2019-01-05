@@ -4,10 +4,9 @@ const EventEmitter = require("events");
 const constants = require("../../../common/constants");
 
 class AuthRepository extends EventEmitter {
-  constructor(di, auth, db) {
+  constructor(auth, db) {
     super();
 
-    this.di = di;
     this.auth = auth;
     this.db = db;
 
@@ -21,7 +20,7 @@ class AuthRepository extends EventEmitter {
 
   // eslint-disable-next-line lodash/prefer-constant
   static get $requires() {
-    return ["di", "auth", "db"];
+    return ["auth", "db"];
   }
 
   async getStatus(context) {
@@ -94,12 +93,6 @@ class AuthRepository extends EventEmitter {
   async signUp(context, args) {
     debug("signUp");
 
-    if (!args.password) {
-      throw this.di.get("error.validation", [
-        { key: "password", message: "ERROR_FIELD_REQUIRED" }
-      ]);
-    }
-
     let success = false;
 
     if (await context.getUser()) await this.auth.signOut(context);
@@ -107,7 +100,8 @@ class AuthRepository extends EventEmitter {
     let user = new this.db.UserModel({
       email: args.email,
       emailToken: this.generateToken(),
-      password: await this.auth.encryptPassword(args.password)
+      password:
+        args.password && (await this.auth.encryptPassword(args.password))
     });
 
     await user.validate();
