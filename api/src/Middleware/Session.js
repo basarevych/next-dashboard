@@ -4,7 +4,7 @@ const MongoStore = require("connect-mongo")(session);
 const EventEmitter = require("events");
 
 /**
- * User sessions & CSRF protection
+ * User sessions with CSRF protection
  */
 class Session extends EventEmitter {
   constructor(config, db) {
