@@ -41,7 +41,6 @@ class Render extends EventEmitter {
     this.promise = Promise.resolve();
     this.usersCache = new LRU(this.app.config.appOnlineUsers);
     this.app.server.once("listening", () => this.preCachePages({ user: null }));
-    this.app.preCachePages = this.preCachePages.bind(this);
   }
 
   async express(express) {

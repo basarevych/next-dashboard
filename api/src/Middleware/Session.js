@@ -7,10 +7,10 @@ const EventEmitter = require("events");
  * User sessions & CSRF protection
  */
 class Session extends EventEmitter {
-  constructor(app, db) {
+  constructor(config, db) {
     super();
 
-    this.app = app;
+    this.config = config;
     this.db = db;
 
     this.store = null;
@@ -24,7 +24,7 @@ class Session extends EventEmitter {
 
   // eslint-disable-next-line lodash/prefer-constant
   static get $requires() {
-    return ["app", "db"];
+    return ["config", "db"];
   }
 
   // eslint-disable-next-line lodash/prefer-constant
@@ -45,7 +45,7 @@ class Session extends EventEmitter {
         });
 
         this.session = session({
-          secret: this.app.config.sessionSecret,
+          secret: this.config.sessionSecret,
           store: this.store,
           resave: false,
           rolling: false,
@@ -53,7 +53,7 @@ class Session extends EventEmitter {
           cookie: {
             httpOnly: true,
             secure: false,
-            maxAge: this.app.config.sessionMaxAge
+            maxAge: this.config.sessionMaxAge
           }
         });
 

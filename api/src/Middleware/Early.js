@@ -9,11 +9,10 @@ const EventEmitter = require("events");
  * Early middleware
  */
 class Early extends EventEmitter {
-  constructor(app) {
+  constructor(config) {
     super();
 
-    this.app = app;
-
+    this.config = config;
     this.cors = null;
   }
 
@@ -24,7 +23,7 @@ class Early extends EventEmitter {
 
   // eslint-disable-next-line lodash/prefer-constant
   static get $requires() {
-    return ["app"];
+    return ["config"];
   }
 
   async init() {
@@ -33,7 +32,7 @@ class Early extends EventEmitter {
     this.promise = Promise.resolve();
     this.cors = cors({
       origin: (origin, callback) => {
-        let match = !origin || _.includes(this.app.config.appOrigins, origin);
+        let match = !origin || _.includes(this.config.appOrigins, origin);
         if (match) return callback(null, true);
         console.log(`CORS! ${origin}`);
         let error = new Error("Not allowed by CORS");

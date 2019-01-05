@@ -30,6 +30,8 @@ class I18n extends EventEmitter {
     return `${locale}.${key}`;
   }
 
+  async init() {}
+
   translate(key, values, locale) {
     if (!locale) locale = this.defaultLocale;
 

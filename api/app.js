@@ -6,10 +6,10 @@ const Injectt = require("injectt");
 const nextApp = require("next");
 const path = require("path");
 const express = require("express");
-const constants = require("../common/constants");
-const styles = require("../common/themes");
 const getStore = require("./state/store");
 const { appOperations } = require("./state/app");
+const constants = require("../common/constants");
+const styles = require("../common/themes");
 const l10n = require("../common/locales");
 
 require("dotenv").config({ path: path.join(__dirname, "..", "/.env") });
