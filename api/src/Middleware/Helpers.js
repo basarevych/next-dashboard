@@ -5,13 +5,12 @@ const styles = require("../../../common/themes");
  * Helper functions on req/res objects
  */
 class Helpers extends EventEmitter {
-  constructor(di, auth, i18n, render) {
+  constructor(di, auth, i18n) {
     super();
 
     this.di = di;
     this.auth = auth;
     this.i18n = i18n;
-    this.render = render;
   }
 
   // eslint-disable-next-line lodash/prefer-constant
@@ -21,7 +20,7 @@ class Helpers extends EventEmitter {
 
   // eslint-disable-next-line lodash/prefer-constant
   static get $requires() {
-    return ["di", "auth", "i18n", "middleware.render"];
+    return ["di", "auth", "i18n"];
   }
 
   async init() {}
@@ -79,7 +78,8 @@ class Helpers extends EventEmitter {
 
   setHelpers(req /*, res */) {
     req.di = this.di;
-    req.preCachePages = this.render.preCachePages.bind(this.render);
+    const render = this.di.get("middleware.render");
+    req.preCachePages = render.preCachePages.bind(render);
     req.getAuthStatus = async () => this.auth.getStatus(await req.getUser());
   }
 
