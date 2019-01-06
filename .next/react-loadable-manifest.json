@@ -111,7 +111,7 @@
       "publicPath": "/_next/static/chunks/commons.4a6952f3bf21f63ef3ca.js"
     }
   ],
-  "@babel/runtime/helpers/objectWithoutPropertiesLoose": [
+  "./objectWithoutPropertiesLoose": [
     {
       "id": 26,
       "name": "./node_modules/next/node_modules/@babel/runtime/helpers/objectWithoutPropertiesLoose.js",
@@ -149,7 +149,7 @@
       "publicPath": "/_next/static/chunks/commons.4a6952f3bf21f63ef3ca.js"
     }
   ],
-  "./../node_modules/webpack/buildin/global.js": [
+  "./../../node_modules/webpack/buildin/global.js": [
     {
       "id": 44,
       "name": "./node_modules/webpack/buildin/global.js",
@@ -213,7 +213,7 @@
       "publicPath": "/_next/static/chunks/commons.4a6952f3bf21f63ef3ca.js"
     }
   ],
-  "../styles/withTheme": [
+  "@material-ui/core/styles/withTheme": [
     {
       "id": 261,
       "name": "./node_modules/@material-ui/core/styles/withTheme.js",
@@ -229,7 +229,7 @@
       "publicPath": "/_next/static/chunks/commons.4a6952f3bf21f63ef3ca.js"
     }
   ],
-  "./assertThisInitialized": [
+  "@babel/runtime/helpers/assertThisInitialized": [
     {
       "id": 339,
       "name": "./node_modules/next/node_modules/@babel/runtime/helpers/assertThisInitialized.js",
@@ -333,7 +333,7 @@
       "publicPath": "/_next/static/chunks/commons.4a6952f3bf21f63ef3ca.js"
     }
   ],
-  "./red": [
+  "../colors/red": [
     {
       "id": 1040,
       "name": "./node_modules/@material-ui/core/colors/red.js",
@@ -397,7 +397,7 @@
       "publicPath": "/_next/static/chunks/commons.4a6952f3bf21f63ef3ca.js"
     }
   ],
-  "./indigo": [
+  "../colors/indigo": [
     {
       "id": 1104,
       "name": "./node_modules/@material-ui/core/colors/indigo.js",
@@ -405,7 +405,7 @@
       "publicPath": "/_next/static/chunks/commons.4a6952f3bf21f63ef3ca.js"
     }
   ],
-  "./pink": [
+  "../colors/pink": [
     {
       "id": 1105,
       "name": "./node_modules/@material-ui/core/colors/pink.js",
@@ -413,7 +413,7 @@
       "publicPath": "/_next/static/chunks/commons.4a6952f3bf21f63ef3ca.js"
     }
   ],
-  "./grey": [
+  "../colors/grey": [
     {
       "id": 1106,
       "name": "./node_modules/@material-ui/core/colors/grey.js",
@@ -421,7 +421,7 @@
       "publicPath": "/_next/static/chunks/commons.4a6952f3bf21f63ef3ca.js"
     }
   ],
-  "./common": [
+  "../colors/common": [
     {
       "id": 1107,
       "name": "./node_modules/@material-ui/core/colors/common.js",

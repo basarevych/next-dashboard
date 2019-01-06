@@ -6872,6 +6872,11 @@ module.exports = {
         background: ["linear-gradient(to bottom right, ".concat(lighten(bgNormal, 0.2), " 0, ").concat(darken(bgNormal, 0.2), " 100%)"), "!important"]
       }
     },
+    MuiAvatar: {
+      root: {
+        borderRadius: 3
+      }
+    },
     MuiTableRow: {
       root: {
         //height: ["100%", "!important"],
@@ -7829,10 +7834,7 @@ var styles = function styles(theme) {
       margin: "1rem 0",
       display: "flex",
       flexDirection: "column",
-      alignItems: "center",
-      "& img": {
-        borderRadius: theme.shape.borderRadius
-      }
+      alignItems: "center"
     },
     item: {
       background: [theme.sidebar.itemBackground, "!important"],

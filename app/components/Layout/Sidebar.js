@@ -46,10 +46,7 @@ const styles = theme => ({
     margin: "1rem 0",
     display: "flex",
     flexDirection: "column",
-    alignItems: "center",
-    "& img": {
-      borderRadius: theme.shape.borderRadius
-    }
+    alignItems: "center"
   },
   item: {
     background: [theme.sidebar.itemBackground, "!important"],

@@ -110,6 +110,11 @@ module.exports = {
         ]
       }
     },
+    MuiAvatar: {
+      root: {
+        borderRadius: 3
+      }
+    },
     MuiTableRow: {
       root: {
         //height: ["100%", "!important"],

@@ -49,8 +49,7 @@ class Auth extends EventEmitter {
       Strategy: require("passport-facebook").Strategy,
       strategyOptions: {
         clientID: this.config.facebookAuthId,
-        clientSecret: this.config.facebookAuthSecret,
-        profileFields: ["id", "displayName", "email", "link"]
+        clientSecret: this.config.facebookAuthSecret
       }
     };
   }
@@ -179,7 +178,9 @@ class Auth extends EventEmitter {
 
       this.passport.use(
         new provider.Strategy(
-          provider.strategyOptions,
+          _.assign({}, provider.strategyOptions, {
+            profileFields: ["id", "displayName", "email", "photos"]
+          }),
           async (req, accessToken, refreshToken, profile, next) => {
             try {
               // load current user

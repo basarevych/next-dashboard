@@ -18,15 +18,13 @@ class AvatarsRoute extends EventEmitter {
 
     this.router = Router();
 
-    this.tickInterval = 60 * 1000;
-    this.fetchInterval = 60;
-    this.selectInterval = 5;
-    this.maxAvatars = 5; // 0 is our profile pic, 1-4 are used in dashboard
+    this.fetchInterval = 60; // minutes
+    this.maxAvatars = 5; // id 0 is our profile pic, id 1-4 are used in dashboard
     this.largeWidth = 160;
     this.smallWidth = 60;
 
-    this.avatars = {};
-    this.selected = [];
+    this.fetchTime = 0;
+    this.avatars = [];
     this.cache = new LRU(50);
     this.anonymous = path.join(
       __dirname,
@@ -37,10 +35,6 @@ class AvatarsRoute extends EventEmitter {
       "img",
       "anonymous.png"
     );
-
-    this.timer = null;
-    this.fetchTime = 0;
-    this.selectTime = 0;
   }
 
   // eslint-disable-next-line lodash/prefer-constant
@@ -48,109 +42,83 @@ class AvatarsRoute extends EventEmitter {
     return "route.avatars";
   }
 
-  /**
-   * Activate route
-   */
   async init() {
     if (this.promise) return this.promise;
 
-    this.promise = new Promise(async (resolve, reject) => {
+    this.promise = Promise.resolve();
+    this.router.get("/avatars/:id", this.getAvatar.bind(this));
+  }
+
+  async randomize() {
+    if (this.fetchPromise) return this.fetchPromise;
+    if (process.env.NODE_ENV !== "test") console.log("> Updating avatar list");
+    this.fetchPromise = new Promise(async (resolve, reject) => {
+      this.avatars = [];
+      let list;
+
       try {
-        this.router.get("/avatars/:id", this.getAvatar.bind(this));
-
-        try {
-          await this.fetch();
-        } catch (error) {
-          console.error(error);
+        let response = await fetch("https://tinyfac.es/api/users");
+        if (response.status === 200) {
+          let data = await response.json();
+          if (!_.isArray(data) || !data.length)
+            throw new Error("Failed to fetch avatars list");
+          list = _.shuffle(data);
         }
+      } catch (error) {
+        console.log(`> ${error.message}`);
+        for (let i = 0; i < this.maxAvatars; i++)
+          this.avatars.push(this.anonymous);
+        return resolve();
+      }
 
-        if (process.env.NODE_ENV !== "test")
-          this.timer = setInterval(this.tick.bind(this), this.tickInterval);
+      try {
+        let used = [];
+        const getRandomAvatar = male => {
+          for (let i = 0; i < list.length; i++) {
+            if (list[i].gender !== (male ? "male" : "female")) continue;
 
-        resolve();
+            if (_.includes(used, i)) continue;
+
+            for (let j = 0; j < list[i].avatars.length; j++) {
+              if (
+                list[i].avatars[j].width >= this.largeWidth &&
+                list[i].avatars[j].height >= this.largeWidth &&
+                Math.abs(
+                  list[i].avatars[j].width - list[i].avatars[j].height
+                ) <= 10
+              ) {
+                used.push(i);
+                return this.avatars.push(list[i].avatars[j].url);
+              }
+            }
+          }
+          this.avatars.push(this.anonymous);
+        };
+
+        getRandomAvatar(true);
+        getRandomAvatar(true);
+        getRandomAvatar(false);
+        getRandomAvatar(true);
+        getRandomAvatar(true);
       } catch (error) {
         reject(error);
       }
-    });
-    return this.promise;
-  }
-
-  /**
-   * Next tick
-   */
-  async tick() {
-    let now = Date.now();
-    try {
-      if (now - this.fetchTime >= this.fetchInterval * this.tickInterval)
-        await this.fetch();
-      else if (now - this.selectTime >= this.selectInterval * this.tickInterval)
-        await this.select();
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  /**
-   *  Fetch avatars
-   */
-  async fetch() {
-    if (process.env.NODE_ENV !== "test") console.log("> Fetching avatar list");
-    let response = await fetch("https://tinyfac.es/api/users");
-    if (response.status === 200) {
-      let data = await response.json();
-      if (_.isArray(data) && data.length) {
+      resolve();
+    }).then(
+      () => {
         this.fetchTime = Date.now();
-        this.avatars = data;
-        await this.select();
+        this.fetchPromise = null;
+      },
+      error => {
+        this.fetchTime = Date.now();
+        this.fetchPromise = null;
+        throw error;
       }
-    }
+    );
+
+    return this.fetchPromise;
   }
 
-  /**
-   * Choose avatars
-   */
-  async select() {
-    if (process.env.NODE_ENV !== "test") console.log("> Updating avatar list");
-
-    this.avatars = _.shuffle(this.avatars);
-    this.selected = [];
-
-    let used = [];
-    const getRandomAvatar = male => {
-      for (let i = 0; i < this.avatars.length; i++) {
-        if (this.avatars[i].gender !== (male ? "male" : "female")) continue;
-
-        if (_.includes(used, i)) continue;
-
-        for (let j = 0; j < this.avatars[i].avatars.length; j++) {
-          if (
-            this.avatars[i].avatars[j].width >= this.largeWidth &&
-            this.avatars[i].avatars[j].height >= this.largeWidth &&
-            Math.abs(
-              this.avatars[i].avatars[j].width -
-                this.avatars[i].avatars[j].height
-            ) <= 10
-          ) {
-            used.push(i);
-            return this.selected.push(this.avatars[i].avatars[j].url);
-          }
-        }
-      }
-      this.selected.push(null);
-    };
-
-    getRandomAvatar(true);
-    getRandomAvatar(true);
-    getRandomAvatar(false);
-    getRandomAvatar(true);
-    getRandomAvatar(true);
-    this.selectTime = Date.now();
-  }
-
-  /**
-   * Get image
-   * @param {string} url
-   */
   async download(url) {
     try {
       let type;
@@ -207,21 +175,24 @@ class AvatarsRoute extends EventEmitter {
         let user = await req.getUser();
         if (user && !_.includes(user.roles, constants.roles.ANONYMOUS)) {
           for (let provider of user.providers) {
-            if (provider.profile.photos && provider.profile.photos.length)
+            if (provider.profile.photos && provider.profile.photos.length) {
               url = provider.profile.photos[0].value;
-            else if (provider.name === constants.oauthProviders.FACEBOOK)
+            } else if (provider.name === constants.oauthProviders.FACEBOOK) {
               url = `https://graph.facebook.com/${
                 provider.profile.id
               }/picture?type=large`;
+            }
             if (url && !_.startsWith(url, "http")) url = null;
             if (url) break;
           }
         } else {
-          url = this.selected[0];
+          url = this.avatars[0];
         }
       } else {
         // random avatar
-        url = this.selected[parseInt(req.params.id)];
+        if (Date.now() - this.fetchTime > this.fetchInterval * 60 * 1000)
+          await this.randomize();
+        url = this.avatars[parseInt(req.params.id)];
       }
 
       if (!url) url = this.anonymous;
