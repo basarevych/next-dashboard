@@ -66,13 +66,16 @@ class Provider extends EventEmitter {
         this.set("_id", this.db.ObjectId(id));
       });
 
-    this.schema.methods.validateField = async function(
+    this.schema.methods.validateField = async function({
       field,
+      path,
       value,
       doThrow = true
-    ) {
+    }) {
+      if (!path) path = field;
+      if (!field) field = path;
       let error;
-      if (_.includes(this.schema.requiredPaths(), field) && !value)
+      if (_.includes(this.schema.requiredPaths(), path) && !value)
         error = { key: field, message: "ERROR_FIELD_REQUIRED" };
       if (error && doThrow) throw new ValidationError([error]);
       return error || false;

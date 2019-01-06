@@ -105,7 +105,7 @@ class AuthRepository extends EventEmitter {
         args.password && (await this.auth.encryptPassword(args.password))
     });
 
-    await user.validateField("password", args.password); // before it is encrypted
+    await user.validateField({ field: "password", value: args.password }); // before it is encrypted
     await user.validate();
     await user.save();
 
@@ -210,7 +210,7 @@ class AuthRepository extends EventEmitter {
     }
     user.name = args.name;
     if (args.password) {
-      await user.validateField("password", args.password); // before it is encrypted
+      await user.validateField({ field: "password", value: args.password }); // before it is encrypted
       user.password = await this.auth.encryptPassword(args.password);
     }
 
