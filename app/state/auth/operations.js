@@ -152,7 +152,7 @@ export const signUp = ({ email, password }) => async dispatch => {
           _.merge(result, error.details);
         else result._error = (result._error || []).concat([error.message]);
       }
-      if (!_.keys(result).length) result = { _error: "OPERATION_FAILED" };
+      if (!_.keys(result).length) result = { _error: "APP_AUTH_EMAIL_TAKEN" };
     }
   } catch (error) {
     console.error(error);

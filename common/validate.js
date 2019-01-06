@@ -1,15 +1,15 @@
 "use strict";
 
+const tokenize = require("./tokenize");
 const validator = require("validator");
+//let allCountries, iso2Lookup;
 const { allCountries, iso2Lookup } = require("country-telephone-data");
 
 /**
  * Validation function for Redux Form
  * takes input like "rule1:param1:param2|rule2:param1:param2|..."
  *
- * re:regexp:flags:key        value should match the regular expression "regexp", second param is flags,
- *                            third param is custom translation key used for the error message
- *                            when ":" is needed in the regexp it should be escaped like this "\\:"
+ * re:regexp:flags            value should match the regular expression "regexp" with "flags"
  * required                   value is required
  * required:otherField        value is required if otherField is not empty
  * phone                      value is a phone number
@@ -20,29 +20,19 @@ const { allCountries, iso2Lookup } = require("country-telephone-data");
  * credit_card:secret         value is credit card CVV2 code
  * match:otherField           value should be the same as the value of otherField
  */
+
 module.exports = function validate(props, options, value, allValues) {
   let rules = {};
-  for (let rule of _.split(options, "|")) {
-    let params = _.split(_.trim(rule), ":");
+  for (let rule of tokenize(options, "\\", "|")) {
+    let params = tokenize(rule, "\\", ":");
+    if (!params.length) continue;
+    let msg;
+    if (params[0][0] === "!") msg = params.shift().slice(1);
     let command = params.shift();
-    if (command !== "re") {
-      rules[command] = params;
-    } else {
-      rules[command] = [];
-      let line = params.join(":");
-      let found = false;
-      for (let i = 0; i < line.length; i++) {
-        if (line[i] === ":" && (i > 0 || line[i - 1] !== "\\")) {
-          rules[command].push(line.slice(0, i));
-          rules[command] = rules[command].concat(
-            _.split(line.slice(i + 1), ":")
-          );
-          found = true;
-          break;
-        }
-      }
-      if (!found) rules[command] = params;
-    }
+    rules[command] = {
+      msg,
+      params
+    };
   }
 
   value = _.isUndefined(value) ? "" : _.toString(value);
@@ -55,8 +45,12 @@ module.exports = function validate(props, options, value, allValues) {
       // optional first param is the name of other field that should
       // be non-empty for this to be triggered, always triggered otherwise
       let failed = true;
-      if (allValues && rules.required.length && rules.required[0]) {
-        let other = allValues.get(rules.required[0]);
+      if (
+        allValues &&
+        rules.required.params.length &&
+        rules.required.params[0]
+      ) {
+        let other = allValues.get(rules.required.params[0]);
         if (!other || !other.length) failed = false;
       }
       if (failed) errors.push("ERROR_FIELD_REQUIRED");
@@ -70,17 +64,20 @@ module.exports = function validate(props, options, value, allValues) {
       let normalized;
       switch (command) {
         case "re":
-          tmp = new RegExp(rules[command][0], rules[command][1] || undefined);
+          tmp = new RegExp(
+            rules[command].params[0],
+            rules[command].params[1] || undefined
+          );
           success = value.match(tmp);
           if (!success)
-            errors.push(rules[command][2] || "ERROR_INVALID_PATTERN");
+            errors.push(rules[command].msg || "ERROR_INVALID_PATTERN");
           break;
         case "phone":
           // validate phone number in international format
           if (!validator.isEmpty(value)) {
             normalized = _.replace(value, /[^0-9]+/g, "");
             if (normalized.length !== 12) {
-              errors.push("ERROR_INVALID_PHONE");
+              errors.push(rules[command].msg || "ERROR_INVALID_PHONE");
             } else {
               search =
                 allCountries &&
@@ -89,37 +86,44 @@ module.exports = function validate(props, options, value, allValues) {
               if (search && search.dialCode)
                 success = _.startsWith(normalized, search.dialCode);
               else success = true;
-              if (!success) errors.push("ERROR_INVALID_PHONE_COUNTRY");
+              if (!success) {
+                errors.push(
+                  rules[command].msg || "ERROR_INVALID_PHONE_COUNTRY"
+                );
+              }
             }
           }
           break;
         case "email":
           // validate email
-          if (!validator.isEmpty(value) && !validator.isEmail(value))
-            errors.push("ERROR_INVALID_EMAIL");
+          if (!validator.isEmail(value))
+            errors.push(rules[command].msg || "ERROR_INVALID_EMAIL");
           break;
         case "password":
           // validate password, first param is password length (6 by default)
-          if (
-            value.length < ((rules[command].length && rules[command][0]) || 6)
-          ) {
-            errors.push("ERROR_INVALID_PASSWORD");
-          }
+          tmp = (rules[command].params.length && rules[command].params[0]) || 6;
+          if (value.length < tmp)
+            errors.push(rules[command].msg || "ERROR_INVALID_PASSWORD");
           break;
         case "credit_card":
           // validate credit card attribute set by first param ("number", "date" or "secret")
           normalized = _.replace(value, /[^0-9]+/g, "");
-          switch (rules[command].length && rules[command][0]) {
+          switch (rules[command].params.length && rules[command].params[0]) {
             case "number":
               if (
                 normalized.length !== 16 ||
                 !validator.isCreditCard(normalized)
-              )
-                errors.push("ERROR_INVALID_CREDIT_CARD_NUMBER");
+              ) {
+                errors.push(
+                  rules[command].msg || "ERROR_INVALID_CREDIT_CARD_NUMBER"
+                );
+              }
               break;
             case "date":
               if (normalized.length !== 4) {
-                errors.push("ERROR_INVALID_CREDIT_CARD_DATE");
+                errors.push(
+                  rules[command].msg || "ERROR_INVALID_CREDIT_CARD_DATE"
+                );
               } else {
                 tmp = [
                   parseInt(normalized.slice(0, 2)),
@@ -129,21 +133,27 @@ module.exports = function validate(props, options, value, allValues) {
                   tmp[0] < 1 ||
                   tmp[0] > 12 ||
                   tmp[1] < new Date().getFullYear() - 2000
-                )
-                  errors.push("ERROR_INVALID_CREDIT_CARD_DATE");
+                ) {
+                  errors.push(
+                    rules[command].msg || "ERROR_INVALID_CREDIT_CARD_DATE"
+                  );
+                }
               }
               break;
             case "secret":
-              if (normalized.length !== 3)
-                errors.push("ERROR_INVALID_CREDIT_CARD_SECRET");
+              if (normalized.length !== 3) {
+                errors.push(
+                  rules[command].msg || "ERROR_INVALID_CREDIT_CARD_SECRET"
+                );
+              }
               break;
           }
           break;
         case "match":
           // this rule is triggered when field set by first param has other value than this one
-          tmp = rules[command].length && rules[command][0];
+          tmp = rules[command].params.length && rules[command].params[0];
           if (tmp && allValues && allValues.get(tmp) !== value)
-            errors.push("ERROR_MISMATCHED_VALUES");
+            errors.push(rules[command].msg || "ERROR_MISMATCHED_VALUES");
           break;
       }
     }

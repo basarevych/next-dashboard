@@ -100,6 +100,7 @@
   "APP_AUTH_SERVICE_BUTTON": "Sign In with",
   "APP_AUTH_SUBMIT": "Sign In",
   "APP_AUTH_FAILED": "Invalid credentials",
+  "APP_AUTH_EMAIL_TAKEN": "This email is already registered",
   "OPERATION_FAILED": "Operation failed",
   "ERROR_FIELD_REQUIRED": "This field is required",
   "ERROR_INVALID_PATTERN": "Please provide a valid value",

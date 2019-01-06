@@ -1,4 +1,5 @@
 const EventEmitter = require("events");
+const ValidationError = require("../Errors/ValidationError");
 
 class Provider extends EventEmitter {
   constructor(db) {
@@ -21,16 +22,6 @@ class Provider extends EventEmitter {
   static get $lifecycle() {
     return "singleton";
   }
-
-  /*
-  validate(field, value, allValues, callback) {
-    let rules = fields[field];
-    if (!rules || !rules.validate) return callback(true);
-    let errors = validate({}, rules.validate, value, fromJS(allValues));
-    if (!errors.length) return callback(true);
-    return callback(false, errors.length === 1 ? errors[0] : errors);
-  }
-  */
 
   async init() {
     if (this.promise) return this.promise;
@@ -74,6 +65,18 @@ class Provider extends EventEmitter {
       .set(function(id) {
         this.set("_id", this.db.ObjectId(id));
       });
+
+    this.schema.methods.validateField = async function(
+      field,
+      value,
+      doThrow = true
+    ) {
+      let error;
+      if (_.includes(this.schema.requiredPaths(), field) && !value)
+        error = { key: field, message: "ERROR_FIELD_REQUIRED" };
+      if (error && doThrow) throw new ValidationError([error]);
+      return error || false;
+    };
 
     this.schema.methods.toSanitizedObject = function() {
       return this.toObject({

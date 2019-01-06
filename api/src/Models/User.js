@@ -1,5 +1,6 @@
 const { fromJS } = require("immutable");
 const EventEmitter = require("events");
+const ValidationError = require("../Errors/ValidationError");
 const constants = require("../../../common/constants");
 const fields = require("../../../common/forms/user");
 const validate = require("../../../common/validate");
@@ -43,6 +44,13 @@ class UserSchema extends EventEmitter {
         await this.provider.init();
 
         const self = this;
+        const validateFactory = field => ({
+          isAsync: true,
+          validator: function(value, callback) {
+            return self.validate(field, value, this.toObject(), callback);
+          }
+        });
+
         this.schema = new this.db.mongoose.Schema({
           _id: {
             type: this.db.mongoose.Schema.Types.ObjectId,
@@ -51,64 +59,50 @@ class UserSchema extends EventEmitter {
           whenCreated: {
             type: Date,
             default: Date.now,
-            required: [true, "ERROR_FIELD_REQUIRED"]
+            required: [true, "ERROR_FIELD_REQUIRED"],
+            validate: validateFactory("whenCreated")
           },
           whenUpdated: {
             type: Date,
             default: Date.now,
-            required: [true, "ERROR_FIELD_REQUIRED"]
+            required: [true, "ERROR_FIELD_REQUIRED"],
+            validate: validateFactory("whenUpdated")
           },
           email: {
             type: String,
             required: [true, "ERROR_FIELD_REQUIRED"],
-            validate: {
-              isAsync: true,
-              validator: function(value, callback) {
-                return self.validate("email", value, this.toObject(), callback);
-              }
-            }
+            validate: validateFactory("email")
           },
           emailToken: {
-            type: String
+            type: String,
+            validate: validateFactory("emailToken")
           },
           isEmailVerified: {
             type: Boolean,
-            default: false
+            default: false,
+            validate: validateFactory("isEmailVerified")
           },
           password: {
             type: String,
             required: [true, "ERROR_FIELD_REQUIRED"],
-            validate: {
-              isAsync: true,
-              validator: function(value, callback) {
-                return self.validate(
-                  "password",
-                  value,
-                  this.toObject(),
-                  callback
-                );
-              }
-            }
+            validate: validateFactory("password")
           },
           name: {
             type: String,
-            validate: {
-              isAsync: true,
-              validator: function(value, callback) {
-                return self.validate("name", value, this.toObject(), callback);
-              }
-            }
+            validate: validateFactory("name")
           },
           roles: {
             type: [String],
             enum: _.values(constants.roles),
             default: [],
-            required: [true, "ERROR_FIELD_REQUIRED"]
+            required: [true, "ERROR_FIELD_REQUIRED"],
+            validate: validateFactory("roles")
           },
           providers: {
             type: [this.provider.schema],
             default: [],
-            required: [true, "ERROR_FIELD_REQUIRED"]
+            required: [true, "ERROR_FIELD_REQUIRED"],
+            validate: validateFactory("providers")
           }
         });
 
@@ -120,6 +114,37 @@ class UserSchema extends EventEmitter {
           .set(function(id) {
             this.set("_id", this.db.ObjectId(id));
           });
+
+        this.schema.methods.validateField = async function(
+          field,
+          value,
+          doThrow = true
+        ) {
+          let error;
+          if (_.includes(this.schema.requiredPaths(), field) && !value) {
+            error = { key: field, message: "ERROR_FIELD_REQUIRED" };
+          } else {
+            const rules = fields[field];
+            if (rules && rules.validate) {
+              const obj = this.toObject();
+              const fieldErrors = validate(
+                {},
+                rules.validate,
+                value,
+                fromJS(obj)
+              );
+              if (fieldErrors.length) {
+                error = {
+                  key: field,
+                  message:
+                    fieldErrors.length === 1 ? fieldErrors[0] : fieldErrors
+                };
+              }
+            }
+          }
+          if (error && doThrow) throw new ValidationError([error]);
+          return error || false;
+        };
 
         this.schema.methods.toSanitizedObject = function() {
           return this.toObject({

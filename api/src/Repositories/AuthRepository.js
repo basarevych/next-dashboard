@@ -93,7 +93,8 @@ class AuthRepository extends EventEmitter {
   async signUp(context, args) {
     debug("signUp");
 
-    let success = false;
+    if (await this.db.UserModel.findOne({ email: args.email }))
+      return { success: false };
 
     if (await context.getUser()) await this.auth.signOut(context);
 
@@ -104,9 +105,11 @@ class AuthRepository extends EventEmitter {
         args.password && (await this.auth.encryptPassword(args.password))
     });
 
+    await user.validateField("password", args.password); // before it is encrypted
     await user.validate();
     await user.save();
 
+    let success = false;
     if (user) {
       await this.auth.sendVerificationEmail(
         context,
@@ -206,8 +209,10 @@ class AuthRepository extends EventEmitter {
       user.isEmailVerified = false;
     }
     user.name = args.name;
-    if (args.password)
+    if (args.password) {
+      await user.validateField("password", args.password); // before it is encrypted
       user.password = await this.auth.encryptPassword(args.password);
+    }
 
     await user.validate();
     await user.save();

@@ -1,6 +1,8 @@
 "use strict";
 
+const tokenize = require("./tokenize");
 const validator = require("validator");
+//let allCountries, iso2Lookup;
 const { allCountries, iso2Lookup } = require("country-telephone-data");
 
 /**
@@ -26,8 +28,9 @@ module.exports = function normalize(
   /* prevAllValues */
 ) {
   let rules = {};
-  for (let rule of _.split(options, "|")) {
-    let params = _.split(_.trim(rule), ":");
+  for (let rule of tokenize(options, "\\", "|")) {
+    let params = tokenize(rule, "\\", ":");
+    if (!params.length) continue;
     let command = params.shift();
     rules[command] = params;
   }
@@ -38,12 +41,11 @@ module.exports = function normalize(
     let i;
     let tmp;
     let search;
-    let isLongBreak;
+    let isLongBreak = !!result.match(/\r\n/);
     switch (command) {
       case "trim":
         // trims the input, no params
         tmp = [];
-        isLongBreak = !!result.match(/\r\n/);
         for (let line of _.split(_.trim(result), /\r\n?|\n/g))
           tmp.push(_.trim(line));
         result = tmp.join(isLongBreak ? "\r\n" : "\n");
@@ -52,7 +54,6 @@ module.exports = function normalize(
         // with "spaces" param compacts spaces into single space preserving new lines
         if (_.includes(rules[command], "spaces")) {
           tmp = [];
-          isLongBreak = !!result.match(/\r\n/);
           for (let line of _.split(result, /\r\n?|\n/g))
             tmp.push(_.replace(line, /\s+/g, " "));
           result = tmp.join(isLongBreak ? "\r\n" : "\n");
@@ -62,7 +63,6 @@ module.exports = function normalize(
         // with "spaces" param removes spaces inside the line preveserving new lines
         if (_.includes(rules[command], "spaces")) {
           tmp = [];
-          isLongBreak = !!result.match(/\r\n/);
           for (let line of _.split(result, /\r\n?|\n/g))
             tmp.push(_.replace(line, /\s+/g, ""));
           result = tmp.join(isLongBreak ? "\r\n" : "\n");
@@ -71,7 +71,6 @@ module.exports = function normalize(
       case "rows":
         // first param is the number of rows in the result (defaults to 1)
         tmp = _.split(result, /\r\n?|\n/g);
-        isLongBreak = !!result.match(/\r\n/);
         result = "";
         for (i = 0; i < tmp.length; i++) {
           if (

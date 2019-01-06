@@ -51,6 +51,7 @@ class UsersRepository extends EventEmitter {
       roles: args.roles || []
     });
 
+    await target.validateField("password", args.password); // before it is encrypted
     await target.validate();
     await target.save();
     context.preCachePages({ path: "/users" }).catch(console.error);
@@ -68,8 +69,10 @@ class UsersRepository extends EventEmitter {
     if (!target) return { success: false };
 
     target.email = args.email;
-    if (args.password)
+    if (args.password) {
+      await target.validateField("password", args.password); // before it is encrypted
       target.password = await this.auth.encryptPassword(args.password);
+    }
     target.roles = args.roles;
 
     await target.validate();
