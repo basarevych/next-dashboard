@@ -87,12 +87,12 @@ module.exports = {
     }
   },
   depts: {
-    prod: "DASHBOARD_PRODUCTION_LABEL",
-    rd: "DASHBOARD_RD_LABEL",
-    purch: "DASHBOARD_PURCHASING_LABEL",
-    market: "DASHBOARD_MARKETING_LABEL",
-    hr: "DASHBOARD_HR_LABEL",
-    acc: "DASHBOARD_ACCOUNTING_LABEL"
+    PRODUCTION: "PRODUCTION",
+    RD: "RD",
+    PURCHASING: "PURCHASING",
+    MARKETING: "MARKETING",
+    HR: "HR",
+    ACCOUNTING: "ACCOUNTING"
   },
   tableUrl: "https://jsonplaceholder.typicode.com/photos",
   messages: {

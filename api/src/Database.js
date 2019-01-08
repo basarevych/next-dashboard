@@ -3,12 +3,13 @@ const EventEmitter = require("events");
 const constants = require("../../common/constants");
 
 class Database extends EventEmitter {
-  constructor(app, config, di) {
+  constructor(app, config, di, fake) {
     super();
 
     this.app = app;
     this.config = config;
     this.di = di;
+    this.fake = fake;
 
     this.mongoose = mongoose;
     this.mongoose.Promise = global.Promise;
@@ -22,7 +23,7 @@ class Database extends EventEmitter {
 
   // eslint-disable-next-line lodash/prefer-constant
   static get $requires() {
-    return ["app", "config", "di"];
+    return ["app", "config", "di", "fake"];
   }
 
   // eslint-disable-next-line lodash/prefer-constant
@@ -35,15 +36,17 @@ class Database extends EventEmitter {
 
     this.promise = new Promise(async (resolve, reject) => {
       try {
-        const provider = this.di.get("model.provider");
-        await provider.init();
-        this.ProviderSchema = provider.schema;
-        this.ProviderModel = provider.model;
+        const Provider = this.di.get("model.provider");
+        this.ProviderSchema = Provider.schema;
+        this.ProviderModel = Provider.model;
 
-        const user = this.di.get("model.user");
-        await user.init();
-        this.UserSchema = user.schema;
-        this.UserModel = user.model;
+        const User = this.di.get("model.user");
+        this.UserSchema = User.schema;
+        this.UserModel = User.model;
+
+        const Employee = this.di.get("model.employee");
+        this.EmployeeSchema = Employee.schema;
+        this.EmployeeModel = Employee.model;
 
         this.mongoose.connect(
           this.app.config.mongoUrl,
@@ -92,6 +95,22 @@ class Database extends EventEmitter {
         await this.anonymous.validate();
         await this.anonymous.save();
         console.log("> Anonymous user created");
+      }
+
+      // eslint-disable-next-line lodash/prefer-lodash-method
+      let count = await this.EmployeeModel.find().count();
+      if (!count) {
+        this.employees = [];
+        let usedNames = [];
+        for (let dept of _.keys(constants.depts)) {
+          let max = this.fake.getInt(60, 200);
+          for (let i = 0; i < max; i++) {
+            let employee = new this.EmployeeModel(
+              this.fake.createEmployee(usedNames, dept)
+            );
+            await employee.save();
+          }
+        }
       }
     });
 

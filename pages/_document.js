@@ -28,15 +28,15 @@ class MyDocument extends Document {
     // 4. page.render
 
     // Render app and page and get the context of the page with collected side effects.
-    let pageContext;
+    let materialContext;
     const page = await ctx.renderPage(Component => {
       const WrappedComponent = props => {
-        pageContext = props.pageContext;
+        materialContext = props.materialContext;
         return <Component {...props} />;
       };
 
       WrappedComponent.propTypes = {
-        pageContext: PropTypes.object.isRequired
+        materialContext: PropTypes.object.isRequired
       };
 
       return WrappedComponent;
@@ -44,7 +44,7 @@ class MyDocument extends Document {
 
     return {
       ...page,
-      pageContext,
+      materialContext,
       // Styles fragment is rendered after the app and page rendering finish.
       styles: (
         <React.Fragment>
@@ -52,7 +52,8 @@ class MyDocument extends Document {
             id="jss-server-side"
             // eslint-disable-next-line react/no-danger
             dangerouslySetInnerHTML={{
-              __html: pageContext && pageContext.sheetsRegistry.toString()
+              __html:
+                materialContext && materialContext.sheetsRegistry.toString()
             }}
           />
           {flush() || null}
@@ -75,8 +76,8 @@ class MyDocument extends Document {
           <meta
             name="theme-color"
             content={
-              this.props.pageContext &&
-              this.props.pageContext.theme.palette.primary.main
+              this.props.materialContext &&
+              this.props.materialContext.theme.palette.primary.main
             }
           />
           <link rel="shortcut icon" href="/favicon.ico" />

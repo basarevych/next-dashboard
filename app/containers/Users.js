@@ -13,7 +13,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onLoad: () => dispatch(usersOperations.load()),
     onCreate: () => dispatch(usersOperations.showEditModal()),
     onEdit: () => dispatch(usersOperations.editFirstSelected()),
     onDelete: userId => dispatch(usersOperations.remove({ id: userId })),

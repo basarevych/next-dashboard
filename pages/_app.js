@@ -7,10 +7,10 @@ import { create as createJss } from "jss";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import jssExtend from "jss-extend";
 import JssProvider from "react-jss/lib/JssProvider";
-import getPageContext from "../app/lib/pageContext";
 import serialize from "../common/serialize";
 import deserialize from "../common/deserialize";
-import getStore from "../app/state/store";
+import getMaterialContext from "../app/lib/getMaterialContext";
+import getReduxStore from "../app/lib/getReduxStore";
 import { appOperations, appSelectors } from "../app/state/app";
 import { authSelectors } from "../app/state/auth";
 import constants from "../common/constants";
@@ -24,17 +24,17 @@ const jss = createJss({ plugins: [...jssPreset().plugins, jssExtend()] });
 
 class MyApp extends App {
   static async getInitialProps({ Component, ctx }) {
-    let { isCreated, store } = getStore();
+    let { isCreated, store } = getReduxStore();
 
     ctx.store = store;
     const { req, res, err, query } = ctx;
 
     if (isCreated) {
+      const cookie = req && req.header("Cookie");
+      const status = req && req.getAuthStatus && (await req.getAuthStatus());
+      const googleMapsKey = query && query.googleMapsKey;
       await store.dispatch(
-        appOperations.create({
-          status: req && req.getAuthStatus && (await req.getAuthStatus()),
-          googleMapsKey: query && query.googleMapsKey
-        })
+        appOperations.create({ cookie, status, googleMapsKey })
       );
     }
 
@@ -58,16 +58,18 @@ class MyApp extends App {
   constructor(props) {
     super(props);
 
-    let { store } = getStore(deserialize(props.state));
-    this.store = store;
+    let { store } = getReduxStore(deserialize(props.state));
+    this.reduxStore = store;
 
-    store.dispatch(appOperations.init());
+    store.dispatch(appOperations.init()).catch(console.error);
 
-    let locale = props.locale;
-    if (!locale) locale = appSelectors.getLocale(store.getState());
-    store.dispatch(appOperations.setLocale({ locale: locale }));
+    if (props.locale !== appSelectors.getLocale(store.getState())) {
+      store
+        .dispatch(appOperations.setLocale({ locale: props.locale }))
+        .catch(console.error);
+    }
 
-    this.pageContext = getPageContext(props.theme);
+    this.materialContext = getMaterialContext(props.theme);
   }
 
   componentDidMount() {
@@ -79,12 +81,17 @@ class MyApp extends App {
 
       Router.onRouteChangeStart = url => {
         if (window.location.href === "/") return;
-        if (!isRouteAllowed(url, authSelectors.getRoles(this.store.getState())))
+        if (
+          !isRouteAllowed(
+            url,
+            authSelectors.getRoles(this.reduxStore.getState())
+          )
+        )
           window.location.href = "/";
       };
 
       setTimeout(() =>
-        this.store
+        this.reduxStore
           .dispatch(appOperations.start())
           .catch(error => console.error(error))
       );
@@ -100,21 +107,24 @@ class MyApp extends App {
 
     return (
       <Container>
-        <Provider store={this.store}>
+        <Provider store={this.reduxStore}>
           <IntlProvider>
             <DateProvider>
               <JssProvider
                 jss={jss}
-                registry={this.pageContext.sheetsRegistry}
-                generateClassName={this.pageContext.generateClassName}
+                registry={this.materialContext.sheetsRegistry}
+                generateClassName={this.materialContext.generateClassName}
               >
                 <MuiThemeProvider
-                  theme={this.pageContext.theme}
-                  sheetsManager={this.pageContext.sheetsManager}
+                  theme={this.materialContext.theme}
+                  sheetsManager={this.materialContext.sheetsManager}
                 >
                   <CssBaseline />
                   <Layout title={title}>
-                    <Component {...pageProps} pageContext={this.pageContext} />
+                    <Component
+                      {...pageProps}
+                      materialContext={this.materialContext}
+                    />
                   </Layout>
                 </MuiThemeProvider>
               </JssProvider>

@@ -25,6 +25,6 @@ module.exports = api => {
         }
       ]
     ],
-    plugins: ["lodash"]
+    plugins: ["relay", "lodash"]
   };
 };

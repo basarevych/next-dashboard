@@ -5,12 +5,13 @@ const constants = require("../../../common/constants");
  * REST API
  */
 class Routes extends EventEmitter {
-  constructor(build, csrf, auth, avatars, redirect, sitemap) {
+  constructor(build, csrf, status, auth, avatars, redirect, sitemap) {
     super();
 
     this.routes = {
       build,
       csrf,
+      status,
       auth,
       avatars,
       redirect,
@@ -28,6 +29,7 @@ class Routes extends EventEmitter {
     return [
       "route.build",
       "route.csrf",
+      "route.status",
       "route.auth",
       "route.avatars",
       "route.redirect",

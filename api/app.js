@@ -13,11 +13,12 @@ const styles = require("../common/themes");
 const l10n = require("../common/locales");
 
 require("dotenv").config({ path: path.join(__dirname, "..", "/.env") });
-if (!process.env.NODE_ENV) process.env.NODE_ENV = "production";
 
 let appHost = process.env.APP_HOST || "0.0.0.0";
 let appPort = parseInt(process.env.APP_PORT, 10) || 3000;
 let appOrigins = process.env.APP_ORIGINS;
+let appInnerServer =
+  process.env.APP_INNER_SERVER || `http://localhost:${appPort}`;
 let appStatic = process.env.APP_STATIC || "";
 let appTrustProxy = process.env.APP_TRUST_PROXY === "true" ? 1 : 0;
 let appOnlineUsers = parseInt(process.env.APP_ONLINE_USERS, 10) || 50;
@@ -40,6 +41,10 @@ let googleAuthSecret = process.env.GOOGLE_AUTH_SECRET;
 let twitterAuthKey = process.env.TWITTER_AUTH_KEY;
 let twitterAuthSecret = process.env.TWITTER_AUTH_SECRET;
 let googleMapsKey = process.env.GOOGLE_MAPS_KEY;
+
+if (!process.env.NODE_ENV) process.env.NODE_ENV = "production";
+if (!process.env.APP_INNER_SERVER)
+  process.env.APP_INNER_SERVER = appInnerServer;
 
 /**
  * The application
@@ -73,6 +78,7 @@ class App {
       appHost,
       appPort,
       appOrigins,
+      appInnerServer,
       appStatic,
       appTrustProxy,
       appOnlineUsers,
@@ -96,24 +102,28 @@ class App {
       googleMapsKey
     };
 
-    this.di = new Injectt();
-    this.di.registerInstance(this, "app");
-    this.di.registerInstance(this.config, "config");
-
+    // Express
     this.express = express();
     this.express.set("port", this.config.appPort);
     this.express.set("trust proxy", this.config.appTrustProxy);
-  }
 
-  async init({ server }) {
-    this.server = server;
+    // Dependency injection container
+    this.di = new Injectt();
     this.di.load(path.resolve(__dirname, "src"));
+    this.di.registerInstance(this, "app");
+    this.di.registerInstance(this.config, "config");
 
-    // Create and initialize the store
+    // Redux store
     this.store = getStore();
     this.di.registerInstance(this.store, "store");
     this.di.registerInstance(this.store.getState.bind(this.store), "getState");
     this.di.registerInstance(this.store.dispatch.bind(this.store), "dispatch");
+  }
+
+  async init({ server }) {
+    this.server = server;
+
+    // Initialize the store
     await this.store.dispatch(
       appOperations.init({
         di: this.di

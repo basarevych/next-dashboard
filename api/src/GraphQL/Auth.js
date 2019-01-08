@@ -1,9 +1,12 @@
 const EventEmitter = require("events");
+const { GraphQLString, GraphQLBoolean } = require("graphql");
+const { mutationWithClientMutationId } = require("graphql-relay");
 
 class Auth extends EventEmitter {
-  constructor(authRepo) {
+  constructor(di, authRepo) {
     super();
 
+    this.di = di;
     this.authRepo = authRepo;
   }
 
@@ -14,33 +17,151 @@ class Auth extends EventEmitter {
 
   // eslint-disable-next-line lodash/prefer-constant
   static get $requires() {
-    return ["repository.auth"];
+    return ["di", "repository.auth"];
   }
 
-  async gql() {
-    return {
-      Query: {
-        status: async (parent, args, context) =>
-          this.authRepo.getStatus(context, args)
+  // eslint-disable-next-line lodash/prefer-constant
+  idFetcher() {
+    return null;
+  }
+
+  // eslint-disable-next-line lodash/prefer-constant
+  typeResolver() {
+    return null;
+  }
+
+  init() {
+    this.query = {};
+
+    this.GraphQLSignInMutation = mutationWithClientMutationId({
+      name: "SignIn",
+      inputFields: {
+        email: { type: GraphQLString },
+        password: { type: GraphQLString }
       },
-      Mutation: {
-        signIn: async (parent, args, context) =>
-          this.authRepo.signIn(context, args),
-        signUp: async (parent, args, context) =>
-          this.authRepo.signUp(context, args),
-        signOut: async (parent, args, context) =>
-          this.authRepo.signOut(context, args),
-        requestEmailVerification: async (parent, args, context) =>
-          this.authRepo.requestEmailVerification(context, args),
-        verifyEmail: async (parent, args, context) =>
-          this.authRepo.verifyEmail(context, args),
-        unlinkProvider: async (parent, args, context) =>
-          this.authRepo.unlinkProvider(context, args),
-        updateProfile: async (parent, args, context) =>
-          this.authRepo.updateProfile(context, args),
-        deleteProfile: async (parent, args, context) =>
-          this.authRepo.deleteProfile(context, args)
+      outputFields: {
+        success: {
+          type: GraphQLBoolean,
+          resolve: ({ success }) => ({ success })
+        }
+      },
+      mutateAndGetPayload: async (args, context) =>
+        await this.authRepo.signIn(context, args)
+    });
+
+    this.GraphQLSignUpMutation = mutationWithClientMutationId({
+      name: "SignUp",
+      inputFields: {
+        email: { type: GraphQLString },
+        password: { type: GraphQLString }
+      },
+      outputFields: {
+        success: {
+          type: GraphQLBoolean,
+          resolve: ({ success }) => ({ success })
+        }
+      },
+      mutateAndGetPayload: async (args, context) =>
+        await this.authRepo.signUp(context, args)
+    });
+
+    this.GraphQLSignOutMutation = mutationWithClientMutationId({
+      name: "SignOut",
+      inputFields: {},
+      outputFields: {
+        success: {
+          type: GraphQLBoolean,
+          resolve: ({ success }) => ({ success })
+        }
+      },
+      mutateAndGetPayload: async (args, context) =>
+        await this.authRepo.signOut(context, args)
+    });
+
+    this.GraphQLRequestEmailVerificationMutation = mutationWithClientMutationId(
+      {
+        name: "RequestEmailVerification",
+        inputFields: {},
+        outputFields: {
+          success: {
+            type: GraphQLBoolean,
+            resolve: ({ success }) => ({ success })
+          }
+        },
+        mutateAndGetPayload: async (args, context) =>
+          await this.authRepo.requestEmailVerification(context, args)
       }
+    );
+
+    this.GraphQLVerifyEmailMutation = mutationWithClientMutationId({
+      name: "VerifyEmail",
+      inputFields: {
+        emailToken: { type: GraphQLString }
+      },
+      outputFields: {
+        success: {
+          type: GraphQLBoolean,
+          resolve: ({ success }) => ({ success })
+        }
+      },
+      mutateAndGetPayload: async (args, context) =>
+        await this.authRepo.verifyEmail(context, args)
+    });
+
+    this.GraphQLUnlinkProviderMutation = mutationWithClientMutationId({
+      name: "UnlinkProvider",
+      inputFields: {
+        provider: { type: GraphQLString }
+      },
+      outputFields: {
+        success: {
+          type: GraphQLBoolean,
+          resolve: ({ success }) => ({ success })
+        }
+      },
+      mutateAndGetPayload: async (args, context) =>
+        await this.authRepo.unlinkProvider(context, args)
+    });
+
+    this.GraphQLUpdateProfileMutation = mutationWithClientMutationId({
+      name: "UpdateProfile",
+      inputFields: {
+        email: { type: GraphQLString },
+        name: { type: GraphQLString },
+        password: { type: GraphQLString }
+      },
+      outputFields: {
+        success: {
+          type: GraphQLBoolean,
+          resolve: ({ success }) => ({ success })
+        }
+      },
+      mutateAndGetPayload: async (args, context) =>
+        await this.authRepo.updateProfile(context, args)
+    });
+
+    this.GraphQLDeleteProfileMutation = mutationWithClientMutationId({
+      name: "DeleteProfile",
+      inputFields: {},
+      outputFields: {
+        success: {
+          type: GraphQLBoolean,
+          resolve: ({ success }) => ({ success })
+        }
+      },
+      mutateAndGetPayload: async (args, context) =>
+        await this.authRepo.deleteProfile(context, args)
+    });
+
+    this.mutation = {
+      signIn: this.GraphQLSignInMutation,
+      signUp: this.GraphQLSignUpMutation,
+      signOut: this.GraphQLSignOutMutation,
+      requestEmailVerification: this.GraphQLRequestEmailVerificationMutation,
+      verifyEmail: this.GraphQLVerifyEmailMutation,
+      unlinkProvider: this.GraphQLUnlinkProviderMutation,
+      updateProfile: this.GraphQLUpdateProfileMutation,
+      deleteProfile: this.GraphQLDeleteProfileMutation
     };
   }
 }

@@ -5,7 +5,7 @@ import l10n from "../../../common/locales";
 /* State Shape
 Map({
   created: Number, // timestamp
-  di: DiContainer,
+  di: Injectt,
   locale: String,
   statusCode: Number, // current HTTP status code
   isStarted: Boolean,

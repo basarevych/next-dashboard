@@ -18,30 +18,6 @@ export const editFirstSelected = () => async (dispatch, getState) => {
   }
 };
 
-export const load = ({ req } = {}) => async dispatch => {
-  let users;
-  if (req) {
-    users = await req.di.get("repository.users").getUsers(req);
-  } else {
-    let response = await dispatch(
-      appOperations.gqlQuery(
-        `
-          query {
-            users {
-              id
-              name
-              email
-              roles
-            }
-          }
-        `
-      )
-    );
-    users = response && _.get(response, "data.users");
-  }
-  await dispatch(actions.setList({ list: users }));
-};
-
 export const create = ({
   name,
   email,

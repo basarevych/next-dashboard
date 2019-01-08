@@ -1,3 +1,1 @@
-import ErrorPage from "../../app/components/Pages/Auth/ErrorPage";
-
-export default ErrorPage;
+export { default } from "../../app/components/Pages/Auth/ErrorPage";

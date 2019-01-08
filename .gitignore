@@ -1,3 +1,5 @@
 node_modules/
 .tmp/
+**/__generated__/
+api/schema.graphql
 .env

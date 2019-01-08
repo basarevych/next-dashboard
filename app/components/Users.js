@@ -49,7 +49,6 @@ class Users extends React.Component {
     users: PropTypes.instanceOf(List).isRequired,
     isAllSelected: PropTypes.bool.isRequired,
     isAllDeselected: PropTypes.bool.isRequired,
-    onLoad: PropTypes.func.isRequired,
     onCreate: PropTypes.func.isRequired,
     onEdit: PropTypes.func.isRequired,
     onDelete: PropTypes.func.isRequired,
@@ -108,7 +107,6 @@ class Users extends React.Component {
         .filter(user => user.get("isSelected"))
         .map(user => this.props.onDelete(user.get("id")))
     );
-    this.props.onLoad();
   }
 
   render() {

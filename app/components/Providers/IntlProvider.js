@@ -1,11 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { IntlProvider, addLocaleData } from "react-intl";
+import { IntlProvider as Provider, addLocaleData } from "react-intl";
 
 import l10n from "../../../common/locales";
 _.forEach(l10n.getLocaleData(), data => addLocaleData(data));
 
-class Provider extends React.Component {
+class IntlProvider extends React.Component {
   static propTypes = {
     locale: PropTypes.string.isRequired,
     created: PropTypes.number.isRequired,
@@ -17,16 +17,16 @@ class Provider extends React.Component {
 
   render() {
     return (
-      <IntlProvider
+      <Provider
         key={this.props.locale}
         locale={this.props.locale}
         messages={l10n.messages[this.props.locale]}
         initialNow={this.props.created}
       >
         {this.props.children}
-      </IntlProvider>
+      </Provider>
     );
   }
 }
 
-export default Provider;
+export default IntlProvider;

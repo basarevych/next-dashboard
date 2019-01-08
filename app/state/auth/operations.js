@@ -4,51 +4,25 @@ import isRouteAllowed from "../../../common/isRouteAllowed";
 import * as actions from "./actions";
 import * as selectors from "./selectors";
 import { appOperations, appSelectors } from "../app";
+import constants from "../../../common/constants";
 
+export const setCookie = actions.setCookie;
 export const setGoogleMapsKey = actions.setGoogleMapsKey;
 export const setCsrf = actions.setCsrf;
 
 const fetchStatus = () => async (dispatch, getState) => {
-  let status = null;
-
   try {
-    let providers = selectors.getAllProviders(getState());
-    let providersQuery = "";
-    if (providers && providers.length) {
-      providersQuery = `
-          providers {
-            ${_.map(providers, item => _.toLower(item)).join("\n")}
-          }
-        `;
-    }
-    let response = await dispatch(
-      appOperations.gqlQuery(
-        `
-        query {
-          status {
-            isAuthenticated
-            name
-            email
-            isEmailVerified
-            roles
-            ${providersQuery}
-          }
-        }
-      `
-      )
-    );
-    status = response && _.get(response, "data.status", null);
+    const fetcher = appSelectors.getService(getState(), { service: "fetcher" });
+    return await fetcher.fetch({ resource: `${constants.apiBase}/status` });
   } catch (error) {
-    console.error(error);
+    console.error(`STATUS: ${error.message}`);
   }
 
-  if (status) return status;
-
-  return new Promise(resolve => setTimeout(() => resolve(fetchStatus()), 1000));
+  return new Promise(resolve => setTimeout(() => resolve(fetchStatus()), 3000));
 };
 
 export const setStatus = status => async (dispatch, getState) => {
-  if (process.browser && !status) status = await dispatch(fetchStatus());
+  if (process.browser && !status) status = await fetchStatus();
 
   if (
     process.browser &&
@@ -67,10 +41,12 @@ export const setStatus = status => async (dispatch, getState) => {
 
   await dispatch(actions.setStatus(status));
 
-  let socket = appSelectors.getService(getState(), { service: "socket" });
-  if (socket) {
-    if (selectors.isAuthenticated(getState())) socket.connect();
-    else socket.disconnect();
+  if (process.browser) {
+    let socket = global.fi.get("socket");
+    if (socket) {
+      if (selectors.isAuthenticated(getState())) socket.connect();
+      else socket.disconnect();
+    }
   }
 };
 
@@ -78,33 +54,32 @@ export const signIn = ({ email, password }) => async (dispatch, getState) => {
   let result = false;
 
   try {
-    let storage = appSelectors.getService(getState(), { service: "storage" });
+    const storage = appSelectors.getService(getState(), { service: "storage" });
     if (storage) storage.set("notAnonymous", true);
 
-    let response = await dispatch(
-      appOperations.gqlQuery(
-        `
-          mutation ($email: String, $password: String) {
-            signIn(email: $email, password: $password) {
-              success
-            }
-          }
-        `,
-        {
-          email,
-          password
-        }
-      )
+    const fetcher = appSelectors.getService(getState(), { service: "fetcher" });
+    let data = await fetcher.query(
+      {
+        text: `mutation ($email: String, $password: String) {
+                signIn(email: $email, password: $password) {
+                  success
+                }
+              }`
+      },
+      {
+        email,
+        password
+      }
     );
 
-    if (response && _.get(response, "data.signIn.success", false)) {
+    if (_.get(data, "data.signIn.success", false)) {
       await dispatch(setStatus());
       if (process.browser && _.isFunction(window.__NEXT_PAGE_INIT))
         await window.__NEXT_PAGE_INIT({ store: window.__NEXT_REDUX_STORE__ });
       return true;
     } else {
       result = {};
-      let errors = response && _.get(response, "errors", []);
+      let errors = _.get(data, "errors", []);
       for (let error of errors) {
         if (error && error.code === "E_VALIDATION")
           _.merge(result, error.details);
@@ -119,34 +94,33 @@ export const signIn = ({ email, password }) => async (dispatch, getState) => {
   return result;
 };
 
-export const signUp = ({ email, password }) => async dispatch => {
+export const signUp = ({ email, password }) => async (dispatch, getState) => {
   let result = false;
 
   try {
-    let response = await dispatch(
-      appOperations.gqlQuery(
-        `
-          mutation ($email: String, $password: String) {
-            signUp(email: $email, password: $password) {
-              success
-            }
-          }
-        `,
-        {
-          email,
-          password
-        }
-      )
+    const fetcher = appSelectors.getService(getState(), { service: "fetcher" });
+    let data = await fetcher.query(
+      {
+        text: `mutation ($email: String, $password: String) {
+                signUp(email: $email, password: $password) {
+                  success
+                }
+              }`
+      },
+      {
+        email,
+        password
+      }
     );
 
-    if (response && _.get(response, "data.signUp.success", false)) {
+    if (_.get(data, "data.signUp.success", false)) {
       await dispatch(setStatus());
       if (process.browser && _.isFunction(window.__NEXT_PAGE_INIT))
         await window.__NEXT_PAGE_INIT({ store: window.__NEXT_REDUX_STORE__ });
       return true;
     } else {
       result = {};
-      let errors = response && _.get(response, "errors", []);
+      let errors = _.get(data, "errors", []);
       for (let error of errors) {
         if (error && error.code === "E_VALIDATION")
           _.merge(result, error.details);
@@ -161,23 +135,23 @@ export const signUp = ({ email, password }) => async dispatch => {
   return result;
 };
 
-export const signOut = () => async dispatch => {
+export const signOut = () => async (dispatch, getState) => {
   let result = false;
 
   try {
-    let response = await dispatch(
-      appOperations.gqlQuery(
-        `
-          mutation {
-            signOut {
-              success
-            }
-          }
-        `
-      )
+    const fetcher = appSelectors.getService(getState(), { service: "fetcher" });
+    let data = await fetcher.query(
+      {
+        text: `mutation {
+                signOut {
+                  success
+                }
+              }`
+      },
+      {}
     );
 
-    result = (response && _.get(response, "data.signOut.success")) || false;
+    result = _.get(data, "data.signOut.success") || false;
     if (result) await dispatch(setStatus());
   } catch (error) {
     console.error(error);
@@ -195,25 +169,23 @@ export const loadProfile = ({ onChange }) => async (dispatch, getState) => {
   );
 };
 
-export const requestProfileVerification = () => async dispatch => {
+export const requestProfileVerification = () => async (dispatch, getState) => {
   let result = false;
 
   try {
-    let response = await dispatch(
-      appOperations.gqlQuery(
-        `
-          mutation {
-            requestEmailVerification {
-              success
-            }
-          }
-        `
-      )
+    const fetcher = appSelectors.getService(getState(), { service: "fetcher" });
+    let data = await fetcher.query(
+      {
+        text: `mutation {
+                requestEmailVerification {
+                  success
+                }
+              }`
+      },
+      {}
     );
 
-    result =
-      (response && _.get(response, "data.requestEmailVerification.success")) ||
-      false;
+    result = _.get(data, "data.requestEmailVerification.success") || false;
   } catch (error) {
     console.error(error);
   }
@@ -221,26 +193,28 @@ export const requestProfileVerification = () => async dispatch => {
   return result;
 };
 
-export const finishProfileVerification = ({ token }) => async dispatch => {
+export const finishProfileVerification = ({ token }) => async (
+  dispatch,
+  getState
+) => {
   let result = false;
 
   try {
-    let response = await dispatch(
-      appOperations.gqlQuery(
-        `
-          mutation ($token: String) {
-            verifyEmail(token: $token) {
-              success
-            }
-          }
-        `,
-        {
-          token
-        }
-      )
+    const fetcher = appSelectors.getService(getState(), { service: "fetcher" });
+    let data = await fetcher.query(
+      {
+        text: `mutation ($token: String) {
+                verifyEmail(token: $token) {
+                  success
+                }
+              }`
+      },
+      {
+        token
+      }
     );
 
-    result = (response && _.get(response, "data.verifyEmail.success")) || false;
+    result = _.get(data, "data.verifyEmail.success") || false;
     if (result) await dispatch(setStatus());
   } catch (error) {
     console.error(error);
@@ -249,38 +223,35 @@ export const finishProfileVerification = ({ token }) => async dispatch => {
   return result;
 };
 
-export const updateProfile = ({
-  email,
-  name,
-  password,
-  onChange
-}) => async dispatch => {
+export const updateProfile = ({ email, name, password, onChange }) => async (
+  dispatch,
+  getState
+) => {
   let result = false;
 
   try {
-    let response = await dispatch(
-      appOperations.gqlQuery(
-        `
-          mutation ($email: String, $name: String, $password: String) {
-            updateProfile(email: $email, name: $name, password: $password) {
-              success
-            }
-          }
-        `,
-        {
-          email,
-          name,
-          password
-        }
-      )
+    const fetcher = appSelectors.getService(getState(), { service: "fetcher" });
+    let data = await fetcher.query(
+      {
+        text: `mutation ($email: String, $name: String, $password: String) {
+                updateProfile(email: $email, name: $name, password: $password) {
+                  success
+                }
+              }`
+      },
+      {
+        email,
+        name,
+        password
+      }
     );
 
-    if (response && _.get(response, "data.updateProfile.success", false)) {
+    if (_.get(data, "data.updateProfile.success", false)) {
       await dispatch(loadProfile(onChange));
       return true;
     } else {
       result = {};
-      let errors = response && _.get(response, "errors", []);
+      let errors = _.get(data, "errors", []);
       for (let error of errors) {
         if (error && error.code === "E_VALIDATION")
           _.merge(result, error.details);
@@ -308,27 +279,25 @@ export const linkProvider = ({ provider }) => async dispatch => {
     window.location.origin + "/api/oauth/" + _.lowerCase(provider);
 };
 
-export const unlinkProvider = ({ provider }) => async dispatch => {
+export const unlinkProvider = ({ provider }) => async (dispatch, getState) => {
   let result = false;
 
   try {
-    let response = await dispatch(
-      appOperations.gqlQuery(
-        `
-          mutation ($provider: String) {
-            unlinkProvider(provider: $provider) {
-              success
-            }
-          }
-        `,
-        {
-          provider
-        }
-      )
+    const fetcher = appSelectors.getService(getState(), { service: "fetcher" });
+    let data = await fetcher.query(
+      {
+        text: `mutation ($provider: String) {
+                unlinkProvider(provider: $provider) {
+                  success
+                }
+              }`
+      },
+      {
+        provider
+      }
     );
 
-    result =
-      (response && _.get(response, "data.unlinkProvider.success")) || false;
+    result = _.get(data, "data.unlinkProvider.success") || false;
     if (result) await dispatch(setStatus());
   } catch (error) {
     console.error(error);
@@ -337,24 +306,23 @@ export const unlinkProvider = ({ provider }) => async dispatch => {
   return result;
 };
 
-export const deleteProfile = () => async dispatch => {
+export const deleteProfile = () => async (dispatch, getState) => {
   let result = false;
 
   try {
-    let response = await dispatch(
-      appOperations.gqlQuery(
-        `
-          mutation {
-            deleteProfile {
-              success
-            }
-          }
-        `
-      )
+    const fetcher = appSelectors.getService(getState(), { service: "fetcher" });
+    let data = await fetcher.query(
+      {
+        text: `mutation {
+                deleteProfile {
+                  success
+                }
+              }`
+      },
+      {}
     );
 
-    result =
-      (response && _.get(response, "data.deleteProfile.success")) || false;
+    result = _.get(data, "data.deleteProfile.success") || false;
     if (result) {
       await dispatch(appOperations.stop());
       window.location.href = "/";

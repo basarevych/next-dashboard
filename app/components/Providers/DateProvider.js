@@ -4,7 +4,7 @@ import { MuiPickersUtilsProvider } from "material-ui-pickers";
 import MomentUtils from "@date-io/moment";
 import moment from "../../../common/moment";
 
-class Provider extends React.Component {
+class DateProvider extends React.Component {
   static propTypes = {
     locale: PropTypes.string.isRequired,
     children: PropTypes.oneOfType([
@@ -26,4 +26,4 @@ class Provider extends React.Component {
   }
 }
 
-export default Provider;
+export default DateProvider;

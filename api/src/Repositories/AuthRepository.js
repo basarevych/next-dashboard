@@ -23,12 +23,6 @@ class AuthRepository extends EventEmitter {
     return ["auth", "db"];
   }
 
-  async getStatus(context) {
-    debug("getStatus");
-
-    return context.getAuthStatus();
-  }
-
   generateToken() {
     return this.chance.string({
       length: 32,

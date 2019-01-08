@@ -6,27 +6,6 @@ class Provider extends EventEmitter {
     super();
 
     this.db = db;
-  }
-
-  // eslint-disable-next-line lodash/prefer-constant
-  static get $provides() {
-    return "model.provider";
-  }
-
-  // eslint-disable-next-line lodash/prefer-constant
-  static get $requires() {
-    return ["db"];
-  }
-
-  // eslint-disable-next-line lodash/prefer-constant
-  static get $lifecycle() {
-    return "singleton";
-  }
-
-  async init() {
-    if (this.promise) return this.promise;
-
-    this.promise = Promise.resolve();
 
     this.schema = new this.db.mongoose.Schema({
       _id: {
@@ -115,6 +94,23 @@ class Provider extends EventEmitter {
 
     this.model = this.db.mongoose.model("Provider", this.schema);
   }
+
+  // eslint-disable-next-line lodash/prefer-constant
+  static get $provides() {
+    return "model.provider";
+  }
+
+  // eslint-disable-next-line lodash/prefer-constant
+  static get $requires() {
+    return ["db"];
+  }
+
+  // eslint-disable-next-line lodash/prefer-constant
+  static get $lifecycle() {
+    return "singleton";
+  }
+
+  async init() {}
 }
 
 module.exports = Provider;

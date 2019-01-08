@@ -14,9 +14,19 @@ class Fake extends EventEmitter {
     return "fake";
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
-  static get $requires() {
-    return [];
+  createEmployee(usedNames, dept) {
+    let name;
+    do name = this.getName();
+    while (_.includes(usedNames, name));
+    usedNames.push(name);
+    return {
+      checked: Math.random() > 0.3,
+      name,
+      dept,
+      title: this.getTitle(),
+      country: this.getCountry(),
+      salary: this.getSalary()
+    };
   }
 
   getInt(min, max) {
@@ -35,7 +45,7 @@ class Fake extends EventEmitter {
   }
 
   getCountry() {
-    return allCountries[this.getInt(0, allCountries.length - 1)].name;
+    return allCountries[this.getInt(0, allCountries.length - 1)].iso2;
   }
 
   getSalary() {
