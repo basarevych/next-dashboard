@@ -98,7 +98,7 @@ class Database extends EventEmitter {
       }
 
       // eslint-disable-next-line lodash/prefer-lodash-method
-      let count = await this.EmployeeModel.find().count();
+      let count = await this.EmployeeModel.countDocuments();
       if (!count) {
         this.employees = [];
         let usedNames = [];
@@ -111,6 +111,7 @@ class Database extends EventEmitter {
             await employee.save();
           }
         }
+        console.log("> Employees created");
       }
     });
 

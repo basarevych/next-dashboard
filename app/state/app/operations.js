@@ -1,5 +1,6 @@
 import Injectt from "injectt";
 import * as actions from "./actions";
+import * as selectors from "./selectors";
 import { authOperations } from "../auth";
 import constants from "../../../common/constants";
 import Fetcher from "../../lib/Fetcher";
@@ -12,15 +13,24 @@ export const setConnected = actions.setConnected;
 export const setLocale = actions.setLocale;
 export const stop = actions.stop;
 
-export const create = ({ cookie, status, googleMapsKey }) => async dispatch => {
+export const create = ({
+  statusCode,
+  cookie,
+  csrf,
+  status,
+  googleMapsKey
+}) => async dispatch => {
   await dispatch(actions.create());
+  if (statusCode) await dispatch(setStatusCode({ code: statusCode }));
   if (cookie) await dispatch(authOperations.setCookie({ cookie }));
+  if (csrf) await dispatch(authOperations.setCsrf({ csrf }));
   if (status) await dispatch(authOperations.setStatus(status));
   if (googleMapsKey)
     await dispatch(authOperations.setGoogleMapsKey({ googleMapsKey }));
 };
 
-export const init = () => async (dispatch, getState) => {
+export const init = ({ cookie }) => async (dispatch, getState) => {
+  if (selectors.getService(getState(), { service: "di" })) return;
   const di = new Injectt();
   di.registerInstance(getState, "getState");
   di.registerInstance(dispatch, "dispatch");
@@ -28,6 +38,10 @@ export const init = () => async (dispatch, getState) => {
   di.registerClass(Storage);
   di.registerClass(Socket);
   di.registerClass(Cookie);
+  if (!process.browser && cookie) {
+    // when doing SSR we will be doing own API requests on behalf of current user
+    di.get("fetcher").setCookie(cookie);
+  }
   await dispatch(actions.init({ di }));
 };
 

@@ -1,6 +1,7 @@
 "use strict";
 
 require("core-js/es6");
+require("isomorphic-unfetch");
 
 const swRuntime = require("serviceworker-webpack-plugin/lib/runtime");
 const swEvents = require("serviceworker-webpack-plugin/lib/browser/registerEvents");

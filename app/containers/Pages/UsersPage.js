@@ -1,7 +1,7 @@
 import { connect } from "react-redux";
+import { withStyles } from "@material-ui/core/styles";
 import { authSelectors } from "../../state/auth";
-import { usersOperations } from "../../state/users";
-import UsersPageComponent from "../../components/Pages/UsersPage";
+import UsersPageComponent, { styles } from "../../components/Pages/UsersPage";
 
 const mapStateToProps = state => {
   return {
@@ -9,15 +9,15 @@ const mapStateToProps = state => {
   };
 };
 
-const UsersPage = connect(
-  mapStateToProps,
-  null,
-  null,
-  { pure: false }
-)(UsersPageComponent);
+const UsersPage = withStyles(styles, { withTheme: true })(
+  connect(
+    mapStateToProps,
+    null,
+    null,
+    { pure: false }
+  )(UsersPageComponent)
+);
 
-UsersPage.getInitialProps = async ({ store, req }) => {
-  await store.dispatch(usersOperations.load({ req }));
-};
+UsersPage.getInitialProps = UsersPageComponent.getInitialProps;
 
 export default UsersPage;

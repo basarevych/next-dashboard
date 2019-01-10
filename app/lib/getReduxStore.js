@@ -21,23 +21,20 @@ if (process.env.NODE_ENV === "development")
   middleware = composeWithDevTools(middleware);
 
 const storeFactory = initialState =>
-  createStore(rootReducer, initialState, middleware);
+  createStore(rootReducer, initialState || undefined, middleware);
 
 const __NEXT_REDUX_STORE__ = "__NEXT_REDUX_STORE__";
 
 export default function getReduxStore(initialState) {
   let store;
-  let isCreated = false;
-
   if (!process.browser || process.env.NODE_ENV === "test") {
     // Always make a new store if server,
     // otherwise state is shared between requests
     store = storeFactory(initialState);
-    isCreated = true;
   } else {
     if (window[__NEXT_REDUX_STORE__]) store = window[__NEXT_REDUX_STORE__];
     else store = window[__NEXT_REDUX_STORE__] = storeFactory(initialState);
   }
 
-  return { store, isCreated };
+  return store;
 }

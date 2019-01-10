@@ -1,6 +1,7 @@
 "use strict";
 
 if (!global._) global._ = require("lodash");
+require("isomorphic-unfetch");
 
 const Injectt = require("injectt");
 const nextApp = require("next");

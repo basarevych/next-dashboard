@@ -45,20 +45,19 @@ class GraphQL extends EventEmitter {
       graphiql,
       formatError: error => {
         let parsed;
-        if (
-          error.originalError &&
-          error.originalError.name === "ValidationError" &&
-          error.originalError.errors
-        ) {
-          // mongoose error
-          let errors = [];
-          for (let field of _.keys(error.originalError.errors)) {
-            errors.push({
-              key: field,
-              message: error.originalError.errors[field].message
-            });
+        if (error.originalError) {
+          if (
+            error.originalError.name === "ValidationError" &&
+            error.originalError.errors
+          ) {
+            // mongoose error
+            parsed = this.di.get("error.validation", error.originalError);
+          } else if (
+            error.originalError.stack &&
+            process.env.NODE_ENV !== "production"
+          ) {
+            parsed = { details: _.split(error.originalError.stack, "\n") };
           }
-          parsed = this.di.get("error.validation", errors);
         }
 
         return {

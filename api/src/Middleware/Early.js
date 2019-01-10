@@ -50,7 +50,7 @@ class Early extends EventEmitter {
     express.use(compression());
 
     // Log request
-    if (process.env.NODE_ENV !== "test") express.use(logger("dev"));
+    if (process.env.NODE_ENV !== "test") express.use(logger("short"));
 
     // Shortcuts to static
     express.use(
@@ -75,6 +75,7 @@ class Early extends EventEmitter {
 
     // Default headers
     express.use((req, res, next) => {
+      req.cookieHeader = req.get("Cookie");
       res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
       return next();
     });

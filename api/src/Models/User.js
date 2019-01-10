@@ -92,24 +92,23 @@ class User extends EventEmitter {
     }) {
       if (!path) path = field;
       if (!field) field = path;
-      let error;
+      let errors;
       if (_.includes(this.schema.requiredPaths(), path) && !value) {
-        error = { key: field, message: "ERROR_FIELD_REQUIRED" };
+        errors[field] = { message: "ERROR_FIELD_REQUIRED" };
       } else {
         const rules = fields[field];
         if (rules && rules.validate) {
           const obj = this.toObject();
           const fieldErrors = validate({}, rules.validate, value, fromJS(obj));
           if (fieldErrors.length) {
-            error = {
-              key: field,
-              message: fieldErrors.length === 1 ? fieldErrors[0] : fieldErrors
-            };
+            errors[field] =
+              fieldErrors.length === 1 ? fieldErrors[0] : fieldErrors;
           }
         }
       }
-      if (error && doThrow) throw new ValidationError([error]);
-      return error || false;
+      if (_.keys(errors).length && doThrow)
+        throw new ValidationError({ errors });
+      return errors || true;
     };
 
     this.schema.methods.toSanitizedObject = function() {

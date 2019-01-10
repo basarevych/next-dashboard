@@ -68,11 +68,12 @@ class Employee extends EventEmitter {
     }) {
       if (!path) path = field;
       if (!field) field = path;
-      let error;
+      let errors = {};
       if (_.includes(this.schema.requiredPaths(), path) && !value)
-        error = { key: field, message: "ERROR_FIELD_REQUIRED" };
-      if (error && doThrow) throw new ValidationError([error]);
-      return error || false;
+        errors[field] = { message: "ERROR_FIELD_REQUIRED" };
+      if (_.keys(errors).length && doThrow)
+        throw new ValidationError({ errors });
+      return errors || true;
     };
 
     this.schema.methods.toSanitizedObject = function() {

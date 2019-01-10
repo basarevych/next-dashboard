@@ -1,47 +1,29 @@
-import { List, fromJS } from "immutable";
+import { Set } from "immutable";
 import { combineReducers } from "redux-immutable";
 import * as types from "./types";
 
 /* State Shape
 Map({
-  list: List([
-    Map({
-      id: String,
-      isSelected: Boolean,
-      name: String,
-      email: String,
-      roles: [String],
-    })
-  ]),
+  selected: Set([String]), // IDs
   editModalUserId: String, // null when creating a new user
   isEditModalOpen: false,
 })
 */
 
-const listReducer = (state = List([]), action) => {
+const selectedReducer = (state = Set([]), action) => {
   switch (action.type) {
-    case types.SET_LIST:
-      if (!_.isUndefined(action.list))
-        // eslint-disable-next-line lodash/prefer-lodash-method
-        return fromJS(action.list).map((item, index) =>
-          item.set("isSelected", !!state.getIn([index, "isSelected"]))
-        );
-      break;
     case types.SET_SELECTED:
-      if (!_.isUndefined(action.userId))
-        return state.withMutations(list => {
-          // eslint-disable-next-line lodash/prefer-lodash-method
-          let index = list.findIndex(item => item.get("id") === action.userId);
-          if (index !== -1)
-            list.setIn([index, "isSelected"], !!action.isSelected);
-        });
+      if (!_.isUndefined(action.userId) && !_.isUndefined(action.isSelected)) {
+        // eslint-disable-next-line lodash/prefer-lodash-method
+        if (state.includes(action.userId)) return state.delete(action.userId);
+        else return state.add(action.userId);
+      }
       break;
     case types.SELECT_ALL:
-      // eslint-disable-next-line lodash/prefer-lodash-method
-      return state.map(item => item.set("isSelected", true));
+      if (!_.isUndefined(action.userIds)) return Set(action.userIds);
+      break;
     case types.DESELECT_ALL:
-      // eslint-disable-next-line lodash/prefer-lodash-method
-      return state.map(item => item.set("isSelected", false));
+      return Set([]);
   }
   return state;
 };
@@ -65,7 +47,7 @@ const isEditModalOpenReducer = (state = false, action) => {
 };
 
 const reducer = combineReducers({
-  list: listReducer,
+  selected: selectedReducer,
   editModalUserId: editModalUserIdReducer,
   isEditModalOpen: isEditModalOpenReducer
 });

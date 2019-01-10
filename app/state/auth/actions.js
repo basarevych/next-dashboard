@@ -5,11 +5,6 @@ export const setCsrf = ({ csrf }) => ({
   csrf
 });
 
-export const setCookie = ({ cookie }) => ({
-  type: types.SET_COOKIE,
-  cookie
-});
-
 export const setStatus = status => ({
   type: types.SET_STATUS,
   ...status

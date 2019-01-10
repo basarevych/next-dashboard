@@ -15,4 +15,6 @@ const DashboardPage = connect(
   { pure: false }
 )(DashboardPageComponent);
 
+DashboardPage.getInitialProps = DashboardPageComponent.getInitialProps;
+
 export default DashboardPage;

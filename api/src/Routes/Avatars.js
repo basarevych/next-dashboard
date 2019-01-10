@@ -1,7 +1,6 @@
 const debug = require("debug")("app:avatars");
 const fs = require("fs-extra");
 const path = require("path");
-const fetch = require("isomorphic-unfetch");
 const concat = require("concat-stream");
 const sharp = require("sharp");
 const LRU = require("lru-cache");

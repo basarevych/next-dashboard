@@ -5,7 +5,6 @@ import * as types from "./types";
 /* State Shape
 Map({
   csrf: String,
-  cookie: String,
   isAuthenticated: Boolean,
   name: String,
   email: String,
@@ -22,15 +21,6 @@ const csrfReducer = (state = "", action) => {
   switch (action.type) {
     case types.SET_CSRF:
       if (!_.isUndefined(action.csrf)) return action.csrf;
-      break;
-  }
-  return state;
-};
-
-const cookieReducer = (state = null, action) => {
-  switch (action.type) {
-    case types.SET_COOKIE:
-      if (!_.isUndefined(action.cookie)) return action.cookie;
       break;
   }
   return state;
@@ -101,7 +91,6 @@ const googleMapsKeyReducer = (state = "", action) => {
 
 const reducer = combineReducers({
   csrf: csrfReducer,
-  cookie: cookieReducer,
   isAuthenticated: isAuthenticatedReducer,
   name: nameReducer,
   email: emailReducer,

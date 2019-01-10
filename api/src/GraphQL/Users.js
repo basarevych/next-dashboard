@@ -16,8 +16,7 @@ const {
   mutationWithClientMutationId
 } = require("graphql-relay");
 const {
-  connectionFromPromisedArray,
-  documentToCursor
+  mongooseConnection: { connectionFromPromisedArray, documentToCursor }
 } = require("graphql-relay-connection");
 const constants = require("../../../common/constants");
 const GraphQLDate = require("./Date");
@@ -43,14 +42,12 @@ class Users extends EventEmitter {
 
   idFetcher(globalId, context) {
     const { type, id } = fromGlobalId(globalId);
-    console.log(id);
     if (type === "User") return this.usersRepo.getUser(context, { id });
-    if (type === "UserList") return this.usersRepo.getUsers(context);
     return null;
   }
 
   typeResolver(obj) {
-    if (obj instanceof this.userModel.model) return this.GraphQLUser;
+    if (obj instanceof this.userModel.model) return this.User;
     return null;
   }
 
@@ -58,7 +55,7 @@ class Users extends EventEmitter {
     const root = this.di.get("graphql");
     const { nodeInterface } = root.nodeDefinitions;
 
-    this.GraphQLUserRole = new GraphQLEnumType({
+    this.UserRole = new GraphQLEnumType({
       name: "UserRole",
       values: _.reduce(
         _.map(constants.roles, (role, index) => ({ role, index })),
@@ -70,7 +67,7 @@ class Users extends EventEmitter {
       )
     });
 
-    this.GraphQLUser = new GraphQLObjectType({
+    this.User = new GraphQLObjectType({
       name: "User",
       fields: () => ({
         id: globalIdField("User"),
@@ -80,7 +77,7 @@ class Users extends EventEmitter {
         isEmailVerified: { type: new GraphQLNonNull(GraphQLBoolean) },
         name: { type: new GraphQLNonNull(GraphQLString) },
         roles: {
-          type: new GraphQLNonNull(new GraphQLList(this.GraphQLUserRole))
+          type: new GraphQLNonNull(new GraphQLList(this.UserRole))
         }
       }),
       interfaces: [nodeInterface]
@@ -88,56 +85,52 @@ class Users extends EventEmitter {
 
     const {
       connectionType: UsersConnection,
-      edgeType: GraphQLUserEdge
+      edgeType: UserEdge
     } = connectionDefinitions({
       name: "User",
-      nodeType: this.GraphQLUser
+      nodeType: this.User
     });
     this.UsersConnection = UsersConnection;
-    this.GraphQLUserEdge = GraphQLUserEdge;
-
-    this.GraphQLUserList = new GraphQLObjectType({
-      name: "UserList",
-      fields: {
-        id: globalIdField("UserList"),
-        users: {
-          type: this.UsersConnection,
-          args: connectionArgs,
-          resolve: (source, args, context) =>
-            connectionFromPromisedArray(
-              this.usersRepo.getUsers(context, args),
-              args
-            )
-        }
-      },
-      interfaces: [nodeInterface]
-    });
+    this.UserEdge = UserEdge;
 
     this.query = {
       user: {
-        type: this.GraphQLUser,
+        type: this.User,
         args: {
-          id: globalIdField("User")
+          id: { type: new GraphQLNonNull(GraphQLID) }
         },
         resolve: (source, args, context) =>
-          this.usersRepo.getUser(context, { id: fromGlobalId(args.id).id })
+          this.usersRepo.getUser(
+            context,
+            _.assign(
+              {},
+              args,
+              _.assign({}, args, { id: fromGlobalId(args.id).id })
+            )
+          )
       },
       users: {
-        type: this.GraphQLUserList
+        type: this.UsersConnection,
+        args: connectionArgs,
+        resolve: (source, args, context) =>
+          connectionFromPromisedArray(
+            this.usersRepo.getUsers(context, args),
+            args
+          )
       }
     };
 
-    this.GraphQLCreateUserMutation = mutationWithClientMutationId({
+    this.CreateUserMutation = mutationWithClientMutationId({
       name: "CreateUser",
       inputFields: {
         email: { type: GraphQLString },
         name: { type: GraphQLString },
         password: { type: GraphQLString },
-        roles: { type: new GraphQLList(this.GraphQLUserRole) }
+        roles: { type: new GraphQLList(this.UserRole) }
       },
       outputFields: {
         userEdge: {
-          type: this.GraphQLUserEdge,
+          type: this.UserEdge,
           resolve: async ({ user }) => ({
             cursor: documentToCursor(user),
             node: user
@@ -150,18 +143,18 @@ class Users extends EventEmitter {
       }
     });
 
-    this.GraphQLEditUserMutation = mutationWithClientMutationId({
+    this.EditUserMutation = mutationWithClientMutationId({
       name: "EditUser",
       inputFields: {
-        id: { type: GraphQLID },
+        id: { type: new GraphQLNonNull(GraphQLID) },
         email: { type: GraphQLString },
         name: { type: GraphQLString },
         password: { type: GraphQLString },
-        roles: { type: new GraphQLList(this.GraphQLUserRole) }
+        roles: { type: new GraphQLList(this.UserRole) }
       },
       outputFields: {
         userEdge: {
-          type: this.GraphQLUserEdge,
+          type: this.UserEdge,
           resolve: async ({ user }) => ({
             cursor: documentToCursor(user),
             node: user
@@ -169,19 +162,22 @@ class Users extends EventEmitter {
         }
       },
       mutateAndGetPayload: async (args, context) => {
-        const user = await this.usersRepo.editUser(context, args);
+        const user = await this.usersRepo.editUser(
+          context,
+          _.assign({}, args, { id: fromGlobalId(args.id).id })
+        );
         return { user };
       }
     });
 
-    this.GraphQLDeleteUserMutation = mutationWithClientMutationId({
+    this.DeleteUserMutation = mutationWithClientMutationId({
       name: "DeleteUser",
       inputFields: {
-        id: { type: GraphQLID }
+        id: { type: new GraphQLNonNull(GraphQLID) }
       },
       outputFields: {
         userEdge: {
-          type: this.GraphQLUserEdge,
+          type: this.UserEdge,
           resolve: async ({ user }) => ({
             cursor: documentToCursor(user),
             node: user
@@ -189,15 +185,18 @@ class Users extends EventEmitter {
         }
       },
       mutateAndGetPayload: async (args, context) => {
-        const user = await this.usersRepo.deleteUser(context, args);
+        const user = await this.usersRepo.deleteUser(
+          context,
+          _.assign({}, args, { id: fromGlobalId(args.id).id })
+        );
         return { user };
       }
     });
 
     this.mutation = {
-      createUser: this.GraphQLCreateUserMutation,
-      editUser: this.GraphQLEditUserMutation,
-      deleteUser: this.GraphQLDeleteUserMutation
+      createUser: this.CreateUserMutation,
+      editUser: this.EditUserMutation,
+      deleteUser: this.DeleteUserMutation
     };
   }
 }

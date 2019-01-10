@@ -8,6 +8,7 @@ const ProvidePlugin = require("webpack").ProvidePlugin;
 const ContextReplacementPlugin = require("webpack").ContextReplacementPlugin;
 const ServiceWorkerPlugin = require("serviceworker-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
+const RelayCompilerWebpackPlugin = require("relay-compiler-webpack-plugin");
 const withCSS = require("@zeit/next-css");
 const withBundleAnalyzer = require("@zeit/next-bundle-analyzer");
 const withPlugins = require("next-compose-plugins");
@@ -67,6 +68,12 @@ module.exports = withPlugins([...plugins], {
         }
       });
     }
+    if (config.optimization.minimizer && config.optimization.minimizer.length) {
+      let options = config.optimization.minimizer[0].options;
+      let terserOptions = options.terserOptions;
+      terserOptions.ecma = 5;
+      config.optimization.minimizer[0] = new TerserPlugin(options);
+    }
 
     // Inline SVG
     config.module.rules.push({
@@ -114,6 +121,21 @@ module.exports = withPlugins([...plugins], {
       new ContextReplacementPlugin(/intl[/\\]locale-data[/\\]jsonp$/, locales),
       new ContextReplacementPlugin(/react-intl[/\\]locale-data$/, locales)
     );
+
+    config.resolve.alias["graphql"] = path.resolve(
+      __dirname,
+      "node_modules",
+      "graphql"
+    );
+
+    if (dev) {
+      config.plugins.push(
+        new RelayCompilerWebpackPlugin({
+          schema: path.resolve(__dirname, "api", "schema.graphql"),
+          src: path.resolve(__dirname, "app")
+        })
+      );
+    }
 
     if (!isServer) {
       config.plugins.push(

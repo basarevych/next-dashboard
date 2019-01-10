@@ -45,26 +45,37 @@ class Render extends EventEmitter {
 
   async express(express) {
     express.get("*", async (req, res, next) => {
-      const { page, query } = await this.app.analyzeRequest(req);
+      try {
+        const { page, query } = await this.app.analyzeRequest(req);
+        if (!page) return this.app.nextHandler(req, res, next);
 
-      if (!page) return this.app.nextHandler(req, res, next);
+        let user = await req.getUser();
+        if (!isRouteAllowed(req.path, user ? user.roles : [])) res.status(403);
 
-      let user = await req.getUser();
-      if (!isRouteAllowed(req.pathname, user ? user.roles : []))
-        return res.redirect("/");
+        if (res.statusCode !== 200) {
+          let error = new Error("An error occured");
+          error.statusCode = res.statusCode;
+          return this.app.next.renderError(error, req, res, page, query);
+        }
 
-      if (process.env.NODE_ENV !== "production")
-        return this.app.next.render(req, res, page, query);
+        req.csrfHeader =
+          req.get("X-CSRF-Token") || (req.csrfToken && req.csrfToken());
 
-      let render = this.getRender({ req, res, page, query, user });
-      if (!render) return this.app.next.render(req, res, page, query);
+        if (process.env.NODE_ENV !== "production")
+          return this.app.next.render(req, res, page, query);
 
-      render
-        .then(html => res.send(html))
-        .catch(error => {
-          if (!res.headersSent)
-            this.app.next.renderError(error, req, res, page, query);
-        });
+        let render = this.getRender({ req, res, page, query, user });
+        if (!render) return this.app.next.render(req, res, page, query);
+
+        render
+          .then(html => res.send(html))
+          .catch(error => {
+            if (!res.headersSent)
+              this.app.next.renderError(error, req, res, page, query);
+          });
+      } catch (error) {
+        next(error);
+      }
     });
   }
 
@@ -85,11 +96,21 @@ class Render extends EventEmitter {
       ":" +
       hash.digest("hex");
 
+    if (user && (!req.cookieHeader || !req.csrfHeader)) {
+      // just invalidate the cached version when not enough data to render
+      if (cache.has(key)) {
+        cache.del(key);
+        console.log(`> Invalidated ${key} for ${name}`);
+      }
+      return Promise.resolve();
+    }
+
     if (!force && cache.has(key)) {
       console.log(`> Cache hit ${key} for ${name}`);
       return cache.get(key);
     }
 
+    // render and cache the page
     cache.set(
       key,
       new Promise(async (resolve, reject) => {
@@ -130,11 +151,11 @@ class Render extends EventEmitter {
         : [user];
 
       for (let user of users) {
-        for (let path of pages) {
-          if (!isRouteAllowed(path, user ? user.roles : [])) continue;
+        for (let route of pages) {
+          if (!isRouteAllowed(route, user ? user.roles : [])) continue;
           for (let locale of this.i18n.locales) {
             let req = {
-              path,
+              path: route,
               cookies: { locale, theme: defaultTheme },
               getUser: () =>
                 new Promise(resolve => setTimeout(() => resolve(user)))

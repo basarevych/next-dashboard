@@ -4,9 +4,10 @@ const moment = require("../../../common/moment");
 const { allCountries, iso2Lookup } = require("country-telephone-data");
 
 class DashboardRepository extends EventEmitter {
-  constructor(modelDashboard, fake) {
+  constructor(di, modelDashboard, fake) {
     super();
 
+    this.di = di;
     this.modelDashboard = modelDashboard;
     this.fake = fake;
   }
@@ -18,7 +19,7 @@ class DashboardRepository extends EventEmitter {
 
   // eslint-disable-next-line lodash/prefer-constant
   static get $requires() {
-    return ["model.dashboard", "fake"];
+    return ["di", "model.dashboard", "fake"];
   }
 
   // eslint-disable-next-line lodash/prefer-constant
@@ -27,7 +28,7 @@ class DashboardRepository extends EventEmitter {
   }
 
   async init() {
-    this.profit = [];
+    this.profits = [];
     let day = moment();
     for (let i = 0; i < 7; i++) {
       day.subtract(1, "day");
@@ -37,8 +38,8 @@ class DashboardRepository extends EventEmitter {
       let expenses = i
         ? this.fake.getInt(10000, 50000)
         : this.fake.getInt(10000, 11000);
-      this.profit.unshift(
-        this.modelDashboard.ProfitModel({
+      this.profits.unshift(
+        new this.modelDashboard.ProfitValueModel({
           date: day,
           revenues,
           expenses,
@@ -52,7 +53,7 @@ class DashboardRepository extends EventEmitter {
     for (let i = 0; i < 7; i++) {
       day.subtract(1, "day");
       this.sales.unshift(
-        this.modelDashboard.SalesModel({
+        new this.modelDashboard.SalesValueModel({
           date: day,
           sales: i ? this.fake.getInt(2000, 5000) : this.fake.getInt(5100, 6000)
         })
@@ -67,7 +68,7 @@ class DashboardRepository extends EventEmitter {
         ? this.clients[0].clients
         : this.fake.getInt(7000, 10000);
       this.clients.unshift(
-        this.modelDashboard.ClientsModel({
+        new this.modelDashboard.ClientsValueModel({
           date: day,
           clients: i
             ? this.fake.getInt(prevClients - 100, prevClients - 700)
@@ -76,15 +77,15 @@ class DashboardRepository extends EventEmitter {
       );
     }
 
-    this.avgTime = [];
+    this.avgTimes = [];
     day = moment();
     for (let i = 0; i < 7; i++) {
       day.subtract(1, "day");
       let prevAvgTime = i
-        ? this.avgTime[0].avgTime
+        ? this.avgTimes[0].avgTime
         : this.fake.getInt(30, 90) / 10;
-      this.avgTime.unshift(
-        this.modelDashboard.AbgTimeModel({
+      this.avgTimes.unshift(
+        new this.modelDashboard.AvgTimeValueModel({
           date: day,
           avgTime: i
             ? this.fake.getInt(prevAvgTime * 10 + 10, prevAvgTime * 10 + 200) /
@@ -99,24 +100,32 @@ class DashboardRepository extends EventEmitter {
     debug("getCountry");
 
     let requester = await context.getUser();
-    if (!requester) return null;
+    if (!requester) throw this.di.get("error.access");
 
-    debug("getCountry");
     const country = iso2Lookup[id];
-    return country
-      ? this.di.get("model.country", {
-          id: country.iso2,
-          name: country.name,
-          callingCode: country.dialCode
-        })
-      : null;
+    if (!country) throw this.di.get("error.entityNotFound");
+    return this.di.get("model.country", {
+      id: country.iso2,
+      name: country.name,
+      callingCode: country.dialCode
+    });
+  }
+
+  async countCountries(context) {
+    debug("countCountries");
+
+    let requester = await context.getUser();
+    if (!requester) throw this.di.get("error.access");
+
+    return allCountries.length;
   }
 
   async getCountries(context) {
-    let requester = await context.getUser();
-    if (!requester) return [];
-
     debug("getCountries");
+
+    let requester = await context.getUser();
+    if (!requester) throw this.di.get("error.access");
+
     return _.map(allCountries, country =>
       this.di.get("model.country", {
         id: country.iso2,
@@ -126,36 +135,120 @@ class DashboardRepository extends EventEmitter {
     );
   }
 
-  async getProfit(context) {
-    let requester = await context.getUser();
-    if (!requester) return [];
+  async getProfitValue(context, { id }) {
+    debug("getProfitValue");
 
-    debug("getProfit");
-    return this.profit;
+    let requester = await context.getUser();
+    if (!requester) throw this.di.get("error.access");
+
+    const profit = _.find(this.profits, ["id", id]);
+    if (!profit) throw this.di.get("error.entityNotFound");
+    return profit;
   }
 
-  async getSales(context) {
-    let requester = await context.getUser();
-    if (!requester) return [];
+  async countProfitValues(context) {
+    debug("countProfitValues");
 
-    debug("getSales");
+    let requester = await context.getUser();
+    if (!requester) throw this.di.get("error.access");
+
+    return this.profits.length;
+  }
+
+  async getProfitValues(context) {
+    debug("getProfitValues");
+
+    let requester = await context.getUser();
+    if (!requester) throw this.di.get("error.access");
+
+    return this.profits;
+  }
+
+  async getSalesValue(context, { id }) {
+    debug("getSalesValue");
+
+    let requester = await context.getUser();
+    if (!requester) throw this.di.get("error.access");
+
+    const sales = _.find(this.sales, ["id", id]);
+    if (!sales) throw this.di.get("error.entityNotFound");
+    return sales;
+  }
+
+  async countSalesValues(context) {
+    debug("countSalesValues");
+
+    let requester = await context.getUser();
+    if (!requester) throw this.di.get("error.access");
+
+    return this.sales.length;
+  }
+
+  async getSalesValues(context) {
+    debug("getSalesValues");
+
+    let requester = await context.getUser();
+    if (!requester) throw this.di.get("error.access");
+
     return this.sales;
   }
 
-  async getClients(context) {
-    let requester = await context.getUser();
-    if (!requester) return [];
+  async getClientsValue(context, { id }) {
+    debug("getClientsValue");
 
-    debug("getClients");
+    let requester = await context.getUser();
+    if (!requester) throw this.di.get("error.access");
+
+    const clients = _.find(this.clients, ["id", id]);
+    if (!clients) throw this.di.get("error.entityNotFound");
+    return clients;
+  }
+
+  async countClientsValues(context) {
+    debug("countClientsValues");
+
+    let requester = await context.getUser();
+    if (!requester) throw this.di.get("error.access");
+
+    return this.clients.length;
+  }
+
+  async getClientsValues(context) {
+    debug("getClientsValues");
+
+    let requester = await context.getUser();
+    if (!requester) throw this.di.get("error.access");
+
     return this.clients;
   }
 
-  async getAvgTime(context) {
-    let requester = await context.getUser();
-    if (!requester) return [];
+  async getAvgTimeValue(context, { id }) {
+    debug("getAvgTimeValue");
 
-    debug("getAvgTime");
-    return this.avgTime;
+    let requester = await context.getUser();
+    if (!requester) throw this.di.get("error.access");
+
+    const avgTime = _.find(this.avgTimes, ["id", id]);
+    if (!avgTime) throw this.di.get("error.entityNotFound");
+    return avgTime;
+  }
+
+  async countAvgTimeValues(context) {
+    debug("countAvgTimeValues");
+
+    let requester = await context.getUser();
+    if (!requester) throw this.di.get("error.access");
+
+    return this.avgTimes.length;
+  }
+
+  async getAvgTimeValues(context) {
+    debug("getAvgTimeValues");
+
+    let requester = await context.getUser();
+    if (!requester) throw this.di.get("error.access");
+
+    return this.avgTimes;
   }
 }
 

@@ -1,14 +1,12 @@
 import * as types from "./types";
 
-export const setList = ({ list }) => ({ type: types.SET_LIST, list });
-
 export const setSelected = ({ userId, isSelected }) => ({
   type: types.SET_SELECTED,
   userId,
   isSelected
 });
 
-export const selectAll = () => ({ type: types.SELECT_ALL });
+export const selectAll = ({ userIds }) => ({ type: types.SELECT_ALL, userIds });
 
 export const deselectAll = () => ({ type: types.DESELECT_ALL });
 

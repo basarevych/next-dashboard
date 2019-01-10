@@ -1,15 +1,11 @@
-export const getList = state => state.getIn(["users", "list"]);
+import { createSelector } from "reselect";
 
-export const getSelected = state =>
-  // eslint-disable-next-line lodash/prefer-lodash-method
-  state.getIn(["users", "list"]).filter(item => !!item.get("isSelected"));
+export const getSelected = createSelector(
+  state => state.getIn(["users", "selected"]),
+  selected => selected.toJS()
+);
 
 export const getNumSelected = state => getSelected(state).size;
-
-export const isAllSelected = state =>
-  getList(state).size === getSelected(state).size;
-
-export const isAllDeselected = state => getSelected(state).size === 0;
 
 export const isEditModalOpen = state =>
   state.getIn(["users", "isEditModalOpen"]);

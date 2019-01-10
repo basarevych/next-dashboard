@@ -8,15 +8,19 @@ const { serialize } = require("json-immutable");
 /**
  * Sserialize Immutable state into BASE64 string
  */
-module.exports = function(state) {
+module.exports = function(state, type) {
   if (!state) return "";
 
-  state = state.setIn(["app", "di"], null);
+  let obj;
+  if (type === "redux") {
+    // sanitize the server-side version of the state
+    obj = serialize(state.setIn(["app", "di"], null));
+  } else {
+    obj = state;
+  }
 
-  let json = serialize(state);
-  let str = JSON.stringify(
-    json,
-    (key, value) => (_.isString(value) ? utf8.encode(value) : value)
+  let str = JSON.stringify(obj, (key, value) =>
+    _.isString(value) ? utf8.encode(value) : value
   );
   let output = byteEncode(pako.deflate(str, { to: "string" }));
 

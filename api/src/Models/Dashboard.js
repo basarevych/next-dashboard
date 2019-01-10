@@ -20,7 +20,7 @@ class CountryModel {
   }
 }
 
-class ProfitModel {
+class ProfitValueModel {
   constructor({ date, revenues, expenses, profit }) {
     this.id = dateToID(date);
     this.date = date;
@@ -30,7 +30,7 @@ class ProfitModel {
   }
 }
 
-class SalesModel {
+class SalesValueModel {
   constructor({ date, sales }) {
     this.id = dateToID(date);
     this.date = date;
@@ -38,7 +38,7 @@ class SalesModel {
   }
 }
 
-class ClientsModel {
+class ClientsValueModel {
   constructor({ date, clients }) {
     this.id = dateToID(date);
     this.date = date;
@@ -46,7 +46,7 @@ class ClientsModel {
   }
 }
 
-class AvgTimeModel {
+class AvgTimeValueModel {
   constructor({ date, avgTime }) {
     this.id = dateToID(date);
     this.date = date;
@@ -59,10 +59,10 @@ class Dashboard extends EventEmitter {
     super();
 
     this.CountryModel = CountryModel;
-    this.ProfitModel = ProfitModel;
-    this.SalesModel = SalesModel;
-    this.ClientsModel = ClientsModel;
-    this.AvgTimeModel = AvgTimeModel;
+    this.ProfitValueModel = ProfitValueModel;
+    this.SalesValueModel = SalesValueModel;
+    this.ClientsValueModel = ClientsValueModel;
+    this.AvgTimeValueModel = AvgTimeValueModel;
   }
 
   // eslint-disable-next-line lodash/prefer-constant

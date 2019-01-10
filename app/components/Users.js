@@ -1,9 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
-import { List } from "immutable";
+import { graphql } from "react-relay";
 import { FormattedMessage, intlShape } from "react-intl";
-import { withStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -16,7 +15,7 @@ import EditUserModal from "../containers/Modals/EditUserModal";
 import ConfirmModal from "./Modals/ConfirmModal";
 import responsiveTable from "../styles/responsiveTable";
 
-const styles = theme => ({
+export const styles = theme => ({
   paper: {
     padding: "1rem"
   },
@@ -41,14 +40,31 @@ const styles = theme => ({
   }
 });
 
+export const query = {
+  viewer: graphql`
+    fragment Users_users on Viewer {
+      users(
+        first: 2147483647 # max GraphQLInt
+      ) @connection(key: "Users_users") {
+        edges {
+          node {
+            id
+            email
+            roles
+          }
+        }
+      }
+    }
+  `
+};
+
 class Users extends React.Component {
   static propTypes = {
     intl: intlShape.isRequired,
     theme: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired,
-    users: PropTypes.instanceOf(List).isRequired,
-    isAllSelected: PropTypes.bool.isRequired,
-    isAllDeselected: PropTypes.bool.isRequired,
+    viewer: PropTypes.object.isRequired,
+    selected: PropTypes.array.isRequired,
     onCreate: PropTypes.func.isRequired,
     onEdit: PropTypes.func.isRequired,
     onDelete: PropTypes.func.isRequired,
@@ -71,17 +87,25 @@ class Users extends React.Component {
     this.handleConfirmDelete = this.handleConfirmDelete.bind(this);
   }
 
-  handleToggleAll(forceOff = false) {
-    if (forceOff || this.props.isAllSelected) this.props.onDeselectAll();
-    else this.props.onSelectAll();
+  getCount() {
+    return 0;
   }
 
-  handleToggle(userId) {
-    // eslint-disable-next-line lodash/prefer-lodash-method
-    let user = this.props.users.find(user => user.get("id") === userId);
-    let isSelected = user && user.get("isSelected");
-    this.props.onSetSelected(userId, !isSelected);
+  isAllSelected() {
+    return false;
   }
+
+  isAllDeselected() {
+    return true;
+  }
+
+  isSelected(userId) {
+    return false;
+  }
+
+  handleToggleAll(forceOff = false) {}
+
+  handleToggle(userId) {}
 
   handleCreateAction() {
     this.props.onCreate();
@@ -103,9 +127,7 @@ class Users extends React.Component {
     this.setState({ isConfirmOpen: false });
     await Promise.all(
       // eslint-disable-next-line lodash/prefer-lodash-method
-      this.props.users
-        .filter(user => user.get("isSelected"))
-        .map(user => this.props.onDelete(user.get("id")))
+      this.props.selected.map(userId => this.props.onDelete(userId))
     );
   }
 
@@ -124,7 +146,7 @@ class Users extends React.Component {
           <Button
             variant="contained"
             color="primary"
-            disabled={this.props.isAllDeselected}
+            disabled={this.isAllDeselected()}
             classes={{ root: this.props.classes.button }}
             onClick={this.handleEditAction}
           >
@@ -133,7 +155,7 @@ class Users extends React.Component {
           <Button
             variant="contained"
             color="primary"
-            disabled={this.props.isAllDeselected}
+            disabled={this.isAllDeselected()}
             classes={{ root: this.props.classes.button }}
             onClick={this.handleDeleteAction}
           >
@@ -150,12 +172,10 @@ class Users extends React.Component {
                   classes={{ root: this.props.classes.checkboxField }}
                 >
                   <Checkbox
-                    checked={
-                      !!this.props.users.size && this.props.isAllSelected
-                    }
+                    checked={!!this.getCount() && this.isAllSelected()}
                     classes={{ root: this.props.classes.checkbox }}
                     indeterminate={
-                      !this.props.isAllSelected && !this.props.isAllDeselected
+                      !this.isAllSelected() && !this.isAllDeselected()
                     }
                     onChange={() => this.handleToggleAll()}
                     value="on"
@@ -171,49 +191,41 @@ class Users extends React.Component {
             </TableHead>
             <TableBody>
               {/* eslint-disable-next-line lodash/prefer-lodash-method */}
-              {this.props.users.map((row, index) => (
-                <TableRow key={`row-${index}`}>
+              {this.props.viewer.users.edges.map(edge => (
+                <TableRow key={edge.node.id}>
                   <TableCell
                     padding="none"
                     className={classNames(
-                      index % 2 ? "even" : "odd",
-                      row.get("isSelected") && "selected"
+                      this.isSelected(edge.node.id) && "selected"
                     )}
                     classes={{ root: this.props.classes.checkboxField }}
                   >
                     <Checkbox
-                      checked={!!row.get("isSelected")}
+                      checked={!!this.isSelected(edge.node.id)}
                       classes={{ root: this.props.classes.checkbox }}
-                      onChange={() => this.handleToggle(row.get("id"))}
+                      onChange={() => this.handleToggle(edge.node.id)}
                       value="on"
                     />
                   </TableCell>
                   <TableCell
                     className={classNames(
-                      index % 2 ? "even" : "odd",
-                      row.get("isSelected") && "selected"
+                      this.isSelected(edge.node.id) && "selected"
                     )}
                     component="th"
                     scope="row"
                   >
-                    {row.get("email")}
+                    {edge.node.email}
                   </TableCell>
                   <TableCell
                     className={classNames(
-                      index % 2 ? "even" : "odd",
-                      row.get("isSelected") && "selected"
+                      this.isSelected(edge.node.id) && "selected"
                     )}
                   >
-                    {/* eslint-disable-next-line lodash/prefer-lodash-method */}
-                    {row
-                      .get("roles")
-                      .toJS()
-                      .map(item =>
-                        this.props.intl.formatMessage({
-                          id: `EDIT_USER_${item}_LABEL`
-                        })
-                      )
-                      .join(", ")}
+                    {_.map(edge.node.roles, item =>
+                      this.props.intl.formatMessage({
+                        id: `EDIT_USER_${item}_LABEL`
+                      })
+                    ).join(", ")}
                   </TableCell>
                 </TableRow>
               ))}
@@ -236,4 +248,4 @@ class Users extends React.Component {
   }
 }
 
-export default withStyles(styles, { withTheme: true })(Users);
+export default Users;

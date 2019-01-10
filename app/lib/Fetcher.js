@@ -1,10 +1,11 @@
-import { authSelectors } from "../state/auth";
+import { authSelectors, authOperations } from "../state/auth";
 import constants from "../../common/constants";
 
 class Fetcher {
-  constructor(getState) {
-    this._csrf = null;
+  constructor(getState, dispatch) {
     this.getState = getState;
+    this.dispatch = dispatch;
+    this.cookie = null;
   }
 
   // eslint-disable-next-line lodash/prefer-constant
@@ -14,7 +15,7 @@ class Fetcher {
 
   // eslint-disable-next-line lodash/prefer-constant
   static get $requires() {
-    return ["getState"];
+    return ["getState", "dispatch"];
   }
 
   // eslint-disable-next-line lodash/prefer-constant
@@ -22,49 +23,87 @@ class Fetcher {
     return "singleton";
   }
 
-  async fetch({ method, resource, data, csrf }) {
-    let cookie = authSelectors.getCookie(this.getState());
-    let url = constants.apiBase + resource;
+  setCookie(cookie) {
+    this.cookie = cookie;
+  }
+
+  async fetch({ method, resource, data }) {
+    method = method || "GET";
+
+    const headers = {
+      "Content-Type": "application/json",
+      Accept: "application/json"
+    };
+
+    if (this.cookie) headers["Cookie"] = this.cookie;
+
+    let csrf;
+    if (process.env.NODE_ENV === "production" && method !== "GET") {
+      csrf = await this.getCsrf();
+      if (csrf) headers["X-CSRF-Token"] = csrf;
+    }
+
+    if (
+      !process.browser &&
+      method !== "GET" &&
+      (!this.cookie || (process.env.NODE_ENV === "production" && !csrf))
+    ) {
+      let errors = [];
+      if (!this.cookie) errors.push("no cookie");
+      if (process.env.NODE_ENV === "production" && !csrf)
+        errors.push("no csrf");
+      let query = data.query;
+      if (query) query = _.split(query, /\r?\n/);
+      process.stderr.write(
+        [
+          `Broken fetch in SSR: ${resource} (${errors.join(", ")})`,
+          JSON.stringify(query || data, undefined, 4)
+        ].join("\n") + "\n"
+      );
+    }
+
     let response = await fetch(
-      process.browser ? url : process.env.APP_INNER_SERVER + url,
+      process.browser ? resource : process.env.APP_INNER_SERVER + resource,
       {
-        method: method || "GET",
+        method,
         credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          "X-CSRF-Token": csrf,
-          Cookie: cookie || undefined
-        },
+        headers,
         body: data && JSON.stringify(data)
       }
     );
 
-    if (response.status === 403 && method === "POST") this._csrf = null;
+    if (response.status === 403 && csrf)
+      await this.dispatch(authOperations.setCsrf({ csrf: null }));
 
     if (response.status !== 200) {
-      const error = new Error(
-        `Fetch failed: ${resource} [${response.status}]`,
-        await response.json()
-      );
-      error.response = response;
+      const error = new Error(`Fetch failed: ${resource} [${response.status}]`);
+      error.status = response.status;
+      error.query = data;
       throw error;
     }
 
     return response.json();
   }
 
-  async csrf() {
-    if (this._csrf) return this._csrf;
+  async getCsrf() {
+    let csrf = authSelectors.getCsrf(this.getState());
+    if (csrf || !process.browser) return csrf;
 
     try {
       let data = await this.fetch({ resource: `${constants.apiBase}/csrf` });
-      if (data.csrf) return (this._csrf = data.csrf);
+      if (data.csrf) csrf = data.csrf;
     } catch (error) {
       console.error(`CSRF: ${error.message}`);
     }
 
-    return new Promise(resolve => setTimeout(() => resolve(this.csrf()), 1000));
+    if (csrf) {
+      await this.dispatch(authOperations.setCsrf({ csrf }));
+      return csrf;
+    }
+
+    return new Promise(resolve =>
+      setTimeout(() => resolve(this.getCsrf()), 3000)
+    );
   }
 
   async query(operation, variables, cacheConfig, uploadables) {
@@ -75,14 +114,24 @@ class Fetcher {
         data: {
           query: operation.text, // GraphQL text from input
           variables
-        },
-        csrf: await this.csrf()
+        }
       });
     } catch (error) {
-      if (_.get(error, "response.status") === 403)
-        return this.query(operation, variables, cacheConfig, uploadables);
+      if (process.browser && error.status === 403) {
+        return new Promise(resolve =>
+          setTimeout(
+            () =>
+              resolve(
+                this.query(operation, variables, cacheConfig, uploadables)
+              ),
+            1000
+          )
+        );
+      }
+      return {
+        errors: [{ message: error.message, query: error.query }]
+      };
     }
-    return {};
   }
 }
 

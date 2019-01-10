@@ -22,7 +22,7 @@ const fetchStatus = () => async (dispatch, getState) => {
 };
 
 export const setStatus = status => async (dispatch, getState) => {
-  if (process.browser && !status) status = await fetchStatus();
+  if (process.browser && !status) status = await dispatch(fetchStatus());
 
   if (
     process.browser &&
@@ -42,7 +42,7 @@ export const setStatus = status => async (dispatch, getState) => {
   await dispatch(actions.setStatus(status));
 
   if (process.browser) {
-    let socket = global.fi.get("socket");
+    let socket = appSelectors.getService(getState(), { service: "socket" });
     if (socket) {
       if (selectors.isAuthenticated(getState())) socket.connect();
       else socket.disconnect();
@@ -60,15 +60,14 @@ export const signIn = ({ email, password }) => async (dispatch, getState) => {
     const fetcher = appSelectors.getService(getState(), { service: "fetcher" });
     let data = await fetcher.query(
       {
-        text: `mutation ($email: String, $password: String) {
-                signIn(email: $email, password: $password) {
+        text: `mutation SignInMutation($input: SignInInput!) {
+                signIn(input: $input) {
                   success
                 }
               }`
       },
       {
-        email,
-        password
+        input: { email, password }
       }
     );
 
@@ -142,13 +141,13 @@ export const signOut = () => async (dispatch, getState) => {
     const fetcher = appSelectors.getService(getState(), { service: "fetcher" });
     let data = await fetcher.query(
       {
-        text: `mutation {
-                signOut {
+        text: `mutation SignOutMutation($input: SignOutInput!) {
+                signOut(input: $input) {
                   success
                 }
               }`
       },
-      {}
+      { input: {} }
     );
 
     result = _.get(data, "data.signOut.success") || false;

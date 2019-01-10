@@ -1,13 +1,13 @@
 import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
+import { withStyles } from "@material-ui/core/styles";
+import { createFragmentContainer } from "react-relay";
 import { usersSelectors, usersOperations } from "../state/users";
-import UsersComponent from "../components/Users";
+import UsersComponent, { styles, query } from "../components/Users";
 
 const mapStateToProps = state => {
   return {
-    users: usersSelectors.getList(state),
-    isAllSelected: usersSelectors.isAllSelected(state),
-    isAllDeselected: usersSelectors.isAllDeselected(state)
+    selected: usersSelectors.getSelected(state)
   };
 };
 
@@ -18,16 +18,18 @@ const mapDispatchToProps = dispatch => {
     onDelete: userId => dispatch(usersOperations.remove({ id: userId })),
     onSetSelected: (userId, isSelected) =>
       dispatch(usersOperations.setSelected({ userId, isSelected })),
-    onSelectAll: () => dispatch(usersOperations.selectAll()),
+    onSelectAll: userIds => dispatch(usersOperations.selectAll({ userIds })),
     onDeselectAll: () => dispatch(usersOperations.deselectAll())
   };
 };
 
 const Users = injectIntl(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(UsersComponent)
+  withStyles(styles, { withTheme: true })(
+    connect(
+      mapStateToProps,
+      mapDispatchToProps
+    )(createFragmentContainer(UsersComponent, query))
+  )
 );
 
 export default Users;

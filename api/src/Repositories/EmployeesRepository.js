@@ -1,14 +1,17 @@
 const debug = require("debug")("app:employees");
 const EventEmitter = require("events");
-const { cursorToDocument } = require("graphql-relay-connection");
+const {
+  mongooseConnection: { cursorToDocument }
+} = require("graphql-relay-connection");
 const constants = require("../../../common/constants");
 
 const accessLevel = constants.roles.AUTHENTICATED;
 
 class EmployeesRepository extends EventEmitter {
-  constructor(employee, getState, dispatch) {
+  constructor(di, employee, getState, dispatch) {
     super();
 
+    this.di = di;
     this.employee = employee;
     this.getState = getState;
     this.dispatch = dispatch;
@@ -21,39 +24,52 @@ class EmployeesRepository extends EventEmitter {
 
   // eslint-disable-next-line lodash/prefer-constant
   static get $requires() {
-    return ["model.employee", "getState", "dispatch"];
+    return ["di", "model.employee", "getState", "dispatch"];
   }
 
   async getEmployee(context, { id }) {
     debug("getEmployee");
 
     let requester = await context.getUser();
-    if (!requester || !_.includes(requester.roles, accessLevel)) return null;
+    if (!requester || !_.includes(requester.roles, accessLevel))
+      throw this.di.get("error.access");
 
-    return this.employee.model.findById(id);
+    const employee = await this.employee.model.findById(id);
+    if (!employee) throw this.di.get("error.entityNotFound");
+    return employee;
+  }
+
+  async countEmployees(context) {
+    debug("countEmployees");
+
+    let requester = await context.getUser();
+    if (!requester || !_.includes(requester.roles, accessLevel))
+      throw this.di.get("error.access");
+
+    return await this.employee.model.countDocuments();
   }
 
   async getEmployees(context, { after, first, before, last } = {}) {
     debug("getEmployees");
 
     let requester = await context.getUser();
-    if (!requester || !_.includes(requester.roles, accessLevel)) return [];
+    if (!requester || !_.includes(requester.roles, accessLevel))
+      throw this.di.get("error.access");
 
-    if (!last && !first) first = 10;
-    const docAfter = cursorToDocument(after);
-    const docBefore = cursorToDocument(before);
+    const docAfter = after && cursorToDocument(after);
+    const docBefore = before && cursorToDocument(before);
+
+    let params;
+    if (docAfter || docBefore) {
+      params = { _id: {} };
+      if (docAfter) params._id.$gt = docAfter._id;
+      if (docBefore) params._id.$lt = docBefore._id;
+    }
 
     // eslint-disable-next-line lodash/prefer-lodash-method
-    let query = this.employee.model
-      .find({
-        _id: {
-          $gt: docAfter && docAfter._id,
-          $lt: docBefore && docBefore._id
-        }
-      })
-      .sort("_id");
-    if (first || last) query = query.limit(Math.min(first, last) + 1); // add +1 for hasNextPage
-    return query.exec();
+    let query = this.employee.model.find(params).sort("_id");
+    if (first || last) query = query.limit(Math.max(first, last) + 1); // add +1 for hasNextPage
+    return await query;
   }
 
   async createEmployee(
@@ -63,7 +79,8 @@ class EmployeesRepository extends EventEmitter {
     debug("createEmployee");
 
     let requester = await context.getUser();
-    if (!requester || !_.includes(requester.roles, accessLevel)) return null;
+    if (!requester || !_.includes(requester.roles, accessLevel))
+      throw this.di.get("error.access");
 
     let employee = new this.employee.model({
       checked,
@@ -87,10 +104,11 @@ class EmployeesRepository extends EventEmitter {
     debug("editEmployee");
 
     let requester = await context.getUser();
-    if (!requester || !_.includes(requester.roles, accessLevel)) return null;
+    if (!requester || !_.includes(requester.roles, accessLevel))
+      throw this.di.get("error.access");
 
     let employee = await this.employee.model.findById(id);
-    if (!employee) return null;
+    if (!employee) throw this.di.get("error.entityNotFound");
 
     if (_.isBoolean(checked)) employee.checked = checked;
     if (_.isString(name)) employee.name = name;
@@ -109,10 +127,11 @@ class EmployeesRepository extends EventEmitter {
     debug("deleteEmployee");
 
     let requester = await context.getUser();
-    if (!requester || !_.includes(requester.roles, accessLevel)) return null;
+    if (!requester || !_.includes(requester.roles, accessLevel))
+      throw this.di.get("error.access");
 
     let employee = await this.employee.model.findById(id);
-    if (!employee) return null;
+    if (!employee) throw this.di.get("error.entityNotFound");
 
     await employee.remove();
     context.preCachePages({ path: ["/", "/tables"] }).catch(console.error);

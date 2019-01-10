@@ -1,6 +1,5 @@
 import { connect } from "react-redux";
 import { authSelectors } from "../../state/auth";
-import { dashboardOperations } from "../../state/dashboard";
 import FormsPageComponent from "../../components/Pages/FormsPage";
 
 const mapStateToProps = state => {
@@ -16,8 +15,6 @@ const FormsPage = connect(
   { pure: false }
 )(FormsPageComponent);
 
-FormsPage.getInitialProps = async ({ store, req }) => {
-  await store.dispatch(dashboardOperations.loadCountries({ req }));
-};
+FormsPage.getInitialProps = FormsPageComponent.getInitialProps;
 
 export default FormsPage;

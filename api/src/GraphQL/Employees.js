@@ -3,9 +3,9 @@ const {
   GraphQLNonNull,
   GraphQLEnumType,
   GraphQLID,
+  GraphQLInt,
   GraphQLString,
   GraphQLBoolean,
-  GraphQLInt,
   GraphQLList,
   GraphQLObjectType
 } = require("graphql");
@@ -17,8 +17,7 @@ const {
   mutationWithClientMutationId
 } = require("graphql-relay");
 const {
-  connectionFromPromisedArray,
-  documentToCursor
+  mongooseConnection: { connectionFromPromisedArray, documentToCursor }
 } = require("graphql-relay-connection");
 const constants = require("../../../common/constants");
 const GraphQLDate = require("./Date");
@@ -50,16 +49,13 @@ class Employees extends EventEmitter {
 
   idFetcher(globalId, context) {
     const { type, id } = fromGlobalId(globalId);
-    console.log(id);
     if (type === "Employee")
       return this.employeesRepo.getEmployee(context, { id });
-    if (type === "EmployeeList")
-      return this.employeesRepo.getEmployees(context);
     return null;
   }
 
   typeResolver(obj) {
-    if (obj instanceof this.employeeModel.model) return this.GraphQLEmployee;
+    if (obj instanceof this.employeeModel.model) return this.Employee;
     return null;
   }
 
@@ -67,7 +63,7 @@ class Employees extends EventEmitter {
     const root = this.di.get("graphql");
     const { nodeInterface } = root.nodeDefinitions;
 
-    this.GraphQLEmployeeDept = new GraphQLEnumType({
+    this.EmployeeDept = new GraphQLEnumType({
       name: "EmployeeDept",
       values: _.reduce(
         _.map(constants.depts, (dept, index) => ({ dept, index })),
@@ -79,7 +75,7 @@ class Employees extends EventEmitter {
       )
     });
 
-    this.GraphQLEmployee = new GraphQLObjectType({
+    this.Employee = new GraphQLObjectType({
       name: "Employee",
       fields: () => ({
         id: globalIdField("Employee"),
@@ -88,11 +84,11 @@ class Employees extends EventEmitter {
         checked: { type: new GraphQLNonNull(GraphQLBoolean) },
         name: { type: new GraphQLNonNull(GraphQLString) },
         dept: {
-          type: new GraphQLNonNull(new GraphQLList(this.GraphQLEmployeeDept))
+          type: new GraphQLNonNull(new GraphQLList(this.EmployeeDept))
         },
         title: { type: new GraphQLNonNull(GraphQLString) },
         country: {
-          type: new GraphQLNonNull(root.countries.GraphQLCountry),
+          type: new GraphQLNonNull(root.dashboard.Country),
           resolve: (source, args, context) =>
             this.dashboardRepo.getCountry(
               context,
@@ -106,63 +102,53 @@ class Employees extends EventEmitter {
 
     const {
       connectionType: EmployeesConnection,
-      edgeType: GraphQLEmployeeEdge
+      edgeType: EmployeeEdge
     } = connectionDefinitions({
       name: "Employee",
-      nodeType: this.GraphQLEmployee
+      nodeType: this.Employee
     });
     this.EmployeesConnection = EmployeesConnection;
-    this.GraphQLEmployeeEdge = GraphQLEmployeeEdge;
-
-    this.GraphQLEmployeeList = new GraphQLObjectType({
-      name: "EmployeeList",
-      fields: {
-        id: globalIdField("EmployeeList"),
-        employees: {
-          type: this.EmployeesConnection,
-          args: {
-            dept: { type: GraphQLString },
-            ...connectionArgs
-          },
-          resolve: (source, args, context) =>
-            connectionFromPromisedArray(
-              this.employeesRepo.getEmployees(context, args),
-              args
-            )
-        }
-      },
-      interfaces: [nodeInterface]
-    });
+    this.EmployeeEdge = EmployeeEdge;
 
     this.query = {
       employee: {
-        type: this.GraphQLEmployee,
+        type: this.Employee,
         args: {
-          id: globalIdField("Employee")
+          id: { type: new GraphQLNonNull(GraphQLID) }
         },
         resolve: (source, args, context) =>
-          this.employeesRepo.getEmployee(context, {
-            id: fromGlobalId(args.id).id
-          })
+          this.employeesRepo.getEmployee(
+            context,
+            _.assign({}, args, { id: fromGlobalId(args.id).id })
+          )
       },
       employees: {
-        type: this.GraphQLEmployeeList
+        type: this.EmployeesConnection,
+        args: {
+          dept: { type: GraphQLString },
+          ...connectionArgs
+        },
+        resolve: (source, args, context) =>
+          connectionFromPromisedArray(
+            this.employeesRepo.getEmployees(context, args),
+            args
+          )
       }
     };
 
-    this.GraphQLCreateEmployeeMutation = mutationWithClientMutationId({
+    this.CreateEmployeeMutation = mutationWithClientMutationId({
       name: "CreateEmployee",
       inputFields: {
         checked: { type: GraphQLBoolean },
         name: { type: GraphQLString },
-        dept: { type: new GraphQLList(this.GraphQLEmployeeDept) },
+        dept: { type: new GraphQLList(this.EmployeeDept) },
         title: { type: GraphQLString },
         country: { type: GraphQLString },
         salary: { type: GraphQLInt }
       },
       outputFields: {
         employeeEdge: {
-          type: this.GraphQLEmployeeEdge,
+          type: this.EmployeeEdge,
           resolve: async ({ employee }) => ({
             cursor: documentToCursor(employee),
             node: employee
@@ -175,20 +161,20 @@ class Employees extends EventEmitter {
       }
     });
 
-    this.GraphQLEditEmployeeMutation = mutationWithClientMutationId({
+    this.EditEmployeeMutation = mutationWithClientMutationId({
       name: "EditEmployee",
       inputFields: {
-        id: { type: GraphQLID },
+        id: { type: new GraphQLNonNull(GraphQLID) },
         checked: { type: GraphQLBoolean },
         name: { type: GraphQLString },
-        dept: { type: new GraphQLList(this.GraphQLEmployeeDept) },
+        dept: { type: new GraphQLList(this.EmployeeDept) },
         title: { type: GraphQLString },
         country: { type: GraphQLString },
         salary: { type: GraphQLInt }
       },
       outputFields: {
         employeeEdge: {
-          type: this.GraphQLEmployeeEdge,
+          type: this.EmployeeEdge,
           resolve: async ({ employee }) => ({
             cursor: documentToCursor(employee),
             node: employee
@@ -196,19 +182,22 @@ class Employees extends EventEmitter {
         }
       },
       mutateAndGetPayload: async (args, context) => {
-        const employee = await this.employeesRepo.editEmployee(context, args);
+        const employee = await this.employeesRepo.editEmployee(
+          context,
+          _.assign({}, args, { id: fromGlobalId(args.id).id })
+        );
         return { employee };
       }
     });
 
-    this.GraphQLDeleteEmployeeMutation = mutationWithClientMutationId({
+    this.DeleteEmployeeMutation = mutationWithClientMutationId({
       name: "DeleteEmployee",
       inputFields: {
-        id: { type: GraphQLID }
+        id: { type: new GraphQLNonNull(GraphQLID) }
       },
       outputFields: {
         employeeEdge: {
-          type: this.GraphQLEmployeeEdge,
+          type: this.EmployeeEdge,
           resolve: async ({ employee }) => ({
             cursor: documentToCursor(employee),
             node: employee
@@ -216,15 +205,18 @@ class Employees extends EventEmitter {
         }
       },
       mutateAndGetPayload: async (args, context) => {
-        const employee = await this.employeesRepo.deleteEmployee(context, args);
+        const employee = await this.employeesRepo.deleteEmployee(
+          context,
+          _.assign({}, args, { id: fromGlobalId(args.id).id })
+        );
         return { employee };
       }
     });
 
     this.mutation = {
-      createEmployee: this.GraphQLCreateEmployeeMutation,
-      editEmployee: this.GraphQLEditEmployeeMutation,
-      deleteEmployee: this.GraphQLDeleteEmployeeMutation
+      createEmployee: this.CreateEmployeeMutation,
+      editEmployee: this.EditEmployeeMutation,
+      deleteEmployee: this.DeleteEmployeeMutation
     };
   }
 }

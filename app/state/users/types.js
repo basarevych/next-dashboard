@@ -1,4 +1,3 @@
-export const SET_LIST = "app/users/SET_LIST";
 export const SET_SELECTED = "app/users/SET_SELECTED";
 export const SELECT_ALL = "app/users/SELECT_ALL";
 export const DESELECT_ALL = "app/users/DESELECT_ALL";

@@ -3,8 +3,6 @@ import constants from "../../../common/constants";
 
 export const getCsrf = state => state.getIn(["auth", "csrf"]);
 
-export const getCookie = state => state.getIn(["auth", "cookie"]);
-
 export const isAuthenticated = state =>
   state.getIn(["auth", "isAuthenticated"]);
 
