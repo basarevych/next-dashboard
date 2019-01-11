@@ -13,8 +13,7 @@ module.exports = function(state, type) {
 
   let obj;
   if (type === "redux") {
-    // sanitize the server-side version of the state
-    obj = serialize(state.setIn(["app", "di"], null));
+    obj = serialize(state);
   } else {
     obj = state;
   }

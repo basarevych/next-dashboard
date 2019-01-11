@@ -1,18 +1,13 @@
-import Injectt from "injectt";
 import * as actions from "./actions";
-import * as selectors from "./selectors";
 import { authOperations } from "../auth";
 import constants from "../../../common/constants";
-import Fetcher from "../../lib/Fetcher";
-import Storage from "../../lib/Storage";
-import Socket from "../../lib/Socket";
-import Cookie from "../../lib/Cookie";
 
 export const setStatusCode = actions.setStatusCode;
 export const setConnected = actions.setConnected;
 export const setLocale = actions.setLocale;
 export const stop = actions.stop;
 
+// called in App.getInitialProps()
 export const create = ({
   statusCode,
   cookie,
@@ -29,23 +24,13 @@ export const create = ({
     await dispatch(authOperations.setGoogleMapsKey({ googleMapsKey }));
 };
 
-export const init = ({ cookie }) => async (dispatch, getState) => {
-  if (selectors.getService(getState(), { service: "di" })) return;
-  const di = new Injectt();
-  di.registerInstance(getState, "getState");
-  di.registerInstance(dispatch, "dispatch");
-  di.registerClass(Fetcher);
-  di.registerClass(Storage);
-  di.registerClass(Socket);
-  di.registerClass(Cookie);
-  if (!process.browser && cookie) {
-    // when doing SSR we will be doing own API requests on behalf of current user
-    di.get("fetcher").setCookie(cookie);
-  }
-  await dispatch(actions.init({ di }));
+// called in App.costructor()
+export const init = () => async dispatch => {
+  return dispatch(actions.init());
 };
 
 let fontsLoaded;
+// called in App.componentDidMount()
 export const start = () => {
   if (!fontsLoaded) {
     fontsLoaded = new Promise(resolve => {
@@ -60,5 +45,11 @@ export const start = () => {
   return async dispatch => {
     await Promise.all([dispatch(authOperations.setStatus()), fontsLoaded]);
     return dispatch(actions.start());
+  };
+};
+
+export const setCookie = ({ name, value, days }) => {
+  return async (dispatch, getState, di) => {
+    di.get("cookie").set(name, value, days);
   };
 };

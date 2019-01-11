@@ -87,25 +87,30 @@ class Users extends React.Component {
     this.handleConfirmDelete = this.handleConfirmDelete.bind(this);
   }
 
-  getCount() {
-    return 0;
-  }
-
   isAllSelected() {
-    return false;
+    const list = _.map(this.props.viewer.users.edges, "node.id");
+    return _.difference(list, this.props.selected).length === 0;
   }
 
   isAllDeselected() {
-    return true;
+    return this.props.selected.length === 0;
   }
 
   isSelected(userId) {
-    return false;
+    return !!_.find(this.props.selected, item => item === userId);
   }
 
-  handleToggleAll(forceOff = false) {}
+  handleToggleAll(forceOff = false) {
+    if (forceOff || this.isAllSelected()) {
+      this.props.onDeselectAll();
+    } else {
+      this.props.onSelectAll(_.map(this.props.viewer.users.edges, "node.id"));
+    }
+  }
 
-  handleToggle(userId) {}
+  handleToggle(userId) {
+    this.props.onSetSelected(userId, !_.includes(this.props.selected, userId));
+  }
 
   handleCreateAction() {
     this.props.onCreate();
@@ -126,8 +131,7 @@ class Users extends React.Component {
   async handleConfirmDelete() {
     this.setState({ isConfirmOpen: false });
     await Promise.all(
-      // eslint-disable-next-line lodash/prefer-lodash-method
-      this.props.selected.map(userId => this.props.onDelete(userId))
+      _.map(this.props.selected, userId => this.props.onDelete(userId))
     );
   }
 
@@ -190,8 +194,7 @@ class Users extends React.Component {
               </TableRow>
             </TableHead>
             <TableBody>
-              {/* eslint-disable-next-line lodash/prefer-lodash-method */}
-              {this.props.viewer.users.edges.map(edge => (
+              {_.map(this.props.viewer.users.edges, edge => (
                 <TableRow key={edge.node.id}>
                   <TableCell
                     padding="none"

@@ -9,10 +9,11 @@ import jssExtend from "jss-extend";
 import JssProvider from "react-jss/lib/JssProvider";
 import serialize from "../common/serialize";
 import deserialize from "../common/deserialize";
-import getMaterialContext from "../app/lib/getMaterialContext";
+import getDiContainer from "../app/lib/getDiContainer";
 import getReduxStore from "../app/lib/getReduxStore";
 import getRelayEnvironment from "../app/lib/getRelayEnvironment";
-import { appOperations, appSelectors } from "../app/state/app";
+import getMaterialContext from "../app/lib/getMaterialContext";
+import { appOperations } from "../app/state/app";
 import { authSelectors } from "../app/state/auth";
 import constants from "../common/constants";
 import isRouteAllowed from "../common/isRouteAllowed";
@@ -24,15 +25,19 @@ import Layout from "../app/containers/Layout";
 // Configure JSS
 const jss = createJss({ plugins: [...jssPreset().plugins, jssExtend()] });
 
-// Only filled when doing SSR
-let clientCookies;
-
 class MyApp extends App {
   static async getInitialProps({ Component, ctx }) {
     const { req, res, err, query } = ctx;
-    clientCookies = req && req.cookieHeader;
 
-    const store = getReduxStore();
+    const di = getDiContainer();
+    const store = getReduxStore(di);
+    const environment = getRelayEnvironment(di);
+
+    // when doing SSR we will be making own API requests on behalf of current user
+    const cookie = req && req.cookieHeader;
+    if (!process.browser && cookie) di.get("fetcher").setCookie(cookie);
+
+    // init the store
     const statusCode =
       (res && res.statusCode) || (err && (err.statusCode || 500)) || 200;
     const csrf = req && req.csrfHeader;
@@ -46,13 +51,10 @@ class MyApp extends App {
         googleMapsKey
       })
     );
-    await store.dispatch(appOperations.init({ cookie: clientCookies }));
-
-    const relayEnvironment = getRelayEnvironment(store);
 
     ctx.statusCode = statusCode;
     ctx.store = store;
-    ctx.fetchQuery = fetchQuery(relayEnvironment);
+    ctx.fetchQuery = fetchQuery(environment);
 
     let pageProps = {};
     if (Component.getInitialProps)
@@ -60,37 +62,24 @@ class MyApp extends App {
 
     return {
       pageProps,
-      locale: query.locale,
       theme: query.theme,
       reduxState: serialize(store.getState(), "redux"),
-      relayState: serialize(
-        relayEnvironment
-          .getStore()
-          .getSource()
-          .toJSON(),
-        "relay"
-      )
+      relayState: serialize(environment.getStore().getSource(), "relay")
     };
   }
 
   constructor(props) {
     super(props);
 
-    this.reduxStore = getReduxStore(deserialize(props.reduxState, "redux"));
-    this.reduxStore.dispatch(appOperations.init({ cookie: clientCookies }));
-
+    const di = getDiContainer();
+    this.reduxStore = getReduxStore(di, deserialize(props.reduxState, "redux"));
     this.relayEnvironment = getRelayEnvironment(
-      this.reduxStore,
+      di,
       deserialize(props.relayState, "relay")
     );
-
     this.materialContext = getMaterialContext(props.theme);
 
-    if (props.locale !== appSelectors.getLocale(this.reduxStore.getState())) {
-      this.reduxStore.dispatch(
-        appOperations.setLocale({ locale: props.locale })
-      );
-    }
+    this.reduxStore.dispatch(appOperations.init());
   }
 
   componentDidMount() {

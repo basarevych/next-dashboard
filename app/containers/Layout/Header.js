@@ -6,13 +6,14 @@ import { authOperations } from "../../state/auth";
 
 const mapStateToProps = state => {
   return {
-    cookie: appSelectors.getService(state, { service: "cookie" }),
     locale: appSelectors.getLocale(state)
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
+    onSetCookie: (name, value, days) =>
+      dispatch(appOperations.setCookie({ name, value, days })),
     onSetLocale: locale => dispatch(appOperations.setLocale({ locale })),
     onSignOut: () => dispatch(authOperations.signOut())
   };

@@ -1,6 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Map } from "immutable";
 import { intlShape, FormattedMessage } from "react-intl";
 import { SubmissionError } from "redux-form/immutable";
 import { withStyles } from "@material-ui/core/styles";
@@ -38,7 +37,7 @@ class EditUserModal extends Form {
     theme: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired,
     isOpen: PropTypes.bool.isRequired,
-    data: PropTypes.instanceOf(Map),
+    data: PropTypes.object,
     onCancel: PropTypes.func.isRequired,
     onLoad: PropTypes.func.isRequired,
     onCreate: PropTypes.func.isRequired,
@@ -54,7 +53,7 @@ class EditUserModal extends Form {
 
     if (props.data) {
       result = await props.onEdit(
-        props.data.get("id"),
+        props.data.id,
         props.getValue("name") || null,
         props.getValue("email"),
         props.getValue("password"),
@@ -80,11 +79,11 @@ class EditUserModal extends Form {
 
     /* eslint-disable lodash/prefer-lodash-method */
     if (prevState.isOpen !== nextProps.isOpen) {
-      let name = nextProps.data && nextProps.data.get("name");
-      let email = nextProps.data && nextProps.data.get("email");
+      let name = nextProps.data && nextProps.data.name;
+      let email = nextProps.data && nextProps.data.email;
       let isAdmin = !!(
         nextProps.data &&
-        nextProps.data.get("roles").includes(constants.roles.ADMIN)
+        _.includes(nextProps.data.roles, constants.roles.ADMIN)
       );
       nextProps.dispatch(nextProps.change("name", name || ""));
       nextProps.dispatch(nextProps.change("email", email || ""));

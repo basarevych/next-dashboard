@@ -5,7 +5,6 @@ import l10n from "../../../common/locales";
 /* State Shape
 Map({
   created: Number, // timestamp
-  di: Injectt,
   locale: String,
   statusCode: Number, // current HTTP status code
   isStarted: Boolean,
@@ -17,15 +16,6 @@ const createdReducer = (state = Date.now(), action) => {
   switch (action.type) {
     case types.CREATE:
       if (!_.isUndefined(action.created)) return action.created;
-      break;
-  }
-  return state;
-};
-
-const diReducer = (state = null, action) => {
-  switch (action.type) {
-    case types.INIT:
-      if (!_.isUndefined(action.di)) return action.di;
       break;
   }
   return state;
@@ -70,7 +60,6 @@ const isConnectedReducer = (state = false, action) => {
 
 const reducer = combineReducers({
   created: createdReducer,
-  di: diReducer,
   locale: localeReducer,
   statusCode: statusCodeReducer,
   isStarted: isStartedReducer,

@@ -8,7 +8,6 @@ const nextApp = require("next");
 const path = require("path");
 const express = require("express");
 const getStore = require("./state/store");
-const { appOperations } = require("./state/app");
 const constants = require("../common/constants");
 const styles = require("../common/themes");
 const l10n = require("../common/locales");
@@ -115,21 +114,11 @@ class App {
     this.di.registerInstance(this.config, "config");
 
     // Redux store
-    this.store = getStore();
-    this.di.registerInstance(this.store, "store");
-    this.di.registerInstance(this.store.getState.bind(this.store), "getState");
-    this.di.registerInstance(this.store.dispatch.bind(this.store), "dispatch");
+    this.store = getStore(this.di);
   }
 
   async init({ server }) {
     this.server = server;
-
-    // Initialize the store
-    await this.store.dispatch(
-      appOperations.init({
-        di: this.di
-      })
-    );
 
     // Initialize the singletons
     await Promise.all(_.invokeMap(this.di.singletons(), "init"));

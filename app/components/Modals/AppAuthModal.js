@@ -84,7 +84,7 @@ class AppAuthModal extends Form {
     classes: PropTypes.object.isRequired,
     isOpen: PropTypes.bool.isRequired,
     providers: PropTypes.array.isRequired,
-    cookie: PropTypes.object.isRequired,
+    onSetCookie: PropTypes.func.isRequired,
     onSignIn: PropTypes.func.isRequired,
     onSignUp: PropTypes.func.isRequired
   };
@@ -141,7 +141,7 @@ class AppAuthModal extends Form {
   }
 
   handleProvider(provider) {
-    this.props.cookie.set("redirect", window.location.pathname, 0.042);
+    this.props.onSetCookie("redirect", window.location.pathname, 0.042);
     window.location.href = `${constants.apiBase}/oauth/${_.toLower(provider)}`;
   }
 

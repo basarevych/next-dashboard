@@ -5,7 +5,6 @@ import EditUserModalComponent from "../../components/Modals/EditUserModal";
 
 const mapStateToProps = state => {
   return {
-    data: usersSelectors.getEditModalData(state),
     isOpen: usersSelectors.isEditModalOpen(state)
   };
 };

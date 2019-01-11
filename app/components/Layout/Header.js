@@ -132,8 +132,8 @@ class Header extends React.PureComponent {
     intl: intlShape,
     theme: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired,
-    cookie: PropTypes.object.isRequired,
     locale: PropTypes.string.isRequired,
+    onSetCookie: PropTypes.func.isRequired,
     onSetLocale: PropTypes.func.isRequired,
     onSignOut: PropTypes.func.isRequired
   };
@@ -229,7 +229,7 @@ class Header extends React.PureComponent {
   }
 
   handleLocaleSwitch(locale) {
-    this.props.cookie.set("locale", locale);
+    this.props.onSetCookie("locale", locale);
     this.handleMenuClose();
     this.props.onSetLocale(locale);
   }
@@ -239,7 +239,7 @@ class Header extends React.PureComponent {
   }
 
   handleThemeSwitch(theme) {
-    this.props.cookie.set("theme", theme);
+    this.props.onSetCookie("theme", theme);
     this.handleMenuClose();
     window.location.reload(true);
   }
