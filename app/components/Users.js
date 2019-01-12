@@ -65,6 +65,7 @@ class Users extends React.Component {
     classes: PropTypes.object.isRequired,
     viewer: PropTypes.object.isRequired,
     selected: PropTypes.array.isRequired,
+    isEditing: PropTypes.bool.isRequired,
     onCreate: PropTypes.func.isRequired,
     onEdit: PropTypes.func.isRequired,
     onDelete: PropTypes.func.isRequired,
@@ -85,6 +86,10 @@ class Users extends React.Component {
     this.handleDeleteAction = this.handleDeleteAction.bind(this);
     this.handleCancelDelete = this.handleCancelDelete.bind(this);
     this.handleConfirmDelete = this.handleConfirmDelete.bind(this);
+  }
+
+  hasRecords() {
+    return this.props.viewer.users.edges.length > 0;
   }
 
   isAllSelected() {
@@ -176,7 +181,7 @@ class Users extends React.Component {
                   classes={{ root: this.props.classes.checkboxField }}
                 >
                   <Checkbox
-                    checked={!!this.getCount() && this.isAllSelected()}
+                    checked={!!this.hasRecords() && this.isAllSelected()}
                     classes={{ root: this.props.classes.checkbox }}
                     indeterminate={
                       !this.isAllSelected() && !this.isAllDeselected()
@@ -236,7 +241,8 @@ class Users extends React.Component {
           </Table>
         </Paper>
 
-        <EditUserModal />
+        {this.props.isEditing && <EditUserModal />}
+
         <ConfirmModal
           isOpen={this.state.isConfirmOpen}
           title="DELETE_USER_TITLE"

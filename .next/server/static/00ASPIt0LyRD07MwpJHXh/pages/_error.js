@@ -412,6 +412,10 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+function _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
+
+function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
+
 var getFormErrors = function getFormErrors(data) {
   var defaultMessage = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "OPERATION_FAILED";
   var result = {};
@@ -450,7 +454,9 @@ var getFormErrors = function getFormErrors(data) {
 
 exports.getFormErrors = getFormErrors;
 
-var _default = function _default(FormComponent, mapStateToProps, mapDispatchToProps) {
+var _default = function _default(FormComponent, mapStateToProps, mapDispatchToProps, mergeProps) {
+  var options = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : {};
+
   var withContext = function withContext(WrappedComponent) {
     return function WithFormContext(props) {
       return _react.default.createElement(_Context.FormNameContext.Provider, {
@@ -461,11 +467,10 @@ var _default = function _default(FormComponent, mapStateToProps, mapDispatchToPr
     };
   };
 
-  for (var _len = arguments.length, args = new Array(_len > 3 ? _len - 3 : 0), _key = 3; _key < _len; _key++) {
-    args[_key - 3] = arguments[_key];
-  }
+  var destroyOnUnmount = options.destroyOnUnmount,
+      reduxOptions = _objectWithoutProperties(options, ["destroyOnUnmount"]);
 
-  var Form = _reactRedux.connect.apply(void 0, [function (state, props) {
+  var Form = (0, _reactRedux.connect)(function (state, props) {
     return _.assign(mapStateToProps ? mapStateToProps(state, props) : {}, {
       getValue: function getValue(field) {
         var values = (0, _immutable2.getFormValues)(FormComponent.formName)(state);
@@ -509,9 +514,9 @@ var _default = function _default(FormComponent, mapStateToProps, mapDispatchToPr
         return updateValidation;
       }()
     });
-  }].concat(args))(withContext((0, _immutable2.reduxForm)({
+  }, mergeProps, _.keys(reduxOptions).length ? reduxOptions : undefined)(withContext((0, _immutable2.reduxForm)({
     form: FormComponent.formName,
-    destroyOnUnmount: false,
+    destroyOnUnmount: destroyOnUnmount || true,
     pure: false,
     shouldAsyncValidate: function shouldAsyncValidate(_ref) {
       var trigger = _ref.trigger;
@@ -523,7 +528,6 @@ var _default = function _default(FormComponent, mapStateToProps, mapDispatchToPr
     onChange: FormComponent.onChange.bind(FormComponent),
     asyncValidate: FormComponent.onValidate.bind(FormComponent)
   })(FormComponent)));
-
   Form.formName = FormComponent.formName;
   return Form;
 };

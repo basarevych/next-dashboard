@@ -7,7 +7,8 @@ import UsersComponent, { styles, query } from "../components/Users";
 
 const mapStateToProps = state => {
   return {
-    selected: usersSelectors.getSelected(state)
+    selected: usersSelectors.getSelected(state),
+    isEditing: usersSelectors.isEditModalOpen(state)
   };
 };
 

@@ -1,11 +1,14 @@
 import { injectIntl } from "react-intl";
-import { usersSelectors, usersOperations } from "../../state/users";
+import { withStyles } from "@material-ui/core/styles";
+import { usersOperations, usersSelectors } from "../../state/users";
 import connectForm from "../../lib/connectForm";
-import EditUserModalComponent from "../../components/Modals/EditUserModal";
+import EditUserModalComponent, {
+  styles
+} from "../../components/Modals/EditUserModal";
 
 const mapStateToProps = state => {
   return {
-    isOpen: usersSelectors.isEditModalOpen(state)
+    currentId: usersSelectors.getEditModalUserId(state)
   };
 };
 
@@ -32,6 +35,8 @@ const mapDispatchToProps = dispatch => {
 };
 
 const EditUserModal = injectIntl(
-  connectForm(EditUserModalComponent, mapStateToProps, mapDispatchToProps)
+  withStyles(styles, { withTheme: true })(
+    connectForm(EditUserModalComponent, mapStateToProps, mapDispatchToProps)
+  )
 );
 export default EditUserModal;

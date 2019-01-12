@@ -34,6 +34,8 @@ class EmployeesRepository extends EventEmitter {
     if (!requester || !_.includes(requester.roles, accessLevel))
       throw this.di.get("error.access");
 
+    if (!id) return null;
+
     const employee = await this.employee.model.findById(id);
     if (!employee) throw this.di.get("error.entityNotFound");
     return employee;

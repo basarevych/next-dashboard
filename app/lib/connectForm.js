@@ -27,7 +27,8 @@ export default (
   FormComponent,
   mapStateToProps,
   mapDispatchToProps,
-  ...args
+  mergeProps,
+  options = {}
 ) => {
   const withContext = WrappedComponent =>
     function WithFormContext(props) {
@@ -40,6 +41,7 @@ export default (
       );
     };
 
+  const { destroyOnUnmount, ...reduxOptions } = options;
   const Form = connect(
     (state, props) =>
       _.assign(mapStateToProps ? mapStateToProps(state, props) : {}, {
@@ -60,12 +62,13 @@ export default (
           await dispatch(stopAsyncValidation(FormComponent.formName, errors));
         }
       }),
-    ...args
+    mergeProps,
+    _.keys(reduxOptions).length ? reduxOptions : undefined
   )(
     withContext(
       reduxForm({
         form: FormComponent.formName,
-        destroyOnUnmount: false,
+        destroyOnUnmount: destroyOnUnmount || true,
         pure: false,
         shouldAsyncValidate: ({ trigger }) =>
           _.includes(["blur", "submit"], trigger),

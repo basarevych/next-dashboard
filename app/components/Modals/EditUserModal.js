@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { graphql } from "react-relay";
 import { intlShape, FormattedMessage } from "react-intl";
 import { SubmissionError } from "redux-form/immutable";
-import { withStyles } from "@material-ui/core/styles";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -11,12 +11,13 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import red from "@material-ui/core/colors/red";
+import { NextQueryRenderer } from "../Providers/Relay";
 import Form from "../Forms/Form";
 import Field from "../Forms/Field";
 import constants from "../../../common/constants";
 import fields from "../../../common/forms/user";
 
-const styles = theme => ({
+export const styles = theme => ({
   paper: {
     background: theme.main.background
   },
@@ -30,14 +31,26 @@ const styles = theme => ({
   }
 });
 
+export const query = graphql`
+  query EditUserModalQuery($currentId: ID) {
+    viewer {
+      user(id: $currentId) {
+        id
+        name
+        email
+        roles
+      }
+    }
+  }
+`;
+
 class EditUserModal extends Form {
   static propTypes = {
     ...Form.propTypes,
     intl: intlShape,
     theme: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired,
-    isOpen: PropTypes.bool.isRequired,
-    data: PropTypes.object,
+    currentId: PropTypes.string,
     onCancel: PropTypes.func.isRequired,
     onLoad: PropTypes.func.isRequired,
     onCreate: PropTypes.func.isRequired,
@@ -51,9 +64,9 @@ class EditUserModal extends Form {
   static async onSubmit(values, dispatch, props) {
     let result;
 
-    if (props.data) {
+    if (props.currentId) {
       result = await props.onEdit(
-        props.data.id,
+        props.currentId,
         props.getValue("name") || null,
         props.getValue("email"),
         props.getValue("password"),
@@ -74,42 +87,20 @@ class EditUserModal extends Form {
     return result;
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    let state = {};
-
-    /* eslint-disable lodash/prefer-lodash-method */
-    if (prevState.isOpen !== nextProps.isOpen) {
-      let name = nextProps.data && nextProps.data.name;
-      let email = nextProps.data && nextProps.data.email;
-      let isAdmin = !!(
-        nextProps.data &&
-        _.includes(nextProps.data.roles, constants.roles.ADMIN)
-      );
-      nextProps.dispatch(nextProps.change("name", name || ""));
-      nextProps.dispatch(nextProps.change("email", email || ""));
-      nextProps.dispatch(nextProps.change("password", ""));
-      nextProps.dispatch(nextProps.change("isAdmin", isAdmin));
-      nextProps.dispatch(nextProps.clearAsyncError());
-      nextProps.dispatch(nextProps.clearSubmitErrors());
-      state.isOpen = nextProps.isOpen;
-    }
-    /* eslint-enable */
-
-    return _.keys(state).length ? state : null;
-  }
-
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      isLoaded: false
+    };
   }
 
-  render() {
+  renderForm() {
     return (
       <Dialog
         maxWidth="xs"
         classes={{ paper: this.props.classes.paper }}
-        open={this.props.isOpen}
+        open
         onClose={this.props.onCancel}
       >
         <DialogTitle>
@@ -186,6 +177,43 @@ class EditUserModal extends Form {
       </Dialog>
     );
   }
+
+  loadData(viewer) {
+    if (this.state.isLoaded) return;
+
+    setTimeout(() => {
+      this.props.dispatch(
+        this.props.change("name", _.get(viewer, "user.name", ""))
+      );
+      this.props.dispatch(
+        this.props.change("email", _.get(viewer, "user.email", ""))
+      );
+      this.props.dispatch(this.props.change("password", ""));
+      this.props.dispatch(
+        this.props.change(
+          "isAdmin",
+          _.includes(_.get(viewer, "user.roles", []), constants.roles.ADMIN)
+        )
+      );
+      this.setState({ isLoaded: true });
+    });
+  }
+
+  render() {
+    if (!this.props.currentId) return this.renderForm();
+
+    return (
+      <NextQueryRenderer
+        query={query}
+        variables={{ currentId: this.props.currentId }}
+        render={({ error, props }) => {
+          if (error || !props) return null;
+          this.loadData(props.viewer);
+          return this.renderForm();
+        }}
+      />
+    );
+  }
 }
 
-export default withStyles(styles, { withTheme: true })(EditUserModal);
+export default EditUserModal;

@@ -75,7 +75,7 @@ class Users extends EventEmitter {
         whenUpdated: { type: new GraphQLNonNull(GraphQLDate) },
         email: { type: new GraphQLNonNull(GraphQLString) },
         isEmailVerified: { type: new GraphQLNonNull(GraphQLBoolean) },
-        name: { type: new GraphQLNonNull(GraphQLString) },
+        name: { type: GraphQLString },
         roles: {
           type: new GraphQLNonNull(new GraphQLList(this.UserRole))
         }
@@ -97,7 +97,7 @@ class Users extends EventEmitter {
       user: {
         type: this.User,
         args: {
-          id: { type: new GraphQLNonNull(GraphQLID) }
+          id: { type: GraphQLID }
         },
         resolve: (source, args, context) =>
           this.usersRepo.getUser(
@@ -105,7 +105,7 @@ class Users extends EventEmitter {
             _.assign(
               {},
               args,
-              _.assign({}, args, { id: fromGlobalId(args.id).id })
+              _.assign({}, args, { id: args.id && fromGlobalId(args.id).id })
             )
           )
       },

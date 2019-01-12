@@ -16,7 +16,7 @@ class GraphQL extends EventEmitter {
         const result = _.find(
           [
             this.auth.idFetcher(globalId, context),
-            this.user.idFetcher(globalId, context),
+            this.users.idFetcher(globalId, context),
             this.employees.idFetcher(globalId, context),
             this.dashboard.idFetcher(globalId, context)
           ],
@@ -28,7 +28,7 @@ class GraphQL extends EventEmitter {
         const result = _.find(
           [
             this.auth.typeResolver(obj),
-            this.user.typeResolver(obj),
+            this.users.typeResolver(obj),
             this.employees.typeResolver(obj),
             this.dashboard.typeResolver(obj)
           ],

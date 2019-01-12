@@ -14,8 +14,8 @@ export const deselectAll = actions.deselectAll;
 
 export const editFirstSelected = () => async (dispatch, getState) => {
   let selected = selectors.getSelected(getState());
-  if (selected.size)
-    return dispatch(actions.showEditModal({ userId: selected.first() }));
+  if (selected.length)
+    return dispatch(actions.showEditModal({ userId: selected[0] }));
 };
 
 export const create = ({ name, email, password, isAdmin }) => async (

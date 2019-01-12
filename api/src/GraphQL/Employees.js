@@ -114,12 +114,12 @@ class Employees extends EventEmitter {
       employee: {
         type: this.Employee,
         args: {
-          id: { type: new GraphQLNonNull(GraphQLID) }
+          id: { type: GraphQLID }
         },
         resolve: (source, args, context) =>
           this.employeesRepo.getEmployee(
             context,
-            _.assign({}, args, { id: fromGlobalId(args.id).id })
+            _.assign({}, args, { id: args.id && fromGlobalId(args.id).id })
           )
       },
       employees: {

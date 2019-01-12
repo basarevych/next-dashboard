@@ -35,6 +35,8 @@ class UsersRepository extends EventEmitter {
     if (!requester || !_.includes(requester.roles, accessLevel))
       throw this.di.get("error.access");
 
+    if (!id) return null;
+
     const user = await this.user.model.findById(id);
     if (!user) throw this.di.get("error.entityNotFound");
     return user;
