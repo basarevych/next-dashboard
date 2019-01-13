@@ -9,18 +9,18 @@ import jssExtend from "jss-extend";
 import JssProvider from "react-jss/lib/JssProvider";
 import serialize from "../common/serialize";
 import deserialize from "../common/deserialize";
-import getDiContainer from "../app/lib/getDiContainer";
-import getReduxStore from "../app/lib/getReduxStore";
-import getRelayEnvironment from "../app/lib/getRelayEnvironment";
-import getMaterialContext from "../app/lib/getMaterialContext";
-import { appOperations } from "../app/state/app";
-import { authSelectors } from "../app/state/auth";
+import getDiContainer from "../app/app/lib/getDiContainer";
+import getReduxStore from "../app/app/lib/getReduxStore";
+import getRelayEnvironment from "../app/app/lib/getRelayEnvironment";
+import getMaterialContext from "../app/app/lib/getMaterialContext";
+import { appOperations } from "../app/app/state";
+import { authSelectors } from "../app/auth/state";
 import constants from "../common/constants";
 import isRouteAllowed from "../common/isRouteAllowed";
-import { fetchQuery, RelayProvider } from "../app/components/Providers/Relay";
-import IntlProvider from "../app/containers/Providers/Intl";
-import DateProvider from "../app/containers/Providers/Date";
-import Layout from "../app/containers/Layout";
+import { fetchQuery, RelayProvider } from "../app/app/providers/Relay";
+import IntlProvider from "../app/app/providers/IntlContainer";
+import DateProvider from "../app/app/providers/DateContainer";
+import Layout from "../app/app/layout/LayoutContainer";
 
 // Configure JSS
 const jss = createJss({ plugins: [...jssPreset().plugins, jssExtend()] });

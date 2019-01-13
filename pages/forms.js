@@ -1,1 +1,1 @@
-export { default } from "../app/containers/Pages/FormsPage";
+export { default } from "../app/forms/FormsPageContainer";

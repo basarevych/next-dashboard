@@ -1,1 +1,1 @@
-export { default } from "../app/components/Pages/IconsPage";
+export { default } from "../app/icons/IconsPageContainer";

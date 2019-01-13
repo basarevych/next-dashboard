@@ -1,1 +1,1 @@
-export { default } from "../app/components/Pages/TablesPage";
+export { default } from "../app/tables/TablesPageContainer";

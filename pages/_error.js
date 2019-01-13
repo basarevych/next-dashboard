@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Error from "../app/components/Pages/ErrorPage";
-import { appSelectors } from "../app/state/app";
+import Error from "../app/app/error/ErrorPage";
+import { appSelectors } from "../app/app/state";
 
 class Page extends React.Component {
   static propTypes = {

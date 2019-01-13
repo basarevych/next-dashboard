@@ -1,1 +1,1 @@
-export { default } from "../app/components/Pages/NotificationsPage";
+export { default } from "../app/notifications/NotificationsPageContainer";

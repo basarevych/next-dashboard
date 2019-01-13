@@ -1,1 +1,1 @@
-export { default } from "../app/components/Pages/MapsPage";
+export { default } from "../app/maps/MapsPageContainer";

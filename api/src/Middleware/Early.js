@@ -75,7 +75,6 @@ class Early extends EventEmitter {
 
     // Default headers
     express.use((req, res, next) => {
-      req.cookieHeader = req.get("Cookie");
       res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
       return next();
     });

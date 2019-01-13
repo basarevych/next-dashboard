@@ -1,1 +1,1 @@
-export { default } from "../../app/components/Pages/Auth/ErrorPage";
+export { default } from "../../app/auth/ErrorPageContainer";

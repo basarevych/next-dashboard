@@ -1,1 +1,1 @@
-export { default } from "../app/components/Pages/ChartsPage";
+export { default } from "../app/charts/ChartsPageContainer";

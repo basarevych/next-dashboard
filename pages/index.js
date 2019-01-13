@@ -1,1 +1,1 @@
-export { default } from "../app/containers/Pages/DashboardPage";
+export { default } from "../app/dashboard/DashboardPageContainer";

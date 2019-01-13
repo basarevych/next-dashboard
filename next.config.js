@@ -2,7 +2,6 @@
 
 const App = require("./api/app");
 const path = require("path");
-const fs = require("fs-extra");
 const DefinePlugin = require("webpack").DefinePlugin;
 const ProvidePlugin = require("webpack").ProvidePlugin;
 const ContextReplacementPlugin = require("webpack").ContextReplacementPlugin;
@@ -17,11 +16,6 @@ const constants = require("./common/constants");
 const l10n = require("./common/locales");
 
 let app = new App();
-
-const browsers = fs.readFileSync(
-  path.join(__dirname, ".browserslistrc"),
-  "utf8"
-);
 
 const plugins = [
   withProgressBar,
@@ -140,7 +134,13 @@ module.exports = withPlugins([...plugins], {
     if (!isServer) {
       config.plugins.push(
         new ServiceWorkerPlugin({
-          entry: path.resolve(__dirname, "app", "lib", "serviceWorker.js"),
+          entry: path.resolve(
+            __dirname,
+            "app",
+            "app",
+            "lib",
+            "serviceWorker.js"
+          ),
           excludes: ["**/.*", "**/*.map"],
           includes: ["**/*"],
           publicPath: "/"
@@ -154,7 +154,7 @@ module.exports = withPlugins([...plugins], {
 
       if (entries["main.js"])
         entries["main.js"].unshift(
-          path.resolve(__dirname, "app", "lib", "initApp.js")
+          path.resolve(__dirname, "app", "app", "lib", "initApp.js")
         ); // polyfills and init
 
       return entries;

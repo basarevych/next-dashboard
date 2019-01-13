@@ -1,1 +1,1 @@
-export { default } from "../app/components/Pages/TypographyPage";
+export { default } from "../app/typography/TypographyPageContainer";

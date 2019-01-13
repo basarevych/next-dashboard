@@ -1,1 +1,1 @@
-export { default } from "../app/containers/Pages/UsersPage";
+export { default } from "../app/users/UsersPageContainer";

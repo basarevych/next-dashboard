@@ -58,8 +58,8 @@ class Render extends EventEmitter {
           return this.app.next.renderError(error, req, res, page, query);
         }
 
-        req.csrfHeader =
-          req.get("X-CSRF-Token") || (req.csrfToken && req.csrfToken());
+        req.cookieHeader = req.get("Cookie");
+        req.csrfHeader = _.isFunction(req.csrfToken) ? req.csrfToken() : "none";
 
         if (process.env.NODE_ENV !== "production")
           return this.app.next.render(req, res, page, query);

@@ -1,1 +1,1 @@
-export { default } from "../../app/components/Pages/Auth/VerifyPage";
+export { default } from "../../app/auth/VerifyPageContainer";

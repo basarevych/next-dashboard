@@ -1,1 +1,1 @@
-export { default } from "../../app/components/Pages/Auth/ProfilePage";
+export { default } from "../../app/auth/ProfilePageContainer";
