@@ -105,7 +105,14 @@ class Employees extends EventEmitter {
       edgeType: EmployeeEdge
     } = connectionDefinitions({
       name: "Employee",
-      nodeType: this.Employee
+      nodeType: this.Employee,
+      connectionFields: () => ({
+        totalCount: {
+          type: GraphQLInt,
+          resolve: async (source, args, context) =>
+            this.employeesRepo.countEmployees(context, args)
+        }
+      })
     });
     this.EmployeesConnection = EmployeesConnection;
     this.EmployeeEdge = EmployeeEdge;

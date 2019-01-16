@@ -3,6 +3,7 @@ const {
   GraphQLNonNull,
   GraphQLEnumType,
   GraphQLID,
+  GraphQLInt,
   GraphQLString,
   GraphQLBoolean,
   GraphQLList,
@@ -88,7 +89,14 @@ class Users extends EventEmitter {
       edgeType: UserEdge
     } = connectionDefinitions({
       name: "User",
-      nodeType: this.User
+      nodeType: this.User,
+      connectionFields: () => ({
+        totalCount: {
+          type: GraphQLInt,
+          resolve: async (source, args, context) =>
+            this.usersRepo.countUsers(context, args)
+        }
+      })
     });
     this.UsersConnection = UsersConnection;
     this.UserEdge = UserEdge;
