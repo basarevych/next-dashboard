@@ -23,13 +23,14 @@ const constants = require("../../../common/constants");
 const GraphQLDate = require("./Date");
 
 class Employees extends EventEmitter {
-  constructor(di, employeeModel, employeesRepo, dashboardRepo) {
+  constructor(di, employeeModel, employeesRepo, dashboardRepo, pubsub) {
     super();
 
     this.di = di;
     this.employeeModel = employeeModel;
     this.employeesRepo = employeesRepo;
     this.dashboardRepo = dashboardRepo;
+    this.pubsub = pubsub;
   }
 
   // eslint-disable-next-line lodash/prefer-constant
@@ -43,7 +44,8 @@ class Employees extends EventEmitter {
       "di",
       "model.employee",
       "repository.employees",
-      "repository.dashboard"
+      "repository.dashboard",
+      "pubsub"
     ];
   }
 
@@ -224,6 +226,35 @@ class Employees extends EventEmitter {
       createEmployee: this.CreateEmployeeMutation,
       editEmployee: this.EditEmployeeMutation,
       deleteEmployee: this.DeleteEmployeeMutation
+    };
+
+    this.subscription = {
+      employeeCreated: {
+        type: this.Employee,
+        resolve: ({ employeeCreated }) => employeeCreated,
+        subscribe: () => this.pubsub.asyncIterator("employeeCreated")
+      },
+      employeeUpdated: {
+        type: this.Employee,
+        resolve: ({ employeeUpdated }) => employeeUpdated,
+        subscribe: () => this.pubsub.asyncIterator("employeeUpdated")
+      },
+      employeeDeleted: {
+        type: this.Employee,
+        resolve: ({ employeeDeleted }) => employeeDeleted,
+        subscribe: () => this.pubsub.asyncIterator("employeeDeleted")
+      },
+      employeeEvent: {
+        type: this.Employee,
+        resolve: ({ employeeCreated, employeeUpdated, employeeDeleted }) =>
+          employeeCreated || employeeUpdated || employeeDeleted,
+        subscribe: () =>
+          this.pubsub.asyncIterator([
+            "employeeCreated",
+            "employeeUpdated",
+            "employeeDeleted"
+          ])
+      }
     };
   }
 }

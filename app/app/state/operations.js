@@ -13,9 +13,10 @@ export const create = ({
   cookie,
   csrf,
   status,
+  subscriptionsServer,
   googleMapsKey
 }) => async dispatch => {
-  await dispatch(actions.create());
+  await dispatch(actions.create({ subscriptionsServer }));
   if (statusCode) await dispatch(setStatusCode({ code: statusCode }));
   if (cookie) await dispatch(authOperations.setCookie({ cookie }));
   if (csrf) await dispatch(authOperations.setCsrf({ csrf }));

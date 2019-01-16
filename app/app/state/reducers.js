@@ -7,6 +7,7 @@ Map({
   created: Number, // timestamp
   locale: String,
   statusCode: Number, // current HTTP status code
+  subscriptionsServer: String,
   isStarted: Boolean,
   isConnected: Boolean, // WebSocket
 })
@@ -39,6 +40,16 @@ const statusCodeReducer = (state = 200, action) => {
   return state;
 };
 
+const subscriptionsServerReducer = (state = "", action) => {
+  switch (action.type) {
+    case types.CREATE:
+      if (!_.isUndefined(action.subscriptionsServer))
+        return action.subscriptionsServer;
+      break;
+  }
+  return state;
+};
+
 const isStartedReducer = (state = false, action) => {
   switch (action.type) {
     case types.START:
@@ -62,6 +73,7 @@ const reducer = combineReducers({
   created: createdReducer,
   locale: localeReducer,
   statusCode: statusCodeReducer,
+  subscriptionsServer: subscriptionsServerReducer,
   isStarted: isStartedReducer,
   isConnected: isConnectedReducer
 });

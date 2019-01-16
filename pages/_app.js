@@ -29,28 +29,33 @@ class MyApp extends App {
   static async getInitialProps({ Component, ctx }) {
     const { req, res, err, query } = ctx;
 
+    // Dependency Injection Container
     const di = getDiContainer();
+
+    // Redux Store
     const store = getReduxStore(di);
-    const environment = getRelayEnvironment(di);
-
-    // when doing SSR we will be making own API requests on behalf of current user
-    const cookie = req && req.cookieHeader;
-    if (!process.browser && cookie) di.get("fetcher").setCookie(cookie);
-
-    // init the store
     const statusCode =
       (res && res.statusCode) || (err && (err.statusCode || 500)) || 200;
     const csrf = req && req.csrfHeader;
     const status = req && req.getAuthStatus && (await req.getAuthStatus());
+    const subscriptionsServer = query && query.subscriptionsServer;
     const googleMapsKey = query && query.googleMapsKey;
     await store.dispatch(
       appOperations.create({
         statusCode,
         csrf,
         status,
+        subscriptionsServer,
         googleMapsKey
       })
     );
+
+    // Relay Environment
+    const environment = getRelayEnvironment(di);
+
+    // when doing SSR we will be making own API requests on behalf of current user
+    const cookie = req && req.cookieHeader;
+    if (!process.browser && cookie) di.get("fetcher").setCookie(cookie);
 
     ctx.statusCode = statusCode;
     ctx.store = store;

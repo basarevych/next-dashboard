@@ -10,14 +10,25 @@ const root = path.join.bind(path, path.resolve(__dirname), "..");
 process.chdir(root());
 
 let app = new App();
-let server = http.createServer(app.express);
+let mainServer = http.createServer(app.express);
+let subscriptionsServer = http.createServer((request, response) => {
+  response.writeHead(404);
+  response.end();
+});
 
 app
-  .init({ server })
+  .init({ mainServer, subscriptionsServer })
   .then(() => {
-    server.listen(app.config.appPort, app.config.appHost);
-    server.on("error", onError);
-    server.once("listening", onListening);
+    mainServer.listen(app.config.appPort, app.config.appHost);
+    mainServer.on("error", onError);
+    mainServer.once("listening", onMainListening);
+
+    subscriptionsServer.listen(
+      app.config.appSubscriptionsPort,
+      app.config.appHost
+    );
+    subscriptionsServer.on("error", onError);
+    subscriptionsServer.once("listening", onSubscriptionsListening);
   })
   .catch(error => {
     console.error(error);
@@ -50,8 +61,15 @@ function onError(error) {
  * Event listener for HTTP server "listening" event.
  */
 
-function onListening() {
-  let address = server.address();
+function onMainListening() {
+  let address = mainServer.address();
   console.log(`> Server is listening on ${address.address}:${address.port}`);
   console.log(`> Serving ${app.config.appOrigins.join(", ")}`);
+}
+
+function onSubscriptionsListening() {
+  let address = subscriptionsServer.address();
+  console.log(
+    `> Subscriptions server is listening on ${address.address}:${address.port}`
+  );
 }

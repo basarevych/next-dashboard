@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { FormattedMessage } from "react-intl";
+import { requestSubscription, graphql } from "react-relay";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -18,8 +19,9 @@ import responsiveTable from "../app/styles/responsiveTable";
 import UserItem, { styles as itemStyles } from "./UserItemContainer";
 import EditUserModal from "./EditUserModalContainer";
 import ConfirmModal from "../app/modals/ConfirmModalContainer";
+import { RelayContext } from "../app/providers/Relay";
 
-export const pageSize = 2;
+export const pageSize = 20;
 
 export const styles = theme => ({
   layout: {
@@ -49,6 +51,14 @@ export const styles = theme => ({
   ...itemStyles(theme)
 });
 
+const subscription = graphql`
+  subscription UserListSubscription {
+    userEvent {
+      id
+    }
+  }
+`;
+
 class UserList extends React.Component {
   static propTypes = {
     classes: PropTypes.object.isRequired,
@@ -64,6 +74,8 @@ class UserList extends React.Component {
     onDeselectAll: PropTypes.func.isRequired
   };
 
+  static contextType = RelayContext;
+
   constructor(props) {
     super(props);
 
@@ -76,6 +88,8 @@ class UserList extends React.Component {
       isConfirmOpen: false
     };
 
+    this.isDestroyed = false;
+
     this.handleToggle = this.handleToggle.bind(this);
     this.handleCreateAction = this.handleCreateAction.bind(this);
     this.handleEditAction = this.handleEditAction.bind(this);
@@ -85,6 +99,32 @@ class UserList extends React.Component {
     this.handleRefresh = this.handleRefresh.bind(this);
     this.handleChangePage = this.handleChangePage.bind(this);
     this.handleChangeRowsPerPage = this.handleChangeRowsPerPage.bind(this);
+  }
+
+  subscribe() {
+    this.subscription = requestSubscription(this.context, {
+      subscription,
+      variables: {},
+      onCompleted: () => {
+        this.subscription = null;
+        if (this.isDestroyed) return;
+        setTimeout(() => this.subscribe(), 1000);
+      },
+      onError: error => {
+        this.subscription = null;
+        console.error(error);
+        if (this.isDestroyed) return;
+        setTimeout(() => this.subscribe(), 1000);
+      },
+      onNext: data => {
+        console.log(data);
+        this.handleRefresh();
+      }
+    });
+  }
+
+  componentDidMount() {
+    this.subscribe();
   }
 
   componentDidUpdate() {
@@ -105,6 +145,14 @@ class UserList extends React.Component {
         () => this.setState({ pageNumber: 0, lastVariables: variables }),
         { force: true }
       );
+    }
+  }
+
+  componentWillUnmount() {
+    this.isDestroyed = true;
+    if (this.subscription) {
+      this.subscription.dispose();
+      this.subscription = null;
     }
   }
 
@@ -260,7 +308,7 @@ class UserList extends React.Component {
           </TableBody>
         </Table>
         <TablePagination
-          rowsPerPageOptions={[1, 2, 3]}
+          rowsPerPageOptions={[10, 20, 30, 50, 100]}
           component="div"
           count={this.props.viewer.users.totalCount}
           rowsPerPage={this.state.pageSize}

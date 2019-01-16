@@ -161,6 +161,8 @@ class Auth extends EventEmitter {
       updateProfile: this.UpdateProfileMutation,
       deleteProfile: this.DeleteProfileMutation
     };
+
+    this.subscription = {};
   }
 }
 

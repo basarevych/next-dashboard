@@ -1,11 +1,19 @@
 const EventEmitter = require("events");
-const { GraphQLObjectType, GraphQLSchema } = require("graphql");
+const {
+  execute,
+  subscribe,
+  GraphQLObjectType,
+  GraphQLSchema
+} = require("graphql");
 const { nodeDefinitions } = require("graphql-relay");
+const { SubscriptionServer } = require("subscriptions-transport-ws");
+const constants = require("../../common/constants");
 
 class GraphQL extends EventEmitter {
-  constructor(auth, users, employees, dashboard) {
+  constructor(app, auth, users, employees, dashboard) {
     super();
 
+    this.app = app;
     this.auth = auth;
     this.users = users;
     this.employees = employees;
@@ -47,6 +55,7 @@ class GraphQL extends EventEmitter {
   // eslint-disable-next-line lodash/prefer-constant
   static get $requires() {
     return [
+      "app",
       "graphql.auth",
       "graphql.users",
       "graphql.employees",
@@ -102,10 +111,36 @@ class GraphQL extends EventEmitter {
           )
         });
 
+        this.Subscription = new GraphQLObjectType({
+          name: "Subscription",
+          fields: _.merge(
+            {},
+            this.auth.subscription,
+            this.users.subscription,
+            this.employees.subscription,
+            this.dashboard.subscription
+          )
+        });
+
         this.schema = new GraphQLSchema({
           query: this.Query,
-          mutation: this.Mutation
+          mutation: this.Mutation,
+          subscription: this.Subscription
         });
+
+        if (this.app.subscriptions) {
+          this.subscriptions = SubscriptionServer.create(
+            {
+              schema: this.schema,
+              execute,
+              subscribe
+            },
+            {
+              server: this.app.subscriptions,
+              path: constants.graphqlBase
+            }
+          );
+        }
 
         resolve();
       } catch (error) {

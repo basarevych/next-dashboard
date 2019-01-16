@@ -7,6 +7,7 @@ const Injectt = require("injectt");
 const nextApp = require("next");
 const path = require("path");
 const express = require("express");
+const { PubSub } = require("graphql-subscriptions");
 const getStore = require("./state/store");
 const constants = require("../common/constants");
 const styles = require("../common/themes");
@@ -17,6 +18,11 @@ require("dotenv").config({ path: path.join(__dirname, "..", "/.env") });
 let appHost = process.env.APP_HOST || "0.0.0.0";
 let appPort = parseInt(process.env.APP_PORT, 10) || 3000;
 let appOrigins = process.env.APP_ORIGINS;
+let appSubscriptionsPort =
+  parseInt(process.env.APP_SUBSCRIPTIONS_PORT, 10) || 3001;
+let appSubscriptionsServer =
+  process.env.APP_SUBSCRIPTIONS_SERVER ||
+  `ws://localhost:${appSubscriptionsPort}`;
 let appInnerServer =
   process.env.APP_INNER_SERVER || `http://localhost:${appPort}`;
 let appStatic = process.env.APP_STATIC || "";
@@ -78,6 +84,8 @@ class App {
       appHost,
       appPort,
       appOrigins,
+      appSubscriptionsPort,
+      appSubscriptionsServer,
       appInnerServer,
       appStatic,
       appTrustProxy,
@@ -112,13 +120,15 @@ class App {
     this.di.load(path.resolve(__dirname, "src"));
     this.di.registerInstance(this, "app");
     this.di.registerInstance(this.config, "config");
+    this.di.registerInstance(new PubSub(), "pubsub");
 
     // Redux store
     this.store = getStore(this.di);
   }
 
-  async init({ server }) {
-    this.server = server;
+  async init({ mainServer, subscriptionsServer }) {
+    this.server = mainServer;
+    this.subscriptions = subscriptionsServer;
 
     // Initialize the singletons
     await Promise.all(_.invokeMap(this.di.singletons(), "init"));
@@ -141,6 +151,7 @@ class App {
     return {
       page: constants.pages[path] && constants.pages[path].page,
       query: _.assign({}, query || {}, {
+        subscriptionsServer: this.config.appSubscriptionsServer,
         locale: locale || l10n.defaultLocale || null,
         theme: theme || styles.defaultTheme || null,
         googleMapsKey: this.config.googleMapsKey || null

@@ -1,8 +1,27 @@
 import { Environment, Network, RecordSource, Store } from "relay-runtime";
+import { SubscriptionClient } from "subscriptions-transport-ws";
+import { appSelectors } from "../state";
+import constants from "../../../common/constants";
 
 const envFactory = (di, initialState) => {
+  const setupSubscription = (config, variables, cacheConfig, observer) => {
+    const query = config.text;
+    const { onNext, onError, onCompleted } = observer;
+    const subscriptionClient = new SubscriptionClient(
+      appSelectors.getSubscriptionsServer(di.get("getState")()) +
+        constants.graphqlBase,
+      { reconnect: true }
+    );
+    subscriptionClient
+      .request({ query, variables })
+      .subscribe(onNext, onError, onCompleted);
+  };
+
   const fetcher = di.get("fetcher");
-  const network = Network.create(fetcher.query.bind(fetcher));
+  const network = Network.create(
+    fetcher.query.bind(fetcher),
+    setupSubscription
+  );
   const store = new Store(new RecordSource(initialState || undefined));
   const env = new Environment({ network, store });
   di.registerInstance(env, "env");

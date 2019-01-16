@@ -238,6 +238,7 @@ class Dashboard extends EventEmitter {
     };
 
     this.mutation = {};
+    this.subscription = {};
   }
 }
 

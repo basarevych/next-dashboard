@@ -8,13 +8,14 @@ const constants = require("../../../common/constants");
 const accessLevel = constants.roles.AUTHENTICATED;
 
 class EmployeesRepository extends EventEmitter {
-  constructor(di, employee, getState, dispatch) {
+  constructor(di, employee, getState, dispatch, pubsub) {
     super();
 
     this.di = di;
     this.employee = employee;
     this.getState = getState;
     this.dispatch = dispatch;
+    this.pubsub = pubsub;
   }
 
   // eslint-disable-next-line lodash/prefer-constant
@@ -24,7 +25,7 @@ class EmployeesRepository extends EventEmitter {
 
   // eslint-disable-next-line lodash/prefer-constant
   static get $requires() {
-    return ["di", "model.employee", "getState", "dispatch"];
+    return ["di", "model.employee", "getState", "dispatch", "pubsub"];
   }
 
   async getEmployee(context, { id }) {
@@ -96,6 +97,7 @@ class EmployeesRepository extends EventEmitter {
     await employee.validate();
     await employee.save();
     context.preCachePages({ path: ["/", "/tables"] }).catch(console.error);
+    this.pubsub.publish("employeeCreated", { employeeCreated: employee });
     return employee;
   }
 
@@ -122,6 +124,7 @@ class EmployeesRepository extends EventEmitter {
     await employee.validate();
     await employee.save();
     context.preCachePages({ path: ["/", "/tables"] }).catch(console.error);
+    this.pubsub.publish("employeeUpdated", { employeeUpdated: employee });
     return employee;
   }
 
@@ -137,6 +140,7 @@ class EmployeesRepository extends EventEmitter {
 
     await employee.remove();
     context.preCachePages({ path: ["/", "/tables"] }).catch(console.error);
+    this.pubsub.publish("employeeDeleted", { employeeDeleted: employee });
     return employee;
   }
 }

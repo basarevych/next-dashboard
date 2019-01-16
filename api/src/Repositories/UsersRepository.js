@@ -8,7 +8,7 @@ const constants = require("../../../common/constants");
 const accessLevel = constants.roles.ADMIN;
 
 class UsersRepository extends EventEmitter {
-  constructor(di, auth, user, getState, dispatch) {
+  constructor(di, auth, user, getState, dispatch, pubsub) {
     super();
 
     this.di = di;
@@ -16,6 +16,7 @@ class UsersRepository extends EventEmitter {
     this.user = user;
     this.getState = getState;
     this.dispatch = dispatch;
+    this.pubsub = pubsub;
   }
 
   // eslint-disable-next-line lodash/prefer-constant
@@ -25,7 +26,7 @@ class UsersRepository extends EventEmitter {
 
   // eslint-disable-next-line lodash/prefer-constant
   static get $requires() {
-    return ["di", "auth", "model.user", "getState", "dispatch"];
+    return ["di", "auth", "model.user", "getState", "dispatch", "pubsub"];
   }
 
   async getUser(context, { id }) {
@@ -96,6 +97,7 @@ class UsersRepository extends EventEmitter {
     await user.validate();
     await user.save();
     context.preCachePages({ path: "/users" }).catch(console.error);
+    this.pubsub.publish("userCreated", { userCreated: user });
     return user;
   }
 
@@ -120,6 +122,7 @@ class UsersRepository extends EventEmitter {
     await user.validate();
     await user.save();
     context.preCachePages({ path: "/users" }).catch(console.error);
+    this.pubsub.publish("userUpdated", { userUpdated: user });
     return user;
   }
 
@@ -135,6 +138,7 @@ class UsersRepository extends EventEmitter {
 
     await user.remove();
     context.preCachePages({ path: "/users" }).catch(console.error);
+    this.pubsub.publish("userDeleted", { userDeleted: user });
     return user;
   }
 }

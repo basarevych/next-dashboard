@@ -1978,7 +1978,7 @@ babylon@^6.18.0:
   resolved "https://registry.yarnpkg.com/babylon/-/babylon-6.18.0.tgz#af2f3b88fa6f5c1e4c634d1a0f8eac4f55b395e3"
   integrity sha512-q/UEjfGJ2Cm3oKV71DJz9d25TPnq5rhBVL2Q4fA5wcC3jcrdn7+SssEybFIxwAvvP+YCsCYNKughoF33GxgycQ==
 
-backo2@1.0.2:
+backo2@1.0.2, backo2@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/backo2/-/backo2-1.0.2.tgz#31ab1ac8b129363463e35b3ebb69f4dfcfba7947"
   integrity sha1-MasayLEpNjRj41s+u2n038+6eUc=
@@ -3775,6 +3775,11 @@ event-source-polyfill@0.0.12:
   resolved "https://registry.yarnpkg.com/event-source-polyfill/-/event-source-polyfill-0.0.12.tgz#e539cd67fdef2760a16aa5262fa98134df52e3af"
   integrity sha1-5TnNZ/3vJ2ChaqUmL6mBNN9S468=
 
+eventemitter3@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-3.1.0.tgz#090b4d6cdbd645ed10bf750d4b5407942d7ba163"
+  integrity sha512-ivIvhpq/Y0uSjcHDcOIccjmYjGLcP09MFGE7ysAwkAvkXfpZlC985pH2/ui64DKazbTW/4kN3yqozUxlXzI6cA==
+
 events@^1.0.0:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/events/-/events-1.1.1.tgz#9ebdb7635ad099c70dcc4c2a1f5004288e8bd924"
@@ -4452,6 +4457,13 @@ graphql-relay@~0.5.5:
   version "0.5.5"
   resolved "https://registry.yarnpkg.com/graphql-relay/-/graphql-relay-0.5.5.tgz#d6815e6edd618e878d5d921c13fc66033ec867e2"
   integrity sha1-1oFebt1hjoeNXZIcE/xmAz7IZ+I=
+
+graphql-subscriptions@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/graphql-subscriptions/-/graphql-subscriptions-1.0.0.tgz#475267694b3bd465af6477dbab4263a3f62702b8"
+  integrity sha512-+ytmryoHF1LVf58NKEaNPRUzYyXplm120ntxfPcgOBC7TnK7Tv/4VRHeh4FAR9iL+O1bqhZs4nkibxQ+OA5cDQ==
+  dependencies:
+    iterall "^1.2.1"
 
 graphql@^0.13.2, graphql@~14.0.2:
   version "14.0.2"
@@ -5366,7 +5378,7 @@ istanbul-reports@^1.5.1:
   dependencies:
     handlebars "^4.0.3"
 
-iterall@^1.2.2:
+iterall@^1.2.1, iterall@^1.2.2:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/iterall/-/iterall-1.2.2.tgz#92d70deb8028e0c39ff3164fdbf4d8b088130cd7"
   integrity sha512-yynBb1g+RFUPY64fTrFv7nsjRrENBQJaX2UL+2Szc9REFrSNm1rpSXHGzhmAy7a9uv3vlvgBlXnf9RqmPH1/DA==
@@ -9618,6 +9630,17 @@ stylis@3.5.3:
   version "3.5.3"
   resolved "https://registry.yarnpkg.com/stylis/-/stylis-3.5.3.tgz#99fdc46afba6af4deff570825994181a5e6ce546"
   integrity sha512-TxU0aAscJghF9I3V9q601xcK3Uw1JbXvpsBGj/HULqexKOKlOEzzlIpLFRbKkCK990ccuxfXUqmPbIIo7Fq/cQ==
+
+subscriptions-transport-ws@^0.9.15:
+  version "0.9.15"
+  resolved "https://registry.yarnpkg.com/subscriptions-transport-ws/-/subscriptions-transport-ws-0.9.15.tgz#68a8b7ba0037d8c489fb2f5a102d1494db297d0d"
+  integrity sha512-f9eBfWdHsePQV67QIX+VRhf++dn1adyC/PZHP6XI5AfKnZ4n0FW+v5omxwdHVpd4xq2ZijaHEcmlQrhBY79ZWQ==
+  dependencies:
+    backo2 "^1.0.2"
+    eventemitter3 "^3.1.0"
+    iterall "^1.2.1"
+    symbol-observable "^1.0.4"
+    ws "^5.2.0"
 
 superagent@^3.8.3:
   version "3.8.3"

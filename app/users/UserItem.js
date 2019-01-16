@@ -35,7 +35,7 @@ class UserItem extends React.Component {
           <Checkbox
             checked={this.props.isSelected}
             classes={{ root: this.props.classes.checkbox }}
-            onChange={() => this.onToggle(this.props.node.id)}
+            onChange={() => this.props.onToggle(this.props.node.id)}
             value="on"
           />
         </TableCell>

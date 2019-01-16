@@ -23,12 +23,13 @@ const constants = require("../../../common/constants");
 const GraphQLDate = require("./Date");
 
 class Users extends EventEmitter {
-  constructor(di, userModel, usersRepo) {
+  constructor(di, userModel, usersRepo, pubsub) {
     super();
 
     this.di = di;
     this.userModel = userModel;
     this.usersRepo = usersRepo;
+    this.pubsub = pubsub;
   }
 
   // eslint-disable-next-line lodash/prefer-constant
@@ -38,7 +39,7 @@ class Users extends EventEmitter {
 
   // eslint-disable-next-line lodash/prefer-constant
   static get $requires() {
-    return ["di", "model.user", "repository.users"];
+    return ["di", "model.user", "repository.users", "pubsub"];
   }
 
   idFetcher(globalId, context) {
@@ -205,6 +206,35 @@ class Users extends EventEmitter {
       createUser: this.CreateUserMutation,
       editUser: this.EditUserMutation,
       deleteUser: this.DeleteUserMutation
+    };
+
+    this.subscription = {
+      userCreated: {
+        type: this.User,
+        resolve: ({ userCreated }) => userCreated,
+        subscribe: () => this.pubsub.asyncIterator("userCreated")
+      },
+      userUpdated: {
+        type: this.User,
+        resolve: ({ userUpdated }) => userUpdated,
+        subscribe: () => this.pubsub.asyncIterator("userUpdated")
+      },
+      userDeleted: {
+        type: this.User,
+        resolve: ({ userDeleted }) => userDeleted,
+        subscribe: () => this.pubsub.asyncIterator("userDeleted")
+      },
+      userEvent: {
+        type: this.User,
+        resolve: ({ userCreated, userUpdated, userDeleted }) =>
+          userCreated || userUpdated || userDeleted,
+        subscribe: () =>
+          this.pubsub.asyncIterator([
+            "userCreated",
+            "userUpdated",
+            "userDeleted"
+          ])
+      }
     };
   }
 }
