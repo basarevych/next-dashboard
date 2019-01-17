@@ -54,6 +54,7 @@ class GraphQL extends EventEmitter {
             parsed = this.di.get("error.validation", error.originalError);
           } else if (
             error.originalError.stack &&
+            !error.originalError.details &&
             process.env.NODE_ENV !== "production"
           ) {
             parsed = { details: _.split(error.originalError.stack, "\n") };

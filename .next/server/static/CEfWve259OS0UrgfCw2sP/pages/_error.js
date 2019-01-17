@@ -278,7 +278,7 @@ exports.authSelectors = exports.authOperations = exports.authTypes = exports.def
 
 var _reducers = _interopRequireDefault(__webpack_require__(27));
 
-var authTypes = _interopRequireWildcard(__webpack_require__(13));
+var authTypes = _interopRequireWildcard(__webpack_require__(14));
 
 exports.authTypes = authTypes;
 
@@ -299,24 +299,6 @@ exports.default = _default;
 
 /***/ }),
 /* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.SET_GOOGLE_MAPS_KEY = exports.SET_STATUS = exports.SET_CSRF = void 0;
-var SET_CSRF = "app/auth/SET_CSRF";
-exports.SET_CSRF = SET_CSRF;
-var SET_STATUS = "app/auth/SET_STATUS";
-exports.SET_STATUS = SET_STATUS;
-var SET_GOOGLE_MAPS_KEY = "app/auth/SET_GOOGLE_MAPS_KEY";
-exports.SET_GOOGLE_MAPS_KEY = SET_GOOGLE_MAPS_KEY;
-
-/***/ }),
-/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -347,6 +329,24 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var _default = _reducers.default;
 exports.default = _default;
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.SET_GOOGLE_MAPS_KEY = exports.SET_STATUS = exports.SET_CSRF = void 0;
+var SET_CSRF = "app/auth/SET_CSRF";
+exports.SET_CSRF = SET_CSRF;
+var SET_STATUS = "app/auth/SET_STATUS";
+exports.SET_STATUS = SET_STATUS;
+var SET_GOOGLE_MAPS_KEY = "app/auth/SET_GOOGLE_MAPS_KEY";
+exports.SET_GOOGLE_MAPS_KEY = SET_GOOGLE_MAPS_KEY;
 
 /***/ }),
 /* 15 */
@@ -770,7 +770,7 @@ var _immutable = __webpack_require__(9);
 
 var _reduxImmutable = __webpack_require__(16);
 
-var types = _interopRequireWildcard(__webpack_require__(13));
+var types = _interopRequireWildcard(__webpack_require__(14));
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
@@ -930,7 +930,7 @@ var selectors = _interopRequireWildcard(__webpack_require__(18));
 
 var _connectForm = __webpack_require__(17);
 
-var _state = __webpack_require__(14);
+var _state = __webpack_require__(13);
 
 var _constants = _interopRequireDefault(__webpack_require__(7));
 
@@ -1562,7 +1562,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.setGoogleMapsKey = exports.setStatus = exports.setCsrf = void 0;
 
-var types = _interopRequireWildcard(__webpack_require__(13));
+var types = _interopRequireWildcard(__webpack_require__(14));
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
@@ -1762,7 +1762,7 @@ module.exports = require("react-intl/locale-data/ru.js");
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.setCookie = exports.start = exports.init = exports.create = exports.stop = exports.setLocale = exports.setConnected = exports.setStatusCode = void 0;
+exports.getToken = exports.setCookie = exports.start = exports.init = exports.create = exports.stop = exports.setLocale = exports.setConnected = exports.setStatusCode = void 0;
 
 var _regenerator = _interopRequireDefault(__webpack_require__(0));
 
@@ -1990,6 +1990,36 @@ var setCookie = function setCookie(_ref5) {
 };
 
 exports.setCookie = setCookie;
+
+var getToken = function getToken() {
+  return (
+    /*#__PURE__*/
+    function () {
+      var _ref7 = _asyncToGenerator(
+      /*#__PURE__*/
+      _regenerator.default.mark(function _callee5(dispatch, getState, di) {
+        return _regenerator.default.wrap(function _callee5$(_context5) {
+          while (1) {
+            switch (_context5.prev = _context5.next) {
+              case 0:
+                return _context5.abrupt("return", di.get("fetcher").getToken());
+
+              case 1:
+              case "end":
+                return _context5.stop();
+            }
+          }
+        }, _callee5, this);
+      }));
+
+      return function (_x7, _x8, _x9) {
+        return _ref7.apply(this, arguments);
+      };
+    }()
+  );
+};
+
+exports.getToken = getToken;
 
 /***/ }),
 /* 37 */
@@ -3814,7 +3844,7 @@ var _propTypes = _interopRequireDefault(__webpack_require__(3));
 
 var _ErrorPage = _interopRequireDefault(__webpack_require__(211));
 
-var _state = __webpack_require__(14);
+var _state = __webpack_require__(13);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 

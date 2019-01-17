@@ -92,7 +92,7 @@ class User extends EventEmitter {
     }) {
       if (!path) path = field;
       if (!field) field = path;
-      let errors;
+      let errors = {};
       if (_.includes(this.schema.requiredPaths(), path) && !value) {
         errors[field] = { message: "ERROR_FIELD_REQUIRED" };
       } else {

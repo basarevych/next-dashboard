@@ -2,6 +2,7 @@ import { connect } from "react-redux";
 import { graphql, createRefetchContainer } from "react-relay";
 import { injectIntl } from "react-intl";
 import { withStyles } from "@material-ui/core/styles";
+import { appOperations } from "../app/state";
 import { usersSelectors, usersOperations } from "./state";
 import UserListComponent, { pageSize, styles } from "./UserList";
 
@@ -14,6 +15,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
+    getToken: () => dispatch(appOperations.getToken()),
     onCreate: () => dispatch(usersOperations.showEditModal()),
     onEdit: () => dispatch(usersOperations.editFirstSelected()),
     onDelete: userId => dispatch(usersOperations.remove({ id: userId })),

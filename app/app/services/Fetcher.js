@@ -106,6 +106,19 @@ class Fetcher {
     );
   }
 
+  async getToken() {
+    try {
+      let data = await this.fetch({ resource: `${constants.apiBase}/token` });
+      if (data.token) return data.token;
+    } catch (error) {
+      console.error(`TOKEN: ${error.message}`);
+    }
+
+    return new Promise(resolve =>
+      setTimeout(() => resolve(this.getToken()), 3000)
+    );
+  }
+
   async query(operation, variables, cacheConfig, uploadables) {
     try {
       return await this.fetch({

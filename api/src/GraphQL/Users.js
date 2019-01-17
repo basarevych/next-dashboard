@@ -23,13 +23,12 @@ const constants = require("../../../common/constants");
 const GraphQLDate = require("./Date");
 
 class Users extends EventEmitter {
-  constructor(di, userModel, usersRepo, pubsub) {
+  constructor(di, userModel, usersRepo) {
     super();
 
     this.di = di;
     this.userModel = userModel;
     this.usersRepo = usersRepo;
-    this.pubsub = pubsub;
   }
 
   // eslint-disable-next-line lodash/prefer-constant
@@ -39,7 +38,7 @@ class Users extends EventEmitter {
 
   // eslint-disable-next-line lodash/prefer-constant
   static get $requires() {
-    return ["di", "model.user", "repository.users", "pubsub"];
+    return ["di", "model.user", "repository.users"];
   }
 
   idFetcher(globalId, context) {
@@ -211,29 +210,40 @@ class Users extends EventEmitter {
     this.subscription = {
       userCreated: {
         type: this.User,
+        args: {
+          token: { type: GraphQLString }
+        },
         resolve: ({ userCreated }) => userCreated,
-        subscribe: () => this.pubsub.asyncIterator("userCreated")
+        subscribe: this.usersRepo.subscribe("userCreated")
       },
       userUpdated: {
         type: this.User,
+        args: {
+          token: { type: GraphQLString }
+        },
         resolve: ({ userUpdated }) => userUpdated,
-        subscribe: () => this.pubsub.asyncIterator("userUpdated")
+        subscribe: this.usersRepo.subscribe("userUpdated")
       },
       userDeleted: {
         type: this.User,
+        args: {
+          token: { type: GraphQLString }
+        },
         resolve: ({ userDeleted }) => userDeleted,
-        subscribe: () => this.pubsub.asyncIterator("userDeleted")
+        subscribe: this.usersRepo.subscribe("userDeleted")
       },
       userEvent: {
         type: this.User,
+        args: {
+          token: { type: GraphQLString }
+        },
         resolve: ({ userCreated, userUpdated, userDeleted }) =>
           userCreated || userUpdated || userDeleted,
-        subscribe: () =>
-          this.pubsub.asyncIterator([
-            "userCreated",
-            "userUpdated",
-            "userDeleted"
-          ])
+        subscribe: this.usersRepo.subscribe([
+          "userCreated",
+          "userUpdated",
+          "userDeleted"
+        ])
       }
     };
   }

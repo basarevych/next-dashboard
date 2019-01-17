@@ -50,7 +50,6 @@ class EditUserModal extends Form {
     classes: PropTypes.object.isRequired,
     currentId: PropTypes.string,
     onCancel: PropTypes.func.isRequired,
-    onLoad: PropTypes.func.isRequired,
     onCreate: PropTypes.func.isRequired,
     onEdit: PropTypes.func.isRequired
   };
@@ -79,8 +78,7 @@ class EditUserModal extends Form {
       );
     }
 
-    if (result === true) await props.onLoad();
-    else if (result && _.isObject(result)) throw new SubmissionError(result);
+    if (result && _.isObject(result)) throw new SubmissionError(result);
 
     return result;
   }

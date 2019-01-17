@@ -3,16 +3,19 @@ const EventEmitter = require("events");
 const {
   mongooseConnection: { cursorToDocument }
 } = require("graphql-relay-connection");
+const jwt = require("jsonwebtoken");
+const { withFilter } = require("graphql-subscriptions");
 const constants = require("../../../common/constants");
 
 const accessLevel = constants.roles.ADMIN;
 
 class UsersRepository extends EventEmitter {
-  constructor(di, auth, user, getState, dispatch, pubsub) {
+  constructor(di, auth, config, user, getState, dispatch, pubsub) {
     super();
 
     this.di = di;
     this.auth = auth;
+    this.config = config;
     this.user = user;
     this.getState = getState;
     this.dispatch = dispatch;
@@ -26,15 +29,48 @@ class UsersRepository extends EventEmitter {
 
   // eslint-disable-next-line lodash/prefer-constant
   static get $requires() {
-    return ["di", "auth", "model.user", "getState", "dispatch", "pubsub"];
+    return [
+      "di",
+      "auth",
+      "config",
+      "model.user",
+      "getState",
+      "dispatch",
+      "pubsub"
+    ];
+  }
+
+  isAllowed(requester) {
+    return requester && _.includes(requester.roles, accessLevel);
+  }
+
+  subscribe(topics) {
+    return withFilter(
+      () => this.pubsub.asyncIterator(topics),
+      async (payload, args) => {
+        try {
+          const decoded = jwt.verify(
+            args.token || "",
+            this.config.sessionSecret
+          );
+          if (!decoded || !decoded.userId) throw new Error("No user");
+          const user = await this.user.model.findById(decoded.userId);
+          if (!user) throw new Error("User not found");
+          if (!this.isAllowed(user)) throw new Error("Access denied");
+          return true;
+        } catch (error) {
+          console.log(`User subscribe: ${error.message}`);
+          return false;
+        }
+      }
+    );
   }
 
   async getUser(context, { id }) {
     debug("getUser");
 
     let requester = await context.getUser();
-    if (!requester || !_.includes(requester.roles, accessLevel))
-      throw this.di.get("error.access");
+    if (!this.isAllowed(requester)) throw this.di.get("error.access");
 
     if (!id) return null;
 
@@ -47,8 +83,7 @@ class UsersRepository extends EventEmitter {
     debug("countUsers");
 
     let requester = await context.getUser();
-    if (!requester || !_.includes(requester.roles, accessLevel))
-      throw this.di.get("error.access");
+    if (!this.isAllowed(requester)) throw this.di.get("error.access");
 
     return await this.user.model.countDocuments();
   }
@@ -57,8 +92,7 @@ class UsersRepository extends EventEmitter {
     debug("getUsers");
 
     let requester = await context.getUser();
-    if (!requester || !_.includes(requester.roles, accessLevel))
-      throw this.di.get("error.access");
+    if (!this.isAllowed(requester)) throw this.di.get("error.access");
 
     const docAfter = after && cursorToDocument(after);
     const docBefore = before && cursorToDocument(before);
@@ -80,8 +114,7 @@ class UsersRepository extends EventEmitter {
     debug("createUser");
 
     let requester = await context.getUser();
-    if (!requester || !_.includes(requester.roles, accessLevel))
-      throw this.di.get("error.access");
+    if (!this.isAllowed(requester)) throw this.di.get("error.access");
 
     if (await this.user.model.findOne({ email }))
       throw this.di.get("error.entityExists");
@@ -105,8 +138,7 @@ class UsersRepository extends EventEmitter {
     debug("editUser");
 
     let requester = await context.getUser();
-    if (!requester || !_.includes(requester.roles, accessLevel))
-      throw this.di.get("error.access");
+    if (!this.isAllowed(requester)) throw this.di.get("error.access");
 
     let user = await this.user.model.findById(id);
     if (!user) throw this.di.get("error.entityNotFound");
@@ -130,8 +162,7 @@ class UsersRepository extends EventEmitter {
     debug("deleteUser");
 
     let requester = await context.getUser();
-    if (!requester || !_.includes(requester.roles, accessLevel))
-      throw this.di.get("error.access");
+    if (!this.isAllowed(requester)) throw this.di.get("error.access");
 
     let user = await this.user.model.findById(id);
     if (!user) throw this.di.get("error.entityNotFound");

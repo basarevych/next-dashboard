@@ -52,8 +52,8 @@ export const styles = theme => ({
 });
 
 const subscription = graphql`
-  subscription UserListSubscription {
-    userEvent {
+  subscription UserListSubscription($token: String) {
+    userEvent(token: $token) {
       id
     }
   }
@@ -66,6 +66,7 @@ class UserList extends React.Component {
     viewer: PropTypes.object.isRequired,
     selected: PropTypes.array.isRequired,
     isEditing: PropTypes.bool.isRequired,
+    getToken: PropTypes.func.isRequired,
     onCreate: PropTypes.func.isRequired,
     onEdit: PropTypes.func.isRequired,
     onDelete: PropTypes.func.isRequired,
@@ -103,11 +104,11 @@ class UserList extends React.Component {
     this.handleChangeRowsPerPage = this.handleChangeRowsPerPage.bind(this);
   }
 
-  subscribe() {
+  async subscribe() {
     if (this.subscription) this.subscription.dispose();
     this.subscription = requestSubscription(this.context, {
       subscription,
-      variables: {},
+      variables: { token: await this.props.getToken() },
       onCompleted: () => {
         this.subscription = null;
         if (!this.isDestroyed) setTimeout(() => this.subscribe(), 1000);
@@ -122,7 +123,7 @@ class UserList extends React.Component {
         const delta = Date.now() - this.refreshTime;
         this.refreshTimer = setTimeout(
           this.handleRefresh,
-          delta > 1000 ? 1000 : delta
+          delta < 1000 ? delta : 0
         );
       }
     });
@@ -194,12 +195,10 @@ class UserList extends React.Component {
 
   async handleCreateAction() {
     await this.props.onCreate();
-    this.handleRefresh();
   }
 
   async handleEditAction() {
     await this.props.onEdit();
-    this.handleRefresh();
   }
 
   handleDeleteAction() {
@@ -215,7 +214,6 @@ class UserList extends React.Component {
     await Promise.all(
       _.map(this.props.selected, userId => this.props.onDelete(userId))
     );
-    this.handleRefresh();
   }
 
   handleRefresh() {

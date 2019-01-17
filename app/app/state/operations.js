@@ -54,3 +54,9 @@ export const setCookie = ({ name, value, days }) => {
     di.get("cookie").set(name, value, days);
   };
 };
+
+export const getToken = () => {
+  return async (dispatch, getState, di) => {
+    return di.get("fetcher").getToken();
+  };
+};

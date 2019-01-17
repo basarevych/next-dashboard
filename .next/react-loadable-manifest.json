@@ -229,7 +229,7 @@
       "publicPath": "/_next/static/chunks/commons.78d520e82fb2847cedb0.js"
     }
   ],
-  "@babel/runtime/helpers/assertThisInitialized": [
+  "./assertThisInitialized": [
     {
       "id": 443,
       "name": "./node_modules/next/node_modules/@babel/runtime/helpers/assertThisInitialized.js",

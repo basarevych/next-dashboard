@@ -38,6 +38,7 @@
     "isomorphic-fetch": "^2.2.1",
     "isomorphic-unfetch": "~3.0.0",
     "json-immutable": "~0.4.0",
+    "jsonwebtoken": "^8.4.0",
     "jss": "~9.8.7",
     "jss-extend": "~6.2.0",
     "lodash": "~4.17.11",

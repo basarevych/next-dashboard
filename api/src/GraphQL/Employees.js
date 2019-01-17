@@ -23,14 +23,13 @@ const constants = require("../../../common/constants");
 const GraphQLDate = require("./Date");
 
 class Employees extends EventEmitter {
-  constructor(di, employeeModel, employeesRepo, dashboardRepo, pubsub) {
+  constructor(di, employeeModel, employeesRepo, dashboardRepo) {
     super();
 
     this.di = di;
     this.employeeModel = employeeModel;
     this.employeesRepo = employeesRepo;
     this.dashboardRepo = dashboardRepo;
-    this.pubsub = pubsub;
   }
 
   // eslint-disable-next-line lodash/prefer-constant
@@ -44,8 +43,7 @@ class Employees extends EventEmitter {
       "di",
       "model.employee",
       "repository.employees",
-      "repository.dashboard",
-      "pubsub"
+      "repository.dashboard"
     ];
   }
 
@@ -231,29 +229,40 @@ class Employees extends EventEmitter {
     this.subscription = {
       employeeCreated: {
         type: this.Employee,
+        args: {
+          token: { type: GraphQLString }
+        },
         resolve: ({ employeeCreated }) => employeeCreated,
-        subscribe: () => this.pubsub.asyncIterator("employeeCreated")
+        subscribe: this.employeesRepo.subscribe("employeeCreated")
       },
       employeeUpdated: {
         type: this.Employee,
+        args: {
+          token: { type: GraphQLString }
+        },
         resolve: ({ employeeUpdated }) => employeeUpdated,
-        subscribe: () => this.pubsub.asyncIterator("employeeUpdated")
+        subscribe: this.employeesRepo.subscribe("employeeUpdated")
       },
       employeeDeleted: {
         type: this.Employee,
+        args: {
+          token: { type: GraphQLString }
+        },
         resolve: ({ employeeDeleted }) => employeeDeleted,
-        subscribe: () => this.pubsub.asyncIterator("employeeDeleted")
+        subscribe: this.employeesRepo.subscribe("employeeDeleted")
       },
       employeeEvent: {
         type: this.Employee,
+        args: {
+          token: { type: GraphQLString }
+        },
         resolve: ({ employeeCreated, employeeUpdated, employeeDeleted }) =>
           employeeCreated || employeeUpdated || employeeDeleted,
-        subscribe: () =>
-          this.pubsub.asyncIterator([
-            "employeeCreated",
-            "employeeUpdated",
-            "employeeDeleted"
-          ])
+        subscribe: this.employeesRepo.subscribe([
+          "employeeCreated",
+          "employeeUpdated",
+          "employeeDeleted"
+        ])
       }
     };
   }

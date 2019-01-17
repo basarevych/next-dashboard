@@ -283,7 +283,7 @@ exports.authSelectors = exports.authOperations = exports.authTypes = exports.def
 
 var _reducers = _interopRequireDefault(__webpack_require__(27));
 
-var authTypes = _interopRequireWildcard(__webpack_require__(13));
+var authTypes = _interopRequireWildcard(__webpack_require__(14));
 
 exports.authTypes = authTypes;
 
@@ -304,24 +304,6 @@ exports.default = _default;
 
 /***/ }),
 /* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.SET_GOOGLE_MAPS_KEY = exports.SET_STATUS = exports.SET_CSRF = void 0;
-var SET_CSRF = "app/auth/SET_CSRF";
-exports.SET_CSRF = SET_CSRF;
-var SET_STATUS = "app/auth/SET_STATUS";
-exports.SET_STATUS = SET_STATUS;
-var SET_GOOGLE_MAPS_KEY = "app/auth/SET_GOOGLE_MAPS_KEY";
-exports.SET_GOOGLE_MAPS_KEY = SET_GOOGLE_MAPS_KEY;
-
-/***/ }),
-/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -352,6 +334,24 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var _default = _reducers.default;
 exports.default = _default;
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.SET_GOOGLE_MAPS_KEY = exports.SET_STATUS = exports.SET_CSRF = void 0;
+var SET_CSRF = "app/auth/SET_CSRF";
+exports.SET_CSRF = SET_CSRF;
+var SET_STATUS = "app/auth/SET_STATUS";
+exports.SET_STATUS = SET_STATUS;
+var SET_GOOGLE_MAPS_KEY = "app/auth/SET_GOOGLE_MAPS_KEY";
+exports.SET_GOOGLE_MAPS_KEY = SET_GOOGLE_MAPS_KEY;
 
 /***/ }),
 /* 15 */
@@ -803,7 +803,7 @@ var _immutable = __webpack_require__(9);
 
 var _reduxImmutable = __webpack_require__(16);
 
-var types = _interopRequireWildcard(__webpack_require__(13));
+var types = _interopRequireWildcard(__webpack_require__(14));
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
@@ -963,7 +963,7 @@ var selectors = _interopRequireWildcard(__webpack_require__(18));
 
 var _connectForm = __webpack_require__(17);
 
-var _state = __webpack_require__(14);
+var _state = __webpack_require__(13);
 
 var _constants = _interopRequireDefault(__webpack_require__(7));
 
@@ -1595,7 +1595,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.setGoogleMapsKey = exports.setStatus = exports.setCsrf = void 0;
 
-var types = _interopRequireWildcard(__webpack_require__(13));
+var types = _interopRequireWildcard(__webpack_require__(14));
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
@@ -1795,7 +1795,7 @@ module.exports = require("react-intl/locale-data/ru.js");
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.setCookie = exports.start = exports.init = exports.create = exports.stop = exports.setLocale = exports.setConnected = exports.setStatusCode = void 0;
+exports.getToken = exports.setCookie = exports.start = exports.init = exports.create = exports.stop = exports.setLocale = exports.setConnected = exports.setStatusCode = void 0;
 
 var _regenerator = _interopRequireDefault(__webpack_require__(0));
 
@@ -2023,6 +2023,36 @@ var setCookie = function setCookie(_ref5) {
 };
 
 exports.setCookie = setCookie;
+
+var getToken = function getToken() {
+  return (
+    /*#__PURE__*/
+    function () {
+      var _ref7 = _asyncToGenerator(
+      /*#__PURE__*/
+      _regenerator.default.mark(function _callee5(dispatch, getState, di) {
+        return _regenerator.default.wrap(function _callee5$(_context5) {
+          while (1) {
+            switch (_context5.prev = _context5.next) {
+              case 0:
+                return _context5.abrupt("return", di.get("fetcher").getToken());
+
+              case 1:
+              case "end":
+                return _context5.stop();
+            }
+          }
+        }, _callee5, this);
+      }));
+
+      return function (_x7, _x8, _x9) {
+        return _ref7.apply(this, arguments);
+      };
+    }()
+  );
+};
+
+exports.getToken = getToken;
 
 /***/ }),
 /* 37 */
@@ -6721,7 +6751,7 @@ var _getRelayEnvironment = _interopRequireDefault(__webpack_require__(151));
 
 var _getMaterialContext = _interopRequireDefault(__webpack_require__(153));
 
-var _state = __webpack_require__(14);
+var _state = __webpack_require__(13);
 
 var _state2 = __webpack_require__(12);
 
@@ -7308,19 +7338,78 @@ function () {
       return getCsrf;
     }()
   }, {
-    key: "query",
+    key: "getToken",
     value: function () {
-      var _query = _asyncToGenerator(
+      var _getToken = _asyncToGenerator(
       /*#__PURE__*/
-      _regenerator.default.mark(function _callee3(operation, variables, cacheConfig, uploadables) {
+      _regenerator.default.mark(function _callee3() {
         var _this2 = this;
 
+        var data;
         return _regenerator.default.wrap(function _callee3$(_context3) {
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
                 _context3.prev = 0;
                 _context3.next = 3;
+                return this.fetch({
+                  resource: "".concat(_constants.default.apiBase, "/token")
+                });
+
+              case 3:
+                data = _context3.sent;
+
+                if (!data.token) {
+                  _context3.next = 6;
+                  break;
+                }
+
+                return _context3.abrupt("return", data.token);
+
+              case 6:
+                _context3.next = 11;
+                break;
+
+              case 8:
+                _context3.prev = 8;
+                _context3.t0 = _context3["catch"](0);
+                console.error("TOKEN: ".concat(_context3.t0.message));
+
+              case 11:
+                return _context3.abrupt("return", new Promise(function (resolve) {
+                  return setTimeout(function () {
+                    return resolve(_this2.getToken());
+                  }, 3000);
+                }));
+
+              case 12:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3, this, [[0, 8]]);
+      }));
+
+      function getToken() {
+        return _getToken.apply(this, arguments);
+      }
+
+      return getToken;
+    }()
+  }, {
+    key: "query",
+    value: function () {
+      var _query = _asyncToGenerator(
+      /*#__PURE__*/
+      _regenerator.default.mark(function _callee4(operation, variables, cacheConfig, uploadables) {
+        var _this3 = this;
+
+        return _regenerator.default.wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                _context4.prev = 0;
+                _context4.next = 3;
                 return this.fetch({
                   method: "POST",
                   resource: _constants.default.graphqlBase,
@@ -7332,37 +7421,37 @@ function () {
                 });
 
               case 3:
-                return _context3.abrupt("return", _context3.sent);
+                return _context4.abrupt("return", _context4.sent);
 
               case 6:
-                _context3.prev = 6;
-                _context3.t0 = _context3["catch"](0);
+                _context4.prev = 6;
+                _context4.t0 = _context4["catch"](0);
 
                 if (true) {
-                  _context3.next = 10;
+                  _context4.next = 10;
                   break;
                 }
 
-                return _context3.abrupt("return", new Promise(function (resolve) {
+                return _context4.abrupt("return", new Promise(function (resolve) {
                   return setTimeout(function () {
-                    return resolve(_this2.query(operation, variables, cacheConfig, uploadables));
+                    return resolve(_this3.query(operation, variables, cacheConfig, uploadables));
                   }, 1000);
                 }));
 
               case 10:
-                return _context3.abrupt("return", {
+                return _context4.abrupt("return", {
                   errors: [{
-                    message: _context3.t0.message,
-                    query: _context3.t0.query
+                    message: _context4.t0.message,
+                    query: _context4.t0.query
                   }]
                 });
 
               case 11:
               case "end":
-                return _context3.stop();
+                return _context4.stop();
             }
           }
-        }, _callee3, this, [[0, 6]]);
+        }, _callee4, this, [[0, 6]]);
       }));
 
       function query(_x3, _x4, _x5, _x6) {
@@ -7487,7 +7576,7 @@ var _regenerator = _interopRequireDefault(__webpack_require__(0));
 
 var _socket = _interopRequireDefault(__webpack_require__(144));
 
-var _state = __webpack_require__(14);
+var _state = __webpack_require__(13);
 
 var _state2 = __webpack_require__(12);
 
@@ -7724,7 +7813,7 @@ module.exports = require("socket.io-client");
 /* 145 */
 /***/ (function(module) {
 
-module.exports = {"name":"next-dashboard","version":"0.1.0","private":true,"dependencies":{"@date-io/moment":"~0.0.2","@material-ui/core":"~3.8.2","@material-ui/icons":"~3.0.2","@zeit/next-bundle-analyzer":"~0.1.2","@zeit/next-css":"~1.0.1","base64util":"~2.0.0-f","bcrypt":"~3.0.3","body-parser":"~1.18.3","chance":"~1.0.18","classnames":"~2.2.6","compression":"~1.7.3","connect-mongo":"~2.0.3","cookie-parser":"~1.4.3","cors":"~2.8.5","country-telephone-data":"~0.6.0","csurf":"~1.9.0","debug":"~4.1.1","dotenv":"~6.2.0","express":"~4.16.4","express-graphql":"~0.7.1","express-session":"~1.15.6","fs-extra":"~7.0.1","graphql":"~14.0.2","graphql-relay":"~0.5.5","graphql-relay-connection":"~0.0.4","graphql-subscriptions":"^1.0.0","http-status-codes":"~1.3.0","immutable":"~4.0.0-rc.12","injectt":"~0.1.6","intl":"~1.2.5","intl-locales-supported":"~1.0.0","intl-messageformat":"~2.2.0","isomorphic-fetch":"^2.2.1","isomorphic-unfetch":"~3.0.0","json-immutable":"~0.4.0","jss":"~9.8.7","jss-extend":"~6.2.0","lodash":"~4.17.11","lru-cache":"~5.1.1","material-ui-pickers":"~2.0.5","moment":"~2.23.0","moment-timezone":"~0.5.23","mongoose":"~5.4.2","morgan":"~1.9.1","next":"~7.0.2","next-compose-plugins":"~2.1.1","next-progressbar":"~1.0.0","nodemailer":"~5.0.1","null-loader":"~0.1.1","pako":"~1.0.7","passport":"~0.4.0","passport-facebook":"~2.1.1","passport-google-oauth":"~1.0.0","passport-twitter":"~1.0.4","raf":"~3.4.1","react":"~16.7.0","react-dom":"~16.7.0","react-flags":"~0.1.17","react-intl":"~2.7.2","react-jss":"~8.6.1","react-redux":"~6.0.0","react-relay":"~1.7.0","react-swipeable-views":"~0.13.0","react-toastify":"~4.5.2","react-virtualized":"~9.21.0","redux":"~4.0.1","redux-devtools-extension":"~2.13.7","redux-form":"~8.1.0","redux-immutable":"~4.0.0","redux-thunk":"~2.3.0","relay-query-lookup-renderer":"~3.0.2","relay-runtime":"~1.7.0","reselect":"~4.0.0","serviceworker-webpack-plugin":"~1.0.1","sharp":"~0.21.1","socket.io":"~2.2.0","subscriptions-transport-ws":"^0.9.15","svg-inline-loader":"~0.8.0","utf8":"~3.0.0","validator":"~10.10.0","webpack":"4.20.2"},"devDependencies":{"@babel/core":"7.0.0","babel-core":"7.0.0-bridge.0","babel-eslint":"~10.0.1","babel-jest":"~23.6.0","babel-plugin-lodash":"~3.3.4","babel-plugin-relay":"~1.7.0","css-mqpacker":"~7.0.0","enzyme":"~3.8.0","enzyme-adapter-react-16":"~1.7.1","eslint":"~5.12.0","eslint-plugin-lodash":"~5.1.0","eslint-plugin-react":"~7.12.3","jest":"~23.6.0","jsdom":"~13.1.0","jsdom-global":"~3.0.2","postcss-clean":"~1.1.0","postcss-loader":"~3.0.0","postcss-preset-env":"~6.5.0","postcss-url":"~8.0.0","prop-types":"~15.6.2","relay-compiler":"~1.7.0","relay-compiler-webpack-plugin":"~1.0.4","supertest":"~3.3.0","webfontloader":"~1.6.28"},"resolutions":{"graphql":"~14.0.2","**/graphql":"~14.0.2"},"scripts":{"lint":"eslint . --max-warnings=0","test":"jest . --no-cache --forceExit","schema":"node ./bin/update-schema","relay":"node ./bin/update-schema && relay-compiler --src ./app --schema ./api/schema.graphql --verbose","build":"node ./bin/prepare-build && env NODE_ENV=production TMPDIR=$PWD/.tmp next build","export":"env NODE_ENV=production TMPDIR=$PWD/.tmp next export","dev":"node ./bin/prepare-build && env NODE_ENV=development node ./bin/www","start":"env NODE_ENV=production node ./bin/www"}};
+module.exports = {"name":"next-dashboard","version":"0.1.0","private":true,"dependencies":{"@date-io/moment":"~0.0.2","@material-ui/core":"~3.8.2","@material-ui/icons":"~3.0.2","@zeit/next-bundle-analyzer":"~0.1.2","@zeit/next-css":"~1.0.1","base64util":"~2.0.0-f","bcrypt":"~3.0.3","body-parser":"~1.18.3","chance":"~1.0.18","classnames":"~2.2.6","compression":"~1.7.3","connect-mongo":"~2.0.3","cookie-parser":"~1.4.3","cors":"~2.8.5","country-telephone-data":"~0.6.0","csurf":"~1.9.0","debug":"~4.1.1","dotenv":"~6.2.0","express":"~4.16.4","express-graphql":"~0.7.1","express-session":"~1.15.6","fs-extra":"~7.0.1","graphql":"~14.0.2","graphql-relay":"~0.5.5","graphql-relay-connection":"~0.0.4","graphql-subscriptions":"^1.0.0","http-status-codes":"~1.3.0","immutable":"~4.0.0-rc.12","injectt":"~0.1.6","intl":"~1.2.5","intl-locales-supported":"~1.0.0","intl-messageformat":"~2.2.0","isomorphic-fetch":"^2.2.1","isomorphic-unfetch":"~3.0.0","json-immutable":"~0.4.0","jsonwebtoken":"^8.4.0","jss":"~9.8.7","jss-extend":"~6.2.0","lodash":"~4.17.11","lru-cache":"~5.1.1","material-ui-pickers":"~2.0.5","moment":"~2.23.0","moment-timezone":"~0.5.23","mongoose":"~5.4.2","morgan":"~1.9.1","next":"~7.0.2","next-compose-plugins":"~2.1.1","next-progressbar":"~1.0.0","nodemailer":"~5.0.1","null-loader":"~0.1.1","pako":"~1.0.7","passport":"~0.4.0","passport-facebook":"~2.1.1","passport-google-oauth":"~1.0.0","passport-twitter":"~1.0.4","raf":"~3.4.1","react":"~16.7.0","react-dom":"~16.7.0","react-flags":"~0.1.17","react-intl":"~2.7.2","react-jss":"~8.6.1","react-redux":"~6.0.0","react-relay":"~1.7.0","react-swipeable-views":"~0.13.0","react-toastify":"~4.5.2","react-virtualized":"~9.21.0","redux":"~4.0.1","redux-devtools-extension":"~2.13.7","redux-form":"~8.1.0","redux-immutable":"~4.0.0","redux-thunk":"~2.3.0","relay-query-lookup-renderer":"~3.0.2","relay-runtime":"~1.7.0","reselect":"~4.0.0","serviceworker-webpack-plugin":"~1.0.1","sharp":"~0.21.1","socket.io":"~2.2.0","subscriptions-transport-ws":"^0.9.15","svg-inline-loader":"~0.8.0","utf8":"~3.0.0","validator":"~10.10.0","webpack":"4.20.2"},"devDependencies":{"@babel/core":"7.0.0","babel-core":"7.0.0-bridge.0","babel-eslint":"~10.0.1","babel-jest":"~23.6.0","babel-plugin-lodash":"~3.3.4","babel-plugin-relay":"~1.7.0","css-mqpacker":"~7.0.0","enzyme":"~3.8.0","enzyme-adapter-react-16":"~1.7.1","eslint":"~5.12.0","eslint-plugin-lodash":"~5.1.0","eslint-plugin-react":"~7.12.3","jest":"~23.6.0","jsdom":"~13.1.0","jsdom-global":"~3.0.2","postcss-clean":"~1.1.0","postcss-loader":"~3.0.0","postcss-preset-env":"~6.5.0","postcss-url":"~8.0.0","prop-types":"~15.6.2","relay-compiler":"~1.7.0","relay-compiler-webpack-plugin":"~1.0.4","supertest":"~3.3.0","webfontloader":"~1.6.28"},"resolutions":{"graphql":"~14.0.2","**/graphql":"~14.0.2"},"scripts":{"lint":"eslint . --max-warnings=0","test":"jest . --no-cache --forceExit","schema":"node ./bin/update-schema","relay":"node ./bin/update-schema && relay-compiler --src ./app --schema ./api/schema.graphql --verbose","build":"node ./bin/prepare-build && env NODE_ENV=production TMPDIR=$PWD/.tmp next build","export":"env NODE_ENV=production TMPDIR=$PWD/.tmp next export","dev":"node ./bin/prepare-build && env NODE_ENV=development node ./bin/www","start":"env NODE_ENV=production node ./bin/www"}};
 
 /***/ }),
 /* 146 */
@@ -7815,7 +7904,7 @@ var _reduxThunk = _interopRequireDefault(__webpack_require__(150));
 
 var _immutable = __webpack_require__(11);
 
-var _state = _interopRequireDefault(__webpack_require__(14));
+var _state = _interopRequireDefault(__webpack_require__(13));
 
 var _state2 = _interopRequireDefault(__webpack_require__(12));
 
@@ -7888,7 +7977,7 @@ var _relayRuntime = __webpack_require__(98);
 
 var _subscriptionsTransportWs = __webpack_require__(152);
 
-var _state = __webpack_require__(14);
+var _state = __webpack_require__(13);
 
 var _constants = _interopRequireDefault(__webpack_require__(7));
 
@@ -8505,7 +8594,7 @@ exports.default = void 0;
 
 var _reactRedux = __webpack_require__(10);
 
-var _state = __webpack_require__(14);
+var _state = __webpack_require__(13);
 
 var _Intl = _interopRequireDefault(__webpack_require__(158));
 
@@ -8612,7 +8701,7 @@ exports.default = void 0;
 
 var _reactRedux = __webpack_require__(10);
 
-var _state = __webpack_require__(14);
+var _state = __webpack_require__(13);
 
 var _Date = _interopRequireDefault(__webpack_require__(160));
 
@@ -8732,7 +8821,7 @@ var _router = __webpack_require__(19);
 
 var _styles = __webpack_require__(5);
 
-var _state = __webpack_require__(14);
+var _state = __webpack_require__(13);
 
 var _state2 = __webpack_require__(12);
 
@@ -9369,7 +9458,7 @@ var _styles = __webpack_require__(5);
 
 var _Header = _interopRequireWildcard(__webpack_require__(182));
 
-var _state = __webpack_require__(14);
+var _state = __webpack_require__(13);
 
 var _state2 = __webpack_require__(12);
 
@@ -10234,7 +10323,7 @@ var _reactIntl = __webpack_require__(6);
 
 var _styles = __webpack_require__(5);
 
-var _state = __webpack_require__(14);
+var _state = __webpack_require__(13);
 
 var _state2 = __webpack_require__(12);
 
