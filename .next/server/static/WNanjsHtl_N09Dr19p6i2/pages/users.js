@@ -7354,6 +7354,8 @@ function (_React$Component) {
       isConfirmOpen: false
     };
     _this.isDestroyed = false;
+    _this.refreshTime = 0;
+    _this.refreshTimer = null;
     _this.handleToggle = _this.handleToggle.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.handleCreateAction = _this.handleCreateAction.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.handleEditAction = _this.handleEditAction.bind(_assertThisInitialized(_assertThisInitialized(_this)));
@@ -7371,28 +7373,29 @@ function (_React$Component) {
     value: function subscribe() {
       var _this2 = this;
 
+      if (this.subscription) this.subscription.dispose();
       this.subscription = (0, _reactRelay.requestSubscription)(this.context, {
         subscription: subscription,
         variables: {},
         onCompleted: function onCompleted() {
           _this2.subscription = null;
-          if (_this2.isDestroyed) return;
-          setTimeout(function () {
+          if (!_this2.isDestroyed) setTimeout(function () {
             return _this2.subscribe();
           }, 1000);
         },
         onError: function onError(error) {
           _this2.subscription = null;
           console.error(error);
-          if (_this2.isDestroyed) return;
-          setTimeout(function () {
+          if (!_this2.isDestroyed) setTimeout(function () {
             return _this2.subscribe();
           }, 1000);
         },
-        onNext: function onNext(data) {
-          console.log(data);
+        onNext: function onNext() {
+          if (_this2.refreshTimer) return;
 
-          _this2.handleRefresh();
+          var delta = Date.now() - _this2.refreshTime;
+
+          _this2.refreshTimer = setTimeout(_this2.handleRefresh, delta > 1000 ? 1000 : delta);
         }
       });
     }
@@ -7432,6 +7435,11 @@ function (_React$Component) {
       if (this.subscription) {
         this.subscription.dispose();
         this.subscription = null;
+      }
+
+      if (this.refreshTimer) {
+        clearTimeout(this.refreshTimer);
+        this.refreshTimer = null;
       }
     }
   }, {
@@ -7581,9 +7589,16 @@ function (_React$Component) {
   }, {
     key: "handleRefresh",
     value: function handleRefresh() {
+      if (this.refreshTimer) {
+        clearTimeout(this.refreshTimer);
+        this.refreshTimer = null;
+      }
+
+      if (this.isDestroyed) return;
       this.props.relay.refetch(this.state.lastVariables, null, null, {
         force: true
       });
+      this.refreshTime = Date.now();
     }
   }, {
     key: "handleChangeRowsPerPage",

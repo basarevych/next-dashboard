@@ -7897,16 +7897,28 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var envFactory = function envFactory(di, initialState) {
   var setupSubscription = function setupSubscription(config, variables, cacheConfig, observer) {
     var query = config.text;
-    var onNext = observer.onNext,
-        onError = observer.onError,
-        onCompleted = observer.onCompleted;
     var subscriptionClient = new _subscriptionsTransportWs.SubscriptionClient(_state.appSelectors.getSubscriptionsServer(di.get("getState")()) + _constants.default.graphqlBase, {
       reconnect: true
     });
-    subscriptionClient.request({
+    var client = subscriptionClient.request({
       query: query,
       variables: variables
-    }).subscribe(onNext, onError, onCompleted);
+    }).subscribe({
+      next: function next(result) {
+        observer.onNext({
+          data: result.data
+        });
+      },
+      complete: function complete() {
+        observer.onCompleted();
+      },
+      error: function error(_error) {
+        observer.onError(_error);
+      }
+    });
+    return {
+      dispose: client.unsubscribe
+    };
   };
 
   var fetcher = di.get("fetcher");
@@ -9586,8 +9598,8 @@ exports.styles = styles;
 
 var Header =
 /*#__PURE__*/
-function (_React$PureComponent) {
-  _inherits(Header, _React$PureComponent);
+function (_React$Component) {
+  _inherits(Header, _React$Component);
 
   function Header(props) {
     var _this;
@@ -9606,6 +9618,7 @@ function (_React$PureComponent) {
     };
     _this.isDestroyed = false;
     _this.bar = _react.default.createRef();
+    _this.onResize = _this.onResize.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.handleWrapperMouseEnter = _this.handleWrapperMouseEnter.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.handleWrapperMouseLeave = _this.handleWrapperMouseLeave.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.handleWrapperClick = _this.handleWrapperClick.bind(_assertThisInitialized(_assertThisInitialized(_this)));
@@ -9628,6 +9641,9 @@ function (_React$PureComponent) {
           barWidth: this.bar.current.offsetWidth
         });
       }
+
+      window.addEventListener("resize", this.onResize);
+      window.addEventListener("orientationchange", this.onResize);
     }
   }, {
     key: "componentDidUpdate",
@@ -9643,6 +9659,13 @@ function (_React$PureComponent) {
     key: "componentWillUnmount",
     value: function componentWillUnmount() {
       this.isDestroyed = true;
+      window.removeEventListener("resize", this.onResize);
+      window.removeEventListener("orientationchange", this.onResize);
+    }
+  }, {
+    key: "onResize",
+    value: function onResize() {
+      this.forceUpdate();
     }
   }, {
     key: "handleWrapperMouseEnter",
@@ -9920,8 +9943,10 @@ function (_React$PureComponent) {
   }, {
     key: "renderShadow",
     value: function renderShadow() {
-      var boundary = this.props.theme.sidebar.computerWidth * this.props.theme.spacing.unit;
+      var isLong = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+      var boundary = (isLong ? this.props.theme.sidebar.computerWidth : this.props.theme.sidebar.tabletWidth) * this.props.theme.spacing.unit;
       return _react.default.createElement("svg", {
+        key: "shadow-".concat(this.state.barWidth),
         xmlns: "http://www.w3.org/2000/svg",
         width: this.state.barWidth,
         height: "30"
@@ -10088,7 +10113,11 @@ function (_React$PureComponent) {
       })), _react.default.createElement(_IconButton.default, {
         color: "inherit",
         onClick: this.handleSignOut
-      }, _react.default.createElement(_PowerSettingsNew.default, null))), this.renderInbox(), this.renderLocales(), this.renderThemes())), !isPermanent && this.renderShadow());
+      }, _react.default.createElement(_PowerSettingsNew.default, null))), this.renderInbox(), this.renderLocales(), this.renderThemes())), !isPermanent && _react.default.createElement(_react.default.Fragment, null, _react.default.createElement(_Hidden.default, {
+        mdDown: true
+      }, this.renderShadow(true)), _react.default.createElement(_Hidden.default, {
+        lgUp: true
+      }, this.renderShadow(false))));
     }
   }, {
     key: "render",
@@ -10111,7 +10140,7 @@ function (_React$PureComponent) {
   }]);
 
   return Header;
-}(_react.default.PureComponent);
+}(_react.default.Component);
 
 var _default = Header;
 exports.default = _default;

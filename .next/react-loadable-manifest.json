@@ -47,7 +47,7 @@
       "publicPath": "/_next/static/chunks/commons.78d520e82fb2847cedb0.js"
     }
   ],
-  "../styles/withStyles": [
+  "./withStyles": [
     {
       "id": 13,
       "name": "./node_modules/@material-ui/core/styles/withStyles.js",
@@ -197,7 +197,7 @@
       "publicPath": "/_next/static/chunks/commons.78d520e82fb2847cedb0.js"
     }
   ],
-  "../styles/withTheme": [
+  "./withTheme": [
     {
       "id": 350,
       "name": "./node_modules/@material-ui/core/styles/withTheme.js",
@@ -221,7 +221,7 @@
       "publicPath": "/_next/static/chunks/commons.78d520e82fb2847cedb0.js"
     }
   ],
-  "./transitions": [
+  "../styles/transitions": [
     {
       "id": 442,
       "name": "./node_modules/@material-ui/core/styles/transitions.js",
@@ -229,7 +229,7 @@
       "publicPath": "/_next/static/chunks/commons.78d520e82fb2847cedb0.js"
     }
   ],
-  "./assertThisInitialized": [
+  "@babel/runtime/helpers/assertThisInitialized": [
     {
       "id": 443,
       "name": "./node_modules/next/node_modules/@babel/runtime/helpers/assertThisInitialized.js",
@@ -261,7 +261,7 @@
       "publicPath": "/_next/static/chunks/commons.78d520e82fb2847cedb0.js"
     }
   ],
-  "../rules/StyleRule": [
+  "./rules/StyleRule": [
     {
       "id": 889,
       "name": "./node_modules/jss/lib/rules/StyleRule.js",

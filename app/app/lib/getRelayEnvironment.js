@@ -6,15 +6,25 @@ import constants from "../../../common/constants";
 const envFactory = (di, initialState) => {
   const setupSubscription = (config, variables, cacheConfig, observer) => {
     const query = config.text;
-    const { onNext, onError, onCompleted } = observer;
     const subscriptionClient = new SubscriptionClient(
       appSelectors.getSubscriptionsServer(di.get("getState")()) +
         constants.graphqlBase,
       { reconnect: true }
     );
-    subscriptionClient
-      .request({ query, variables })
-      .subscribe(onNext, onError, onCompleted);
+    const client = subscriptionClient.request({ query, variables }).subscribe({
+      next: result => {
+        observer.onNext({ data: result.data });
+      },
+      complete: () => {
+        observer.onCompleted();
+      },
+      error: error => {
+        observer.onError(error);
+      }
+    });
+    return {
+      dispose: client.unsubscribe
+    };
   };
 
   const fetcher = di.get("fetcher");

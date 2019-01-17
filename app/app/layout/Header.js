@@ -126,7 +126,7 @@ export const styles = theme => ({
   }
 });
 
-class Header extends React.PureComponent {
+class Header extends React.Component {
   static propTypes = {
     intl: intlShape,
     theme: PropTypes.object.isRequired,
@@ -154,6 +154,8 @@ class Header extends React.PureComponent {
 
     this.bar = React.createRef();
 
+    this.onResize = this.onResize.bind(this);
+
     this.handleWrapperMouseEnter = this.handleWrapperMouseEnter.bind(this);
     this.handleWrapperMouseLeave = this.handleWrapperMouseLeave.bind(this);
     this.handleWrapperClick = this.handleWrapperClick.bind(this);
@@ -173,6 +175,8 @@ class Header extends React.PureComponent {
         barWidth: this.bar.current.offsetWidth
       });
     }
+    window.addEventListener("resize", this.onResize);
+    window.addEventListener("orientationchange", this.onResize);
   }
 
   componentDidUpdate() {
@@ -190,6 +194,12 @@ class Header extends React.PureComponent {
 
   componentWillUnmount() {
     this.isDestroyed = true;
+    window.removeEventListener("resize", this.onResize);
+    window.removeEventListener("orientationchange", this.onResize);
+  }
+
+  onResize() {
+    this.forceUpdate();
   }
 
   handleWrapperMouseEnter() {
@@ -482,11 +492,14 @@ class Header extends React.PureComponent {
     );
   }
 
-  renderShadow() {
+  renderShadow(isLong = true) {
     let boundary =
-      this.props.theme.sidebar.computerWidth * this.props.theme.spacing.unit;
+      (isLong
+        ? this.props.theme.sidebar.computerWidth
+        : this.props.theme.sidebar.tabletWidth) * this.props.theme.spacing.unit;
     return (
       <svg
+        key={`shadow-${this.state.barWidth}`}
         xmlns="http://www.w3.org/2000/svg"
         width={this.state.barWidth}
         height="30"
@@ -678,7 +691,12 @@ class Header extends React.PureComponent {
             {this.renderThemes()}
           </AppBar>
         </div>
-        {!isPermanent && this.renderShadow()}
+        {!isPermanent && (
+          <React.Fragment>
+            <Hidden mdDown>{this.renderShadow(true)}</Hidden>
+            <Hidden lgUp>{this.renderShadow(false)}</Hidden>
+          </React.Fragment>
+        )}
       </div>
     );
   }

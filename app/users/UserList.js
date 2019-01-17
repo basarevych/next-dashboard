@@ -89,6 +89,8 @@ class UserList extends React.Component {
     };
 
     this.isDestroyed = false;
+    this.refreshTime = 0;
+    this.refreshTimer = null;
 
     this.handleToggle = this.handleToggle.bind(this);
     this.handleCreateAction = this.handleCreateAction.bind(this);
@@ -102,23 +104,26 @@ class UserList extends React.Component {
   }
 
   subscribe() {
+    if (this.subscription) this.subscription.dispose();
     this.subscription = requestSubscription(this.context, {
       subscription,
       variables: {},
       onCompleted: () => {
         this.subscription = null;
-        if (this.isDestroyed) return;
-        setTimeout(() => this.subscribe(), 1000);
+        if (!this.isDestroyed) setTimeout(() => this.subscribe(), 1000);
       },
       onError: error => {
         this.subscription = null;
         console.error(error);
-        if (this.isDestroyed) return;
-        setTimeout(() => this.subscribe(), 1000);
+        if (!this.isDestroyed) setTimeout(() => this.subscribe(), 1000);
       },
-      onNext: data => {
-        console.log(data);
-        this.handleRefresh();
+      onNext: () => {
+        if (this.refreshTimer) return;
+        const delta = Date.now() - this.refreshTime;
+        this.refreshTimer = setTimeout(
+          this.handleRefresh,
+          delta > 1000 ? 1000 : delta
+        );
       }
     });
   }
@@ -153,6 +158,10 @@ class UserList extends React.Component {
     if (this.subscription) {
       this.subscription.dispose();
       this.subscription = null;
+    }
+    if (this.refreshTimer) {
+      clearTimeout(this.refreshTimer);
+      this.refreshTimer = null;
     }
   }
 
@@ -210,9 +219,17 @@ class UserList extends React.Component {
   }
 
   handleRefresh() {
+    if (this.refreshTimer) {
+      clearTimeout(this.refreshTimer);
+      this.refreshTimer = null;
+    }
+
+    if (this.isDestroyed) return;
+
     this.props.relay.refetch(this.state.lastVariables, null, null, {
       force: true
     });
+    this.refreshTime = Date.now();
   }
 
   handleChangeRowsPerPage(evt) {
