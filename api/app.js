@@ -28,6 +28,9 @@ let appInnerServer =
 let appStatic = process.env.APP_STATIC || "";
 let appTrustProxy = process.env.APP_TRUST_PROXY === "true" ? 1 : 0;
 let appOnlineUsers = parseInt(process.env.APP_ONLINE_USERS, 10) || 50;
+let appSslKey = process.env.APP_SSL_KEY;
+let appSslCert = process.env.APP_SSL_CERT;
+let appSslCa = process.env.APP_SSL_CA;
 let sessionSecret = process.env.SESSION_SECRET;
 let sessionMaxAge = 1000 * 60 * 60 * 24 * 7;
 let mongoUrl =
@@ -90,6 +93,9 @@ class App {
       appStatic,
       appTrustProxy,
       appOnlineUsers,
+      appSslKey,
+      appSslCert,
+      appSslCa,
       mongoUrl,
       sessionSecret,
       sessionMaxAge,

@@ -111,31 +111,6 @@ class User extends EventEmitter {
       return errors || true;
     };
 
-    this.schema.methods.toSanitizedObject = function() {
-      return this.toObject({
-        minimize: false,
-        flattenMaps: true,
-        transform: function(doc, ret) {
-          ret.id = doc._id.toString();
-          delete ret._id;
-          delete ret.password;
-          delete ret.emailToken;
-          delete ret.providers;
-          ret.whenCreated = doc.whenCreated.valueOf();
-          ret.whenUpdated = doc.whenUpdated.valueOf();
-          ret.roles = _.filter(
-            doc.roles || [],
-            role =>
-              !_.includes(
-                [constants.roles.AUTHENTICATED, constants.roles.ANONYMOUS],
-                role
-              )
-          );
-          return ret;
-        }
-      });
-    };
-
     this.schema.static("conditions", function(conditions) {
       let transformed = _.assign({}, conditions);
       for (let key of _.keys(transformed)) {

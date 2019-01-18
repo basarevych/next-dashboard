@@ -76,20 +76,6 @@ class Employee extends EventEmitter {
       return errors || true;
     };
 
-    this.schema.methods.toSanitizedObject = function() {
-      return this.toObject({
-        minimize: false,
-        flattenMaps: true,
-        transform: function(doc, ret) {
-          ret.id = doc._id.toString();
-          delete ret._id;
-          ret.whenCreated = doc.whenCreated.valueOf();
-          ret.whenUpdated = doc.whenUpdated.valueOf();
-          return ret;
-        }
-      });
-    };
-
     this.schema.static("conditions", function(conditions) {
       let transformed = _.assign({}, conditions);
       for (let key of _.keys(transformed)) {

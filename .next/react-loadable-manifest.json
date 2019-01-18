@@ -47,7 +47,7 @@
       "publicPath": "/_next/static/chunks/commons.78d520e82fb2847cedb0.js"
     }
   ],
-  "./withStyles": [
+  "../styles/withStyles": [
     {
       "id": 13,
       "name": "./node_modules/@material-ui/core/styles/withStyles.js",
@@ -71,7 +71,7 @@
       "publicPath": "/_next/static/chunks/commons.78d520e82fb2847cedb0.js"
     }
   ],
-  "@babel/runtime/helpers/objectWithoutPropertiesLoose": [
+  "./objectWithoutPropertiesLoose": [
     {
       "id": 19,
       "name": "./node_modules/next/node_modules/@babel/runtime/helpers/objectWithoutPropertiesLoose.js",
@@ -119,7 +119,7 @@
       "publicPath": "/_next/static/chunks/commons.78d520e82fb2847cedb0.js"
     }
   ],
-  "./../../../webpack/buildin/module.js": [
+  "./../webpack/buildin/module.js": [
     {
       "id": 43,
       "name": "./node_modules/webpack/buildin/module.js",
@@ -197,7 +197,7 @@
       "publicPath": "/_next/static/chunks/commons.78d520e82fb2847cedb0.js"
     }
   ],
-  "./withTheme": [
+  "../styles/withTheme": [
     {
       "id": 350,
       "name": "./node_modules/@material-ui/core/styles/withTheme.js",
@@ -229,7 +229,7 @@
       "publicPath": "/_next/static/chunks/commons.78d520e82fb2847cedb0.js"
     }
   ],
-  "./assertThisInitialized": [
+  "@babel/runtime/helpers/assertThisInitialized": [
     {
       "id": 443,
       "name": "./node_modules/next/node_modules/@babel/runtime/helpers/assertThisInitialized.js",
@@ -333,7 +333,7 @@
       "publicPath": "/_next/static/chunks/commons.78d520e82fb2847cedb0.js"
     }
   ],
-  "./red": [
+  "../colors/red": [
     {
       "id": 1115,
       "name": "./node_modules/@material-ui/core/colors/red.js",
@@ -397,7 +397,7 @@
       "publicPath": "/_next/static/chunks/commons.78d520e82fb2847cedb0.js"
     }
   ],
-  "./indigo": [
+  "../colors/indigo": [
     {
       "id": 1194,
       "name": "./node_modules/@material-ui/core/colors/indigo.js",
@@ -405,7 +405,7 @@
       "publicPath": "/_next/static/chunks/commons.78d520e82fb2847cedb0.js"
     }
   ],
-  "./pink": [
+  "../colors/pink": [
     {
       "id": 1195,
       "name": "./node_modules/@material-ui/core/colors/pink.js",
@@ -421,7 +421,7 @@
       "publicPath": "/_next/static/chunks/commons.78d520e82fb2847cedb0.js"
     }
   ],
-  "./common": [
+  "../colors/common": [
     {
       "id": 1197,
       "name": "./node_modules/@material-ui/core/colors/common.js",

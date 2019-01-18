@@ -44,20 +44,28 @@ class EmployeesRepository extends EventEmitter {
 
   subscribe(topics) {
     return withFilter(
-      () => this.pubsub.asyncIterator(topics),
-      async (payload, args) => {
+      (rootValue, args, context) => {
         try {
           const decoded = jwt.verify(
             args.token || "",
             this.config.sessionSecret
           );
-          if (!decoded || !decoded.userId) throw new Error("No user");
-          const user = await this.user.model.findById(decoded.userId);
+          context.userId = decoded.userId;
+        } catch (error) {
+          debug(`Employee subscribe: ${error.message}`);
+          context.userId = null;
+        }
+        return this.pubsub.asyncIterator(topics);
+      },
+      async (payload, args, context) => {
+        try {
+          if (!context || !context.userId) throw new Error("No user");
+          const user = await this.user.model.findById(context.userId);
           if (!user) throw new Error("User not found");
           if (!this.isAllowed(user)) throw new Error("Access denied");
           return true;
         } catch (error) {
-          console.log(`User subscribe: ${error.message}`);
+          debug(`User subscribe: ${error.message}`);
           return false;
         }
       }

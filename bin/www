@@ -3,18 +3,49 @@
 "use strict";
 
 const http = require("http");
+const https = require("https");
 const path = require("path");
+const fs = require("fs-extra");
 const App = require("../api/app");
 
 const root = path.join.bind(path, path.resolve(__dirname), "..");
 process.chdir(root());
 
 let app = new App();
-let mainServer = http.createServer(app.express);
-let subscriptionsServer = http.createServer((request, response) => {
-  response.writeHead(404);
-  response.end();
-});
+
+let mainServer, subscriptionsServer;
+if (app.config.appSslKey && app.config.appSslCert) {
+  let key =
+    app.config.appSslKey[0] === "/"
+      ? app.config.appSslKey
+      : path.join(__dirname, "..", app.config.appSslKey);
+  let cert =
+    app.config.appSslCert[0] === "/"
+      ? app.config.appSslCert
+      : path.join(__dirname, "..", app.config.appSslCert);
+  let options = {
+    key: fs.readFileSync(key),
+    cert: fs.readFileSync(cert)
+  };
+  if (app.config.appSslCa) {
+    let ca =
+      app.config.appSslCa[0] === "/"
+        ? app.config.appSslCa
+        : path.join(__dirname, "..", app.config.appSslCa);
+    options.ca = fs.readFileSync(ca);
+  }
+  mainServer = https.createServer(options, app.express);
+  subscriptionsServer = http.createServer(options, (req, res) => {
+    res.writeHead(404);
+    res.end();
+  });
+} else {
+  mainServer = http.createServer(app.express);
+  subscriptionsServer = http.createServer((req, res) => {
+    res.writeHead(404);
+    res.end();
+  });
+}
 
 app
   .init({ mainServer, subscriptionsServer })
