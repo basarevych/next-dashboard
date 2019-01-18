@@ -1,4 +1,4 @@
-const debug = require("debug")("app:csrf");
+const debug = require("debug")("app:status");
 const EventEmitter = require("events");
 const Router = require("express").Router;
 
