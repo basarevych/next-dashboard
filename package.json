@@ -74,6 +74,8 @@
     "redux-immutable": "~4.0.0",
     "redux-thunk": "~2.3.0",
     "relay-query-lookup-renderer": "~3.0.2",
+    "relay-compiler": "~1.7.0",
+    "relay-compiler-webpack-plugin": "~1.0.4",
     "relay-runtime": "~1.7.0",
     "reselect": "~4.0.0",
     "serviceworker-webpack-plugin": "~1.0.1",
@@ -106,8 +108,6 @@
     "postcss-preset-env": "~6.5.0",
     "postcss-url": "~8.0.0",
     "prop-types": "~15.6.2",
-    "relay-compiler": "~1.7.0",
-    "relay-compiler-webpack-plugin": "~1.0.4",
     "supertest": "~3.3.0",
     "webfontloader": "~1.6.28"
   },

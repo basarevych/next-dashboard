@@ -106,17 +106,18 @@ class UserList extends React.Component {
 
   async subscribe() {
     if (this.subscription) this.subscription.dispose();
+    if (this.isDestroyed) return;
     this.subscription = requestSubscription(this.context, {
       subscription,
       variables: { token: await this.props.getToken() },
       onCompleted: () => {
         this.subscription = null;
-        if (!this.isDestroyed) setTimeout(() => this.subscribe(), 1000);
+        setTimeout(() => this.subscribe(), 1000);
       },
       onError: error => {
         this.subscription = null;
         console.error(error);
-        if (!this.isDestroyed) setTimeout(() => this.subscribe(), 1000);
+        setTimeout(() => this.subscribe(), 1000);
       },
       onNext: () => {
         if (this.refreshTimer) return;
@@ -135,8 +136,9 @@ class UserList extends React.Component {
 
   componentDidUpdate() {
     if (
+      this.props.viewer.users.totalCount &&
       this.state.pageNumber * this.state.pageSize >=
-      this.props.viewer.users.totalCount
+        this.props.viewer.users.totalCount
     ) {
       // we fell off the list - reset to the beginning
       const variables = {

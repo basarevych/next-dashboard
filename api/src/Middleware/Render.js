@@ -52,12 +52,6 @@ class Render extends EventEmitter {
         let user = await req.getUser();
         if (!isRouteAllowed(req.path, user ? user.roles : [])) res.status(403);
 
-        if (res.statusCode !== 200) {
-          let error = new Error("An error occured");
-          error.statusCode = res.statusCode;
-          return this.app.next.renderError(error, req, res, page, query);
-        }
-
         req.cookieHeader = req.get("Cookie");
         req.csrfHeader = _.isFunction(req.csrfToken) ? req.csrfToken() : "none";
 

@@ -31,10 +31,6 @@ class UsersPage extends React.Component {
     await fetchQuery(query, defaultVariables);
   }
 
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     if (!this.props.isAuthenticated) return null;
 

@@ -9,6 +9,7 @@ import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
 import Sidebar from "./SidebarContainer";
 import Header from "./HeaderContainer";
 import AppAuthModal from "../../auth/AppAuthModalContainer";
+import ErrorPage from "../error/ErrorPage";
 
 import "../styles";
 import styledScroll from "../styles/styledScroll";
@@ -104,6 +105,7 @@ class Layout extends React.Component {
     isAuthenticated: PropTypes.bool.isRequired,
     isStarted: PropTypes.bool.isRequired,
     isError: PropTypes.bool.isRequired,
+    statusCode: PropTypes.number.isRequired,
     title: PropTypes.string,
     children: PropTypes.oneOfType([
       PropTypes.node,
@@ -141,7 +143,13 @@ class Layout extends React.Component {
           </Head>
         )}
 
-        {this.props.isAuthenticated && (
+        {this.props.isError && (
+          <main className={this.props.classes.anonymous}>
+            <ErrorPage statusCode={this.props.statusCode} />
+          </main>
+        )}
+
+        {!this.props.isError && this.props.isAuthenticated && (
           <React.Fragment>
             <Hidden implementation="css" smUp>
               <SwipeableDrawer
@@ -172,13 +180,13 @@ class Layout extends React.Component {
           </React.Fragment>
         )}
 
-        {!this.props.isAuthenticated && (
+        {!this.props.isError && !this.props.isAuthenticated && (
           <main className={this.props.classes.anonymous}>
             {this.props.children}
           </main>
         )}
 
-        {!this.props.isStarted && !this.props.isError && (
+        {!this.props.isError && !this.props.isStarted && (
           <div className={this.props.classes.backdrop}>
             <div className={this.props.classes.spinner}>
               <CircularProgress color="inherit" size={60} />

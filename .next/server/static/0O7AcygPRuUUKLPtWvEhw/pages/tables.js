@@ -88,7 +88,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 258);
+/******/ 	return __webpack_require__(__webpack_require__.s = 276);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -100,15 +100,22 @@ module.exports = require("react");
 
 /***/ }),
 
-/***/ 258:
+/***/ 2:
+/***/ (function(module, exports) {
+
+module.exports = require("prop-types");
+
+/***/ }),
+
+/***/ 276:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(259);
+module.exports = __webpack_require__(277);
 
 
 /***/ }),
 
-/***/ 259:
+/***/ 277:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -120,17 +127,17 @@ Object.defineProperty(exports, "__esModule", {
 Object.defineProperty(exports, "default", {
   enumerable: true,
   get: function get() {
-    return _IconsPageContainer.default;
+    return _TablesPageContainer.default;
   }
 });
 
-var _IconsPageContainer = _interopRequireDefault(__webpack_require__(260));
+var _TablesPageContainer = _interopRequireDefault(__webpack_require__(278));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ }),
 
-/***/ 260:
+/***/ 278:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -141,21 +148,21 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _styles = __webpack_require__(5);
+var _styles = __webpack_require__(4);
 
-var _IconsPage = _interopRequireWildcard(__webpack_require__(261));
+var _TablesPage = _interopRequireWildcard(__webpack_require__(279));
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
-var IconsPage = (0, _styles.withStyles)(_IconsPage.styles, {
+var TablesPage = (0, _styles.withStyles)(_TablesPage.styles, {
   withTheme: true
-})(_IconsPage.default);
-var _default = IconsPage;
+})(_TablesPage.default);
+var _default = TablesPage;
 exports.default = _default;
 
 /***/ }),
 
-/***/ 261:
+/***/ 279:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -168,7 +175,7 @@ exports.default = exports.styles = void 0;
 
 var _react = _interopRequireDefault(__webpack_require__(1));
 
-var _propTypes = _interopRequireDefault(__webpack_require__(3));
+var _propTypes = _interopRequireDefault(__webpack_require__(2));
 
 var _Grid = _interopRequireDefault(__webpack_require__(8));
 
@@ -204,18 +211,18 @@ var styles = function styles(theme) {
 
 exports.styles = styles;
 
-var IconsPage =
+var TablesPage =
 /*#__PURE__*/
 function (_React$Component) {
-  _inherits(IconsPage, _React$Component);
+  _inherits(TablesPage, _React$Component);
 
-  function IconsPage() {
-    _classCallCheck(this, IconsPage);
+  function TablesPage() {
+    _classCallCheck(this, TablesPage);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(IconsPage).apply(this, arguments));
+    return _possibleConstructorReturn(this, _getPrototypeOf(TablesPage).apply(this, arguments));
   }
 
-  _createClass(IconsPage, [{
+  _createClass(TablesPage, [{
     key: "render",
     value: function render() {
       if (!this.props.isAuthenticated) return null;
@@ -231,22 +238,15 @@ function (_React$Component) {
     }
   }]);
 
-  return IconsPage;
+  return TablesPage;
 }(_react.default.Component);
 
-var _default = IconsPage;
+var _default = TablesPage;
 exports.default = _default;
 
 /***/ }),
 
-/***/ 3:
-/***/ (function(module, exports) {
-
-module.exports = require("prop-types");
-
-/***/ }),
-
-/***/ 5:
+/***/ 4:
 /***/ (function(module, exports) {
 
 module.exports = require("@material-ui/core/styles");

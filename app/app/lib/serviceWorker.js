@@ -153,6 +153,13 @@ self.addEventListener("message", event => {
 
 // Fetching resources: try network first, updating cache, return cached otherwise
 self.addEventListener("fetch", event => {
+  if (
+    event.request.cache === "only-if-cached" &&
+    event.request.mode !== "same-origin"
+  ) {
+    return;
+  }
+
   let requested = new URL(event.request.url, base);
   if (
     event.request.method !== "GET" ||
@@ -160,8 +167,9 @@ self.addEventListener("fetch", event => {
     (_.startsWith(requested.pathname, "/_next/") &&
       (process.env.NODE_ENV !== "production" ||
         requested.hostname === "localhost"))
-  )
+  ) {
     return;
+  }
 
   let returnCached = (responseNetwork, errorNetwork) => {
     let onError = () => {

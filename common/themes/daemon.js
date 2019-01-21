@@ -137,7 +137,10 @@ module.exports = {
         color: textContrast
       },
       body: {
-        fontSize: fontSize
+        fontSize: fontSize,
+        "&.selected": {
+          background: primary
+        }
       }
     },
     MuiTablePagination: {

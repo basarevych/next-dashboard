@@ -1,7 +1,7 @@
 module.exports =
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
-/******/ 	var installedModules = require('../../../../ssr-module-cache.js');
+/******/ 	var installedModules = require('../../../ssr-module-cache.js');
 /******/
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
@@ -88,7 +88,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 220);
+/******/ 	return __webpack_require__(__webpack_require__.s = 258);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -100,15 +100,22 @@ module.exports = require("react");
 
 /***/ }),
 
-/***/ 220:
+/***/ 2:
+/***/ (function(module, exports) {
+
+module.exports = require("prop-types");
+
+/***/ }),
+
+/***/ 258:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(221);
+module.exports = __webpack_require__(259);
 
 
 /***/ }),
 
-/***/ 221:
+/***/ 259:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -120,17 +127,17 @@ Object.defineProperty(exports, "__esModule", {
 Object.defineProperty(exports, "default", {
   enumerable: true,
   get: function get() {
-    return _VerifyPageContainer.default;
+    return _IconsPageContainer.default;
   }
 });
 
-var _VerifyPageContainer = _interopRequireDefault(__webpack_require__(222));
+var _IconsPageContainer = _interopRequireDefault(__webpack_require__(260));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ }),
 
-/***/ 222:
+/***/ 260:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -141,21 +148,21 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _styles = __webpack_require__(5);
+var _styles = __webpack_require__(4);
 
-var _VerifyPage = _interopRequireWildcard(__webpack_require__(223));
+var _IconsPage = _interopRequireWildcard(__webpack_require__(261));
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
-var VerifyPage = (0, _styles.withStyles)(_VerifyPage.styles, {
+var IconsPage = (0, _styles.withStyles)(_IconsPage.styles, {
   withTheme: true
-})(_VerifyPage.default);
-var _default = VerifyPage;
+})(_IconsPage.default);
+var _default = IconsPage;
 exports.default = _default;
 
 /***/ }),
 
-/***/ 223:
+/***/ 261:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -168,7 +175,7 @@ exports.default = exports.styles = void 0;
 
 var _react = _interopRequireDefault(__webpack_require__(1));
 
-var _propTypes = _interopRequireDefault(__webpack_require__(3));
+var _propTypes = _interopRequireDefault(__webpack_require__(2));
 
 var _Grid = _interopRequireDefault(__webpack_require__(8));
 
@@ -204,18 +211,18 @@ var styles = function styles(theme) {
 
 exports.styles = styles;
 
-var VerifyPage =
+var IconsPage =
 /*#__PURE__*/
 function (_React$Component) {
-  _inherits(VerifyPage, _React$Component);
+  _inherits(IconsPage, _React$Component);
 
-  function VerifyPage() {
-    _classCallCheck(this, VerifyPage);
+  function IconsPage() {
+    _classCallCheck(this, IconsPage);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(VerifyPage).apply(this, arguments));
+    return _possibleConstructorReturn(this, _getPrototypeOf(IconsPage).apply(this, arguments));
   }
 
-  _createClass(VerifyPage, [{
+  _createClass(IconsPage, [{
     key: "render",
     value: function render() {
       if (!this.props.isAuthenticated) return null;
@@ -231,22 +238,15 @@ function (_React$Component) {
     }
   }]);
 
-  return VerifyPage;
+  return IconsPage;
 }(_react.default.Component);
 
-var _default = VerifyPage;
+var _default = IconsPage;
 exports.default = _default;
 
 /***/ }),
 
-/***/ 3:
-/***/ (function(module, exports) {
-
-module.exports = require("prop-types");
-
-/***/ }),
-
-/***/ 5:
+/***/ 4:
 /***/ (function(module, exports) {
 
 module.exports = require("@material-ui/core/styles");

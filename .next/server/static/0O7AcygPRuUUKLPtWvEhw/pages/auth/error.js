@@ -1,7 +1,7 @@
 module.exports =
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
-/******/ 	var installedModules = require('../../../ssr-module-cache.js');
+/******/ 	var installedModules = require('../../../../ssr-module-cache.js');
 /******/
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
@@ -88,7 +88,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 224);
+/******/ 	return __webpack_require__(__webpack_require__.s = 212);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -100,15 +100,22 @@ module.exports = require("react");
 
 /***/ }),
 
-/***/ 224:
+/***/ 2:
+/***/ (function(module, exports) {
+
+module.exports = require("prop-types");
+
+/***/ }),
+
+/***/ 212:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(225);
+module.exports = __webpack_require__(213);
 
 
 /***/ }),
 
-/***/ 225:
+/***/ 213:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -120,17 +127,17 @@ Object.defineProperty(exports, "__esModule", {
 Object.defineProperty(exports, "default", {
   enumerable: true,
   get: function get() {
-    return _ChartsPageContainer.default;
+    return _ErrorPageContainer.default;
   }
 });
 
-var _ChartsPageContainer = _interopRequireDefault(__webpack_require__(226));
+var _ErrorPageContainer = _interopRequireDefault(__webpack_require__(214));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ }),
 
-/***/ 226:
+/***/ 214:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -141,21 +148,21 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _styles = __webpack_require__(5);
+var _styles = __webpack_require__(4);
 
-var _ChartsPage = _interopRequireWildcard(__webpack_require__(227));
+var _ErrorPage = _interopRequireWildcard(__webpack_require__(215));
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
-var ChartsPage = (0, _styles.withStyles)(_ChartsPage.styles, {
+var ErrorPage = (0, _styles.withStyles)(_ErrorPage.styles, {
   withTheme: true
-})(_ChartsPage.default);
-var _default = ChartsPage;
+})(_ErrorPage.default);
+var _default = ErrorPage;
 exports.default = _default;
 
 /***/ }),
 
-/***/ 227:
+/***/ 215:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -168,7 +175,7 @@ exports.default = exports.styles = void 0;
 
 var _react = _interopRequireDefault(__webpack_require__(1));
 
-var _propTypes = _interopRequireDefault(__webpack_require__(3));
+var _propTypes = _interopRequireDefault(__webpack_require__(2));
 
 var _Grid = _interopRequireDefault(__webpack_require__(8));
 
@@ -204,18 +211,18 @@ var styles = function styles(theme) {
 
 exports.styles = styles;
 
-var ChartsPage =
+var ErrorPage =
 /*#__PURE__*/
 function (_React$Component) {
-  _inherits(ChartsPage, _React$Component);
+  _inherits(ErrorPage, _React$Component);
 
-  function ChartsPage() {
-    _classCallCheck(this, ChartsPage);
+  function ErrorPage() {
+    _classCallCheck(this, ErrorPage);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(ChartsPage).apply(this, arguments));
+    return _possibleConstructorReturn(this, _getPrototypeOf(ErrorPage).apply(this, arguments));
   }
 
-  _createClass(ChartsPage, [{
+  _createClass(ErrorPage, [{
     key: "render",
     value: function render() {
       if (!this.props.isAuthenticated) return null;
@@ -231,22 +238,15 @@ function (_React$Component) {
     }
   }]);
 
-  return ChartsPage;
+  return ErrorPage;
 }(_react.default.Component);
 
-var _default = ChartsPage;
+var _default = ErrorPage;
 exports.default = _default;
 
 /***/ }),
 
-/***/ 3:
-/***/ (function(module, exports) {
-
-module.exports = require("prop-types");
-
-/***/ }),
-
-/***/ 5:
+/***/ 4:
 /***/ (function(module, exports) {
 
 module.exports = require("@material-ui/core/styles");

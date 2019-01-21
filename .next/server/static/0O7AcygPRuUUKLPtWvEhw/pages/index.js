@@ -130,21 +130,21 @@ module.exports = require("redux-form/immutable");
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.authSelectors = exports.authOperations = exports.authTypes = exports.default = void 0;
+exports.appSelectors = exports.appOperations = exports.appTypes = exports.default = void 0;
 
-var _reducers = _interopRequireDefault(__webpack_require__(27));
+var _reducers = _interopRequireDefault(__webpack_require__(31));
 
-var authTypes = _interopRequireWildcard(__webpack_require__(14));
+var appTypes = _interopRequireWildcard(__webpack_require__(15));
 
-exports.authTypes = authTypes;
+exports.appTypes = appTypes;
 
-var authOperations = _interopRequireWildcard(__webpack_require__(28));
+var appOperations = _interopRequireWildcard(__webpack_require__(36));
 
-exports.authOperations = authOperations;
+exports.appOperations = appOperations;
 
-var authSelectors = _interopRequireWildcard(__webpack_require__(18));
+var appSelectors = _interopRequireWildcard(__webpack_require__(39));
 
-exports.authSelectors = authSelectors;
+exports.appSelectors = appSelectors;
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
@@ -164,21 +164,21 @@ exports.default = _default;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.appSelectors = exports.appOperations = exports.appTypes = exports.default = void 0;
+exports.authSelectors = exports.authOperations = exports.authTypes = exports.default = void 0;
 
-var _reducers = _interopRequireDefault(__webpack_require__(31));
+var _reducers = _interopRequireDefault(__webpack_require__(27));
 
-var appTypes = _interopRequireWildcard(__webpack_require__(15));
+var authTypes = _interopRequireWildcard(__webpack_require__(14));
 
-exports.appTypes = appTypes;
+exports.authTypes = authTypes;
 
-var appOperations = _interopRequireWildcard(__webpack_require__(36));
+var authOperations = _interopRequireWildcard(__webpack_require__(28));
 
-exports.appOperations = appOperations;
+exports.authOperations = authOperations;
 
-var appSelectors = _interopRequireWildcard(__webpack_require__(39));
+var authSelectors = _interopRequireWildcard(__webpack_require__(18));
 
-exports.appSelectors = appSelectors;
+exports.authSelectors = authSelectors;
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
@@ -394,7 +394,7 @@ var _default = function _default(FormComponent, mapStateToProps, mapDispatchToPr
 };
 
 exports.default = _default;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(2)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3)))
 
 /***/ }),
 
@@ -479,7 +479,7 @@ module.exports = require("next/router");
 /***/ 2:
 /***/ (function(module, exports) {
 
-module.exports = require("lodash");
+module.exports = require("prop-types");
 
 /***/ }),
 
@@ -546,7 +546,7 @@ module.exports = function isRouteAllowed(path) {
 
   return true;
 };
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(2)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3)))
 
 /***/ }),
 
@@ -611,7 +611,7 @@ module.exports = {
     return [__webpack_require__(34), __webpack_require__(35)];
   }
 };
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(2)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3)))
 
 /***/ }),
 
@@ -672,9 +672,9 @@ exports.default = void 0;
 
 var _reactRedux = __webpack_require__(10);
 
-var _styles = __webpack_require__(5);
+var _styles = __webpack_require__(4);
 
-var _state = __webpack_require__(12);
+var _state = __webpack_require__(13);
 
 var _DashboardPage = _interopRequireWildcard(__webpack_require__(265));
 
@@ -710,7 +710,7 @@ exports.default = exports.styles = void 0;
 
 var _react = _interopRequireDefault(__webpack_require__(1));
 
-var _propTypes = _interopRequireDefault(__webpack_require__(3));
+var _propTypes = _interopRequireDefault(__webpack_require__(2));
 
 var _Grid = _interopRequireDefault(__webpack_require__(8));
 
@@ -794,7 +794,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _styles = __webpack_require__(5);
+var _styles = __webpack_require__(4);
 
 var _Dashboard = _interopRequireWildcard(__webpack_require__(267));
 
@@ -819,7 +819,7 @@ exports.default = exports.styles = void 0;
 
 var _react = _interopRequireDefault(__webpack_require__(1));
 
-var _propTypes = _interopRequireDefault(__webpack_require__(3));
+var _propTypes = _interopRequireDefault(__webpack_require__(2));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1022,7 +1022,7 @@ var reducer = (0, _reduxImmutable.combineReducers)({
 });
 var _default = reducer;
 exports.default = _default;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(2)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3)))
 
 /***/ }),
 
@@ -1049,7 +1049,7 @@ var selectors = _interopRequireWildcard(__webpack_require__(18));
 
 var _connectForm = __webpack_require__(17);
 
-var _state = __webpack_require__(13);
+var _state = __webpack_require__(12);
 
 var _constants = _interopRequireDefault(__webpack_require__(7));
 
@@ -1667,7 +1667,7 @@ var deleteProfile = function deleteProfile() {
 };
 
 exports.deleteProfile = deleteProfile;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(2)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3)))
 
 /***/ }),
 
@@ -1723,7 +1723,7 @@ exports.setGoogleMapsKey = setGoogleMapsKey;
 /***/ 3:
 /***/ (function(module, exports) {
 
-module.exports = require("prop-types");
+module.exports = require("lodash");
 
 /***/ }),
 
@@ -1855,7 +1855,7 @@ var reducer = (0, _reduxImmutable.combineReducers)({
 });
 var _default = reducer;
 exports.default = _default;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(2)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3)))
 
 /***/ }),
 
@@ -1896,13 +1896,13 @@ module.exports = require("react-intl/locale-data/ru.js");
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.getToken = exports.setCookie = exports.start = exports.init = exports.create = exports.stop = exports.setLocale = exports.setConnected = exports.setStatusCode = void 0;
+exports.getToken = exports.getCookie = exports.setCookie = exports.start = exports.init = exports.create = exports.stop = exports.setLocale = exports.setConnected = exports.setStatusCode = void 0;
 
 var _regenerator = _interopRequireDefault(__webpack_require__(0));
 
 var actions = _interopRequireWildcard(__webpack_require__(37));
 
-var _state = __webpack_require__(12);
+var _state = __webpack_require__(13);
 
 var _constants = _interopRequireDefault(__webpack_require__(7));
 
@@ -2125,18 +2125,19 @@ var setCookie = function setCookie(_ref5) {
 
 exports.setCookie = setCookie;
 
-var getToken = function getToken() {
+var getCookie = function getCookie(_ref7) {
+  var name = _ref7.name;
   return (
     /*#__PURE__*/
     function () {
-      var _ref7 = _asyncToGenerator(
+      var _ref8 = _asyncToGenerator(
       /*#__PURE__*/
       _regenerator.default.mark(function _callee5(dispatch, getState, di) {
         return _regenerator.default.wrap(function _callee5$(_context5) {
           while (1) {
             switch (_context5.prev = _context5.next) {
               case 0:
-                return _context5.abrupt("return", di.get("fetcher").getToken());
+                return _context5.abrupt("return", di.get("cookie").get(name));
 
               case 1:
               case "end":
@@ -2147,7 +2148,37 @@ var getToken = function getToken() {
       }));
 
       return function (_x7, _x8, _x9) {
-        return _ref7.apply(this, arguments);
+        return _ref8.apply(this, arguments);
+      };
+    }()
+  );
+};
+
+exports.getCookie = getCookie;
+
+var getToken = function getToken() {
+  return (
+    /*#__PURE__*/
+    function () {
+      var _ref9 = _asyncToGenerator(
+      /*#__PURE__*/
+      _regenerator.default.mark(function _callee6(dispatch, getState, di) {
+        return _regenerator.default.wrap(function _callee6$(_context6) {
+          while (1) {
+            switch (_context6.prev = _context6.next) {
+              case 0:
+                return _context6.abrupt("return", di.get("fetcher").getToken());
+
+              case 1:
+              case "end":
+                return _context6.stop();
+            }
+          }
+        }, _callee6, this);
+      }));
+
+      return function (_x10, _x11, _x12) {
+        return _ref9.apply(this, arguments);
       };
     }()
   );
@@ -2240,7 +2271,7 @@ var setLocale = function setLocale(_ref3) {
 };
 
 exports.setLocale = setLocale;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(2)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3)))
 
 /***/ }),
 
@@ -2303,7 +2334,7 @@ exports.isConnected = isConnected;
 /***/ 4:
 /***/ (function(module, exports) {
 
-module.exports = require("react-relay");
+module.exports = require("@material-ui/core/styles");
 
 /***/ }),
 
@@ -2320,7 +2351,7 @@ exports.default = void 0;
 
 var _regenerator = _interopRequireDefault(__webpack_require__(0));
 
-var _reactRelay = __webpack_require__(4);
+var _reactRelay = __webpack_require__(5);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2492,7 +2523,7 @@ exports.default = void 0;
 
 var _regenerator = _interopRequireDefault(__webpack_require__(0));
 
-var _reactRelay = __webpack_require__(4);
+var _reactRelay = __webpack_require__(5);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2664,7 +2695,7 @@ exports.default = void 0;
 
 var _regenerator = _interopRequireDefault(__webpack_require__(0));
 
-var _reactRelay = __webpack_require__(4);
+var _reactRelay = __webpack_require__(5);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2834,7 +2865,7 @@ exports.default = void 0;
 
 var _regenerator = _interopRequireDefault(__webpack_require__(0));
 
-var _reactRelay = __webpack_require__(4);
+var _reactRelay = __webpack_require__(5);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -3004,7 +3035,7 @@ exports.default = void 0;
 
 var _regenerator = _interopRequireDefault(__webpack_require__(0));
 
-var _reactRelay = __webpack_require__(4);
+var _reactRelay = __webpack_require__(5);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -3165,7 +3196,7 @@ module.exports = node;
 /***/ 5:
 /***/ (function(module, exports) {
 
-module.exports = require("@material-ui/core/styles");
+module.exports = require("react-relay");
 
 /***/ }),
 
@@ -3182,7 +3213,7 @@ exports.default = void 0;
 
 var _regenerator = _interopRequireDefault(__webpack_require__(0));
 
-var _reactRelay = __webpack_require__(4);
+var _reactRelay = __webpack_require__(5);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -3355,7 +3386,7 @@ exports.default = void 0;
 
 var _regenerator = _interopRequireDefault(__webpack_require__(0));
 
-var _reactRelay = __webpack_require__(4);
+var _reactRelay = __webpack_require__(5);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -3526,7 +3557,7 @@ exports.default = void 0;
 
 var _regenerator = _interopRequireDefault(__webpack_require__(0));
 
-var _reactRelay = __webpack_require__(4);
+var _reactRelay = __webpack_require__(5);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 

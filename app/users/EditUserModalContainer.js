@@ -12,19 +12,16 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     onCancel: () => dispatch(usersOperations.hideEditModal()),
-    onCreate: (name, email, password, isAdmin, isCallCenter) =>
-      dispatch(
-        usersOperations.create({ name, email, password, isAdmin, isCallCenter })
-      ),
-    onEdit: (id, name, email, password, isAdmin, isCallCenter) =>
+    onCreate: (name, email, password, isAdmin) =>
+      dispatch(usersOperations.create({ name, email, password, isAdmin })),
+    onEdit: (id, name, email, password, isAdmin) =>
       dispatch(
         usersOperations.edit({
           id,
           name,
           email,
           password,
-          isAdmin,
-          isCallCenter
+          isAdmin
         })
       )
   };

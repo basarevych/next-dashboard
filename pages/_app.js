@@ -36,17 +36,13 @@ class MyApp extends App {
     const store = getReduxStore(di);
     const statusCode =
       (res && res.statusCode) || (err && (err.statusCode || 500)) || 200;
-    const csrf = req && req.csrfHeader;
-    const status = req && req.getAuthStatus && (await req.getAuthStatus());
-    const subscriptionsServer = query && query.subscriptionsServer;
-    const googleMapsKey = query && query.googleMapsKey;
     await store.dispatch(
       appOperations.create({
         statusCode,
-        csrf,
-        status,
-        subscriptionsServer,
-        googleMapsKey
+        csrf: req && req.csrfHeader,
+        status: req && req.getAuthStatus && (await req.getAuthStatus()),
+        subscriptionsServer: query && query.subscriptionsServer,
+        googleMapsKey: query && query.googleMapsKey
       })
     );
 

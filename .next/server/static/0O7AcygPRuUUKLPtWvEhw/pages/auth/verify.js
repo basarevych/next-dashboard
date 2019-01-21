@@ -1,7 +1,7 @@
 module.exports =
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
-/******/ 	var installedModules = require('../../../ssr-module-cache.js');
+/******/ 	var installedModules = require('../../../../ssr-module-cache.js');
 /******/
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
@@ -88,7 +88,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 276);
+/******/ 	return __webpack_require__(__webpack_require__.s = 220);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -100,15 +100,22 @@ module.exports = require("react");
 
 /***/ }),
 
-/***/ 276:
+/***/ 2:
+/***/ (function(module, exports) {
+
+module.exports = require("prop-types");
+
+/***/ }),
+
+/***/ 220:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(277);
+module.exports = __webpack_require__(221);
 
 
 /***/ }),
 
-/***/ 277:
+/***/ 221:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -120,17 +127,17 @@ Object.defineProperty(exports, "__esModule", {
 Object.defineProperty(exports, "default", {
   enumerable: true,
   get: function get() {
-    return _TablesPageContainer.default;
+    return _VerifyPageContainer.default;
   }
 });
 
-var _TablesPageContainer = _interopRequireDefault(__webpack_require__(278));
+var _VerifyPageContainer = _interopRequireDefault(__webpack_require__(222));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ }),
 
-/***/ 278:
+/***/ 222:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -141,21 +148,21 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _styles = __webpack_require__(5);
+var _styles = __webpack_require__(4);
 
-var _TablesPage = _interopRequireWildcard(__webpack_require__(279));
+var _VerifyPage = _interopRequireWildcard(__webpack_require__(223));
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
-var TablesPage = (0, _styles.withStyles)(_TablesPage.styles, {
+var VerifyPage = (0, _styles.withStyles)(_VerifyPage.styles, {
   withTheme: true
-})(_TablesPage.default);
-var _default = TablesPage;
+})(_VerifyPage.default);
+var _default = VerifyPage;
 exports.default = _default;
 
 /***/ }),
 
-/***/ 279:
+/***/ 223:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -168,7 +175,7 @@ exports.default = exports.styles = void 0;
 
 var _react = _interopRequireDefault(__webpack_require__(1));
 
-var _propTypes = _interopRequireDefault(__webpack_require__(3));
+var _propTypes = _interopRequireDefault(__webpack_require__(2));
 
 var _Grid = _interopRequireDefault(__webpack_require__(8));
 
@@ -204,18 +211,18 @@ var styles = function styles(theme) {
 
 exports.styles = styles;
 
-var TablesPage =
+var VerifyPage =
 /*#__PURE__*/
 function (_React$Component) {
-  _inherits(TablesPage, _React$Component);
+  _inherits(VerifyPage, _React$Component);
 
-  function TablesPage() {
-    _classCallCheck(this, TablesPage);
+  function VerifyPage() {
+    _classCallCheck(this, VerifyPage);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(TablesPage).apply(this, arguments));
+    return _possibleConstructorReturn(this, _getPrototypeOf(VerifyPage).apply(this, arguments));
   }
 
-  _createClass(TablesPage, [{
+  _createClass(VerifyPage, [{
     key: "render",
     value: function render() {
       if (!this.props.isAuthenticated) return null;
@@ -231,22 +238,15 @@ function (_React$Component) {
     }
   }]);
 
-  return TablesPage;
+  return VerifyPage;
 }(_react.default.Component);
 
-var _default = TablesPage;
+var _default = VerifyPage;
 exports.default = _default;
 
 /***/ }),
 
-/***/ 3:
-/***/ (function(module, exports) {
-
-module.exports = require("prop-types");
-
-/***/ }),
-
-/***/ 5:
+/***/ 4:
 /***/ (function(module, exports) {
 
 module.exports = require("@material-ui/core/styles");

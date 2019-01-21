@@ -102,7 +102,7 @@ class EditUserModal extends Form {
         <DialogTitle>
           <FormattedMessage
             id={
-              this.props.data
+              this.props.currentId
                 ? "EDIT_USER_TITLE_EDIT"
                 : "EDIT_USER_TITLE_CREATE"
             }

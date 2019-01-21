@@ -26,7 +26,7 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-const Users = createRefetchContainer(
+const UserList = createRefetchContainer(
   withStyles(styles)(
     injectIntl(
       connect(
@@ -72,4 +72,4 @@ const Users = createRefetchContainer(
 );
 
 export { pageSize };
-export default Users;
+export default UserList;
