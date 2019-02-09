@@ -47,29 +47,15 @@ class UsersRepository extends EventEmitter {
   subscribe(topics) {
     return withFilter(
       (rootValue, args, context) => {
-        try {
-          const decoded = jwt.verify(
-            args.token || "",
-            this.config.sessionSecret
-          );
-          context.userId = decoded.userId;
-        } catch (error) {
-          debug(`User subscribe: ${error.message}`);
-          context.userId = null;
-        }
+        const decoded = jwt.verify(args.token || "", this.config.sessionSecret);
+        context.userId = decoded.userId;
         return this.pubsub.asyncIterator(topics);
       },
       async (payload, args, context) => {
-        try {
-          if (!context || !context.userId) throw new Error("No user");
-          const user = await this.user.model.findById(context.userId);
-          if (!user) throw new Error("User not found");
-          if (!this.isAllowed(user)) throw new Error("Access denied");
-          return true;
-        } catch (error) {
-          debug(`User subscribe: ${error.message}`);
-          return false;
-        }
+        if (!context || !context.userId) return false;
+        const user = await this.user.model.findById(context.userId);
+        if (!user || !this.isAllowed(user)) return false;
+        return true;
       }
     );
   }

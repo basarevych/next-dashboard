@@ -11,6 +11,8 @@ const envFactory = (di, initialState) => {
         constants.graphqlBase,
       { reconnect: true }
     );
+    subscriptionClient.maxConnectTimeGenerator.duration = () =>
+      subscriptionClient.maxConnectTimeGenerator.max;
     const client = subscriptionClient.request({ query, variables }).subscribe({
       next: result => {
         observer.onNext({ data: result.data });

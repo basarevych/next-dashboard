@@ -1,6 +1,7 @@
 "use strict";
 
 import pkg from "../../../package";
+import constants from "../../../common/constants";
 
 const preloadExternal = [];
 
@@ -164,6 +165,7 @@ self.addEventListener("fetch", event => {
   if (
     event.request.method !== "GET" ||
     _.includes(ignoreHosts, requested.hostname) ||
+    _.startsWith(requested.pathname, constants.socketsBase) ||
     (_.startsWith(requested.pathname, "/_next/") &&
       (process.env.NODE_ENV !== "production" ||
         requested.hostname === "localhost"))

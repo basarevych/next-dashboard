@@ -92,7 +92,9 @@ class Employees extends EventEmitter {
           resolve: (source, args, context) =>
             this.dashboardRepo.getCountry(
               context,
-              _.assign({}, args, { id: source.country })
+              _.assign({}, args, {
+                id: source.country
+              })
             )
         },
         salary: { type: new GraphQLNonNull(GraphQLInt) }
@@ -191,7 +193,7 @@ class Employees extends EventEmitter {
       mutateAndGetPayload: async (args, context) => {
         const employee = await this.employeesRepo.editEmployee(
           context,
-          _.assign({}, args, { id: fromGlobalId(args.id).id })
+          _.assign({}, args, { id: args.id && fromGlobalId(args.id).id })
         );
         return { employee };
       }
@@ -214,7 +216,7 @@ class Employees extends EventEmitter {
       mutateAndGetPayload: async (args, context) => {
         const employee = await this.employeesRepo.deleteEmployee(
           context,
-          _.assign({}, args, { id: fromGlobalId(args.id).id })
+          _.assign({}, args, { id: args.id && fromGlobalId(args.id).id })
         );
         return { employee };
       }

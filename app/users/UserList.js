@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { FormattedMessage } from "react-intl";
-import { requestSubscription, graphql } from "react-relay";
+import { graphql } from "react-relay";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -19,7 +19,7 @@ import responsiveTable from "../app/styles/responsiveTable";
 import UserItem, { styles as itemStyles } from "./UserItemContainer";
 import EditUserModal from "./EditUserModalContainer";
 import ConfirmModal from "../app/modals/ConfirmModalContainer";
-import { RelayContext } from "../app/providers/Relay";
+import { RelayContext, subscribe } from "../app/providers/Relay";
 
 export const pageSize = 20;
 
@@ -83,15 +83,8 @@ class UserList extends React.Component {
     this.state = {
       pageSize,
       pageNumber: 0,
-      lastVariables: {
-        first: pageSize
-      },
       isConfirmOpen: false
     };
-
-    this.isDestroyed = false;
-    this.refreshTime = 0;
-    this.refreshTimer = null;
 
     this.handleToggle = this.handleToggle.bind(this);
     this.handleCreateAction = this.handleCreateAction.bind(this);
@@ -99,39 +92,18 @@ class UserList extends React.Component {
     this.handleDeleteAction = this.handleDeleteAction.bind(this);
     this.handleCancelDelete = this.handleCancelDelete.bind(this);
     this.handleConfirmDelete = this.handleConfirmDelete.bind(this);
-    this.handleRefresh = this.handleRefresh.bind(this);
+    this.handleRefreshAction = this.handleRefreshAction.bind(this);
     this.handleChangePage = this.handleChangePage.bind(this);
     this.handleChangeRowsPerPage = this.handleChangeRowsPerPage.bind(this);
   }
 
-  async subscribe() {
-    if (this.subscription) this.subscription.dispose();
-    if (this.isDestroyed) return;
-    this.subscription = requestSubscription(this.context, {
-      subscription,
-      variables: { token: await this.props.getToken() },
-      onCompleted: () => {
-        this.subscription = null;
-        setTimeout(() => this.subscribe(), 1000);
-      },
-      onError: error => {
-        this.subscription = null;
-        console.error(error);
-        setTimeout(() => this.subscribe(), 1000);
-      },
-      onNext: () => {
-        if (this.refreshTimer) return;
-        const delta = Date.now() - this.refreshTime;
-        this.refreshTimer = setTimeout(
-          this.handleRefresh,
-          delta < 1000 ? delta : 0
-        );
-      }
-    });
-  }
-
   componentDidMount() {
-    this.subscribe();
+    this.unsubscribe = subscribe({
+      subscription,
+      getToken: this.props.getToken,
+      environment: this.context,
+      callback: this.handleRefreshAction
+    });
   }
 
   componentDidUpdate() {
@@ -150,21 +122,16 @@ class UserList extends React.Component {
       this.props.relay.refetch(
         variables,
         null,
-        () => this.setState({ pageNumber: 0, lastVariables: variables }),
+        () => this.setState({ pageNumber: 0 }),
         { force: true }
       );
     }
   }
 
   componentWillUnmount() {
-    this.isDestroyed = true;
-    if (this.subscription) {
-      this.subscription.dispose();
-      this.subscription = null;
-    }
-    if (this.refreshTimer) {
-      clearTimeout(this.refreshTimer);
-      this.refreshTimer = null;
+    if (this.unsubscribe) {
+      this.unsubscribe();
+      this.unsubscribe = null;
     }
   }
 
@@ -218,18 +185,8 @@ class UserList extends React.Component {
     );
   }
 
-  handleRefresh() {
-    if (this.refreshTimer) {
-      clearTimeout(this.refreshTimer);
-      this.refreshTimer = null;
-    }
-
-    if (this.isDestroyed) return;
-
-    this.props.relay.refetch(this.state.lastVariables, null, null, {
-      force: true
-    });
-    this.refreshTime = Date.now();
+  handleRefreshAction() {
+    this.props.relay.refetch(vars => vars, null, null, { force: true });
   }
 
   handleChangeRowsPerPage(evt) {
@@ -243,8 +200,7 @@ class UserList extends React.Component {
     this.props.relay.refetch(
       variables,
       null,
-      () =>
-        this.setState({ pageSize, pageNumber: 0, lastVariables: variables }),
+      () => this.setState({ pageSize, pageNumber: 0 }),
       { force: true }
     );
   }
@@ -270,7 +226,6 @@ class UserList extends React.Component {
       variables.last = this.state.pageSize;
       variables.before = _.head(this.props.viewer.users.edges).cursor;
     }
-    state.lastVariables = variables;
 
     this.props.relay.refetch(variables, null, () => this.setState(state), {
       force: true
@@ -285,7 +240,7 @@ class UserList extends React.Component {
             <FormattedMessage id="TITLE_USERS" />
           </Typography>
           <div className={this.props.classes.grow} />
-          <IconButton color="inherit" onClick={this.handleRefresh}>
+          <IconButton color="inherit" onClick={this.handleRefreshAction}>
             <RefreshIcon />
           </IconButton>
         </Toolbar>

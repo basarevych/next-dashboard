@@ -1,7 +1,7 @@
 module.exports =
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
-/******/ 	var installedModules = require('../../../../ssr-module-cache.js');
+/******/ 	var installedModules = require('../../../ssr-module-cache.js');
 /******/
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
@@ -88,7 +88,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 216);
+/******/ 	return __webpack_require__(__webpack_require__.s = 272);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -100,22 +100,15 @@ module.exports = require("react");
 
 /***/ }),
 
-/***/ 2:
-/***/ (function(module, exports) {
-
-module.exports = require("prop-types");
-
-/***/ }),
-
-/***/ 216:
+/***/ 272:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(217);
+module.exports = __webpack_require__(273);
 
 
 /***/ }),
 
-/***/ 217:
+/***/ 273:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -127,17 +120,17 @@ Object.defineProperty(exports, "__esModule", {
 Object.defineProperty(exports, "default", {
   enumerable: true,
   get: function get() {
-    return _ProfilePageContainer.default;
+    return _NotificationsPageContainer.default;
   }
 });
 
-var _ProfilePageContainer = _interopRequireDefault(__webpack_require__(218));
+var _NotificationsPageContainer = _interopRequireDefault(__webpack_require__(274));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ }),
 
-/***/ 218:
+/***/ 274:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -148,21 +141,21 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _styles = __webpack_require__(4);
+var _styles = __webpack_require__(5);
 
-var _ProfilePage = _interopRequireWildcard(__webpack_require__(219));
+var _NotificationsPage = _interopRequireWildcard(__webpack_require__(275));
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
-var ProfilePage = (0, _styles.withStyles)(_ProfilePage.styles, {
+var NotificationsPage = (0, _styles.withStyles)(_NotificationsPage.styles, {
   withTheme: true
-})(_ProfilePage.default);
-var _default = ProfilePage;
+})(_NotificationsPage.default);
+var _default = NotificationsPage;
 exports.default = _default;
 
 /***/ }),
 
-/***/ 219:
+/***/ 275:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -175,7 +168,7 @@ exports.default = exports.styles = void 0;
 
 var _react = _interopRequireDefault(__webpack_require__(1));
 
-var _propTypes = _interopRequireDefault(__webpack_require__(2));
+var _propTypes = _interopRequireDefault(__webpack_require__(3));
 
 var _Grid = _interopRequireDefault(__webpack_require__(8));
 
@@ -211,18 +204,18 @@ var styles = function styles(theme) {
 
 exports.styles = styles;
 
-var ProfilePage =
+var NotificationsPage =
 /*#__PURE__*/
 function (_React$Component) {
-  _inherits(ProfilePage, _React$Component);
+  _inherits(NotificationsPage, _React$Component);
 
-  function ProfilePage() {
-    _classCallCheck(this, ProfilePage);
+  function NotificationsPage() {
+    _classCallCheck(this, NotificationsPage);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(ProfilePage).apply(this, arguments));
+    return _possibleConstructorReturn(this, _getPrototypeOf(NotificationsPage).apply(this, arguments));
   }
 
-  _createClass(ProfilePage, [{
+  _createClass(NotificationsPage, [{
     key: "render",
     value: function render() {
       if (!this.props.isAuthenticated) return null;
@@ -238,15 +231,22 @@ function (_React$Component) {
     }
   }]);
 
-  return ProfilePage;
+  return NotificationsPage;
 }(_react.default.Component);
 
-var _default = ProfilePage;
+var _default = NotificationsPage;
 exports.default = _default;
 
 /***/ }),
 
-/***/ 4:
+/***/ 3:
+/***/ (function(module, exports) {
+
+module.exports = require("prop-types");
+
+/***/ }),
+
+/***/ 5:
 /***/ (function(module, exports) {
 
 module.exports = require("@material-ui/core/styles");

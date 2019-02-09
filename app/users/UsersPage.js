@@ -4,6 +4,7 @@ import { graphql } from "react-relay";
 import { NextQueryRenderer } from "../app/providers/Relay";
 import UserList, { pageSize } from "./UserListContainer";
 import ErrorMessage from "../app/error/ErrorMessageContainer";
+import isRouteAllowed from "../../common/isRouteAllowed";
 
 const defaultVariables = { first: pageSize };
 
@@ -23,7 +24,7 @@ export const query = graphql`
 
 class UsersPage extends React.Component {
   static propTypes = {
-    isAuthenticated: PropTypes.bool.isRequired
+    userRoles: PropTypes.array.isRequired
   };
 
   static async getInitialProps({ statusCode, fetchQuery }) {
@@ -32,7 +33,7 @@ class UsersPage extends React.Component {
   }
 
   render() {
-    if (!this.props.isAuthenticated) return null;
+    if (!isRouteAllowed("/users", this.props.userRoles)) return null;
 
     return (
       <NextQueryRenderer

@@ -88,10 +88,17 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 224);
+/******/ 	return __webpack_require__(__webpack_require__.s = 206);
 /******/ })
 /************************************************************************/
 /******/ ({
+
+/***/ 0:
+/***/ (function(module, exports) {
+
+module.exports = require("@babel/runtime/regenerator");
+
+/***/ }),
 
 /***/ 1:
 /***/ (function(module, exports) {
@@ -100,44 +107,15 @@ module.exports = require("react");
 
 /***/ }),
 
-/***/ 2:
-/***/ (function(module, exports) {
-
-module.exports = require("prop-types");
-
-/***/ }),
-
-/***/ 224:
+/***/ 206:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(225);
+module.exports = __webpack_require__(207);
 
 
 /***/ }),
 
-/***/ 225:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-Object.defineProperty(exports, "default", {
-  enumerable: true,
-  get: function get() {
-    return _ChartsPageContainer.default;
-  }
-});
-
-var _ChartsPageContainer = _interopRequireDefault(__webpack_require__(226));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-/***/ }),
-
-/***/ 226:
+/***/ 207:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -148,40 +126,29 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _styles = __webpack_require__(4);
-
-var _ChartsPage = _interopRequireWildcard(__webpack_require__(227));
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
-
-var ChartsPage = (0, _styles.withStyles)(_ChartsPage.styles, {
-  withTheme: true
-})(_ChartsPage.default);
-var _default = ChartsPage;
-exports.default = _default;
-
-/***/ }),
-
-/***/ 227:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = exports.styles = void 0;
+var _regenerator = _interopRequireDefault(__webpack_require__(0));
 
 var _react = _interopRequireDefault(__webpack_require__(1));
 
-var _propTypes = _interopRequireDefault(__webpack_require__(2));
+var _propTypes = _interopRequireDefault(__webpack_require__(3));
 
-var _Grid = _interopRequireDefault(__webpack_require__(8));
+var _document = _interopRequireWildcard(__webpack_require__(208));
+
+var _server = _interopRequireDefault(__webpack_require__(209));
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -199,64 +166,113 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-var styles = function styles(theme) {
-  return {
-    layout: {
-      width: "100%",
-      flex: 1,
-      padding: theme.main.spacing
-    }
-  };
-};
-
-exports.styles = styles;
-
-var ChartsPage =
+var MyDocument =
 /*#__PURE__*/
-function (_React$Component) {
-  _inherits(ChartsPage, _React$Component);
+function (_Document) {
+  _inherits(MyDocument, _Document);
 
-  function ChartsPage() {
-    _classCallCheck(this, ChartsPage);
+  function MyDocument() {
+    _classCallCheck(this, MyDocument);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(ChartsPage).apply(this, arguments));
+    return _possibleConstructorReturn(this, _getPrototypeOf(MyDocument).apply(this, arguments));
   }
 
-  _createClass(ChartsPage, [{
+  _createClass(MyDocument, [{
     key: "render",
     value: function render() {
-      if (!this.props.isAuthenticated) return null;
-      return _react.default.createElement("div", {
-        className: this.props.classes.layout
-      }, _react.default.createElement(_Grid.default, {
-        container: true,
-        spacing: this.props.theme.main.spacing
-      }, _react.default.createElement(_Grid.default, {
-        item: true,
-        xs: 12
-      }, _react.default.createElement("div", null))));
+      return _react.default.createElement("html", {
+        lang: "en",
+        dir: "ltr"
+      }, _react.default.createElement(_document.Head, null, _react.default.createElement("meta", {
+        charSet: "utf-8"
+      }), _react.default.createElement("meta", {
+        name: "viewport",
+        content: "minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no"
+      }), _react.default.createElement("meta", {
+        name: "theme-color",
+        content: this.props.materialContext && this.props.materialContext.theme.palette.primary.main
+      }), _react.default.createElement("link", {
+        rel: "shortcut icon",
+        href: "/favicon.ico"
+      })), _react.default.createElement("body", null, _react.default.createElement(_document.Main, null), _react.default.createElement(_document.NextScript, null)));
     }
+  }], [{
+    key: "getInitialProps",
+    value: function () {
+      var _getInitialProps = _asyncToGenerator(
+      /*#__PURE__*/
+      _regenerator.default.mark(function _callee(ctx) {
+        var materialContext, page;
+        return _regenerator.default.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.next = 2;
+                return ctx.renderPage(function (Component) {
+                  var WrappedComponent = function WrappedComponent(props) {
+                    materialContext = props.materialContext;
+                    return _react.default.createElement(Component, props);
+                  };
+
+                  return WrappedComponent;
+                });
+
+              case 2:
+                page = _context.sent;
+                return _context.abrupt("return", _objectSpread({}, page, {
+                  materialContext: materialContext,
+                  // Styles fragment is rendered after the app and page rendering finish.
+                  styles: _react.default.createElement(_react.default.Fragment, null, _react.default.createElement("style", {
+                    id: "jss-server-side" // eslint-disable-next-line react/no-danger
+                    ,
+                    dangerouslySetInnerHTML: {
+                      __html: materialContext && materialContext.sheetsRegistry.toString()
+                    }
+                  }), (0, _server.default)() || null)
+                }));
+
+              case 4:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function getInitialProps(_x) {
+        return _getInitialProps.apply(this, arguments);
+      }
+
+      return getInitialProps;
+    }()
   }]);
 
-  return ChartsPage;
-}(_react.default.Component);
+  return MyDocument;
+}(_document.default);
 
-var _default = ChartsPage;
+var _default = MyDocument;
 exports.default = _default;
 
 /***/ }),
 
-/***/ 4:
+/***/ 208:
 /***/ (function(module, exports) {
 
-module.exports = require("@material-ui/core/styles");
+module.exports = require("next/document");
 
 /***/ }),
 
-/***/ 8:
+/***/ 209:
 /***/ (function(module, exports) {
 
-module.exports = require("@material-ui/core/Grid");
+module.exports = require("styled-jsx/server");
+
+/***/ }),
+
+/***/ 3:
+/***/ (function(module, exports) {
+
+module.exports = require("prop-types");
 
 /***/ })
 

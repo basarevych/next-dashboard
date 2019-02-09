@@ -172,7 +172,7 @@ class Users extends EventEmitter {
       mutateAndGetPayload: async (args, context) => {
         const user = await this.usersRepo.editUser(
           context,
-          _.assign({}, args, { id: fromGlobalId(args.id).id })
+          _.assign({}, args, { id: args.id && fromGlobalId(args.id).id })
         );
         return { user };
       }
@@ -195,7 +195,7 @@ class Users extends EventEmitter {
       mutateAndGetPayload: async (args, context) => {
         const user = await this.usersRepo.deleteUser(
           context,
-          _.assign({}, args, { id: fromGlobalId(args.id).id })
+          _.assign({}, args, { id: args.id && fromGlobalId(args.id).id })
         );
         return { user };
       }

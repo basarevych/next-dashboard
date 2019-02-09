@@ -4,7 +4,7 @@ import UsersPageComponent from "./UsersPage";
 
 const mapStateToProps = state => {
   return {
-    isAuthenticated: authSelectors.isAuthenticated(state)
+    userRoles: authSelectors.getRoles(state)
   };
 };
 

@@ -1,7 +1,7 @@
 module.exports =
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
-/******/ 	var installedModules = require('../../../ssr-module-cache.js');
+/******/ 	var installedModules = require('../../../../ssr-module-cache.js');
 /******/
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
@@ -88,7 +88,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 280);
+/******/ 	return __webpack_require__(__webpack_require__.s = 216);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -100,22 +100,15 @@ module.exports = require("react");
 
 /***/ }),
 
-/***/ 2:
-/***/ (function(module, exports) {
-
-module.exports = require("prop-types");
-
-/***/ }),
-
-/***/ 280:
+/***/ 216:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(281);
+module.exports = __webpack_require__(217);
 
 
 /***/ }),
 
-/***/ 281:
+/***/ 217:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -127,17 +120,17 @@ Object.defineProperty(exports, "__esModule", {
 Object.defineProperty(exports, "default", {
   enumerable: true,
   get: function get() {
-    return _TypographyPageContainer.default;
+    return _ProfilePageContainer.default;
   }
 });
 
-var _TypographyPageContainer = _interopRequireDefault(__webpack_require__(282));
+var _ProfilePageContainer = _interopRequireDefault(__webpack_require__(218));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ }),
 
-/***/ 282:
+/***/ 218:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -148,21 +141,21 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _styles = __webpack_require__(4);
+var _styles = __webpack_require__(5);
 
-var _TypographyPage = _interopRequireWildcard(__webpack_require__(283));
+var _ProfilePage = _interopRequireWildcard(__webpack_require__(219));
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
-var TypographyPage = (0, _styles.withStyles)(_TypographyPage.styles, {
+var ProfilePage = (0, _styles.withStyles)(_ProfilePage.styles, {
   withTheme: true
-})(_TypographyPage.default);
-var _default = TypographyPage;
+})(_ProfilePage.default);
+var _default = ProfilePage;
 exports.default = _default;
 
 /***/ }),
 
-/***/ 283:
+/***/ 219:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -175,7 +168,7 @@ exports.default = exports.styles = void 0;
 
 var _react = _interopRequireDefault(__webpack_require__(1));
 
-var _propTypes = _interopRequireDefault(__webpack_require__(2));
+var _propTypes = _interopRequireDefault(__webpack_require__(3));
 
 var _Grid = _interopRequireDefault(__webpack_require__(8));
 
@@ -211,18 +204,18 @@ var styles = function styles(theme) {
 
 exports.styles = styles;
 
-var TypographyPage =
+var ProfilePage =
 /*#__PURE__*/
 function (_React$Component) {
-  _inherits(TypographyPage, _React$Component);
+  _inherits(ProfilePage, _React$Component);
 
-  function TypographyPage() {
-    _classCallCheck(this, TypographyPage);
+  function ProfilePage() {
+    _classCallCheck(this, ProfilePage);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(TypographyPage).apply(this, arguments));
+    return _possibleConstructorReturn(this, _getPrototypeOf(ProfilePage).apply(this, arguments));
   }
 
-  _createClass(TypographyPage, [{
+  _createClass(ProfilePage, [{
     key: "render",
     value: function render() {
       if (!this.props.isAuthenticated) return null;
@@ -238,15 +231,22 @@ function (_React$Component) {
     }
   }]);
 
-  return TypographyPage;
+  return ProfilePage;
 }(_react.default.Component);
 
-var _default = TypographyPage;
+var _default = ProfilePage;
 exports.default = _default;
 
 /***/ }),
 
-/***/ 4:
+/***/ 3:
+/***/ (function(module, exports) {
+
+module.exports = require("prop-types");
+
+/***/ }),
+
+/***/ 5:
 /***/ (function(module, exports) {
 
 module.exports = require("@material-ui/core/styles");

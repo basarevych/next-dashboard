@@ -1,7 +1,7 @@
 module.exports =
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
-/******/ 	var installedModules = require('../../../../ssr-module-cache.js');
+/******/ 	var installedModules = require('../../../ssr-module-cache.js');
 /******/
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
@@ -88,7 +88,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 220);
+/******/ 	return __webpack_require__(__webpack_require__.s = 268);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -100,22 +100,15 @@ module.exports = require("react");
 
 /***/ }),
 
-/***/ 2:
-/***/ (function(module, exports) {
-
-module.exports = require("prop-types");
-
-/***/ }),
-
-/***/ 220:
+/***/ 268:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(221);
+module.exports = __webpack_require__(269);
 
 
 /***/ }),
 
-/***/ 221:
+/***/ 269:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -127,17 +120,17 @@ Object.defineProperty(exports, "__esModule", {
 Object.defineProperty(exports, "default", {
   enumerable: true,
   get: function get() {
-    return _VerifyPageContainer.default;
+    return _MapsPageContainer.default;
   }
 });
 
-var _VerifyPageContainer = _interopRequireDefault(__webpack_require__(222));
+var _MapsPageContainer = _interopRequireDefault(__webpack_require__(270));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ }),
 
-/***/ 222:
+/***/ 270:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -148,21 +141,21 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _styles = __webpack_require__(4);
+var _styles = __webpack_require__(5);
 
-var _VerifyPage = _interopRequireWildcard(__webpack_require__(223));
+var _MapsPage = _interopRequireWildcard(__webpack_require__(271));
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
-var VerifyPage = (0, _styles.withStyles)(_VerifyPage.styles, {
+var MapsPage = (0, _styles.withStyles)(_MapsPage.styles, {
   withTheme: true
-})(_VerifyPage.default);
-var _default = VerifyPage;
+})(_MapsPage.default);
+var _default = MapsPage;
 exports.default = _default;
 
 /***/ }),
 
-/***/ 223:
+/***/ 271:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -175,7 +168,7 @@ exports.default = exports.styles = void 0;
 
 var _react = _interopRequireDefault(__webpack_require__(1));
 
-var _propTypes = _interopRequireDefault(__webpack_require__(2));
+var _propTypes = _interopRequireDefault(__webpack_require__(3));
 
 var _Grid = _interopRequireDefault(__webpack_require__(8));
 
@@ -211,18 +204,18 @@ var styles = function styles(theme) {
 
 exports.styles = styles;
 
-var VerifyPage =
+var MapsPage =
 /*#__PURE__*/
 function (_React$Component) {
-  _inherits(VerifyPage, _React$Component);
+  _inherits(MapsPage, _React$Component);
 
-  function VerifyPage() {
-    _classCallCheck(this, VerifyPage);
+  function MapsPage() {
+    _classCallCheck(this, MapsPage);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(VerifyPage).apply(this, arguments));
+    return _possibleConstructorReturn(this, _getPrototypeOf(MapsPage).apply(this, arguments));
   }
 
-  _createClass(VerifyPage, [{
+  _createClass(MapsPage, [{
     key: "render",
     value: function render() {
       if (!this.props.isAuthenticated) return null;
@@ -238,15 +231,22 @@ function (_React$Component) {
     }
   }]);
 
-  return VerifyPage;
+  return MapsPage;
 }(_react.default.Component);
 
-var _default = VerifyPage;
+var _default = MapsPage;
 exports.default = _default;
 
 /***/ }),
 
-/***/ 4:
+/***/ 3:
+/***/ (function(module, exports) {
+
+module.exports = require("prop-types");
+
+/***/ }),
+
+/***/ 5:
 /***/ (function(module, exports) {
 
 module.exports = require("@material-ui/core/styles");
