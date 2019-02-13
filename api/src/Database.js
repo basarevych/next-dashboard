@@ -48,10 +48,9 @@ class Database extends EventEmitter {
         this.EmployeeSchema = Employee.schema;
         this.EmployeeModel = Employee.model;
 
-        this.mongoose.connect(
-          this.app.config.mongoUrl,
-          { useNewUrlParser: true }
-        );
+        this.mongoose.connect(this.app.config.mongoUrl, {
+          useNewUrlParser: true
+        });
         this.mongoose.connection
           .on("error", (...args) => {
             console.error("MongoDB error:", ...args);
@@ -100,17 +99,15 @@ class Database extends EventEmitter {
       // eslint-disable-next-line lodash/prefer-lodash-method
       let count = await this.EmployeeModel.countDocuments();
       if (!count) {
-        this.employees = [];
+        let employees = [];
         let usedNames = [];
-        for (let dept of _.keys(constants.depts)) {
-          let max = this.fake.getInt(60, 200);
-          for (let i = 0; i < max; i++) {
-            let employee = new this.EmployeeModel(
-              this.fake.createEmployee(usedNames, dept)
-            );
-            await employee.save();
-          }
+        for (let i = 0; i < 100 * _.keys(constants.depts).length; i++) {
+          employees.push(
+            new this.EmployeeModel(this.fake.createRandomEmployee(usedNames))
+          );
         }
+        _.shuffle(employees);
+        for (let employee of employees) await employee.save();
         console.log("> Employees created");
       }
     });

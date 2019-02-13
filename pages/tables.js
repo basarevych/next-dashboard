@@ -1,1 +1,1 @@
-export { default } from "../app/tables/TablesPageContainer";
+export { default } from "../app/employees/TablesPageContainer";

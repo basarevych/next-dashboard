@@ -38,10 +38,12 @@ class WebSocket extends EventEmitter {
 
     this.promise = Promise.resolve();
 
-    this.io = new IO(this.app.server, {
-      path: constants.socketsBase
-    });
-    this.io.on("connection", this.onConnection.bind(this));
+    if (this.app.server) {
+      this.io = new IO(this.app.server, {
+        path: constants.socketsBase
+      });
+      this.io.on("connection", this.onConnection.bind(this));
+    }
 
     this.timer = setInterval(async () => {
       let offlineUsers = usersSelectors.getOfflineUsersList(this.getState(), {

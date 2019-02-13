@@ -4,7 +4,12 @@ import { injectIntl } from "react-intl";
 import { withStyles } from "@material-ui/core/styles";
 import { appOperations } from "../app/state";
 import { usersSelectors, usersOperations } from "./state";
-import UserListComponent, { pageSize, styles } from "./UserList";
+import UserListComponent, {
+  pageSize,
+  sortBy,
+  sortDir,
+  styles
+} from "./UserList";
 
 const mapStateToProps = state => {
   return {
@@ -39,17 +44,31 @@ const UserList = createRefetchContainer(
     viewer: graphql`
       fragment UserListContainer_viewer on Viewer
         @argumentDefinitions(
+          sortBy: { type: "UserSortBy" }
+          sortDir: { type: "UserSortDir" }
           first: { type: "Int" }
           after: { type: "String" }
           last: { type: "Int" }
           before: { type: "String" }
         ) {
-        users(first: $first, after: $after, last: $last, before: $before) {
+        users(
+          sortBy: $sortBy
+          sortDir: $sortDir
+          first: $first
+          after: $after
+          last: $last
+          before: $before
+        ) {
           edges {
             cursor
             node {
+              id
               ...UserItemContainer_node
             }
+          }
+          pageInfo {
+            startCursor
+            endCursor
           }
           totalCount
         }
@@ -58,6 +77,8 @@ const UserList = createRefetchContainer(
   },
   graphql`
     query UserListContainerQuery(
+      $sortBy: UserSortBy
+      $sortDir: UserSortDir
       $first: Int
       $after: String
       $last: Int
@@ -65,11 +86,18 @@ const UserList = createRefetchContainer(
     ) {
       viewer {
         ...UserListContainer_viewer
-          @arguments(first: $first, after: $after, last: $last, before: $before)
+          @arguments(
+            sortBy: $sortBy
+            sortDir: $sortDir
+            first: $first
+            after: $after
+            last: $last
+            before: $before
+          )
       }
     }
   `
 );
 
-export { pageSize };
+export { pageSize, sortBy, sortDir };
 export default UserList;

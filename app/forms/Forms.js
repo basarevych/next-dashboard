@@ -26,26 +26,6 @@ import ConfirmForm from "./ConfirmFormContainer";
 import MessageModal from "../app/modals/MessageModalContainer";
 
 export const styles = theme => ({
-  message: {
-    marginTop: "4rem",
-    marginBottom: "4rem",
-    display: "flex",
-    alignItems: "flex-start",
-    [theme.breakpoints.down("sm")]: {
-      flexDirection: "column"
-    }
-  },
-  messageTitle: {
-    [theme.breakpoints.up("sm")]: {
-      marginLeft: "2rem",
-      marginRight: "2rem"
-    }
-  },
-  messageContent: {
-    [theme.breakpoints.up("sm")]: {
-      width: 50 * theme.spacing.unit
-    }
-  },
   root: {
     display: "flex",
     alignItems: "flex-start",
@@ -53,6 +33,9 @@ export const styles = theme => ({
       flexDirection: "column",
       alignItems: "stretch"
     }
+  },
+  title: {
+    marginTop: "3rem"
   },
   stepper: {
     background: fade(theme.palette.primary.main, 0.5),
@@ -322,24 +305,13 @@ class Forms extends React.Component {
       </Stepper>
     );
   }
+
   render() {
     return (
       <React.Fragment>
-        <Typography variant="h3">
+        <Typography variant="h3" className={this.props.classes.title}>
           <FormattedMessage id="TITLE_FORMS" />
         </Typography>
-
-        <div className={this.props.classes.message}>
-          <Typography variant="h6" className={this.props.classes.messageTitle}>
-            <FormattedMessage id="FORMS_MESSAGE_TITLE" />
-          </Typography>
-          <Typography
-            variant="body1"
-            className={this.props.classes.messageContent}
-          >
-            <FormattedMessage id="FORMS_MESSAGE_CONTENT" />
-          </Typography>
-        </div>
 
         <div className={this.props.classes.root}>
           <div className={this.props.classes.page}>

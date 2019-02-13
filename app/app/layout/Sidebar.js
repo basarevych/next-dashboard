@@ -42,7 +42,7 @@ export const styles = theme => ({
     padding: 0
   },
   avatar: {
-    margin: "1rem 0",
+    margin: "2rem 0 1rem 0",
     display: "flex",
     flexDirection: "column",
     alignItems: "center"
@@ -204,6 +204,13 @@ class Sidebar extends React.Component {
         </MenuList>
         <div className={this.props.classes.grow} />
         <div>
+          <a
+            href="javascript:void(0)"
+            className={this.props.classes.link}
+            onClick={() => window.open(`${constants.apiBase}/redirect/github`)}
+          >
+            <FormattedMessage id="SIDEBAR_GITHUB_LINK" />
+          </a>
           <a
             href="javascript:void(0)"
             className={this.props.classes.link}

@@ -12,6 +12,7 @@ import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import TablePagination from "@material-ui/core/TablePagination";
+import TableSortLabel from "@material-ui/core/TableSortLabel";
 import Paper from "@material-ui/core/Paper";
 import Checkbox from "@material-ui/core/Checkbox";
 import RefreshIcon from "@material-ui/icons/Refresh";
@@ -21,7 +22,9 @@ import EditUserModal from "./EditUserModalContainer";
 import ConfirmModal from "../app/modals/ConfirmModalContainer";
 import { RelayContext, subscribe } from "../app/providers/Relay";
 
-export const pageSize = 20;
+export const pageSize = 10;
+export const sortBy = "email";
+export const sortDir = "asc";
 
 export const styles = theme => ({
   layout: {
@@ -83,6 +86,11 @@ class UserList extends React.Component {
     this.state = {
       pageSize,
       pageNumber: 0,
+      variables: {
+        sortBy,
+        sortDir,
+        first: pageSize
+      },
       isConfirmOpen: false
     };
 
@@ -107,25 +115,21 @@ class UserList extends React.Component {
   }
 
   componentDidUpdate() {
-    if (
-      this.props.viewer.users.totalCount &&
-      this.state.pageNumber * this.state.pageSize >=
-        this.props.viewer.users.totalCount
-    ) {
+    const total = _.get(this.props.viewer, "users.totalCount", 0);
+    if (total && this.state.pageNumber * this.state.pageSize >= total) {
       // we fell off the list - reset to the beginning
-      const variables = {
-        first: this.state.pageSize,
-        after: null,
-        last: null,
-        before: null
+      let variables = {
+        sortBy,
+        sortDir,
+        first: this.state.pageSize
       };
-      this.props.relay.refetch(
-        variables,
-        null,
-        () => this.setState({ pageNumber: 0 }),
-        { force: true }
+      this.setState({ pageNumber: 0, variables }, () =>
+        this.props.relay.refetch(variables, null, null, { force: true })
       );
     }
+    this.props.onDeselectAll(
+      _.map(_.get(this.props.viewer, "users.edges", []), "node.id")
+    );
   }
 
   componentWillUnmount() {
@@ -136,11 +140,11 @@ class UserList extends React.Component {
   }
 
   hasRecords() {
-    return this.props.viewer.users.edges.length > 0;
+    return _.get(this.props.viewer, "users.edges", []).length > 0;
   }
 
   isAllSelected() {
-    const list = _.map(this.props.viewer.users.edges, "node.id");
+    const list = _.map(_.get(this.props.viewer, "users.edges", []), "node.id");
     return _.difference(list, this.props.selected).length === 0;
   }
 
@@ -153,9 +157,13 @@ class UserList extends React.Component {
   }
 
   handleToggleAll(forceOff = false) {
-    if (forceOff || this.isAllSelected()) this.props.onDeselectAll();
-    else
-      this.props.onSelectAll(_.map(this.props.viewer.users.edges, "node.id"));
+    if (forceOff || this.isAllSelected()) {
+      this.props.onDeselectAll();
+    } else {
+      this.props.onSelectAll(
+        _.map(_.get(this.props.viewer, "users.edges", []), "node.id")
+      );
+    }
   }
 
   handleToggle(userId) {
@@ -186,50 +194,73 @@ class UserList extends React.Component {
   }
 
   handleRefreshAction() {
-    this.props.relay.refetch(vars => vars, null, null, { force: true });
+    this.props.relay.refetch(this.state.variables, null, null, { force: true });
+  }
+
+  handleSort(sortBy) {
+    let sortDir = "asc";
+    if (this.state.variables.sortBy === sortBy)
+      sortDir = this.state.variables.sortDir === "asc" ? "desc" : "asc";
+    let variables = {
+      sortBy,
+      sortDir,
+      first: this.state.pageSize
+    };
+    this.setState({ pageNumber: 0, variables }, () =>
+      this.props.relay.refetch(variables, null, null, { force: true })
+    );
   }
 
   handleChangeRowsPerPage(evt) {
     const pageSize = evt.target.value;
-    const variables = {
-      first: pageSize,
-      after: null,
-      last: null,
-      before: null
+    let variables = {
+      sortBy: this.state.variables.sortBy,
+      sortDir: this.state.variables.sortDir,
+      first: pageSize
     };
-    this.props.relay.refetch(
-      variables,
-      null,
-      () => this.setState({ pageSize, pageNumber: 0 }),
-      { force: true }
+    this.setState({ pageSize, pageNumber: 0, variables }, () =>
+      this.props.relay.refetch(variables, null, null, { force: true })
     );
   }
 
   handleChangePage(evt, pageNumber) {
     if (this.state.pageNumber === pageNumber) return;
 
-    let state = { pageNumber };
-    let variables = { first: null, after: null, last: null, before: null };
+    let variables = {
+      sortBy: this.state.variables.sortBy,
+      sortDir: this.state.variables.sortDir
+    };
+
     if (pageNumber === 0) {
       variables.first = this.state.pageSize;
     } else if (pageNumber > this.state.pageNumber) {
       if (
         pageNumber + 1 >
-        Math.ceil(this.props.viewer.users.totalCount / this.state.pageSize)
+        Math.ceil(
+          _.get(this.props.viewer, "users.totalCount", 0) / this.state.pageSize
+        )
       ) {
         return;
       }
       variables.first = this.state.pageSize;
-      variables.after = _.last(this.props.viewer.users.edges).cursor;
+      variables.after = _.get(
+        this.props.viewer,
+        "users.pageInfo.endCursor",
+        null
+      );
     } else {
       if (this.state.pageNumber <= 0) return;
       variables.last = this.state.pageSize;
-      variables.before = _.head(this.props.viewer.users.edges).cursor;
+      variables.before = _.get(
+        this.props.viewer,
+        "users.pageInfo.startCursor",
+        null
+      );
     }
 
-    this.props.relay.refetch(variables, null, () => this.setState(state), {
-      force: true
-    });
+    this.setState({ pageNumber, variables }, () =>
+      this.props.relay.refetch(variables, null, null, { force: true })
+    );
   }
 
   renderTable() {
@@ -261,8 +292,50 @@ class UserList extends React.Component {
                   value="on"
                 />
               </TableCell>
-              <TableCell>
-                <FormattedMessage id="USERS_LOGIN_COLUMN" />
+              <TableCell
+                sortDirection={
+                  this.state.variables.sortBy === "email"
+                    ? this.state.variables.sortDir
+                    : false
+                }
+              >
+                <TableSortLabel
+                  active={this.state.variables.sortBy === "email"}
+                  direction={this.state.variables.sortDir}
+                  onClick={() => this.handleSort("email")}
+                >
+                  <FormattedMessage id="USERS_EMAIL_COLUMN" />
+                </TableSortLabel>
+              </TableCell>
+              <TableCell
+                sortDirection={
+                  this.state.variables.sortBy === "isEmailVerified"
+                    ? this.state.variables.sortDir
+                    : false
+                }
+              >
+                <TableSortLabel
+                  active={this.state.variables.sortBy === "isEmailVerified"}
+                  direction={this.state.variables.sortDir}
+                  onClick={() => this.handleSort("isEmailVerified")}
+                >
+                  <FormattedMessage id="USERS_EMAIL_VERIFIED_COLUMN" />
+                </TableSortLabel>
+              </TableCell>
+              <TableCell
+                sortDirection={
+                  this.state.variables.sortBy === "name"
+                    ? this.state.variables.sortDir
+                    : false
+                }
+              >
+                <TableSortLabel
+                  active={this.state.variables.sortBy === "name"}
+                  direction={this.state.variables.sortDir}
+                  onClick={() => this.handleSort("name")}
+                >
+                  <FormattedMessage id="USERS_NAME_COLUMN" />
+                </TableSortLabel>
               </TableCell>
               <TableCell>
                 <FormattedMessage id="USERS_ROLES_COLUMN" />
@@ -270,7 +343,7 @@ class UserList extends React.Component {
             </TableRow>
           </TableHead>
           <TableBody>
-            {_.map(this.props.viewer.users.edges, edge => (
+            {_.map(_.get(this.props.viewer, "users.edges", []), edge => (
               <UserItem
                 key={edge.cursor}
                 node={edge.node}

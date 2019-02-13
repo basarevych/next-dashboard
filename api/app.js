@@ -1,7 +1,8 @@
 "use strict";
 
-if (!global._) global._ = require("lodash");
+require("@babel/polyfill");
 require("isomorphic-unfetch");
+if (!global._) global._ = require("lodash");
 
 const Injectt = require("injectt");
 const nextApp = require("next");
@@ -18,11 +19,8 @@ require("dotenv").config({ path: path.join(__dirname, "..", "/.env") });
 let appHost = process.env.APP_HOST || "0.0.0.0";
 let appPort = parseInt(process.env.APP_PORT, 10) || 3000;
 let appOrigins = process.env.APP_ORIGINS;
-let appSubscriptionsPort =
-  parseInt(process.env.APP_SUBSCRIPTIONS_PORT, 10) || 3001;
 let appSubscriptionsServer =
-  process.env.APP_SUBSCRIPTIONS_SERVER ||
-  `ws://localhost:${appSubscriptionsPort}`;
+  process.env.APP_SUBSCRIPTIONS_SERVER || `ws://localhost:${appPort}`;
 let appInnerServer =
   process.env.APP_INNER_SERVER || `http://localhost:${appPort}`;
 let appStatic = process.env.APP_STATIC || "";
@@ -87,7 +85,6 @@ class App {
       appHost,
       appPort,
       appOrigins,
-      appSubscriptionsPort,
       appSubscriptionsServer,
       appInnerServer,
       appStatic,
@@ -132,9 +129,8 @@ class App {
     this.store = getStore(this.di);
   }
 
-  async init({ mainServer, subscriptionsServer }) {
+  async init({ mainServer }) {
     this.server = mainServer;
-    this.subscriptions = subscriptionsServer;
 
     // Initialize the singletons
     await Promise.all(_.invokeMap(this.di.singletons(), "init"));

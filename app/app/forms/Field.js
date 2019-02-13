@@ -7,16 +7,19 @@ import normalize from "../../../common/normalize";
 import TextField from "./fields/TextContainer";
 import SelectField from "./fields/SelectContainer";
 import CheckboxField from "./fields/CheckboxContainer";
+import RadioField from "./fields/RadioContainer";
 
 class FormField extends React.PureComponent {
   static propTypes = {
     intl: intlShape.isRequired,
     name: PropTypes.string.isRequired,
-    type: PropTypes.string.isRequired
+    type: PropTypes.string.isRequired,
+    value: PropTypes.string,
+    label: PropTypes.string
   };
 
   render() {
-    const { name, type, ...fieldProps } = this.props; // eslint-disable-line
+    const { name, type, value, label, ...fieldProps } = this.props; // eslint-disable-line
 
     let Component;
     switch (this.props.type) {
@@ -31,6 +34,9 @@ class FormField extends React.PureComponent {
       case "checkbox":
         Component = CheckboxField;
         break;
+      case "radio":
+        Component = RadioField;
+        break;
     }
 
     return (
@@ -43,9 +49,11 @@ class FormField extends React.PureComponent {
                 fieldId={`input-${formName}-${name}`}
                 name={name}
                 type={type}
+                value={value}
                 label={
-                  fields[name] &&
-                  this.props.intl.formatMessage({ id: fields[name].label })
+                  label ||
+                  (fields[name] &&
+                    this.props.intl.formatMessage({ id: fields[name].label }))
                 }
                 normalize={(value, ...args) => {
                   if (!fields[this.props.name]) return value;

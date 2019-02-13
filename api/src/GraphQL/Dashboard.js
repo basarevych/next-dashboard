@@ -81,16 +81,16 @@ class Dashboard extends EventEmitter {
         employees: {
           type: root.employees.EmployeesConnection,
           args: {
-            dept: { type: GraphQLString },
+            dept: { type: root.employees.EmployeeDept },
             ...connectionArgs
           },
           resolve: (source, args, context) =>
-            connectionFromPromisedArray(
-              this.employeesRepo.getEmployees(
-                context,
-                _.assign({}, args, { country: fromGlobalId(source.id).id })
-              ),
-              args
+            this.employeesRepo.getEmployeesConnection(
+              context,
+              _.assign({}, args, {
+                country: source.id,
+                dept: args.dept && this.employeeModel.depts[args.dept]
+              })
             )
         }
       }),

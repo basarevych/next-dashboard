@@ -2,14 +2,16 @@ import React from "react";
 import PropTypes from "prop-types";
 import { graphql } from "react-relay";
 import { NextQueryRenderer } from "../app/providers/Relay";
-import UserList, { pageSize } from "./UserListContainer";
+import UserList, { pageSize, sortBy, sortDir } from "./UserListContainer";
 import ErrorMessage from "../app/error/ErrorMessageContainer";
 import isRouteAllowed from "../../common/isRouteAllowed";
 
-const defaultVariables = { first: pageSize };
+const defaultVariables = { first: pageSize, sortBy, sortDir };
 
 export const query = graphql`
   query UsersPageQuery(
+    $sortBy: UserSortBy
+    $sortDir: UserSortDir
     $first: Int
     $after: String
     $last: Int
@@ -17,7 +19,14 @@ export const query = graphql`
   ) {
     viewer {
       ...UserListContainer_viewer
-        @arguments(first: $first, after: $after, last: $last, before: $before)
+        @arguments(
+          sortBy: $sortBy
+          sortDir: $sortDir
+          first: $first
+          after: $after
+          last: $last
+          before: $before
+        )
     }
   }
 `;

@@ -15,7 +15,7 @@ const envFactory = (di, initialState) => {
       subscriptionClient.maxConnectTimeGenerator.max;
     const client = subscriptionClient.request({ query, variables }).subscribe({
       next: result => {
-        observer.onNext({ data: result.data });
+        observer.onNext({ data: result.data || {} });
       },
       complete: () => {
         observer.onCompleted();

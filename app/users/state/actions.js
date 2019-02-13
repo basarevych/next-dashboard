@@ -8,7 +8,10 @@ export const setSelected = ({ userId, isSelected }) => ({
 
 export const selectAll = ({ userIds }) => ({ type: types.SELECT_ALL, userIds });
 
-export const deselectAll = () => ({ type: types.DESELECT_ALL });
+export const deselectAll = ({ exceptUserIds }) => ({
+  type: types.DESELECT_ALL,
+  exceptUserIds
+});
 
 export const showEditModal = ({ userId } = {}) => ({
   type: types.SHOW_EDIT_MODAL,

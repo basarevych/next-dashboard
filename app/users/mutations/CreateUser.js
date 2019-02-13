@@ -3,10 +3,8 @@ import { commitMutation, graphql } from "react-relay";
 const mutation = graphql`
   mutation CreateUserMutation($input: CreateUserInput!) {
     createUser(input: $input) {
-      userEdge {
-        node {
-          id
-        }
+      user {
+        id
       }
     }
   }

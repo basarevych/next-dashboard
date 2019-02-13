@@ -1,9 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { allCountries, iso2Lookup } from "country-telephone-data";
 import { FormattedMessage } from "react-intl";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
+import { allCountries, iso2Lookup } from "../../common/countries";
 
 export const styles = theme => ({
   root: {

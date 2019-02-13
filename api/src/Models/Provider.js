@@ -61,18 +61,6 @@ class Provider extends EventEmitter {
       return errors || true;
     };
 
-    this.schema.static("conditions", function(conditions) {
-      let transformed = _.assign({}, conditions);
-      for (let key of _.keys(transformed)) {
-        if (key === "id" || _.endsWith(key, ".id")) {
-          let newKey = key.slice(0, key.length - 2) + "_id";
-          transformed[newKey] = transformed[key];
-          delete transformed[key];
-        }
-      }
-      return transformed;
-    });
-
     this.schema.pre("save", function() {
       this.whenUpdated = Date.now();
     });

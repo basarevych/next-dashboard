@@ -18,6 +18,8 @@ const UserItem = createFragmentContainer(
       fragment UserItemContainer_node on User {
         id
         email
+        isEmailVerified
+        name
         roles
       }
     `

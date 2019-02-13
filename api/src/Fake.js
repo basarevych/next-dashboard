@@ -1,6 +1,7 @@
 const Chance = require("chance");
 const EventEmitter = require("events");
-const { allCountries } = require("country-telephone-data");
+const constants = require("../../common/constants");
+const { allCountries, iso2Lookup } = require("../../common/countries");
 
 class Fake extends EventEmitter {
   constructor() {
@@ -14,17 +15,28 @@ class Fake extends EventEmitter {
     return "fake";
   }
 
-  createEmployee(usedNames, dept) {
+  createRandomEmployee(usedNames) {
     let name;
     do name = this.getName();
     while (_.includes(usedNames, name));
     usedNames.push(name);
+
+    let depts = _.keys(constants.depts);
+    let dept = depts[this.getInt(0, depts.length - 1)];
+
+    let code = this.getCountry();
+    let country = allCountries[iso2Lookup[code]].name;
+
     return {
+      uid: _.padStart(usedNames.length, 6, "0"),
       checked: Math.random() > 0.3,
       name,
       dept,
       title: this.getTitle(),
-      country: this.getCountry(),
+      country: {
+        id: code,
+        name: country
+      },
       salary: this.getSalary()
     };
   }

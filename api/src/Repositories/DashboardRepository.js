@@ -1,14 +1,14 @@
 const debug = require("debug")("app:dashboard");
 const EventEmitter = require("events");
 const moment = require("../../../common/moment");
-const { allCountries, iso2Lookup } = require("country-telephone-data");
+const { allCountries, iso2Lookup } = require("../../../common/countries");
 
 class DashboardRepository extends EventEmitter {
-  constructor(di, modelDashboard, fake) {
+  constructor(di, dashboard, fake) {
     super();
 
     this.di = di;
-    this.modelDashboard = modelDashboard;
+    this.dashboard = dashboard;
     this.fake = fake;
   }
 
@@ -39,7 +39,7 @@ class DashboardRepository extends EventEmitter {
         ? this.fake.getInt(10000, 50000)
         : this.fake.getInt(10000, 11000);
       this.profits.unshift(
-        new this.modelDashboard.ProfitValueModel({
+        new this.dashboard.ProfitValueModel({
           date: day,
           revenues,
           expenses,
@@ -53,7 +53,7 @@ class DashboardRepository extends EventEmitter {
     for (let i = 0; i < 7; i++) {
       day.subtract(1, "day");
       this.sales.unshift(
-        new this.modelDashboard.SalesValueModel({
+        new this.dashboard.SalesValueModel({
           date: day,
           sales: i ? this.fake.getInt(2000, 5000) : this.fake.getInt(5100, 6000)
         })
@@ -68,7 +68,7 @@ class DashboardRepository extends EventEmitter {
         ? this.clients[0].clients
         : this.fake.getInt(7000, 10000);
       this.clients.unshift(
-        new this.modelDashboard.ClientsValueModel({
+        new this.dashboard.ClientsValueModel({
           date: day,
           clients: i
             ? this.fake.getInt(prevClients - 100, prevClients - 700)
@@ -85,7 +85,7 @@ class DashboardRepository extends EventEmitter {
         ? this.avgTimes[0].avgTime
         : this.fake.getInt(30, 90) / 10;
       this.avgTimes.unshift(
-        new this.modelDashboard.AvgTimeValueModel({
+        new this.dashboard.AvgTimeValueModel({
           date: day,
           avgTime: i
             ? this.fake.getInt(prevAvgTime * 10 + 10, prevAvgTime * 10 + 200) /
@@ -102,9 +102,9 @@ class DashboardRepository extends EventEmitter {
     let requester = await context.getUser();
     if (!requester) throw this.di.get("error.access");
 
-    const country = iso2Lookup[id];
+    const country = allCountries[iso2Lookup[id]];
     if (!country) throw this.di.get("error.entityNotFound");
-    return this.di.get("model.country", {
+    return new this.dashboard.CountryModel({
       id: country.iso2,
       name: country.name,
       callingCode: country.dialCode
@@ -126,12 +126,14 @@ class DashboardRepository extends EventEmitter {
     let requester = await context.getUser();
     if (!requester) throw this.di.get("error.access");
 
-    return _.map(allCountries, country =>
-      this.di.get("model.country", {
-        id: country.iso2,
-        name: country.name,
-        callingCode: country.dialCode
-      })
+    return _.map(
+      allCountries,
+      country =>
+        new this.dashboard.CountryModel({
+          id: country.iso2,
+          name: country.name,
+          callingCode: country.dialCode
+        })
     );
   }
 

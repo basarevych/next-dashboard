@@ -1,11 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { fromJS } from "immutable";
-import { allCountries, iso2Lookup } from "country-telephone-data";
 import Grid from "@material-ui/core/Grid";
 import Form from "../app/forms/Form";
 import Field from "../app/forms/FieldContainer";
 import fields from "../../common/forms/shipping";
+import { allCountries, iso2Lookup } from "../../common/countries";
 
 const countryOptions = fromJS(
   _.map([{ iso2: "", name: "" }].concat(allCountries), item => ({

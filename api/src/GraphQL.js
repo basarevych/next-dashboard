@@ -10,10 +10,11 @@ const { SubscriptionServer } = require("subscriptions-transport-ws");
 const constants = require("../../common/constants");
 
 class GraphQL extends EventEmitter {
-  constructor(app, auth, users, employees, dashboard) {
+  constructor(app, ws, auth, users, employees, dashboard) {
     super();
 
     this.app = app;
+    this.ws = ws;
     this.auth = auth;
     this.users = users;
     this.employees = employees;
@@ -56,6 +57,7 @@ class GraphQL extends EventEmitter {
   static get $requires() {
     return [
       "app",
+      "ws",
       "graphql.auth",
       "graphql.users",
       "graphql.employees",
@@ -128,7 +130,8 @@ class GraphQL extends EventEmitter {
           subscription: this.Subscription
         });
 
-        if (this.app.subscriptions) {
+        if (this.app.server) {
+          await this.ws.init();
           this.subscriptions = SubscriptionServer.create(
             {
               schema: this.schema,
@@ -136,7 +139,7 @@ class GraphQL extends EventEmitter {
               subscribe
             },
             {
-              server: this.app.subscriptions,
+              server: this.app.server,
               path: constants.graphqlBase
             }
           );

@@ -28,7 +28,7 @@ import constants from "../../../common/constants";
 
 export const styles = theme => ({
   spacer: {
-    height: "1.5rem"
+    height: "2rem"
   },
   wrapper: {
     zIndex: 1400,

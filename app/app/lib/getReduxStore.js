@@ -5,12 +5,14 @@ import thunk from "redux-thunk";
 import { reducer as form } from "redux-form/immutable";
 import app from "../state";
 import auth from "../../auth/state";
+import employees from "../../employees/state";
 import users from "../../users/state";
 
 let rootReducer = combineReducers({
   form,
   app,
   auth,
+  employees,
   users
 });
 

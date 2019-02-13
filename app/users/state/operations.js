@@ -29,7 +29,7 @@ export const create = ({ name, email, password, isAdmin }) => async (
     password,
     roles: _.compact([isAdmin && constants.roles.ADMIN])
   });
-  if (_.get(data, "data.createUser.userEdge.node.id", null)) {
+  if (_.get(data, "data.createUser.user.id", null)) {
     await dispatch(actions.hideEditModal());
     return true;
   }
@@ -49,7 +49,7 @@ export const edit = ({ id, name, email, password, isAdmin }) => async (
     password,
     roles: _.compact([isAdmin && constants.roles.ADMIN])
   });
-  if (_.get(data, "data.editUser.userEdge.node.id", null)) {
+  if (_.get(data, "data.editUser.user.id", null)) {
     await dispatch(actions.hideEditModal());
     return true;
   }
@@ -59,5 +59,5 @@ export const edit = ({ id, name, email, password, isAdmin }) => async (
 
 export const remove = ({ id }) => async (dispatch, getState, di) => {
   let data = await DeleteUserMutation(di, { id });
-  return !!_.get(data, "data.deleteUser.userEdge.node.id", null);
+  return !!_.get(data, "data.deleteUser.user.id", null);
 };

@@ -1,12 +1,35 @@
+const { fromJS } = require("immutable");
 const EventEmitter = require("events");
 const ValidationError = require("../Errors/ValidationError");
+const fields = require("../../../common/forms/employee");
+const validate = require("../../../common/validate");
 const constants = require("../../../common/constants");
 
 class Employee extends EventEmitter {
   constructor(db) {
     super();
 
+    this.depts = _.values(constants.depts);
+    this.sortBy = [
+      "uid",
+      "checked",
+      "name",
+      "dept",
+      "title",
+      "country",
+      "salary"
+    ];
+    this.sortDir = ["asc", "desc"];
+
     this.db = db;
+
+    const self = this;
+    const validateFactory = field => ({
+      isAsync: true,
+      validator: function(value, callback) {
+        return self.validate(field, value, this.toObject(), callback);
+      }
+    });
 
     this.schema = new this.db.mongoose.Schema({
       _id: {
@@ -16,38 +39,57 @@ class Employee extends EventEmitter {
       whenCreated: {
         type: Date,
         default: Date.now,
-        required: [true, "ERROR_FIELD_REQUIRED"]
+        required: [true, "ERROR_FIELD_REQUIRED"],
+        validate: validateFactory("whenCreated")
       },
       whenUpdated: {
         type: Date,
         default: Date.now,
-        required: [true, "ERROR_FIELD_REQUIRED"]
+        required: [true, "ERROR_FIELD_REQUIRED"],
+        validate: validateFactory("whenUpdated")
+      },
+      uid: {
+        type: String,
+        required: [true, "ERROR_FIELD_REQUIRED"],
+        validate: validateFactory("uid")
       },
       checked: {
         type: Boolean,
-        required: [true, "ERROR_FIELD_REQUIRED"]
+        required: [true, "ERROR_FIELD_REQUIRED"],
+        validate: validateFactory("checked")
       },
       name: {
         type: String,
-        required: [true, "ERROR_FIELD_REQUIRED"]
+        required: [true, "ERROR_FIELD_REQUIRED"],
+        validate: validateFactory("name")
       },
       dept: {
-        type: [String],
-        enum: _.values(constants.depts),
-        default: [],
-        required: [true, "ERROR_FIELD_REQUIRED"]
+        type: String,
+        enum: this.depts,
+        required: [true, "ERROR_FIELD_REQUIRED"],
+        validate: validateFactory("dept")
       },
       title: {
         type: String,
-        required: [true, "ERROR_FIELD_REQUIRED"]
+        required: [true, "ERROR_FIELD_REQUIRED"],
+        validate: validateFactory("title")
       },
       country: {
-        type: String,
-        required: [true, "ERROR_FIELD_REQUIRED"]
+        id: {
+          type: String,
+          required: [true, "ERROR_FIELD_REQUIRED"],
+          validate: validateFactory("countryId")
+        },
+        name: {
+          type: String,
+          required: [true, "ERROR_FIELD_REQUIRED"],
+          validate: validateFactory("countryName")
+        }
       },
       salary: {
         type: Number,
-        required: [true, "ERROR_FIELD_REQUIRED"]
+        required: [true, "ERROR_FIELD_REQUIRED"],
+        validate: validateFactory("salary")
       }
     });
 
@@ -69,24 +111,23 @@ class Employee extends EventEmitter {
       if (!path) path = field;
       if (!field) field = path;
       let errors = {};
-      if (_.includes(this.schema.requiredPaths(), path) && !value)
+      if (_.includes(this.schema.requiredPaths(), path) && !value) {
         errors[field] = { message: "ERROR_FIELD_REQUIRED" };
+      } else {
+        const rules = fields[field];
+        if (rules && rules.validate) {
+          const obj = this.toObject();
+          const fieldErrors = validate({}, rules.validate, value, fromJS(obj));
+          if (fieldErrors.length) {
+            errors[field] =
+              fieldErrors.length === 1 ? fieldErrors[0] : fieldErrors;
+          }
+        }
+      }
       if (_.keys(errors).length && doThrow)
         throw new ValidationError({ errors });
       return errors || true;
     };
-
-    this.schema.static("conditions", function(conditions) {
-      let transformed = _.assign({}, conditions);
-      for (let key of _.keys(transformed)) {
-        if (key === "id" || _.endsWith(key, ".id")) {
-          let newKey = key.slice(0, key.length - 2) + "_id";
-          transformed[newKey] = transformed[key];
-          delete transformed[key];
-        }
-      }
-      return transformed;
-    });
 
     this.schema.pre("save", function() {
       this.whenUpdated = Date.now();
@@ -108,6 +149,14 @@ class Employee extends EventEmitter {
   // eslint-disable-next-line lodash/prefer-constant
   static get $lifecycle() {
     return "singleton";
+  }
+
+  validate(field, value, allValues, callback) {
+    let rules = fields[field];
+    if (!rules || !rules.validate) return callback(true);
+    let errors = validate({}, rules.validate, value, fromJS(allValues));
+    if (!errors.length) return callback(true);
+    return callback(false, errors.length === 1 ? errors[0] : errors);
   }
 
   async init() {}

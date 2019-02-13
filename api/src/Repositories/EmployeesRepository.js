@@ -1,8 +1,6 @@
 const debug = require("debug")("app:employees");
 const EventEmitter = require("events");
-const {
-  mongooseConnection: { cursorToDocument }
-} = require("graphql-relay-connection");
+const { fetchConnectionFromArray } = require("fast-relay-pagination");
 const jwt = require("jsonwebtoken");
 const { withFilter } = require("graphql-subscriptions");
 const constants = require("../../../common/constants");
@@ -10,12 +8,23 @@ const constants = require("../../../common/constants");
 const accessLevel = constants.roles.AUTHENTICATED;
 
 class EmployeesRepository extends EventEmitter {
-  constructor(di, user, employee, getState, dispatch, pubsub) {
+  constructor(
+    di,
+    config,
+    user,
+    employee,
+    dashboardRepo,
+    getState,
+    dispatch,
+    pubsub
+  ) {
     super();
 
     this.di = di;
+    this.config = config;
     this.user = user;
     this.employee = employee;
+    this.dashboardRepo = dashboardRepo;
     this.getState = getState;
     this.dispatch = dispatch;
     this.pubsub = pubsub;
@@ -30,8 +39,10 @@ class EmployeesRepository extends EventEmitter {
   static get $requires() {
     return [
       "di",
+      "config",
       "model.user",
       "model.employee",
+      "repository.dashboard",
       "getState",
       "dispatch",
       "pubsub"
@@ -71,52 +82,78 @@ class EmployeesRepository extends EventEmitter {
     return employee;
   }
 
-  async countEmployees(context) {
+  async countEmployees(context, { dept }) {
     debug("countEmployees");
 
     let requester = await context.getUser();
     if (!this.isAllowed(requester)) throw this.di.get("error.access");
 
-    return await this.employee.model.countDocuments();
+    return await this.employee.model.countDocuments(dept && { dept });
   }
 
-  async getEmployees(context, { after, first, before, last } = {}) {
+  async getEmployeesConnection(
+    context,
+    { country, dept, sortBy, sortDir, after, first, before, last } = {}
+  ) {
     debug("getEmployees");
 
     let requester = await context.getUser();
     if (!this.isAllowed(requester)) throw this.di.get("error.access");
 
-    const docAfter = after && cursorToDocument(after);
-    const docBefore = before && cursorToDocument(before);
+    let filter;
+    if (country && dept)
+      filter = { $and: [{ "country.id": country }, { dept }] };
+    else if (country) filter = { "country.id": country };
+    else if (dept) filter = { dept };
 
-    let params;
-    if (docAfter || docBefore) {
-      params = { _id: {} };
-      if (docAfter) params._id.$gt = docAfter._id;
-      if (docBefore) params._id.$lt = docBefore._id;
-    }
+    if (sortBy === "country") sortBy = "country.name";
 
-    // eslint-disable-next-line lodash/prefer-lodash-method
-    let query = this.employee.model.find(params).sort("_id");
-    if (first || last) query = query.limit(Math.max(first, last) + 1); // add +1 for hasNextPage
-    return await query;
+    return fetchConnectionFromArray({
+      dataPromiseFunc: this.employee.model.find.bind(this.employee.model),
+      filter,
+      after,
+      first,
+      before,
+      last,
+      orderFieldName: sortBy || "_id",
+      sortType: sortDir === "desc" ? -1 : 1
+    });
   }
 
   async createEmployee(
     context,
-    { checked, name, dept, title, country, salary }
+    { uid, checked, name, dept, title, country, salary }
   ) {
     debug("createEmployee");
 
     let requester = await context.getUser();
     if (!this.isAllowed(requester)) throw this.di.get("error.access");
 
+    let countryModel = await this.dashboardRepo.getCountry(context, {
+      id: country
+    });
+    if (!countryModel) throw this.di.get("error.entityNotFound");
+
+    if (uid) {
+      uid = parseInt(uid);
+      if (!uid) {
+        throw this.di.get("error.validation", {
+          errors: { uid: "ERROR_INVALID_PATTERN" }
+        });
+      }
+      uid = _.padStart(uid, 6, "0");
+    }
+
     let employee = new this.employee.model({
+      uid,
       checked,
       name,
       dept,
       title,
-      country,
+      country: {
+        id: countryModel.id,
+        name: countryModel.name
+      },
       salary
     });
 
@@ -129,7 +166,7 @@ class EmployeesRepository extends EventEmitter {
 
   async editEmployee(
     context,
-    { id, checked, name, dept, title, country, salary }
+    { id, uid, checked, name, dept, title, country, salary }
   ) {
     debug("editEmployee");
 
@@ -139,11 +176,21 @@ class EmployeesRepository extends EventEmitter {
     let employee = await this.employee.model.findById(id);
     if (!employee) throw this.di.get("error.entityNotFound");
 
+    if (_.isString(uid)) employee.uid = uid;
     if (_.isBoolean(checked)) employee.checked = checked;
     if (_.isString(name)) employee.name = name;
     if (_.isString(dept)) employee.dept = dept;
     if (_.isString(title)) employee.title = title;
-    if (_.isString(country)) employee.country = country;
+    if (_.isString(country)) {
+      let countryModel = await this.dashboardRepo.getCountry(context, {
+        id: country
+      });
+      if (!countryModel) throw this.di.get("error.entityNotFound");
+      employee.country = {
+        id: countryModel.id,
+        name: countryModel.name
+      };
+    }
     if (_.isFinite(salary)) employee.salary = salary;
 
     await employee.validate();

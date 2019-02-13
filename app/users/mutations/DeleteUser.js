@@ -3,10 +3,8 @@ import { commitMutation, graphql } from "react-relay";
 const mutation = graphql`
   mutation DeleteUserMutation($input: DeleteUserInput!) {
     deleteUser(input: $input) {
-      userEdge {
-        node {
-          id
-        }
+      user {
+        id
       }
     }
   }

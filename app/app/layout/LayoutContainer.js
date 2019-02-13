@@ -13,7 +13,8 @@ const mapStateToProps = state => {
       appSelectors.isStarted(state) &&
       (!authSelectors.isAuthenticated(state) ||
         appSelectors.isConnected(state)),
-    isError: appSelectors.getStatusCode(state) !== 200
+    isError: appSelectors.getStatusCode(state) !== 200,
+    statusCode: appSelectors.getStatusCode(state)
   };
 };
 

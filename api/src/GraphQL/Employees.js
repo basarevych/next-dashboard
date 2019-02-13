@@ -6,7 +6,6 @@ const {
   GraphQLInt,
   GraphQLString,
   GraphQLBoolean,
-  GraphQLList,
   GraphQLObjectType
 } = require("graphql");
 const {
@@ -16,10 +15,6 @@ const {
   globalIdField,
   mutationWithClientMutationId
 } = require("graphql-relay");
-const {
-  mongooseConnection: { connectionFromPromisedArray, documentToCursor }
-} = require("graphql-relay-connection");
-const constants = require("../../../common/constants");
 const GraphQLDate = require("./Date");
 
 class Employees extends EventEmitter {
@@ -66,7 +61,7 @@ class Employees extends EventEmitter {
     this.EmployeeDept = new GraphQLEnumType({
       name: "EmployeeDept",
       values: _.reduce(
-        _.map(constants.depts, (dept, index) => ({ dept, index })),
+        _.map(this.employeeModel.depts, (dept, index) => ({ dept, index })),
         (acc, cur) => {
           acc[cur.dept] = { value: cur.index };
           return acc;
@@ -81,10 +76,12 @@ class Employees extends EventEmitter {
         id: globalIdField("Employee"),
         whenCreated: { type: new GraphQLNonNull(GraphQLDate) },
         whenUpdated: { type: new GraphQLNonNull(GraphQLDate) },
+        uid: { type: new GraphQLNonNull(GraphQLID) },
         checked: { type: new GraphQLNonNull(GraphQLBoolean) },
         name: { type: new GraphQLNonNull(GraphQLString) },
         dept: {
-          type: new GraphQLNonNull(new GraphQLList(this.EmployeeDept))
+          type: new GraphQLNonNull(this.EmployeeDept),
+          resolve: source => _.indexOf(this.employeeModel.depts, source.dept)
         },
         title: { type: new GraphQLNonNull(GraphQLString) },
         country: {
@@ -93,7 +90,7 @@ class Employees extends EventEmitter {
             this.dashboardRepo.getCountry(
               context,
               _.assign({}, args, {
-                id: source.country
+                id: source.country.id
               })
             )
         },
@@ -111,13 +108,46 @@ class Employees extends EventEmitter {
       connectionFields: () => ({
         totalCount: {
           type: GraphQLInt,
+          args: {
+            dept: { type: this.EmployeeDept }
+          },
           resolve: async (source, args, context) =>
-            this.employeesRepo.countEmployees(context, args)
+            this.employeesRepo.countEmployees(
+              context,
+              _.assign({}, args, {
+                dept:
+                  _.isNumber(args.dept) && this.employeeModel.depts[args.dept]
+              })
+            )
         }
       })
     });
     this.EmployeesConnection = EmployeesConnection;
     this.EmployeeEdge = EmployeeEdge;
+
+    this.EmployeeSortBy = new GraphQLEnumType({
+      name: "EmployeeSortBy",
+      values: _.reduce(
+        _.map(this.employeeModel.sortBy, (item, index) => ({ item, index })),
+        (acc, cur) => {
+          acc[cur.item] = { value: cur.index };
+          return acc;
+        },
+        {}
+      )
+    });
+
+    this.EmployeeSortDir = new GraphQLEnumType({
+      name: "EmployeeSortDir",
+      values: _.reduce(
+        _.map(this.employeeModel.sortDir, (item, index) => ({ item, index })),
+        (acc, cur) => {
+          acc[cur.item] = { value: cur.index };
+          return acc;
+        },
+        {}
+      )
+    });
 
     this.query = {
       employee: {
@@ -134,13 +164,24 @@ class Employees extends EventEmitter {
       employees: {
         type: this.EmployeesConnection,
         args: {
-          dept: { type: GraphQLString },
+          dept: { type: this.EmployeeDept },
+          sortBy: { type: this.EmployeeSortBy },
+          sortDir: { type: this.EmployeeSortDir },
           ...connectionArgs
         },
         resolve: (source, args, context) =>
-          connectionFromPromisedArray(
-            this.employeesRepo.getEmployees(context, args),
-            args
+          this.employeesRepo.getEmployeesConnection(
+            context,
+            _.assign({}, args, {
+              dept:
+                _.isNumber(args.dept) && this.employeeModel.depts[args.dept],
+              sortBy:
+                _.isNumber(args.sortBy) &&
+                this.employeeModel.sortBy[args.sortBy],
+              sortDir:
+                _.isNumber(args.sortDir) &&
+                this.employeeModel.sortDir[args.sortDir]
+            })
           )
       }
     };
@@ -148,24 +189,27 @@ class Employees extends EventEmitter {
     this.CreateEmployeeMutation = mutationWithClientMutationId({
       name: "CreateEmployee",
       inputFields: {
+        uid: { type: GraphQLID },
         checked: { type: GraphQLBoolean },
         name: { type: GraphQLString },
-        dept: { type: new GraphQLList(this.EmployeeDept) },
+        dept: { type: this.EmployeeDept },
         title: { type: GraphQLString },
-        country: { type: GraphQLString },
+        country: { type: GraphQLID },
         salary: { type: GraphQLInt }
       },
       outputFields: {
-        employeeEdge: {
-          type: this.EmployeeEdge,
-          resolve: async ({ employee }) => ({
-            cursor: documentToCursor(employee),
-            node: employee
-          })
+        employee: {
+          type: this.Employee,
+          resolve: async ({ employee }) => employee
         }
       },
       mutateAndGetPayload: async (args, context) => {
-        const employee = await this.employeesRepo.createEmployee(context, args);
+        const employee = await this.employeesRepo.createEmployee(
+          context,
+          _.assign({}, args, {
+            dept: _.isNumber(args.dept) && this.employeeModel.depts[args.dept]
+          })
+        );
         return { employee };
       }
     });
@@ -174,26 +218,27 @@ class Employees extends EventEmitter {
       name: "EditEmployee",
       inputFields: {
         id: { type: new GraphQLNonNull(GraphQLID) },
+        uid: { type: GraphQLID },
         checked: { type: GraphQLBoolean },
         name: { type: GraphQLString },
-        dept: { type: new GraphQLList(this.EmployeeDept) },
+        dept: { type: this.EmployeeDept },
         title: { type: GraphQLString },
-        country: { type: GraphQLString },
+        country: { type: GraphQLID },
         salary: { type: GraphQLInt }
       },
       outputFields: {
-        employeeEdge: {
-          type: this.EmployeeEdge,
-          resolve: async ({ employee }) => ({
-            cursor: documentToCursor(employee),
-            node: employee
-          })
+        employee: {
+          type: this.Employee,
+          resolve: async ({ employee }) => employee
         }
       },
       mutateAndGetPayload: async (args, context) => {
         const employee = await this.employeesRepo.editEmployee(
           context,
-          _.assign({}, args, { id: args.id && fromGlobalId(args.id).id })
+          _.assign({}, args, {
+            id: args.id && fromGlobalId(args.id).id,
+            dept: _.isNumber(args.dept) && this.employeeModel.depts[args.dept]
+          })
         );
         return { employee };
       }
@@ -205,12 +250,9 @@ class Employees extends EventEmitter {
         id: { type: new GraphQLNonNull(GraphQLID) }
       },
       outputFields: {
-        employeeEdge: {
-          type: this.EmployeeEdge,
-          resolve: async ({ employee }) => ({
-            cursor: documentToCursor(employee),
-            node: employee
-          })
+        employee: {
+          type: this.Employee,
+          resolve: async ({ employee }) => employee
         }
       },
       mutateAndGetPayload: async (args, context) => {

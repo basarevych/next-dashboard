@@ -11,14 +11,12 @@ const RelayCompilerWebpackPlugin = require("relay-compiler-webpack-plugin");
 const withCSS = require("@zeit/next-css");
 const withBundleAnalyzer = require("@zeit/next-bundle-analyzer");
 const withPlugins = require("next-compose-plugins");
-const withProgressBar = require("next-progressbar");
 const constants = require("./common/constants");
 const l10n = require("./common/locales");
 
 let app = new App();
 
 const plugins = [
-  withProgressBar,
   [
     withBundleAnalyzer,
     {
@@ -49,19 +47,6 @@ module.exports = withPlugins([...plugins], {
       fs: "empty"
     };
 
-    // IE can't handle ES6 including in node_modules
-    if (!isServer) {
-      config.module.rules.push({
-        test: /\.js$/,
-        include: [path.resolve(__dirname, "node_modules")],
-        loader: "babel-loader",
-        options: {
-          configFile: path.resolve(__dirname, "babel.config.js"),
-          babelrc: false,
-          compact: false
-        }
-      });
-    }
     if (config.optimization.minimizer && config.optimization.minimizer.length) {
       let options = config.optimization.minimizer[0].options;
       let terserOptions = options.terserOptions;

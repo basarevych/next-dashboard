@@ -1,8 +1,6 @@
 const debug = require("debug")("app:users");
 const EventEmitter = require("events");
-const {
-  mongooseConnection: { cursorToDocument }
-} = require("graphql-relay-connection");
+const { fetchConnectionFromArray } = require("fast-relay-pagination");
 const jwt = require("jsonwebtoken");
 const { withFilter } = require("graphql-subscriptions");
 const constants = require("../../../common/constants");
@@ -82,26 +80,24 @@ class UsersRepository extends EventEmitter {
     return await this.user.model.countDocuments();
   }
 
-  async getUsers(context, { after, first, before, last } = {}) {
+  async getUsersConnection(
+    context,
+    { sortBy, sortDir, after, first, before, last } = {}
+  ) {
     debug("getUsers");
 
     let requester = await context.getUser();
     if (!this.isAllowed(requester)) throw this.di.get("error.access");
 
-    const docAfter = after && cursorToDocument(after);
-    const docBefore = before && cursorToDocument(before);
-
-    let params;
-    if (docAfter || docBefore) {
-      params = { _id: {} };
-      if (docAfter) params._id.$gt = docAfter._id;
-      if (docBefore) params._id.$lt = docBefore._id;
-    }
-
-    // eslint-disable-next-line lodash/prefer-lodash-method
-    let query = this.user.model.find(params).sort("_id");
-    if (first || last) query = query.limit(Math.max(first, last) + 1); // add +1 for hasNextPage
-    return await query;
+    return fetchConnectionFromArray({
+      dataPromiseFunc: this.user.model.find.bind(this.user.model),
+      after,
+      first,
+      before,
+      last,
+      orderFieldName: sortBy || "_id",
+      sortType: sortDir === "desc" ? -1 : 1
+    });
   }
 
   async createUser(context, { email, name, password, roles }) {

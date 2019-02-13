@@ -5,6 +5,8 @@ import { intlShape } from "react-intl";
 import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
 import Checkbox from "@material-ui/core/Checkbox";
+import VerifiedIcon from "@material-ui/icons/CheckCircleOutline";
+import UnverifiedIcon from "@material-ui/icons/HelpOutline";
 
 export const styles = () => ({
   checkboxField: {
@@ -45,6 +47,16 @@ class UserItem extends React.Component {
           scope="row"
         >
           {this.props.node.email}
+        </TableCell>
+        <TableCell className={classNames(this.props.isSelected && "selected")}>
+          {this.props.node.isEmailVerified ? (
+            <VerifiedIcon />
+          ) : (
+            <UnverifiedIcon />
+          )}
+        </TableCell>
+        <TableCell className={classNames(this.props.isSelected && "selected")}>
+          {this.props.node.name}
         </TableCell>
         <TableCell className={classNames(this.props.isSelected && "selected")}>
           {_.map(this.props.node.roles, item =>

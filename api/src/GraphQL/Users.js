@@ -16,10 +16,6 @@ const {
   globalIdField,
   mutationWithClientMutationId
 } = require("graphql-relay");
-const {
-  mongooseConnection: { connectionFromPromisedArray, documentToCursor }
-} = require("graphql-relay-connection");
-const constants = require("../../../common/constants");
 const GraphQLDate = require("./Date");
 
 class Users extends EventEmitter {
@@ -59,7 +55,7 @@ class Users extends EventEmitter {
     this.UserRole = new GraphQLEnumType({
       name: "UserRole",
       values: _.reduce(
-        _.map(constants.roles, (role, index) => ({ role, index })),
+        _.map(this.userModel.roles, (role, index) => ({ role, index })),
         (acc, cur) => {
           acc[cur.role] = { value: cur.index };
           return acc;
@@ -78,7 +74,16 @@ class Users extends EventEmitter {
         isEmailVerified: { type: new GraphQLNonNull(GraphQLBoolean) },
         name: { type: GraphQLString },
         roles: {
-          type: new GraphQLNonNull(new GraphQLList(this.UserRole))
+          type: new GraphQLNonNull(new GraphQLList(this.UserRole)),
+          resolve: source =>
+            _.reduce(
+              source.roles,
+              (acc, cur) => {
+                acc.push(_.indexOf(this.userModel.roles, cur));
+                return acc;
+              },
+              []
+            )
         }
       }),
       interfaces: [nodeInterface]
@@ -101,6 +106,30 @@ class Users extends EventEmitter {
     this.UsersConnection = UsersConnection;
     this.UserEdge = UserEdge;
 
+    this.UserSortBy = new GraphQLEnumType({
+      name: "UserSortBy",
+      values: _.reduce(
+        _.map(this.userModel.sortBy, (item, index) => ({ item, index })),
+        (acc, cur) => {
+          acc[cur.item] = { value: cur.index };
+          return acc;
+        },
+        {}
+      )
+    });
+
+    this.UserSortDir = new GraphQLEnumType({
+      name: "UserSortDir",
+      values: _.reduce(
+        _.map(this.userModel.sortDir, (item, index) => ({ item, index })),
+        (acc, cur) => {
+          acc[cur.item] = { value: cur.index };
+          return acc;
+        },
+        {}
+      )
+    });
+
     this.query = {
       user: {
         type: this.User,
@@ -110,20 +139,23 @@ class Users extends EventEmitter {
         resolve: (source, args, context) =>
           this.usersRepo.getUser(
             context,
-            _.assign(
-              {},
-              args,
-              _.assign({}, args, { id: args.id && fromGlobalId(args.id).id })
-            )
+            _.assign({}, args, { id: args.id && fromGlobalId(args.id).id })
           )
       },
       users: {
         type: this.UsersConnection,
-        args: connectionArgs,
+        args: {
+          sortBy: { type: this.UserSortBy },
+          sortDir: { type: this.UserSortDir },
+          ...connectionArgs
+        },
         resolve: (source, args, context) =>
-          connectionFromPromisedArray(
-            this.usersRepo.getUsers(context, args),
-            args
+          this.usersRepo.getUsersConnection(
+            context,
+            _.assign({}, args, {
+              sortBy: args.sortBy && this.userModel.sortBy[args.sortBy],
+              sortDir: args.sortDir && this.userModel.sortDir[args.sortDir]
+            })
           )
       }
     };
@@ -137,16 +169,27 @@ class Users extends EventEmitter {
         roles: { type: new GraphQLList(this.UserRole) }
       },
       outputFields: {
-        userEdge: {
-          type: this.UserEdge,
-          resolve: async ({ user }) => ({
-            cursor: documentToCursor(user),
-            node: user
-          })
+        user: {
+          type: this.User,
+          resolve: async ({ user }) => user
         }
       },
       mutateAndGetPayload: async (args, context) => {
-        const user = await this.usersRepo.createUser(context, args);
+        const user = await this.usersRepo.createUser(
+          context,
+          _.assign({}, args, {
+            roles:
+              args.roles &&
+              _.reduce(
+                args.roles,
+                (acc, cur) => {
+                  acc.push(this.userModel.roles[cur]);
+                  return acc;
+                },
+                []
+              )
+          })
+        );
         return { user };
       }
     });
@@ -161,18 +204,27 @@ class Users extends EventEmitter {
         roles: { type: new GraphQLList(this.UserRole) }
       },
       outputFields: {
-        userEdge: {
-          type: this.UserEdge,
-          resolve: async ({ user }) => ({
-            cursor: documentToCursor(user),
-            node: user
-          })
+        user: {
+          type: this.User,
+          resolve: async ({ user }) => user
         }
       },
       mutateAndGetPayload: async (args, context) => {
         const user = await this.usersRepo.editUser(
           context,
-          _.assign({}, args, { id: args.id && fromGlobalId(args.id).id })
+          _.assign({}, args, {
+            id: args.id && fromGlobalId(args.id).id,
+            roles:
+              args.roles &&
+              _.reduce(
+                args.roles,
+                (acc, cur) => {
+                  acc.push(this.userModel.roles[cur]);
+                  return acc;
+                },
+                []
+              )
+          })
         );
         return { user };
       }
@@ -184,12 +236,9 @@ class Users extends EventEmitter {
         id: { type: new GraphQLNonNull(GraphQLID) }
       },
       outputFields: {
-        userEdge: {
-          type: this.UserEdge,
-          resolve: async ({ user }) => ({
-            cursor: documentToCursor(user),
-            node: user
-          })
+        user: {
+          type: this.User,
+          resolve: async ({ user }) => user
         }
       },
       mutateAndGetPayload: async (args, context) => {

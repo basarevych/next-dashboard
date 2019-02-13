@@ -37,6 +37,8 @@ class RedirectRoute extends EventEmitter {
 
     try {
       switch (req.params.name) {
+        case "github":
+          return res.redirect("https://github.com/basarevych/next-dashboard");
         case "benchmarks":
           return res.redirect(
             "https://gtmetrix.com/reports/dashboard.daemon-notes.com/psqMg48O"

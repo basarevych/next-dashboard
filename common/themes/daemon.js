@@ -251,11 +251,6 @@ module.exports = {
         }
       }
     },
-    MuiSwitch: {
-      icon: {
-        color: textDark
-      }
-    },
     MuiSelect: {
       icon: {
         color: textDark
@@ -271,6 +266,21 @@ module.exports = {
         "&$checked": {
           color: [textNormal, "!important"]
         }
+      }
+    },
+    MuiRadio: {
+      root: {
+        "&$checked": {
+          color: [textNormal, "!important"]
+        }
+      }
+    },
+    MuiSwitch: {
+      icon: {
+        color: "#999999"
+      },
+      iconChecked: {
+        color: "#ffffff"
       }
     }
   }
