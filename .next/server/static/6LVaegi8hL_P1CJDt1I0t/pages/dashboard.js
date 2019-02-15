@@ -88,7 +88,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 10);
+/******/ 	return __webpack_require__(__webpack_require__.s = 7);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -783,6 +783,33 @@ module.exports = _asyncToGenerator;
 
 /***/ }),
 
+/***/ "+v1d":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireWildcard = __webpack_require__("5Uuq");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _reactIntl = __webpack_require__("k004");
+
+var _styles = __webpack_require__("9Pu4");
+
+var _Stat = _interopRequireWildcard(__webpack_require__("ru48"));
+
+var Stat = (0, _styles.withStyles)(_Stat.styles, {
+  withTheme: true
+})((0, _reactIntl.injectIntl)(_Stat.default));
+var _default = Stat;
+exports.default = _default;
+
+/***/ }),
+
 /***/ "+z5V":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -923,11 +950,10 @@ exports.default = withRouter;
 
 /***/ }),
 
-/***/ 10:
-/***/ (function(module, exports, __webpack_require__) {
+/***/ "0Yqw":
+/***/ (function(module, exports) {
 
-module.exports = __webpack_require__("RNiq");
-
+module.exports = require("relay-query-lookup-renderer");
 
 /***/ }),
 
@@ -1120,6 +1146,125 @@ module.exports = node;
 
 /***/ }),
 
+/***/ "4SgA":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = exports.query = void 0;
+
+var _regenerator = _interopRequireDefault(__webpack_require__("ln6h"));
+
+var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__("+oT+"));
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
+
+var _react = _interopRequireDefault(__webpack_require__("cDcd"));
+
+var _propTypes = _interopRequireDefault(__webpack_require__("rf6O"));
+
+var _reactRelay = __webpack_require__("iuEU");
+
+var _Relay = __webpack_require__("JyB7");
+
+var _DashboardContainer = _interopRequireDefault(__webpack_require__("GYkG"));
+
+var defaultVariables = {};
+
+var query = function query() {
+  return __webpack_require__("vsef");
+};
+
+exports.query = query;
+
+var DashboardPage =
+/*#__PURE__*/
+function (_React$Component) {
+  (0, _inherits2.default)(DashboardPage, _React$Component);
+
+  function DashboardPage() {
+    (0, _classCallCheck2.default)(this, DashboardPage);
+    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(DashboardPage).apply(this, arguments));
+  }
+
+  (0, _createClass2.default)(DashboardPage, [{
+    key: "render",
+    value: function render() {
+      if (!this.props.isAuthenticated) return null;
+      return _react.default.createElement(_Relay.NextQueryRenderer, {
+        query: query,
+        variables: defaultVariables,
+        render: function render(_ref) {
+          var error = _ref.error,
+              props = _ref.props;
+          if (error || !props) return null;
+          return _react.default.createElement(_DashboardContainer.default, {
+            viewer: props.viewer
+          });
+        }
+      });
+    }
+  }], [{
+    key: "getInitialProps",
+    value: function () {
+      var _getInitialProps = (0, _asyncToGenerator2.default)(
+      /*#__PURE__*/
+      _regenerator.default.mark(function _callee(_ref2) {
+        var statusCode, fetchQuery;
+        return _regenerator.default.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                statusCode = _ref2.statusCode, fetchQuery = _ref2.fetchQuery;
+
+                if (!(statusCode !== 200)) {
+                  _context.next = 3;
+                  break;
+                }
+
+                return _context.abrupt("return");
+
+              case 3:
+                _context.next = 5;
+                return fetchQuery(query, defaultVariables);
+
+              case 5:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function getInitialProps(_x) {
+        return _getInitialProps.apply(this, arguments);
+      }
+
+      return getInitialProps;
+    }()
+  }]);
+  return DashboardPage;
+}(_react.default.Component);
+
+var _default = DashboardPage;
+exports.default = _default;
+
+/***/ }),
+
 /***/ "4mXO":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1228,6 +1373,28 @@ function () {
 }();
 
 exports.default = _default;
+
+/***/ }),
+
+/***/ "6zo0":
+/***/ (function(module, exports) {
+
+module.exports = require("@material-ui/core/colors/cyan");
+
+/***/ }),
+
+/***/ 7:
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__("u9iw");
+
+
+/***/ }),
+
+/***/ "7U8d":
+/***/ (function(module, exports) {
+
+module.exports = require("@material-ui/core/colors/orange");
 
 /***/ }),
 
@@ -1578,6 +1745,20 @@ var getToken = function getToken() {
 };
 
 exports.getToken = getToken;
+
+/***/ }),
+
+/***/ "9Pu4":
+/***/ (function(module, exports) {
+
+module.exports = require("@material-ui/core/styles");
+
+/***/ }),
+
+/***/ "AV/6":
+/***/ (function(module, exports) {
+
+module.exports = require("relay-runtime");
 
 /***/ }),
 
@@ -2099,66 +2280,44 @@ exports.default = _default;
 
 /***/ }),
 
-/***/ "I0Z7":
+/***/ "GKS8":
+/***/ (function(module, exports) {
+
+module.exports = require("country-iso-3-to-2");
+
+/***/ }),
+
+/***/ "GYkG":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _interopRequireDefault = __webpack_require__("KI45");
+var _interopRequireWildcard = __webpack_require__("5Uuq");
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
 
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
+var _reactIntl = __webpack_require__("k004");
 
-var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
+var _styles = __webpack_require__("9Pu4");
 
-var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
+var _Dashboard = _interopRequireWildcard(__webpack_require__("jDsb"));
 
-var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
-
-var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
-
-var _react = _interopRequireDefault(__webpack_require__("cDcd"));
-
-var _propTypes = _interopRequireDefault(__webpack_require__("rf6O"));
-
-var _router = _interopRequireDefault(__webpack_require__("20a2"));
-
-var IndexPage =
-/*#__PURE__*/
-function (_React$Component) {
-  (0, _inherits2.default)(IndexPage, _React$Component);
-
-  function IndexPage() {
-    (0, _classCallCheck2.default)(this, IndexPage);
-    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(IndexPage).apply(this, arguments));
-  }
-
-  (0, _createClass2.default)(IndexPage, [{
-    key: "componentDidMount",
-    value: function componentDidMount() {
-      if (this.props.isAuthenticated) _router.default.push("/dashboard");
-    }
-  }, {
-    key: "componentDidUdpate",
-    value: function componentDidUdpate() {
-      if (this.props.isAuthenticated) _router.default.push("/dashboard");
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      return _react.default.createElement("div", null);
-    }
-  }]);
-  return IndexPage;
-}(_react.default.Component);
-
-var _default = IndexPage;
+var Dashboard = (0, _styles.withStyles)(_Dashboard.styles, {
+  withTheme: true
+})((0, _reactIntl.injectIntl)(_Dashboard.default));
+var _default = Dashboard;
 exports.default = _default;
+
+/***/ }),
+
+/***/ "IC/e":
+/***/ (function(module, exports) {
+
+module.exports = require("@material-ui/core/colors/lightBlue");
 
 /***/ }),
 
@@ -2166,6 +2325,13 @@ exports.default = _default;
 /***/ (function(module, exports) {
 
 module.exports = require("core-js/library/fn/get-iterator");
+
+/***/ }),
+
+/***/ "JQ2V":
+/***/ (function(module, exports) {
+
+module.exports = require("@material-ui/core/Grid");
 
 /***/ }),
 
@@ -2244,6 +2410,253 @@ module.exports = __webpack_require__("Z6Kq");
 
 /***/ }),
 
+/***/ "JyB7":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(_) {
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.subscribe = subscribe;
+exports.fetchQuery = exports.NextQueryRenderer = exports.RelayProvider = exports.RelayContext = void 0;
+
+var _regenerator = _interopRequireDefault(__webpack_require__("ln6h"));
+
+var _now = _interopRequireDefault(__webpack_require__("Cg2A"));
+
+var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__("+oT+"));
+
+var _extends2 = _interopRequireDefault(__webpack_require__("htGi"));
+
+var _objectWithoutProperties2 = _interopRequireDefault(__webpack_require__("EY6e"));
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
+
+var _react = _interopRequireDefault(__webpack_require__("cDcd"));
+
+var _propTypes = _interopRequireDefault(__webpack_require__("rf6O"));
+
+var _reactRelay = _interopRequireDefault(__webpack_require__("iuEU"));
+
+var _relayRuntime = __webpack_require__("AV/6");
+
+var _relayQueryLookupRenderer = _interopRequireDefault(__webpack_require__("0Yqw"));
+
+var RelayContext = _react.default.createContext({});
+
+exports.RelayContext = RelayContext;
+
+var RelayProvider =
+/*#__PURE__*/
+function (_React$Component) {
+  (0, _inherits2.default)(RelayProvider, _React$Component);
+
+  function RelayProvider() {
+    (0, _classCallCheck2.default)(this, RelayProvider);
+    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(RelayProvider).apply(this, arguments));
+  }
+
+  (0, _createClass2.default)(RelayProvider, [{
+    key: "render",
+    value: function render() {
+      return _react.default.createElement(RelayContext.Provider, {
+        value: this.props.environment
+      }, this.props.children);
+    }
+  }]);
+  return RelayProvider;
+}(_react.default.Component);
+
+exports.RelayProvider = RelayProvider;
+
+var NextQueryRenderer =
+/*#__PURE__*/
+function (_React$Component2) {
+  (0, _inherits2.default)(NextQueryRenderer, _React$Component2);
+
+  function NextQueryRenderer() {
+    (0, _classCallCheck2.default)(this, NextQueryRenderer);
+    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(NextQueryRenderer).apply(this, arguments));
+  }
+
+  (0, _createClass2.default)(NextQueryRenderer, [{
+    key: "render",
+    value: function render() {
+      var _this$props = this.props,
+          children = _this$props.children,
+          props = (0, _objectWithoutProperties2.default)(_this$props, ["children"]);
+      return _react.default.createElement(RelayContext.Consumer, null, function (environment) {
+        return _react.default.createElement(_relayQueryLookupRenderer.default, (0, _extends2.default)({
+          lookup: true,
+          environment: environment
+        }, props), children);
+      });
+    }
+  }]);
+  return NextQueryRenderer;
+}(_react.default.Component);
+
+exports.NextQueryRenderer = NextQueryRenderer;
+
+var fetchQuery = function fetchQuery(environment) {
+  return function (query, variables) {
+    return (0, _relayRuntime.fetchQuery)(environment, query, variables);
+  };
+};
+
+exports.fetchQuery = fetchQuery;
+
+function subscribe(_ref) {
+  var environment = _ref.environment,
+      subscription = _ref.subscription,
+      variables = _ref.variables,
+      getToken = _ref.getToken,
+      minInterval = _ref.minInterval,
+      callback = _ref.callback;
+  var request = null;
+  var isDestroyed = false;
+  var callbackTime = 0;
+  var callbackTimer = null;
+  if (_.isUndefined(variables)) variables = {};
+  if (_.isUndefined(minInterval)) minInterval = 1000;
+
+  var doSubscribe =
+  /*#__PURE__*/
+  function () {
+    var _ref2 = (0, _asyncToGenerator2.default)(
+    /*#__PURE__*/
+    _regenerator.default.mark(function _callee() {
+      return _regenerator.default.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              if (!getToken) {
+                _context.next = 4;
+                break;
+              }
+
+              _context.next = 3;
+              return getToken();
+
+            case 3:
+              variables.token = _context.sent;
+
+            case 4:
+              if (!isDestroyed) {
+                _context.next = 6;
+                break;
+              }
+
+              return _context.abrupt("return");
+
+            case 6:
+              request = _reactRelay.default.requestSubscription(environment, {
+                subscription: subscription,
+                variables: variables,
+                onCompleted: function onCompleted() {
+                  request = null;
+                  setTimeout(function () {
+                    return doSubscribe().catch(console.error);
+                  }, 1000);
+                },
+                onError: function onError(error) {
+                  console.error(error);
+                  request = null;
+                  setTimeout(function () {
+                    return doSubscribe().catch(console.error);
+                  }, 1000);
+                },
+                onNext: function onNext() {
+                  for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+                    args[_key] = arguments[_key];
+                  }
+
+                  if (isDestroyed || callbackTimer) return;
+                  var delta = (0, _now.default)() - callbackTime;
+                  callbackTimer = setTimeout(function () {
+                    callbackTime = (0, _now.default)();
+                    callbackTimer = null;
+                    if (!isDestroyed) callback.apply(void 0, args);
+                  }, delta < minInterval ? delta : 0);
+                }
+              });
+
+            case 7:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee, this);
+    }));
+
+    return function doSubscribe() {
+      return _ref2.apply(this, arguments);
+    };
+  }();
+
+  doSubscribe().catch(console.error);
+  return function () {
+    isDestroyed = true;
+
+    if (callbackTimer) {
+      clearTimeout(callbackTimer);
+      callbackTimer = null;
+    }
+
+    if (request) {
+      request.dispose();
+      request = null;
+    }
+  };
+}
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("YLtl")))
+
+/***/ }),
+
+/***/ "K0bS":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireWildcard = __webpack_require__("5Uuq");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _styles = __webpack_require__("9Pu4");
+
+var _MarketShare = _interopRequireWildcard(__webpack_require__("z/H1"));
+
+var MarketShare = (0, _styles.withStyles)(_MarketShare.styles, {
+  withTheme: true
+})(_MarketShare.default);
+var _default = MarketShare;
+exports.default = _default;
+
+/***/ }),
+
+/***/ "K2gz":
+/***/ (function(module, exports) {
+
+module.exports = require("classnames");
+
+/***/ }),
+
 /***/ "K47E":
 /***/ (function(module, exports) {
 
@@ -2295,6 +2708,31 @@ function _objectWithoutPropertiesLoose(source, excluded) {
 }
 
 module.exports = _objectWithoutPropertiesLoose;
+
+/***/ }),
+
+/***/ "LKVz":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireWildcard = __webpack_require__("5Uuq");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _reactIntl = __webpack_require__("k004");
+
+var _styles = __webpack_require__("9Pu4");
+
+var _WorldMap = _interopRequireWildcard(__webpack_require__("mhXL"));
+
+var WorldMap = (0, _styles.withStyles)(_WorldMap.styles)((0, _reactIntl.injectIntl)(_WorldMap.default));
+var _default = WorldMap;
+exports.default = _default;
 
 /***/ }),
 
@@ -2662,6 +3100,13 @@ exports.default = _default;
 
 /***/ }),
 
+/***/ "QaNM":
+/***/ (function(module, exports) {
+
+module.exports = require("@material-ui/core/colors/amber");
+
+/***/ }),
+
 /***/ "RGyf":
 /***/ (function(module, exports) {
 
@@ -2781,25 +3226,10 @@ module.exports = node;
 
 /***/ }),
 
-/***/ "RNiq":
-/***/ (function(module, exports, __webpack_require__) {
+/***/ "RpH3":
+/***/ (function(module, exports) {
 
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__("KI45");
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-Object.defineProperty(exports, "default", {
-  enumerable: true,
-  get: function get() {
-    return _IndexPageContainer.default;
-  }
-});
-
-var _IndexPageContainer = _interopRequireDefault(__webpack_require__("Z/Rx"));
+module.exports = require("@material-ui/core/colors/red");
 
 /***/ }),
 
@@ -2843,6 +3273,13 @@ __webpack_require__("N72Q"); // en is already there
 
 
 module.exports = moment;
+
+/***/ }),
+
+/***/ "UVoM":
+/***/ (function(module, exports) {
+
+module.exports = require("@material-ui/core/Typography");
 
 /***/ }),
 
@@ -3097,6 +3534,13 @@ module.exports = require("lodash");
 
 /***/ }),
 
+/***/ "Ygce":
+/***/ (function(module, exports) {
+
+module.exports = require("graphql-relay");
+
+/***/ }),
+
 /***/ "Yoxy":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -3130,7 +3574,21 @@ exports.default = _default;
 
 /***/ }),
 
-/***/ "Z/Rx":
+/***/ "Z6Kq":
+/***/ (function(module, exports) {
+
+module.exports = require("core-js/library/fn/object/get-own-property-descriptor");
+
+/***/ }),
+
+/***/ "Z7t5":
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__("vqFK");
+
+/***/ }),
+
+/***/ "Z8XH":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3147,7 +3605,7 @@ var _reactRedux = __webpack_require__("h74D");
 
 var _state = __webpack_require__("Yoxy");
 
-var _IndexPage = _interopRequireDefault(__webpack_require__("I0Z7"));
+var _DashboardPage = _interopRequireDefault(__webpack_require__("4SgA"));
 
 var mapStateToProps = function mapStateToProps(state) {
   return {
@@ -3155,24 +3613,12 @@ var mapStateToProps = function mapStateToProps(state) {
   };
 };
 
-var IndexPage = (0, _reactRedux.connect)(mapStateToProps)(_IndexPage.default);
-IndexPage.getInitialProps = _IndexPage.default.getInitialProps;
-var _default = IndexPage;
+var DashboardPage = (0, _reactRedux.connect)(mapStateToProps, null, null, {
+  pure: false
+})(_DashboardPage.default);
+DashboardPage.getInitialProps = _DashboardPage.default.getInitialProps;
+var _default = DashboardPage;
 exports.default = _default;
-
-/***/ }),
-
-/***/ "Z6Kq":
-/***/ (function(module, exports) {
-
-module.exports = require("core-js/library/fn/object/get-own-property-descriptor");
-
-/***/ }),
-
-/***/ "Z7t5":
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__("vqFK");
 
 /***/ }),
 
@@ -3192,6 +3638,13 @@ function _possibleConstructorReturn(self, call) {
 }
 
 module.exports = _possibleConstructorReturn;
+
+/***/ }),
+
+/***/ "Zo8Y":
+/***/ (function(module, exports) {
+
+module.exports = require("@material-ui/core/colors/green");
 
 /***/ }),
 
@@ -3962,6 +4415,33 @@ module.exports = __webpack_require__("TUA0");
 
 /***/ }),
 
+/***/ "htGi":
+/***/ (function(module, exports, __webpack_require__) {
+
+var _Object$assign = __webpack_require__("UXZV");
+
+function _extends() {
+  module.exports = _extends = _Object$assign || function (target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i];
+
+      for (var key in source) {
+        if (Object.prototype.hasOwnProperty.call(source, key)) {
+          target[key] = source[key];
+        }
+      }
+    }
+
+    return target;
+  };
+
+  return _extends.apply(this, arguments);
+}
+
+module.exports = _extends;
+
+/***/ }),
+
 /***/ "iZP3":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -3993,6 +4473,205 @@ module.exports = _typeof;
 /***/ (function(module, exports) {
 
 module.exports = require("react-relay");
+
+/***/ }),
+
+/***/ "jBo5":
+/***/ (function(module, exports) {
+
+module.exports = require("react-simple-maps");
+
+/***/ }),
+
+/***/ "jDsb":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(_) {
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = exports.styles = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
+
+var _assertThisInitialized2 = _interopRequireDefault(__webpack_require__("K47E"));
+
+var _react = _interopRequireDefault(__webpack_require__("cDcd"));
+
+var _propTypes = _interopRequireDefault(__webpack_require__("rf6O"));
+
+var _reactIntl = __webpack_require__("k004");
+
+var _graphqlRelay = __webpack_require__("Ygce");
+
+var _Grid = _interopRequireDefault(__webpack_require__("JQ2V"));
+
+var _StatContainer = _interopRequireDefault(__webpack_require__("+v1d"));
+
+var _WorldMapContainer = _interopRequireDefault(__webpack_require__("LKVz"));
+
+var _MarketShareContainer = _interopRequireDefault(__webpack_require__("K0bS"));
+
+var styles = function styles(theme) {
+  return {
+    layout: {
+      width: "100%",
+      flex: 1,
+      padding: theme.main.spacing
+    }
+  };
+};
+
+exports.styles = styles;
+
+var Dashboard =
+/*#__PURE__*/
+function (_React$Component) {
+  (0, _inherits2.default)(Dashboard, _React$Component);
+
+  function Dashboard(props) {
+    var _this;
+
+    (0, _classCallCheck2.default)(this, Dashboard);
+    _this = (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(Dashboard).call(this, props));
+    _this.state = {
+      countryId: null,
+      countryName: null,
+      countryShares: null
+    };
+    _this.handleCountrySelected = _this.handleCountrySelected.bind((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)));
+    return _this;
+  }
+
+  (0, _createClass2.default)(Dashboard, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      this.handleCountrySelected();
+    }
+  }, {
+    key: "getCountry",
+    value: function getCountry(id) {
+      return _.find(_.get(this.props.viewer, "marketShares.edges", []), function (edge) {
+        return _.toLower((0, _graphqlRelay.fromGlobalId)(_.get(edge, "node.id")).id) === _.toLower(id);
+      });
+    }
+  }, {
+    key: "handleCountrySelected",
+    value: function handleCountrySelected(id) {
+      var country, name, shares;
+      if (id) country = this.getCountry(id);
+
+      if (country) {
+        name = _.get(country, "node.country");
+        shares = _.get(country, "node.shares");
+      } else {
+        id = "WORLD";
+        country = this.getCountry(id);
+        name = this.props.intl.formatMessage({
+          id: "DASHBOARD_WORLD_LABEL"
+        });
+        shares = _.get(country, "node.shares");
+      }
+
+      this.setState({
+        countryId: id,
+        countryName: name,
+        countryShares: shares
+      });
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      return _react.default.createElement("div", {
+        className: this.props.classes.layout
+      }, _react.default.createElement(_Grid.default, {
+        container: true,
+        spacing: this.props.theme.main.spacing,
+        alignItems: "center"
+      }, _react.default.createElement(_Grid.default, {
+        item: true,
+        xs: 12,
+        md: 3
+      }, _react.default.createElement(_StatContainer.default, {
+        label: "DASHBOARD_PROFIT_LABEL",
+        data: _.map(_.get(this.props.viewer, "profitValues.edges", []), function (edge) {
+          return {
+            date: new Date(_.get(edge, "node.date")),
+            value: _.get(edge, "node.profit")
+          };
+        })
+      })), _react.default.createElement(_Grid.default, {
+        item: true,
+        xs: 12,
+        md: 3
+      }, _react.default.createElement(_StatContainer.default, {
+        label: "DASHBOARD_SALES_LABEL",
+        data: _.map(_.get(this.props.viewer, "salesValues.edges", []), function (edge) {
+          return {
+            date: new Date(_.get(edge, "node.date")),
+            value: _.get(edge, "node.sales")
+          };
+        })
+      })), _react.default.createElement(_Grid.default, {
+        item: true,
+        xs: 12,
+        md: 3
+      }, _react.default.createElement(_StatContainer.default, {
+        label: "DASHBOARD_CLIENTS_LABEL",
+        data: _.map(_.get(this.props.viewer, "clientsValues.edges", []), function (edge) {
+          return {
+            date: new Date(_.get(edge, "node.date")),
+            value: _.get(edge, "node.clients")
+          };
+        })
+      })), _react.default.createElement(_Grid.default, {
+        item: true,
+        xs: 12,
+        md: 3
+      }, _react.default.createElement(_StatContainer.default, {
+        label: "DASHBOARD_AVG_TIME_LABEL",
+        precision: 2,
+        data: _.map(_.get(this.props.viewer, "avgTimeValues.edges", []), function (edge) {
+          return {
+            date: new Date(_.get(edge, "node.date")),
+            value: _.get(edge, "node.avgTime")
+          };
+        })
+      })), _react.default.createElement(_Grid.default, {
+        item: true,
+        xs: 12,
+        md: 8
+      }, _react.default.createElement(_WorldMapContainer.default, {
+        selected: this.state.countryId,
+        onSelect: this.handleCountrySelected
+      })), _react.default.createElement(_Grid.default, {
+        item: true,
+        xs: 12,
+        md: 4
+      }, _react.default.createElement(_MarketShareContainer.default, {
+        title: this.state.countryName,
+        data: this.state.countryShares
+      }))));
+    }
+  }]);
+  return Dashboard;
+}(_react.default.Component);
+
+var _default = Dashboard;
+exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("YLtl")))
 
 /***/ }),
 
@@ -4042,6 +4721,13 @@ module.exports = function isRouteAllowed(path) {
 
 /***/ }),
 
+/***/ "k004":
+/***/ (function(module, exports) {
+
+module.exports = require("react-intl");
+
+/***/ }),
+
 /***/ "k1wZ":
 /***/ (function(module, exports) {
 
@@ -4079,6 +4765,181 @@ exports.FormNameContext = FormNameContext;
 var FormFieldsContext = _react.default.createContext({});
 
 exports.FormFieldsContext = FormFieldsContext;
+
+/***/ }),
+
+/***/ "mhXL":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(_) {
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = exports.styles = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
+
+var _react = _interopRequireDefault(__webpack_require__("cDcd"));
+
+var _propTypes = _interopRequireDefault(__webpack_require__("rf6O"));
+
+var _countryIso3To = _interopRequireDefault(__webpack_require__("GKS8"));
+
+var _reactIntl = __webpack_require__("k004");
+
+var _reactVirtualized = __webpack_require__("xvxd");
+
+var _reactSimpleMaps = __webpack_require__("jBo5");
+
+var _Paper = _interopRequireDefault(__webpack_require__("qt1I"));
+
+var _Typography = _interopRequireDefault(__webpack_require__("UVoM"));
+
+var _colorManipulator = __webpack_require__("oOPP");
+
+var _amber = _interopRequireDefault(__webpack_require__("QaNM"));
+
+var styles = function styles(theme) {
+  return {
+    root: {
+      padding: "1rem",
+      background: theme.main.paper
+    }
+  };
+};
+
+exports.styles = styles;
+
+var WorldMap =
+/*#__PURE__*/
+function (_React$Component) {
+  (0, _inherits2.default)(WorldMap, _React$Component);
+
+  function WorldMap() {
+    (0, _classCallCheck2.default)(this, WorldMap);
+    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(WorldMap).apply(this, arguments));
+  }
+
+  (0, _createClass2.default)(WorldMap, [{
+    key: "renderMap",
+    value: function renderMap(width, height) {
+      var _this = this;
+
+      return _react.default.createElement(_react.default.Fragment, null, _react.default.createElement("svg", {
+        width: 0,
+        height: 0
+      }, _react.default.createElement("defs", null, _react.default.createElement("filter", {
+        id: "worldMapShadow",
+        x: "-50%",
+        y: "-50%",
+        width: "200%",
+        height: "200%"
+      }, _react.default.createElement("feComponentTransfer", {
+        in: "SourceAlpha"
+      }, _react.default.createElement("feFuncA", {
+        type: "table",
+        tableValues: "1 0"
+      })), _react.default.createElement("feGaussianBlur", {
+        stdDeviation: "3"
+      }), _react.default.createElement("feOffset", {
+        dx: "5",
+        dy: "5",
+        result: "offsetblur"
+      }), _react.default.createElement("feFlood", {
+        floodColor: "rgba(0, 0, 0, 0.5)",
+        result: "color"
+      }), _react.default.createElement("feComposite", {
+        in2: "offsetblur",
+        operator: "in"
+      }), _react.default.createElement("feComposite", {
+        in2: "SourceAlpha",
+        operator: "in"
+      }), _react.default.createElement("feMerge", null, _react.default.createElement("feMergeNode", {
+        in: "SourceGraphic"
+      }), _react.default.createElement("feMergeNode", null))))), _react.default.createElement(_reactSimpleMaps.ComposableMap, {
+        projectionConfig: {
+          scale: 205,
+          rotation: [-11, 0, 0]
+        },
+        width: width,
+        height: height
+      }, _react.default.createElement(_reactSimpleMaps.ZoomableGroup, {
+        center: [0, 20],
+        disablePanning: true
+      }, _react.default.createElement(_reactSimpleMaps.Geographies, {
+        geography: "/static/map/world-50m.json"
+      }, function (geographies, projection) {
+        return _.map(geographies, function (geography, i) {
+          return geography.id !== "ATA" && _react.default.createElement(_reactSimpleMaps.Geography, {
+            key: i,
+            onClick: function onClick() {
+              return _this.props.onSelect((0, _countryIso3To.default)(geography.id));
+            },
+            geography: geography,
+            projection: projection,
+            style: {
+              default: {
+                fill: "#363940",
+                stroke: (0, _colorManipulator.lighten)("#363940", 0.85),
+                strokeWidth: 0.75,
+                outline: "none",
+                filter: "url(#worldMapShadow)"
+              },
+              hover: {
+                fill: _amber.default[500],
+                stroke: (0, _colorManipulator.lighten)(_amber.default[500], 0.3),
+                strokeWidth: 0.75,
+                outline: "none"
+              },
+              pressed: {
+                fill: _amber.default[200],
+                stroke: (0, _colorManipulator.lighten)(_amber.default[200], 0.3),
+                strokeWidth: 0.75,
+                outline: "none"
+              }
+            }
+          });
+        });
+      }))));
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this2 = this;
+
+      return _react.default.createElement(_Paper.default, {
+        className: this.props.classes.root,
+        elevation: 4
+      }, _react.default.createElement(_reactVirtualized.AutoSizer, {
+        disableHeight: true
+      }, function (_ref) {
+        var width = _ref.width;
+        return !!width && _this2.renderMap(width, 0.6 * width);
+      }), _react.default.createElement(_Typography.default, {
+        variant: "body2"
+      }, _react.default.createElement(_reactIntl.FormattedMessage, {
+        id: "DASHBOARD_CLICK_MAP_LABEL"
+      })));
+    }
+  }]);
+  return WorldMap;
+}(_react.default.Component);
+
+var _default = WorldMap;
+exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("YLtl")))
 
 /***/ }),
 
@@ -4383,6 +5244,13 @@ module.exports = require("core-js/library/fn/object/create");
 
 /***/ }),
 
+/***/ "oOPP":
+/***/ (function(module, exports) {
+
+module.exports = require("@material-ui/core/styles/colorManipulator");
+
+/***/ }),
+
 /***/ "p/Qe":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -4484,6 +5352,13 @@ module.exports = require("core-js/library/fn/object/keys");
 
 /***/ }),
 
+/***/ "qt1I":
+/***/ (function(module, exports) {
+
+module.exports = require("@material-ui/core/Paper");
+
+/***/ }),
+
 /***/ "qxCs":
 /***/ (function(module, exports) {
 
@@ -4502,6 +5377,257 @@ module.exports = require("core-js/library/fn/array/from");
 /***/ (function(module, exports) {
 
 module.exports = require("prop-types");
+
+/***/ }),
+
+/***/ "ru48":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(_) {
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = exports.styles = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
+
+var _defineProperty2 = _interopRequireDefault(__webpack_require__("xHqa"));
+
+var _react = _interopRequireDefault(__webpack_require__("cDcd"));
+
+var _propTypes = _interopRequireDefault(__webpack_require__("rf6O"));
+
+var _classnames = _interopRequireDefault(__webpack_require__("K2gz"));
+
+var _reactIntl = __webpack_require__("k004");
+
+var _reactVirtualized = __webpack_require__("xvxd");
+
+var _victory = __webpack_require__("wL32");
+
+var _Typography = _interopRequireDefault(__webpack_require__("UVoM"));
+
+var _colorManipulator = __webpack_require__("oOPP");
+
+var _blue = _interopRequireDefault(__webpack_require__("td7P"));
+
+var _amber = _interopRequireDefault(__webpack_require__("QaNM"));
+
+var _green = _interopRequireDefault(__webpack_require__("Zo8Y"));
+
+var _red = _interopRequireDefault(__webpack_require__("RpH3"));
+
+var styles = function styles(theme) {
+  return {
+    root: {
+      boxShadow: "inset 0 0 6px rgba(0, 0, 0, 0.85)",
+      borderRadius: theme.shape.borderRadius,
+      background: "linear-gradient(to bottom, #484e5e 0, #363940 100%)",
+      color: _amber.default[500],
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "stretch",
+      position: "relative"
+    },
+    delta: {
+      position: "absolute",
+      top: 0,
+      right: 0,
+      borderTopRightRadius: 3,
+      borderBottomLeftRadius: 3,
+      padding: "0.25rem 0.5rem"
+    },
+    stat: {
+      paddingTop: "2rem",
+      width: "70%",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center"
+    },
+    chart: {
+      marginTop: "-1rem"
+    },
+    increasing: {
+      color: "#ffffff",
+      background: (0, _colorManipulator.fade)(_green.default[300], 0.65)
+    },
+    descreasing: {
+      color: "#ffffff",
+      background: (0, _colorManipulator.fade)(_red.default[300], 0.65)
+    }
+  };
+};
+
+exports.styles = styles;
+
+var Stat =
+/*#__PURE__*/
+function (_React$Component) {
+  (0, _inherits2.default)(Stat, _React$Component);
+
+  function Stat() {
+    (0, _classCallCheck2.default)(this, Stat);
+    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(Stat).apply(this, arguments));
+  }
+
+  (0, _createClass2.default)(Stat, [{
+    key: "renderStat",
+    value: function renderStat() {
+      return _react.default.createElement("div", {
+        className: this.props.classes.stat
+      }, _react.default.createElement(_Typography.default, {
+        variant: "h4",
+        color: "inherit"
+      }, _react.default.createElement(_reactIntl.FormattedNumber, {
+        value: _.last(this.props.data).value,
+        maximumFractionDigits: this.props.precision
+      })), _react.default.createElement(_Typography.default, {
+        variant: "overline",
+        color: "inherit"
+      }, _react.default.createElement(_reactIntl.FormattedMessage, {
+        id: this.props.label
+      })));
+    }
+  }, {
+    key: "renderDelta",
+    value: function renderDelta() {
+      var items = _.slice(this.props.data, -2);
+
+      if (items.length !== 2) return null;
+      var delta = 100 * (items[1].value - items[0].value) / items[0].value;
+      var symbol = delta > 0 ? "▲" : delta < 0 ? "▼" : "";
+      var className = delta > 0 ? "increasing" : delta < 0 ? "descreasing" : null;
+      return _react.default.createElement("div", {
+        className: (0, _classnames.default)(this.props.classes.delta, className && this.props.classes[className])
+      }, symbol, _react.default.createElement(_reactIntl.FormattedNumber, {
+        value: Math.abs(delta),
+        maximumFractionDigits: 0
+      }), "%");
+    }
+  }, {
+    key: "renderChart",
+    value: function renderChart(width, height) {
+      var _this = this;
+
+      var max = _.reduce(this.props.data, function (acc, cur) {
+        return Math.max(acc, cur.value);
+      }, 0);
+
+      return _react.default.createElement(_react.default.Fragment, null, _react.default.createElement("svg", {
+        width: 0,
+        height: 0
+      }, _react.default.createElement("defs", null, _react.default.createElement("linearGradient", {
+        id: "statGradient",
+        x1: "0%",
+        y1: "0%",
+        x2: "100%",
+        y2: "0%"
+      }, _react.default.createElement("stop", {
+        offset: "0%",
+        stopColor: (0, _colorManipulator.fade)(_blue.default[500], 0.2)
+      }), _react.default.createElement("stop", {
+        offset: "100%",
+        stopColor: _blue.default[400]
+      })))), _react.default.createElement(_victory.VictoryChart, {
+        width: width,
+        height: height,
+        padding: 0,
+        domainPadding: {
+          x: [10, 10],
+          y: [5, 5]
+        },
+        containerComponent: _react.default.createElement(_victory.VictoryVoronoiContainer, {
+          responsive: false
+        })
+      }, _react.default.createElement(_victory.VictoryAxis, {
+        dependentAxis: true,
+        domain: {
+          y: [0, max]
+        },
+        orientation: "left",
+        style: {
+          axis: {
+            display: "none"
+          },
+          ticks: {
+            display: "none"
+          },
+          tickLabels: {
+            display: "none"
+          },
+          grid: {
+            stroke: (0, _colorManipulator.fade)(_amber.default[300], 0.3),
+            strokeWidth: 1
+          }
+        }
+      }), _react.default.createElement(_victory.VictoryLine, {
+        data: this.props.data,
+        x: "date",
+        y: "value",
+        interpolation: "monotoneX",
+        style: {
+          data: {
+            stroke: "url(#statGradient)",
+            strokeWidth: 2
+          }
+        }
+      }), _react.default.createElement(_victory.VictoryScatter, {
+        data: this.props.data,
+        x: "date",
+        y: "value",
+        labels: function labels(d) {
+          return _this.props.intl.formatMessage({
+            id: _this.props.label
+          }) + ": " + d.value + "\n" + _this.props.intl.formatDate(d.date);
+        },
+        labelComponent: _react.default.createElement(_victory.VictoryTooltip, null),
+        size: 1,
+        style: {
+          data: {
+            stroke: _blue.default[300],
+            strokeWidth: 2
+          }
+        }
+      })));
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this2 = this;
+
+      return _react.default.createElement("div", {
+        className: this.props.classes.root
+      }, this.renderDelta(), this.renderStat(), _react.default.createElement("div", {
+        className: this.props.classes.chart
+      }, _react.default.createElement(_reactVirtualized.AutoSizer, {
+        disableHeight: true
+      }, function (_ref) {
+        var width = _ref.width;
+        return !!width && _this2.renderChart(width, 0.5 * width);
+      })));
+    }
+  }]);
+  return Stat;
+}(_react.default.Component);
+
+(0, _defineProperty2.default)(Stat, "defaultProps", {
+  precision: 0
+});
+var _default = Stat;
+exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("YLtl")))
 
 /***/ }),
 
@@ -4529,6 +5655,35 @@ var SET_CONNECTED = "app/app/SET_CONNECTED";
 exports.SET_CONNECTED = SET_CONNECTED;
 var SET_LOCALE = "app/app/SET_LOCALE";
 exports.SET_LOCALE = SET_LOCALE;
+
+/***/ }),
+
+/***/ "td7P":
+/***/ (function(module, exports) {
+
+module.exports = require("@material-ui/core/colors/blue");
+
+/***/ }),
+
+/***/ "u9iw":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+Object.defineProperty(exports, "default", {
+  enumerable: true,
+  get: function get() {
+    return _DashboardPageContainer.default;
+  }
+});
+
+var _DashboardPageContainer = _interopRequireDefault(__webpack_require__("Z8XH"));
 
 /***/ }),
 
@@ -4560,7 +5715,7 @@ module.exports = _setPrototypeOf;
 /***/ "vmr9":
 /***/ (function(module) {
 
-module.exports = {"MENU_DASHBOARD":"Dashboard","TITLE_DASHBOARD":"Dashboard","MENU_FORMS":"Forms","TITLE_FORMS":"Forms","MENU_CHARTS":"Charts","TITLE_CHARTS":"Charts","MENU_TABLES":"Tables","TITLE_TABLES":"Tables","MENU_MAPS":"Maps","TITLE_MAPS":"Maps","MENU_NOTIFICATIONS":"Notifications","TITLE_NOTIFICATIONS":"Notifications","MENU_TYPOGRAPHY":"Typography","TITLE_TYPOGRAPHY":"Typography","MENU_ICONS":"Icons","TITLE_ICONS":"Icons","MENU_USERS":"Users","TITLE_USERS":"Users","SIDEBAR_GITHUB_LINK":"Github","SIDEBAR_BENCHMARKS_LINK":"Benchmarks","SIDEBAR_RESPONSIVENESS_LINK":"Responsiveness Test","HEADER_INBOX_LABEL":"Inbox","HEADER_PROFILE_LABEL":"Profile","DEPT_PRODUCTION":"Production","DEPT_RD":"R&D","DEPT_PURCHASING":"Purchasing","DEPT_MARKETING":"Marketing","DEPT_HR":"HR","DEPT_ACCOUNTING":"Accounting","EMPLOYEES_MESSAGE_TITLE":"It's alive!","EMPLOYEES_MESSAGE_CONTENT":["This table is powered by GraphQL API (React Relay Modern). Try changing a value in another browser or tab and you will see it"," updated for all the browsers connected to this page thanks to GraphQL Subscriptions."],"EMPLOYEES_UID_COLUMN":"UID","EMPLOYEES_NAME_COLUMN":"Name","EMPLOYEES_DEPT_COLUMN":"Department","EMPLOYEES_TITLE_COLUMN":"Title","EMPLOYEES_COUNTRY_COLUMN":"Country","EMPLOYEES_SALARY_COLUMN":"Salary","EMPLOYEES_CREATE_BUTTON":"Create Employee","EMPLOYEES_EDIT_BUTTON":"Edit Employee","EMPLOYEES_DELETE_BUTTON":"Delete Employees","EDIT_EMPLOYEE_TITLE_CREATE":"Create user","EDIT_EMPLOYEE_TITLE_EDIT":"Edit user","EDIT_EMPLOYEE_UID_LABEL":"UID","EDIT_EMPLOYEE_CHECKED_LABEL":"Enabled","EDIT_EMPLOYEE_NAME_LABEL":"Name","EDIT_EMPLOYEE_DEPT_LABEL":"Department","EDIT_EMPLOYEE_TITLE_LABEL":"Title","EDIT_EMPLOYEE_COUNTRY_LABEL":"Country","EDIT_EMPLOYEE_SALARY_LABEL":"Salary","EDIT_EMPLOYEE_CANCEL":"Cancel","EDIT_EMPLOYEE_SUBMIT":"Submit","DELETE_EMPLOYEE_TITLE":"Delete users","DELETE_EMPLOYEE_TEXT":"Delete selected users?","DELETE_EMPLOYEE_CANCEL":"Cancel","DELETE_EMPLOYEE_SUBMIT":"Delete","USERS_EMAIL_COLUMN":"Email","USERS_EMAIL_VERIFIED_COLUMN":"Verified","USERS_NAME_COLUMN":"Name","USERS_ROLES_COLUMN":"Roles","USERS_CREATE_BUTTON":"Create User","USERS_EDIT_BUTTON":"Edit User","USERS_DELETE_BUTTON":"Delete Users","EDIT_USER_TITLE_CREATE":"Create user","EDIT_USER_TITLE_EDIT":"Edit user","EDIT_USER_NAME_LABEL":"Name","EDIT_USER_EMAIL_LABEL":"Email","EDIT_USER_PASSWORD_LABEL":"Password","EDIT_USER_ANONYMOUS_LABEL":"Anonymous","EDIT_USER_AUTHENTICATED_LABEL":"Authenticated","EDIT_USER_ADMIN_LABEL":"Administrator","EDIT_USER_CANCEL":"Cancel","EDIT_USER_SUBMIT":"Submit","DELETE_USER_TITLE":"Delete users","DELETE_USER_TEXT":"Delete selected users?","DELETE_USER_CANCEL":"Cancel","DELETE_USER_SUBMIT":"Delete","FORMS_MESSAGE_TITLE":"It's alive!","FORMS_MESSAGE_CONTENT":["The form example below is fully functional, the fields normalize and validate their input accordingly to this form's"," description file. Try to fill out and submit this form to see it in action."],"FORMS_SUCCESS_TITLE":"Congratulations!","FORMS_SUCCESS_TEXT":"The form is finished and ready to be submitted to the backend","FORMS_SUCCESS_SUBMIT":"OK","WIZARD_PREV_BUTTON":"Prev","WIZARD_NEXT_BUTTON":"Next","WIZARD_SUBMIT_BUTTON":"Done","WIZARD_ERROR_LABEL":"Please fill out this form","SHIPPING_STEP_TITLE":"Shipping","SHIPPING_STEP_DESCR":"Choose your shipping options","SHIPPING_FIRST_NAME_LABEL":"First name","SHIPPING_MIDDLE_NAME_LABEL":"Middle name (optional)","SHIPPING_LAST_NAME_LABEL":"Last name","SHIPPING_ADDRESS_LABEL":"Address","SHIPPING_CITY_LABEL":"City/town","SHIPPING_STATE_LABEL":"State/Province/Region (if required)","SHIPPING_CODE_LABEL":"ZIP/Postal code","SHIPPING_COUNTRY_LABEL":"Country","SHIPPING_PHONE_LABEL":"Phone number","SHIPPING_EMAIL_LABEL":"Email","SHIPPING_Q1":"What is a dog?","SHIPPING_Q2":"What kinds of dogs are there?","SHIPPING_Q3":"How do you acquire a dog?","BILLING_STEP_TITLE":"Billing","BILLING_STEP_DESCR":"Enter billing information","BILLING_CARD_NUMBER_LABEL":"Credit card number","BILLING_CARD_DATE_LABEL":"MM / YY","BILLING_CARD_SECRET_LABEL":"CVV2","BILLING_SAME_ADDRESS_LABEL":"Billing address is the same as shipping address","BILLING_Q1":"What is Lorem Ipsum?","BILLING_Q2":"When did they start using it?","CONFIRM_STEP_TITLE":"Confirm","CONFIRM_STEP_DESCR_SUCCESS":"The form is ready to be submitted","CONFIRM_STEP_DESCR_FAILURE":"The form is not completed yet","CONFIRM_SHIPPING_LABEL":"Shipping Information","CONFIRM_BILLING_LABEL":"Billing Information","CONFIRM_FIRST_NAME_LABEL":"First name:","CONFIRM_MIDDLE_NAME_LABEL":"Middle name:","CONFIRM_LAST_NAME_LABEL":"Last name:","CONFIRM_ADDRESS_LABEL":"Address:","CONFIRM_CITY_LABEL":"City/town:","CONFIRM_STATE_LABEL":"State/Province/Region:","CONFIRM_CODE_LABEL":"ZIP/Postal code:","CONFIRM_COUNTRY_LABEL":"Country:","CONFIRM_PHONE_LABEL":"Phone number:","CONFIRM_EMAIL_LABEL":"Email:","CONFIRM_CARD_NUMBER_LABEL":"Credit card number:","CONFIRM_CARD_DATE_LABEL":"Credit card expires:","APP_AUTH_TITLE":"Authentication","APP_AUTH_ANONYMOUS_BUTTON":"Anonymous","APP_AUTH_CREDENTIALS_LABEL":"Sign In using Credentials","APP_AUTH_NEW_USER_LABEL":"I don't have an account yet, please create one","APP_AUTH_EMAIL_LABEL":"Email","APP_AUTH_PASSWORD_LABEL":"Password","APP_AUTH_SERVICE_BUTTON":"Sign In with","APP_AUTH_SUBMIT":"Sign In","APP_AUTH_FAILED":"Invalid credentials","APP_AUTH_EMAIL_TAKEN":"This email is already registered","OPERATION_FAILED":"Operation failed","ERROR":"Error","ERROR_FIELD_REQUIRED":"This field is required","ERROR_INVALID_PATTERN":"Please provide a valid value","ERROR_INVALID_EMAIL":"Please provide a valid email address","ERROR_INVALID_PHONE":"Please, provide a valid phone number","ERROR_INVALID_PHONE_COUNTRY":"This is not a valid phone number for this country","ERROR_INVALID_CREDIT_CARD_NUMBER":"Please, provide a valid credit card number","ERROR_INVALID_CREDIT_CARD_DATE":"Please, provide a valid credit card expiration date","ERROR_INVALID_CREDIT_CARD_SECRET":"Please, provide a valid credit card CVV2 code","ERROR_INVALID_PASSWORD":"Password should be at least 6 characters long","ERROR_MISMATCHED_PASSWORDS":"The two passwords typed do not match"};
+module.exports = {"MENU_DASHBOARD":"Dashboard","TITLE_DASHBOARD":"Dashboard","MENU_FORMS":"Forms","TITLE_FORMS":"Forms","MENU_CHARTS":"Charts","TITLE_CHARTS":"Charts","MENU_TABLES":"Tables","TITLE_TABLES":"Tables","MENU_MAPS":"Maps","TITLE_MAPS":"Maps","MENU_NOTIFICATIONS":"Notifications","TITLE_NOTIFICATIONS":"Notifications","MENU_TYPOGRAPHY":"Typography","TITLE_TYPOGRAPHY":"Typography","MENU_ICONS":"Icons","TITLE_ICONS":"Icons","MENU_USERS":"Users","TITLE_USERS":"Users","SIDEBAR_GITHUB_LINK":"Github","SIDEBAR_BENCHMARKS_LINK":"Benchmarks","SIDEBAR_RESPONSIVENESS_LINK":"Responsiveness Test","HEADER_INBOX_LABEL":"Inbox","HEADER_PROFILE_LABEL":"Profile","DASHBOARD_PROFIT_LABEL":"Profit","DASHBOARD_SALES_LABEL":"Sales","DASHBOARD_CLIENTS_LABEL":"Clients","DASHBOARD_AVG_TIME_LABEL":"Avg Time","DASHBOARD_WORLD_LABEL":"World","DASHBOARD_CLICK_MAP_LABEL":"Click to select","DEPT_PRODUCTION":"Production","DEPT_RD":"R&D","DEPT_PURCHASING":"Purchasing","DEPT_MARKETING":"Marketing","DEPT_HR":"HR","DEPT_ACCOUNTING":"Accounting","EMPLOYEES_MESSAGE_TITLE":"It's alive!","EMPLOYEES_MESSAGE_CONTENT":["This table is powered by GraphQL API (React Relay Modern). Try changing a value in another browser or tab and you will see it"," updated for all the browsers connected to this page thanks to GraphQL Subscriptions."],"EMPLOYEES_UID_COLUMN":"UID","EMPLOYEES_NAME_COLUMN":"Name","EMPLOYEES_DEPT_COLUMN":"Department","EMPLOYEES_TITLE_COLUMN":"Title","EMPLOYEES_COUNTRY_COLUMN":"Country","EMPLOYEES_SALARY_COLUMN":"Salary","EMPLOYEES_CREATE_BUTTON":"Create Employee","EMPLOYEES_EDIT_BUTTON":"Edit Employee","EMPLOYEES_DELETE_BUTTON":"Delete Employees","EDIT_EMPLOYEE_TITLE_CREATE":"Create user","EDIT_EMPLOYEE_TITLE_EDIT":"Edit user","EDIT_EMPLOYEE_UID_LABEL":"UID","EDIT_EMPLOYEE_CHECKED_LABEL":"Enabled","EDIT_EMPLOYEE_NAME_LABEL":"Name","EDIT_EMPLOYEE_DEPT_LABEL":"Department","EDIT_EMPLOYEE_TITLE_LABEL":"Title","EDIT_EMPLOYEE_COUNTRY_LABEL":"Country","EDIT_EMPLOYEE_SALARY_LABEL":"Salary","EDIT_EMPLOYEE_CANCEL":"Cancel","EDIT_EMPLOYEE_SUBMIT":"Submit","DELETE_EMPLOYEE_TITLE":"Delete users","DELETE_EMPLOYEE_TEXT":"Delete selected users?","DELETE_EMPLOYEE_CANCEL":"Cancel","DELETE_EMPLOYEE_SUBMIT":"Delete","USERS_EMAIL_COLUMN":"Email","USERS_EMAIL_VERIFIED_COLUMN":"Verified","USERS_NAME_COLUMN":"Name","USERS_ROLES_COLUMN":"Roles","USERS_CREATE_BUTTON":"Create User","USERS_EDIT_BUTTON":"Edit User","USERS_DELETE_BUTTON":"Delete Users","EDIT_USER_TITLE_CREATE":"Create user","EDIT_USER_TITLE_EDIT":"Edit user","EDIT_USER_NAME_LABEL":"Name","EDIT_USER_EMAIL_LABEL":"Email","EDIT_USER_PASSWORD_LABEL":"Password","EDIT_USER_ANONYMOUS_LABEL":"Anonymous","EDIT_USER_AUTHENTICATED_LABEL":"Authenticated","EDIT_USER_ADMIN_LABEL":"Administrator","EDIT_USER_CANCEL":"Cancel","EDIT_USER_SUBMIT":"Submit","DELETE_USER_TITLE":"Delete users","DELETE_USER_TEXT":"Delete selected users?","DELETE_USER_CANCEL":"Cancel","DELETE_USER_SUBMIT":"Delete","FORMS_MESSAGE_TITLE":"It's alive!","FORMS_MESSAGE_CONTENT":["The form example below is fully functional, the fields normalize and validate their input accordingly to this form's"," description file. Try to fill out and submit this form to see it in action."],"FORMS_SUCCESS_TITLE":"Congratulations!","FORMS_SUCCESS_TEXT":"The form is finished and ready to be submitted to the backend","FORMS_SUCCESS_SUBMIT":"OK","WIZARD_PREV_BUTTON":"Prev","WIZARD_NEXT_BUTTON":"Next","WIZARD_SUBMIT_BUTTON":"Done","WIZARD_ERROR_LABEL":"Please fill out this form","SHIPPING_STEP_TITLE":"Shipping","SHIPPING_STEP_DESCR":"Choose your shipping options","SHIPPING_FIRST_NAME_LABEL":"First name","SHIPPING_MIDDLE_NAME_LABEL":"Middle name (optional)","SHIPPING_LAST_NAME_LABEL":"Last name","SHIPPING_ADDRESS_LABEL":"Address","SHIPPING_CITY_LABEL":"City/town","SHIPPING_STATE_LABEL":"State/Province/Region (if required)","SHIPPING_CODE_LABEL":"ZIP/Postal code","SHIPPING_COUNTRY_LABEL":"Country","SHIPPING_PHONE_LABEL":"Phone number","SHIPPING_EMAIL_LABEL":"Email","SHIPPING_Q1":"What is a dog?","SHIPPING_Q2":"What kinds of dogs are there?","SHIPPING_Q3":"How do you acquire a dog?","BILLING_STEP_TITLE":"Billing","BILLING_STEP_DESCR":"Enter billing information","BILLING_CARD_NUMBER_LABEL":"Credit card number","BILLING_CARD_DATE_LABEL":"MM / YY","BILLING_CARD_SECRET_LABEL":"CVV2","BILLING_SAME_ADDRESS_LABEL":"Billing address is the same as shipping address","BILLING_Q1":"What is Lorem Ipsum?","BILLING_Q2":"When did they start using it?","CONFIRM_STEP_TITLE":"Confirm","CONFIRM_STEP_DESCR_SUCCESS":"The form is ready to be submitted","CONFIRM_STEP_DESCR_FAILURE":"The form is not completed yet","CONFIRM_SHIPPING_LABEL":"Shipping Information","CONFIRM_BILLING_LABEL":"Billing Information","CONFIRM_FIRST_NAME_LABEL":"First name:","CONFIRM_MIDDLE_NAME_LABEL":"Middle name:","CONFIRM_LAST_NAME_LABEL":"Last name:","CONFIRM_ADDRESS_LABEL":"Address:","CONFIRM_CITY_LABEL":"City/town:","CONFIRM_STATE_LABEL":"State/Province/Region:","CONFIRM_CODE_LABEL":"ZIP/Postal code:","CONFIRM_COUNTRY_LABEL":"Country:","CONFIRM_PHONE_LABEL":"Phone number:","CONFIRM_EMAIL_LABEL":"Email:","CONFIRM_CARD_NUMBER_LABEL":"Credit card number:","CONFIRM_CARD_DATE_LABEL":"Credit card expires:","APP_AUTH_TITLE":"Authentication","APP_AUTH_ANONYMOUS_BUTTON":"Anonymous","APP_AUTH_CREDENTIALS_LABEL":"Sign In using Credentials","APP_AUTH_NEW_USER_LABEL":"I don't have an account yet, please create one","APP_AUTH_EMAIL_LABEL":"Email","APP_AUTH_PASSWORD_LABEL":"Password","APP_AUTH_SERVICE_BUTTON":"Sign In with","APP_AUTH_SUBMIT":"Sign In","APP_AUTH_FAILED":"Invalid credentials","APP_AUTH_EMAIL_TAKEN":"This email is already registered","OPERATION_FAILED":"Operation failed","ERROR":"Error","ERROR_FIELD_REQUIRED":"This field is required","ERROR_INVALID_PATTERN":"Please provide a valid value","ERROR_INVALID_EMAIL":"Please provide a valid email address","ERROR_INVALID_PHONE":"Please, provide a valid phone number","ERROR_INVALID_PHONE_COUNTRY":"This is not a valid phone number for this country","ERROR_INVALID_CREDIT_CARD_NUMBER":"Please, provide a valid credit card number","ERROR_INVALID_CREDIT_CARD_DATE":"Please, provide a valid credit card expiration date","ERROR_INVALID_CREDIT_CARD_SECRET":"Please, provide a valid credit card CVV2 code","ERROR_INVALID_PASSWORD":"Password should be at least 6 characters long","ERROR_MISMATCHED_PASSWORDS":"The two passwords typed do not match"};
 
 /***/ }),
 
@@ -4568,6 +5723,609 @@ module.exports = {"MENU_DASHBOARD":"Dashboard","TITLE_DASHBOARD":"Dashboard","ME
 /***/ (function(module, exports) {
 
 module.exports = require("core-js/library/fn/symbol");
+
+/***/ }),
+
+/***/ "vsef":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @flow
+ * @relayHash d381c6bbef51990f1c1f571bcb01ebd2
+ */
+
+/* eslint-disable */
+
+/*::
+import type { ConcreteRequest } from 'relay-runtime';
+export type DashboardPageQueryVariables = {||};
+export type DashboardPageQueryResponse = {|
+  +viewer: ?{|
+    +profitValues: ?{|
+      +edges: ?$ReadOnlyArray<?{|
+        +node: ?{|
+          +date: any,
+          +profit: number,
+        |}
+      |}>
+    |},
+    +salesValues: ?{|
+      +edges: ?$ReadOnlyArray<?{|
+        +node: ?{|
+          +date: any,
+          +sales: number,
+        |}
+      |}>
+    |},
+    +clientsValues: ?{|
+      +edges: ?$ReadOnlyArray<?{|
+        +node: ?{|
+          +date: any,
+          +clients: number,
+        |}
+      |}>
+    |},
+    +avgTimeValues: ?{|
+      +edges: ?$ReadOnlyArray<?{|
+        +node: ?{|
+          +date: any,
+          +avgTime: number,
+        |}
+      |}>
+    |},
+    +marketShares: ?{|
+      +edges: ?$ReadOnlyArray<?{|
+        +node: ?{|
+          +id: string,
+          +country: string,
+          +shares: $ReadOnlyArray<?{|
+            +vendor: string,
+            +value: number,
+          |}>,
+        |}
+      |}>
+    |},
+  |}
+|};
+export type DashboardPageQuery = {|
+  variables: DashboardPageQueryVariables,
+  response: DashboardPageQueryResponse,
+|};
+*/
+
+/*
+query DashboardPageQuery {
+  viewer {
+    profitValues {
+      edges {
+        node {
+          date
+          profit
+          id
+        }
+      }
+    }
+    salesValues {
+      edges {
+        node {
+          date
+          sales
+          id
+        }
+      }
+    }
+    clientsValues {
+      edges {
+        node {
+          date
+          clients
+          id
+        }
+      }
+    }
+    avgTimeValues {
+      edges {
+        node {
+          date
+          avgTime
+          id
+        }
+      }
+    }
+    marketShares {
+      edges {
+        node {
+          id
+          country
+          shares {
+            vendor
+            value
+            id
+          }
+        }
+      }
+    }
+  }
+}
+*/
+
+var node
+/*: ConcreteRequest*/
+= function () {
+  var v0 = {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "date",
+    "args": null,
+    "storageKey": null
+  },
+      v1 = {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "profit",
+    "args": null,
+    "storageKey": null
+  },
+      v2 = {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "sales",
+    "args": null,
+    "storageKey": null
+  },
+      v3 = {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "clients",
+    "args": null,
+    "storageKey": null
+  },
+      v4 = {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "avgTime",
+    "args": null,
+    "storageKey": null
+  },
+      v5 = {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "id",
+    "args": null,
+    "storageKey": null
+  },
+      v6 = {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "country",
+    "args": null,
+    "storageKey": null
+  },
+      v7 = {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "vendor",
+    "args": null,
+    "storageKey": null
+  },
+      v8 = {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "value",
+    "args": null,
+    "storageKey": null
+  };
+  return {
+    "kind": "Request",
+    "fragment": {
+      "kind": "Fragment",
+      "name": "DashboardPageQuery",
+      "type": "Query",
+      "metadata": null,
+      "argumentDefinitions": [],
+      "selections": [{
+        "kind": "LinkedField",
+        "alias": "viewer",
+        "name": "__viewer_viewer",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "Viewer",
+        "plural": false,
+        "selections": [{
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "profitValues",
+          "storageKey": null,
+          "args": null,
+          "concreteType": "ProfitValueConnection",
+          "plural": false,
+          "selections": [{
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "edges",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "ProfitValueEdge",
+            "plural": true,
+            "selections": [{
+              "kind": "LinkedField",
+              "alias": null,
+              "name": "node",
+              "storageKey": null,
+              "args": null,
+              "concreteType": "ProfitValue",
+              "plural": false,
+              "selections": [v0
+              /*: any*/
+              , v1
+              /*: any*/
+              ]
+            }]
+          }]
+        }, {
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "salesValues",
+          "storageKey": null,
+          "args": null,
+          "concreteType": "SalesValueConnection",
+          "plural": false,
+          "selections": [{
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "edges",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "SalesValueEdge",
+            "plural": true,
+            "selections": [{
+              "kind": "LinkedField",
+              "alias": null,
+              "name": "node",
+              "storageKey": null,
+              "args": null,
+              "concreteType": "SalesValue",
+              "plural": false,
+              "selections": [v0
+              /*: any*/
+              , v2
+              /*: any*/
+              ]
+            }]
+          }]
+        }, {
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "clientsValues",
+          "storageKey": null,
+          "args": null,
+          "concreteType": "ClientsValueConnection",
+          "plural": false,
+          "selections": [{
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "edges",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "ClientsValueEdge",
+            "plural": true,
+            "selections": [{
+              "kind": "LinkedField",
+              "alias": null,
+              "name": "node",
+              "storageKey": null,
+              "args": null,
+              "concreteType": "ClientsValue",
+              "plural": false,
+              "selections": [v0
+              /*: any*/
+              , v3
+              /*: any*/
+              ]
+            }]
+          }]
+        }, {
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "avgTimeValues",
+          "storageKey": null,
+          "args": null,
+          "concreteType": "AvgTimeValueConnection",
+          "plural": false,
+          "selections": [{
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "edges",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "AvgTimeValueEdge",
+            "plural": true,
+            "selections": [{
+              "kind": "LinkedField",
+              "alias": null,
+              "name": "node",
+              "storageKey": null,
+              "args": null,
+              "concreteType": "AvgTimeValue",
+              "plural": false,
+              "selections": [v0
+              /*: any*/
+              , v4
+              /*: any*/
+              ]
+            }]
+          }]
+        }, {
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "marketShares",
+          "storageKey": null,
+          "args": null,
+          "concreteType": "MarketShareConnection",
+          "plural": false,
+          "selections": [{
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "edges",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "MarketShareEdge",
+            "plural": true,
+            "selections": [{
+              "kind": "LinkedField",
+              "alias": null,
+              "name": "node",
+              "storageKey": null,
+              "args": null,
+              "concreteType": "MarketShare",
+              "plural": false,
+              "selections": [v5
+              /*: any*/
+              , v6
+              /*: any*/
+              , {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "shares",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "MarketShareValue",
+                "plural": true,
+                "selections": [v7
+                /*: any*/
+                , v8
+                /*: any*/
+                ]
+              }]
+            }]
+          }]
+        }]
+      }]
+    },
+    "operation": {
+      "kind": "Operation",
+      "name": "DashboardPageQuery",
+      "argumentDefinitions": [],
+      "selections": [{
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "viewer",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "Viewer",
+        "plural": false,
+        "selections": [{
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "profitValues",
+          "storageKey": null,
+          "args": null,
+          "concreteType": "ProfitValueConnection",
+          "plural": false,
+          "selections": [{
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "edges",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "ProfitValueEdge",
+            "plural": true,
+            "selections": [{
+              "kind": "LinkedField",
+              "alias": null,
+              "name": "node",
+              "storageKey": null,
+              "args": null,
+              "concreteType": "ProfitValue",
+              "plural": false,
+              "selections": [v0
+              /*: any*/
+              , v1
+              /*: any*/
+              , v5
+              /*: any*/
+              ]
+            }]
+          }]
+        }, {
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "salesValues",
+          "storageKey": null,
+          "args": null,
+          "concreteType": "SalesValueConnection",
+          "plural": false,
+          "selections": [{
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "edges",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "SalesValueEdge",
+            "plural": true,
+            "selections": [{
+              "kind": "LinkedField",
+              "alias": null,
+              "name": "node",
+              "storageKey": null,
+              "args": null,
+              "concreteType": "SalesValue",
+              "plural": false,
+              "selections": [v0
+              /*: any*/
+              , v2
+              /*: any*/
+              , v5
+              /*: any*/
+              ]
+            }]
+          }]
+        }, {
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "clientsValues",
+          "storageKey": null,
+          "args": null,
+          "concreteType": "ClientsValueConnection",
+          "plural": false,
+          "selections": [{
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "edges",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "ClientsValueEdge",
+            "plural": true,
+            "selections": [{
+              "kind": "LinkedField",
+              "alias": null,
+              "name": "node",
+              "storageKey": null,
+              "args": null,
+              "concreteType": "ClientsValue",
+              "plural": false,
+              "selections": [v0
+              /*: any*/
+              , v3
+              /*: any*/
+              , v5
+              /*: any*/
+              ]
+            }]
+          }]
+        }, {
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "avgTimeValues",
+          "storageKey": null,
+          "args": null,
+          "concreteType": "AvgTimeValueConnection",
+          "plural": false,
+          "selections": [{
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "edges",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "AvgTimeValueEdge",
+            "plural": true,
+            "selections": [{
+              "kind": "LinkedField",
+              "alias": null,
+              "name": "node",
+              "storageKey": null,
+              "args": null,
+              "concreteType": "AvgTimeValue",
+              "plural": false,
+              "selections": [v0
+              /*: any*/
+              , v4
+              /*: any*/
+              , v5
+              /*: any*/
+              ]
+            }]
+          }]
+        }, {
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "marketShares",
+          "storageKey": null,
+          "args": null,
+          "concreteType": "MarketShareConnection",
+          "plural": false,
+          "selections": [{
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "edges",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "MarketShareEdge",
+            "plural": true,
+            "selections": [{
+              "kind": "LinkedField",
+              "alias": null,
+              "name": "node",
+              "storageKey": null,
+              "args": null,
+              "concreteType": "MarketShare",
+              "plural": false,
+              "selections": [v5
+              /*: any*/
+              , v6
+              /*: any*/
+              , {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "shares",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "MarketShareValue",
+                "plural": true,
+                "selections": [v7
+                /*: any*/
+                , v8
+                /*: any*/
+                , v5
+                /*: any*/
+                ]
+              }]
+            }]
+          }]
+        }]
+      }, {
+        "kind": "LinkedHandle",
+        "alias": null,
+        "name": "viewer",
+        "args": null,
+        "handle": "viewer",
+        "key": "",
+        "filters": null
+      }]
+    },
+    "params": {
+      "operationKind": "query",
+      "name": "DashboardPageQuery",
+      "id": null,
+      "text": "query DashboardPageQuery {\n  viewer {\n    profitValues {\n      edges {\n        node {\n          date\n          profit\n          id\n        }\n      }\n    }\n    salesValues {\n      edges {\n        node {\n          date\n          sales\n          id\n        }\n      }\n    }\n    clientsValues {\n      edges {\n        node {\n          date\n          clients\n          id\n        }\n      }\n    }\n    avgTimeValues {\n      edges {\n        node {\n          date\n          avgTime\n          id\n        }\n      }\n    }\n    marketShares {\n      edges {\n        node {\n          id\n          country\n          shares {\n            vendor\n            value\n            id\n          }\n        }\n      }\n    }\n  }\n}\n",
+      "metadata": {}
+    }
+  };
+}(); // prettier-ignore
+
+
+node
+/*: any*/
+.hash = '4e35ecfd1a7798c6cad886f912bf61e0';
+module.exports = node;
+
+/***/ }),
+
+/***/ "wL32":
+/***/ (function(module, exports) {
+
+module.exports = require("victory");
 
 /***/ }),
 
@@ -4748,6 +6506,13 @@ exports.default = _default;
 
 /***/ }),
 
+/***/ "xvxd":
+/***/ (function(module, exports) {
+
+module.exports = require("react-virtualized");
+
+/***/ }),
+
 /***/ "y6vh":
 /***/ (function(module, exports) {
 
@@ -4801,6 +6566,169 @@ var setGoogleMapsKey = function setGoogleMapsKey(_ref2) {
 };
 
 exports.setGoogleMapsKey = setGoogleMapsKey;
+
+/***/ }),
+
+/***/ "z/H1":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = exports.styles = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
+
+var _react = _interopRequireDefault(__webpack_require__("cDcd"));
+
+var _propTypes = _interopRequireDefault(__webpack_require__("rf6O"));
+
+var _reactVirtualized = __webpack_require__("xvxd");
+
+var _victory = __webpack_require__("wL32");
+
+var _Typography = _interopRequireDefault(__webpack_require__("UVoM"));
+
+var _lightBlue = _interopRequireDefault(__webpack_require__("IC/e"));
+
+var _amber = _interopRequireDefault(__webpack_require__("QaNM"));
+
+var _orange = _interopRequireDefault(__webpack_require__("7U8d"));
+
+var _cyan = _interopRequireDefault(__webpack_require__("6zo0"));
+
+var styles = function styles(theme) {
+  return {
+    root: {
+      textAlign: "center",
+      color: _amber.default[500]
+    }
+  };
+};
+
+exports.styles = styles;
+
+var MarketShare =
+/*#__PURE__*/
+function (_React$Component) {
+  (0, _inherits2.default)(MarketShare, _React$Component);
+
+  function MarketShare() {
+    (0, _classCallCheck2.default)(this, MarketShare);
+    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(MarketShare).apply(this, arguments));
+  }
+
+  (0, _createClass2.default)(MarketShare, [{
+    key: "renderTitle",
+    value: function renderTitle() {
+      return _react.default.createElement(_Typography.default, {
+        variant: "h4",
+        color: "inherit"
+      }, this.props.title);
+    }
+  }, {
+    key: "renderChart",
+    value: function renderChart(width, height) {
+      if (!this.props.data) return _react.default.createElement("div", {
+        style: {
+          width: width,
+          height: height
+        }
+      });
+      return _react.default.createElement(_react.default.Fragment, null, _react.default.createElement("svg", {
+        width: 0,
+        height: 0
+      }, _react.default.createElement("defs", null, _react.default.createElement("filter", {
+        id: "worldPieShadow"
+      }, _react.default.createElement("feGaussianBlur", {
+        in: "SourceAlpha",
+        stdDeviation: "5"
+      }), _react.default.createElement("feOffset", {
+        dx: "3",
+        dy: "3",
+        result: "offsetblur"
+      }), _react.default.createElement("feFlood", {
+        floodColor: "rgba(0, 0, 0, 0.85)"
+      }), _react.default.createElement("feComposite", {
+        in2: "offsetblur",
+        operator: "in"
+      }), _react.default.createElement("feMerge", null, _react.default.createElement("feMergeNode", null), _react.default.createElement("feMergeNode", {
+        in: "SourceGraphic"
+      }))))), _react.default.createElement(_victory.VictoryChart, {
+        width: width,
+        height: height,
+        padding: 20,
+        containerComponent: _react.default.createElement(_victory.VictoryContainer, {
+          responsive: false,
+          style: {
+            filter: "url(#worldPieShadow)"
+          }
+        }),
+        theme: _victory.VictoryTheme.material
+      }, _react.default.createElement(_victory.VictoryPie, {
+        animate: true,
+        colorScale: [_lightBlue.default[200], _orange.default[200], _amber.default[200], _cyan.default[200]],
+        data: this.props.data,
+        x: "vendor",
+        y: "value",
+        innerRadius: 60,
+        labelRadius: 100,
+        style: {
+          labels: {
+            fontSize: 20,
+            fill: "#000000"
+          }
+        }
+      }), _react.default.createElement(_victory.VictoryAxis, {
+        style: {
+          axis: {
+            display: "none"
+          },
+          ticks: {
+            display: "none"
+          },
+          tickLabels: {
+            display: "none"
+          },
+          grid: {
+            display: "none"
+          }
+        }
+      })));
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this = this;
+
+      return _react.default.createElement("div", {
+        className: this.props.classes.root
+      }, this.renderTitle(), _react.default.createElement("div", null, _react.default.createElement(_reactVirtualized.AutoSizer, {
+        disableHeight: true
+      }, function (_ref) {
+        var width = _ref.width;
+        return !!width && _this.renderChart(width, width);
+      })));
+    }
+  }]);
+  return MarketShare;
+}(_react.default.Component);
+
+var _default = MarketShare;
+exports.default = _default;
 
 /***/ })
 

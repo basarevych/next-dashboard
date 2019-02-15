@@ -1,34 +1,84 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Grid from "@material-ui/core/Grid";
+import { graphql } from "react-relay";
+import { NextQueryRenderer } from "../app/providers/Relay";
 import Dashboard from "./DashboardContainer";
 
-export const styles = theme => ({
-  layout: {
-    width: "100%",
-    flex: 1,
-    padding: theme.main.spacing
+const defaultVariables = {};
+
+export const query = graphql`
+  query DashboardPageQuery {
+    viewer {
+      profitValues {
+        edges {
+          node {
+            date
+            profit
+          }
+        }
+      }
+      salesValues {
+        edges {
+          node {
+            date
+            sales
+          }
+        }
+      }
+      clientsValues {
+        edges {
+          node {
+            date
+            clients
+          }
+        }
+      }
+      avgTimeValues {
+        edges {
+          node {
+            date
+            avgTime
+          }
+        }
+      }
+      marketShares {
+        edges {
+          node {
+            id
+            country
+            shares {
+              vendor
+              value
+            }
+          }
+        }
+      }
+    }
   }
-});
+`;
 
 class DashboardPage extends React.Component {
   static propTypes = {
-    theme: PropTypes.object.isRequired,
-    classes: PropTypes.object.isRequired,
     isAuthenticated: PropTypes.bool.isRequired
   };
+
+  static async getInitialProps({ statusCode, fetchQuery }) {
+    if (statusCode !== 200) return;
+    await fetchQuery(query, defaultVariables);
+  }
 
   render() {
     if (!this.props.isAuthenticated) return null;
 
     return (
-      <div className={this.props.classes.layout}>
-        <Grid container spacing={this.props.theme.main.spacing}>
-          <Grid item xs={12}>
-            <Dashboard />
-          </Grid>
-        </Grid>
-      </div>
+      <NextQueryRenderer
+        query={query}
+        variables={defaultVariables}
+        render={({ error, props }) => {
+          if (error || !props) return null;
+          return <Dashboard viewer={props.viewer} />;
+        }}
+      />
     );
   }
 }

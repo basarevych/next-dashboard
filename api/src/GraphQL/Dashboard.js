@@ -2,8 +2,10 @@ const EventEmitter = require("events");
 const {
   GraphQLNonNull,
   GraphQLInt,
+  GraphQLFloat,
   GraphQLString,
-  GraphQLObjectType
+  GraphQLObjectType,
+  GraphQLList
 } = require("graphql");
 const {
   connectionArgs,
@@ -51,6 +53,10 @@ class Dashboard extends EventEmitter {
       return this.dashboardRepo.getClientsValue(context, { id });
     if (type === "AvgTimeValue")
       return this.dashboardRepo.getAvgTimeValue(context, { id });
+    if (type === "MarketShareValue")
+      return this.dashboardRepo.getMarketShareValue(context, { id });
+    if (type === "MarketShare")
+      return this.dashboardRepo.getMarketShare(context, { id });
     return null;
   }
 
@@ -65,6 +71,10 @@ class Dashboard extends EventEmitter {
       return this.ClientsValue;
     if (obj instanceof this.dashboardModel.AvgTimeValueModel)
       return this.AvgTimeValue;
+    if (obj instanceof this.dashboardModel.MarketShareValueModel)
+      return this.MarketShareValue;
+    if (obj instanceof this.dashboardModel.MarketShareModel)
+      return this.MarketShare;
     return null;
   }
 
@@ -154,7 +164,7 @@ class Dashboard extends EventEmitter {
       fields: () => ({
         id: globalIdField("ClientsValue"),
         date: { type: new GraphQLNonNull(GraphQLDate) },
-        cients: { type: new GraphQLNonNull(GraphQLInt) }
+        clients: { type: new GraphQLNonNull(GraphQLInt) }
       }),
       interfaces: [nodeInterface]
     });
@@ -174,7 +184,7 @@ class Dashboard extends EventEmitter {
       fields: () => ({
         id: globalIdField("AvgTimeValue"),
         date: { type: new GraphQLNonNull(GraphQLDate) },
-        avgTime: { type: new GraphQLNonNull(GraphQLInt) }
+        avgTime: { type: new GraphQLNonNull(GraphQLFloat) }
       }),
       interfaces: [nodeInterface]
     });
@@ -188,6 +198,48 @@ class Dashboard extends EventEmitter {
     });
     this.AvgTimeValuesConnection = AvgTimeValuesConnection;
     this.AvgTimeValueEdge = AvgTimeValueEdge;
+
+    this.MarketShareValue = new GraphQLObjectType({
+      name: "MarketShareValue",
+      fields: () => ({
+        id: globalIdField("MarketShareValue"),
+        vendor: { type: new GraphQLNonNull(GraphQLString) },
+        value: { type: new GraphQLNonNull(GraphQLFloat) }
+      }),
+      interfaces: [nodeInterface]
+    });
+
+    const {
+      connectionType: MarketShareValuesConnection,
+      edgeType: MarketShareValueEdge
+    } = connectionDefinitions({
+      name: "MarketShareValue",
+      nodeType: this.MarketShareValue
+    });
+    this.MarketShareValuesConnection = MarketShareValuesConnection;
+    this.MarketShareValueEdge = MarketShareValueEdge;
+
+    this.MarketShare = new GraphQLObjectType({
+      name: "MarketShare",
+      fields: () => ({
+        id: globalIdField("MarketShare"),
+        country: { type: new GraphQLNonNull(GraphQLString) },
+        shares: {
+          type: new GraphQLNonNull(new GraphQLList(this.MarketShareValue))
+        }
+      }),
+      interfaces: [nodeInterface]
+    });
+
+    const {
+      connectionType: MarketSharesConnection,
+      edgeType: MarketShareEdge
+    } = connectionDefinitions({
+      name: "MarketShare",
+      nodeType: this.MarketShare
+    });
+    this.MarketSharesConnection = MarketSharesConnection;
+    this.MarketShareEdge = MarketShareEdge;
 
     this.query = {
       countries: {
@@ -232,6 +284,15 @@ class Dashboard extends EventEmitter {
         resolve: (source, args, context) =>
           connectionFromPromisedArray(
             this.dashboardRepo.getAvgTimeValues(context, args),
+            args
+          )
+      },
+      marketShares: {
+        type: this.MarketSharesConnection,
+        args: connectionArgs,
+        resolve: (source, args, context) =>
+          connectionFromPromisedArray(
+            this.dashboardRepo.getMarketShares(context, args),
             args
           )
       }

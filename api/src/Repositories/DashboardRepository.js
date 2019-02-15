@@ -10,6 +10,12 @@ class DashboardRepository extends EventEmitter {
     this.di = di;
     this.dashboard = dashboard;
     this.fake = fake;
+
+    this.profitsTime = 0;
+    this.salesTime = 0;
+    this.clientsTime = 0;
+    this.avgTimesTime = 0;
+    this.marketSharesTime = 0;
   }
 
   // eslint-disable-next-line lodash/prefer-constant
@@ -27,7 +33,9 @@ class DashboardRepository extends EventEmitter {
     return "singleton";
   }
 
-  async init() {
+  async init() {}
+
+  generateProfits(context) {
     this.profits = [];
     let day = moment();
     for (let i = 0; i < 7; i++) {
@@ -40,28 +48,36 @@ class DashboardRepository extends EventEmitter {
         : this.fake.getInt(10000, 11000);
       this.profits.unshift(
         new this.dashboard.ProfitValueModel({
-          date: day,
+          date: day.toDate(),
           revenues,
           expenses,
           profit: revenues - expenses
         })
       );
     }
+    this.profitsTime = Date.now();
+    context.preCachePages({ path: ["/dashboard"] }).catch(console.error);
+  }
 
+  generateSales(context) {
     this.sales = [];
-    day = moment();
+    let day = moment();
     for (let i = 0; i < 7; i++) {
       day.subtract(1, "day");
       this.sales.unshift(
         new this.dashboard.SalesValueModel({
-          date: day,
+          date: day.toDate(),
           sales: i ? this.fake.getInt(2000, 5000) : this.fake.getInt(5100, 6000)
         })
       );
     }
+    this.salesTime = Date.now();
+    context.preCachePages({ path: ["/dashboard"] }).catch(console.error);
+  }
 
+  generateClients(context) {
     this.clients = [];
-    day = moment();
+    let day = moment();
     for (let i = 0; i < 7; i++) {
       day.subtract(1, "day");
       let prevClients = i
@@ -69,16 +85,20 @@ class DashboardRepository extends EventEmitter {
         : this.fake.getInt(7000, 10000);
       this.clients.unshift(
         new this.dashboard.ClientsValueModel({
-          date: day,
+          date: day.toDate(),
           clients: i
             ? this.fake.getInt(prevClients - 100, prevClients - 700)
             : prevClients
         })
       );
     }
+    this.clientsTime = Date.now();
+    context.preCachePages({ path: ["/dashboard"] }).catch(console.error);
+  }
 
+  generateAvgTimes(context) {
     this.avgTimes = [];
-    day = moment();
+    let day = moment();
     for (let i = 0; i < 7; i++) {
       day.subtract(1, "day");
       let prevAvgTime = i
@@ -86,7 +106,7 @@ class DashboardRepository extends EventEmitter {
         : this.fake.getInt(30, 90) / 10;
       this.avgTimes.unshift(
         new this.dashboard.AvgTimeValueModel({
-          date: day,
+          date: day.toDate(),
           avgTime: i
             ? this.fake.getInt(prevAvgTime * 10 + 10, prevAvgTime * 10 + 200) /
               10
@@ -94,6 +114,63 @@ class DashboardRepository extends EventEmitter {
         })
       );
     }
+    this.avgTimesTime = Date.now();
+    context.preCachePages({ path: ["/dashboard"] }).catch(console.error);
+  }
+
+  generateMarketShares(context) {
+    const vendors = [
+      "Apple",
+      "Samsung",
+      "IBM",
+      "Foxconn",
+      "Sony",
+      "HP",
+      "Dell",
+      "Fujitsu"
+    ];
+
+    const getRandomData = country => {
+      let shares = [];
+      let variants = _.shuffle(vendors.slice());
+
+      let sum = 0;
+      for (let i = 0; i < 3; i++) {
+        let vendor = variants.shift();
+
+        let value = this.fake.getInt(10, 30);
+        sum += value;
+
+        shares.push(
+          new this.dashboard.MarketShareValueModel({
+            id: `${country.iso2}:${vendor}`,
+            vendor,
+            value
+          })
+        );
+      }
+
+      let vendor = variants.shift();
+      shares.push(
+        new this.dashboard.MarketShareValueModel({
+          id: `${country.iso2}:${vendor}`,
+          vendor,
+          value: 100 - sum
+        })
+      );
+
+      return new this.dashboard.MarketShareModel({
+        id: country.iso2,
+        country: country.name,
+        shares
+      });
+    };
+
+    this.marketShares = _.map(allCountries, country => getRandomData(country));
+    this.marketShares.unshift(getRandomData({ iso2: "WORLD", name: "World" }));
+
+    this.marketSharesTime = Date.now();
+    context.preCachePages({ path: ["/dashboard"] }).catch(console.error);
   }
 
   async getCountry(context, { id }) {
@@ -109,15 +186,6 @@ class DashboardRepository extends EventEmitter {
       name: country.name,
       callingCode: country.dialCode
     });
-  }
-
-  async countCountries(context) {
-    debug("countCountries");
-
-    let requester = await context.getUser();
-    if (!requester) throw this.di.get("error.access");
-
-    return allCountries.length;
   }
 
   async getCountries(context) {
@@ -143,18 +211,12 @@ class DashboardRepository extends EventEmitter {
     let requester = await context.getUser();
     if (!requester) throw this.di.get("error.access");
 
+    if (Date.now() - this.profitsTime > 24 * 60 * 60 * 1000)
+      this.generateProfits(context);
+
     const profit = _.find(this.profits, ["id", id]);
     if (!profit) throw this.di.get("error.entityNotFound");
     return profit;
-  }
-
-  async countProfitValues(context) {
-    debug("countProfitValues");
-
-    let requester = await context.getUser();
-    if (!requester) throw this.di.get("error.access");
-
-    return this.profits.length;
   }
 
   async getProfitValues(context) {
@@ -162,6 +224,9 @@ class DashboardRepository extends EventEmitter {
 
     let requester = await context.getUser();
     if (!requester) throw this.di.get("error.access");
+
+    if (Date.now() - this.profitsTime > 24 * 60 * 60 * 1000)
+      this.generateProfits(context);
 
     return this.profits;
   }
@@ -172,18 +237,12 @@ class DashboardRepository extends EventEmitter {
     let requester = await context.getUser();
     if (!requester) throw this.di.get("error.access");
 
+    if (Date.now() - this.salesTime > 24 * 60 * 60 * 1000)
+      this.generateSales(context);
+
     const sales = _.find(this.sales, ["id", id]);
     if (!sales) throw this.di.get("error.entityNotFound");
     return sales;
-  }
-
-  async countSalesValues(context) {
-    debug("countSalesValues");
-
-    let requester = await context.getUser();
-    if (!requester) throw this.di.get("error.access");
-
-    return this.sales.length;
   }
 
   async getSalesValues(context) {
@@ -191,6 +250,9 @@ class DashboardRepository extends EventEmitter {
 
     let requester = await context.getUser();
     if (!requester) throw this.di.get("error.access");
+
+    if (Date.now() - this.salesTime > 24 * 60 * 60 * 1000)
+      this.generateSales(context);
 
     return this.sales;
   }
@@ -201,18 +263,12 @@ class DashboardRepository extends EventEmitter {
     let requester = await context.getUser();
     if (!requester) throw this.di.get("error.access");
 
+    if (Date.now() - this.clientsTime > 24 * 60 * 60 * 1000)
+      this.generateClients(context);
+
     const clients = _.find(this.clients, ["id", id]);
     if (!clients) throw this.di.get("error.entityNotFound");
     return clients;
-  }
-
-  async countClientsValues(context) {
-    debug("countClientsValues");
-
-    let requester = await context.getUser();
-    if (!requester) throw this.di.get("error.access");
-
-    return this.clients.length;
   }
 
   async getClientsValues(context) {
@@ -220,6 +276,9 @@ class DashboardRepository extends EventEmitter {
 
     let requester = await context.getUser();
     if (!requester) throw this.di.get("error.access");
+
+    if (Date.now() - this.clientsTime > 24 * 60 * 60 * 1000)
+      this.generateClients(context);
 
     return this.clients;
   }
@@ -230,18 +289,12 @@ class DashboardRepository extends EventEmitter {
     let requester = await context.getUser();
     if (!requester) throw this.di.get("error.access");
 
+    if (Date.now() - this.avgTimesTime > 24 * 60 * 60 * 1000)
+      this.generateAvgTimes(context);
+
     const avgTime = _.find(this.avgTimes, ["id", id]);
     if (!avgTime) throw this.di.get("error.entityNotFound");
     return avgTime;
-  }
-
-  async countAvgTimeValues(context) {
-    debug("countAvgTimeValues");
-
-    let requester = await context.getUser();
-    if (!requester) throw this.di.get("error.access");
-
-    return this.avgTimes.length;
   }
 
   async getAvgTimeValues(context) {
@@ -250,7 +303,55 @@ class DashboardRepository extends EventEmitter {
     let requester = await context.getUser();
     if (!requester) throw this.di.get("error.access");
 
+    if (Date.now() - this.avgTimesTime > 24 * 60 * 60 * 1000)
+      this.generateAvgTimes(context);
+
     return this.avgTimes;
+  }
+
+  async getMarketShare(context, { id }) {
+    debug("getMarketShare");
+
+    let requester = await context.getUser();
+    if (!requester) throw this.di.get("error.access");
+
+    if (Date.now() - this.marketSharesTime > 24 * 60 * 60 * 1000)
+      this.generateMarketShares(context);
+
+    const countryData = _.find(this.marketShares, ["id", id]);
+    if (!countryData) throw this.di.get("error.entityNotFound");
+
+    return countryData;
+  }
+
+  async getMarketShareValue(context, { id }) {
+    debug("getMarketShareValue");
+
+    let requester = await context.getUser();
+    if (!requester) throw this.di.get("error.access");
+
+    if (Date.now() - this.marketSharesTime > 24 * 60 * 60 * 1000)
+      this.generateMarketShares(context);
+
+    const [country, vendor] = _.split(id, ":");
+
+    const countryData = await this.getMarketShare(context, { id: country });
+    const vendorData = _.find(countryData.shares, ["id", vendor]);
+    if (!vendorData) throw this.di.get("error.entityNotFound");
+
+    return vendorData;
+  }
+
+  async getMarketShares(context) {
+    debug("getMarketShares");
+
+    let requester = await context.getUser();
+    if (!requester) throw this.di.get("error.access");
+
+    if (Date.now() - this.marketSharesTime > 24 * 60 * 60 * 1000)
+      this.generateMarketShares(context);
+
+    return this.marketShares;
   }
 }
 

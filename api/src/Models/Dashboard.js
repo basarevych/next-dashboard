@@ -54,6 +54,22 @@ class AvgTimeValueModel {
   }
 }
 
+class MarketShareValueModel {
+  constructor({ id, vendor, value }) {
+    this.id = id;
+    this.vendor = vendor;
+    this.value = value;
+  }
+}
+
+class MarketShareModel {
+  constructor({ id, country, shares }) {
+    this.id = id;
+    this.country = country;
+    this.shares = shares;
+  }
+}
+
 class Dashboard extends EventEmitter {
   constructor() {
     super();
@@ -63,6 +79,8 @@ class Dashboard extends EventEmitter {
     this.SalesValueModel = SalesValueModel;
     this.ClientsValueModel = ClientsValueModel;
     this.AvgTimeValueModel = AvgTimeValueModel;
+    this.MarketShareModel = MarketShareModel;
+    this.MarketShareValueModel = MarketShareValueModel;
   }
 
   // eslint-disable-next-line lodash/prefer-constant

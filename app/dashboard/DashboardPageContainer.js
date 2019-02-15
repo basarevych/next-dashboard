@@ -1,7 +1,6 @@
 import { connect } from "react-redux";
-import { withStyles } from "@material-ui/core/styles";
 import { authSelectors } from "../auth/state";
-import DashboardPageComponent, { styles } from "./DashboardPage";
+import DashboardPageComponent from "./DashboardPage";
 
 const mapStateToProps = state => {
   return {
@@ -9,14 +8,12 @@ const mapStateToProps = state => {
   };
 };
 
-const DashboardPage = withStyles(styles, { withTheme: true })(
-  connect(
-    mapStateToProps,
-    null,
-    null,
-    { pure: false }
-  )(DashboardPageComponent)
-);
+const DashboardPage = connect(
+  mapStateToProps,
+  null,
+  null,
+  { pure: false }
+)(DashboardPageComponent);
 
 DashboardPage.getInitialProps = DashboardPageComponent.getInitialProps;
 
