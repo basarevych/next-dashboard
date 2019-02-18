@@ -72,9 +72,9 @@ class WorldMap extends React.Component {
                     geography.id !== "ATA" && (
                       <Geography
                         key={i}
-                        onClick={() =>
-                          this.props.onSelect(getCountryISO2(geography.id))
-                        }
+                        onClick={() => {
+                          this.props.onSelect(getCountryISO2(geography.id));
+                        }}
                         geography={geography}
                         projection={projection}
                         style={{

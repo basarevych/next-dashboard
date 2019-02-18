@@ -100,7 +100,7 @@ class Employees extends EventEmitter {
     });
 
     const {
-      connectionType: EmployeesConnection,
+      connectionType: EmployeeConnection,
       edgeType: EmployeeEdge
     } = connectionDefinitions({
       name: "Employee",
@@ -122,7 +122,7 @@ class Employees extends EventEmitter {
         }
       })
     });
-    this.EmployeesConnection = EmployeesConnection;
+    this.EmployeeConnection = EmployeeConnection;
     this.EmployeeEdge = EmployeeEdge;
 
     this.EmployeeSortBy = new GraphQLEnumType({
@@ -162,7 +162,7 @@ class Employees extends EventEmitter {
           )
       },
       employees: {
-        type: this.EmployeesConnection,
+        type: this.EmployeeConnection,
         args: {
           dept: { type: this.EmployeeDept },
           sortBy: { type: this.EmployeeSortBy },
@@ -170,7 +170,7 @@ class Employees extends EventEmitter {
           ...connectionArgs
         },
         resolve: (source, args, context) =>
-          this.employeesRepo.getEmployeesConnection(
+          this.employeesRepo.getEmployeeConnection(
             context,
             _.assign({}, args, {
               dept:

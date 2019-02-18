@@ -2,57 +2,26 @@ import React from "react";
 import PropTypes from "prop-types";
 import { graphql } from "react-relay";
 import { NextQueryRenderer } from "../app/providers/Relay";
-import Dashboard from "./DashboardContainer";
+import Dashboard, { defaultCountry } from "./DashboardContainer";
 
-const defaultVariables = {};
+const defaultVariables = { country: defaultCountry };
 
 export const query = graphql`
-  query DashboardPageQuery {
+  query DashboardPageQuery($country: ID) {
     viewer {
       profitValues {
-        edges {
-          node {
-            date
-            profit
-          }
-        }
+        ...ProfitStatContainer_data
       }
       salesValues {
-        edges {
-          node {
-            date
-            sales
-          }
-        }
+        ...SalesStatContainer_data
       }
       clientsValues {
-        edges {
-          node {
-            date
-            clients
-          }
-        }
+        ...ClientsStatContainer_data
       }
       avgTimeValues {
-        edges {
-          node {
-            date
-            avgTime
-          }
-        }
+        ...AvgTimeStatContainer_data
       }
-      marketShares {
-        edges {
-          node {
-            id
-            country
-            shares {
-              vendor
-              value
-            }
-          }
-        }
-      }
+      ...MarketShareContainer_viewer @arguments(country: $country)
     }
   }
 `;

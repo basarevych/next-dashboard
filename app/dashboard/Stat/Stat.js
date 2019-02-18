@@ -63,7 +63,7 @@ class Stat extends React.Component {
     classes: PropTypes.object.isRequired,
     theme: PropTypes.object.isRequired,
     label: PropTypes.string.isRequired,
-    data: PropTypes.array.isRequired,
+    data: PropTypes.object.isRequired,
     precision: PropTypes.number
   };
 
@@ -71,12 +71,19 @@ class Stat extends React.Component {
     precision: 0
   };
 
+  getData() {
+    return _.map(_.get(this.props.data, "edges", []), edge => ({
+      date: new Date(_.get(edge, "node.date")),
+      value: _.get(edge, "node.value")
+    }));
+  }
+
   renderStat() {
     return (
       <div className={this.props.classes.stat}>
         <Typography variant="h4" color="inherit">
           <FormattedNumber
-            value={_.last(this.props.data).value}
+            value={_.last(this.getData()).value}
             maximumFractionDigits={this.props.precision}
           />
         </Typography>
@@ -88,7 +95,7 @@ class Stat extends React.Component {
   }
 
   renderDelta() {
-    const items = _.slice(this.props.data, -2);
+    const items = _.slice(this.getData(), -2);
     if (items.length !== 2) return null;
 
     const delta = (100 * (items[1].value - items[0].value)) / items[0].value;
@@ -111,7 +118,7 @@ class Stat extends React.Component {
 
   renderChart(width, height) {
     const max = _.reduce(
-      this.props.data,
+      this.getData(),
       (acc, cur) => Math.max(acc, cur.value),
       0
     );
@@ -147,7 +154,7 @@ class Stat extends React.Component {
             }}
           />
           <VictoryLine
-            data={this.props.data}
+            data={this.getData()}
             x="date"
             y="value"
             interpolation="monotoneX"
@@ -159,7 +166,7 @@ class Stat extends React.Component {
             }}
           />
           <VictoryScatter
-            data={this.props.data}
+            data={this.getData()}
             x="date"
             y="value"
             labels={d =>

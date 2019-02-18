@@ -91,7 +91,7 @@ class EmployeesRepository extends EventEmitter {
     return await this.employee.model.countDocuments(dept && { dept });
   }
 
-  async getEmployeesConnection(
+  async getEmployeeConnection(
     context,
     { country, dept, sortBy, sortDir, after, first, before, last } = {}
   ) {

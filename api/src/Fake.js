@@ -25,7 +25,7 @@ class Fake extends EventEmitter {
     let dept = depts[this.getInt(0, depts.length - 1)];
 
     let code = this.getCountry();
-    let country = allCountries[iso2Lookup[code]].name;
+    let country = allCountries[iso2Lookup[_.toLower(code)]].name;
 
     return {
       uid: _.padStart(usedNames.length, 6, "0"),
@@ -57,7 +57,9 @@ class Fake extends EventEmitter {
   }
 
   getCountry() {
-    return allCountries[this.getInt(0, allCountries.length - 1)].iso2;
+    return _.toUpper(
+      allCountries[this.getInt(0, allCountries.length - 1)].iso2
+    );
   }
 
   getSalary() {

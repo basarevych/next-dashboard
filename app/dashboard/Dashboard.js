@@ -1,11 +1,15 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { intlShape, FormattedMessage } from "react-intl";
-import { fromGlobalId } from "graphql-relay";
 import Grid from "@material-ui/core/Grid";
-import Stat from "./StatContainer";
-import WorldMap from "./WorldMapContainer";
-import MarketShare from "./MarketShareContainer";
+import Slide from "@material-ui/core/Slide";
+import ProfitStat from "./Stat/ProfitStatContainer";
+import SalesStat from "./Stat/SalesStatContainer";
+import ClientsStat from "./Stat/ClientsStatContainer";
+import AvgTimeStat from "./Stat/AvgTimeStatContainer";
+import WorldMap from "./WorldMarket/WorldMapContainer";
+import MarketShare from "./WorldMarket/MarketShareContainer";
+
+export const defaultCountry = "WORLD";
 
 export const styles = theme => ({
   layout: {
@@ -17,7 +21,6 @@ export const styles = theme => ({
 
 class Dashboard extends React.Component {
   static propTypes = {
-    intl: intlShape.isRequired,
     theme: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired,
     viewer: PropTypes.object.isRequired
@@ -27,44 +30,36 @@ class Dashboard extends React.Component {
     super(props);
 
     this.state = {
-      countryId: null,
-      countryName: null,
-      countryShares: null
+      countryId: defaultCountry,
+      isLoaded: false
     };
 
+    this.isTransitioning = false;
+    this.isDestroyed = false;
+
     this.handleCountrySelected = this.handleCountrySelected.bind(this);
+    this.handleLoaded = this.handleLoaded.bind(this);
   }
 
-  componentDidMount() {
-    this.handleCountrySelected();
-  }
-
-  getCountry(id) {
-    return _.find(
-      _.get(this.props.viewer, "marketShares.edges", []),
-      edge =>
-        _.toLower(fromGlobalId(_.get(edge, "node.id")).id) === _.toLower(id)
-    );
+  componentWillUnmount() {
+    this.isDestroyed = true;
   }
 
   handleCountrySelected(id) {
-    let country, name, shares;
-    if (id) country = this.getCountry(id);
-    if (country) {
-      name = _.get(country, "node.country");
-      shares = _.get(country, "node.shares");
-    } else {
-      id = "WORLD";
-      country = this.getCountry(id);
-      name = this.props.intl.formatMessage({ id: "DASHBOARD_WORLD_LABEL" });
-      shares = _.get(country, "node.shares");
-    }
-
-    this.setState({
-      countryId: id,
-      countryName: name,
-      countryShares: shares
+    if (this.isTransitioning) return;
+    this.isTransitioning = true;
+    this.setState({ isLoaded: false }, () => {
+      setTimeout(() => {
+        this.isTransitioning = false;
+        if (this.isDestroyed) return;
+        this.setState({ countryId: id });
+      }, this.props.theme.transitions.duration.leavingScreen);
     });
+  }
+
+  handleLoaded() {
+    if (this.isDestroyed) return;
+    this.setState({ isLoaded: true });
   }
 
   render() {
@@ -76,52 +71,28 @@ class Dashboard extends React.Component {
           alignItems="center"
         >
           <Grid item xs={12} md={3}>
-            <Stat
+            <ProfitStat
               label="DASHBOARD_PROFIT_LABEL"
-              data={_.map(
-                _.get(this.props.viewer, "profitValues.edges", []),
-                edge => ({
-                  date: new Date(_.get(edge, "node.date")),
-                  value: _.get(edge, "node.profit")
-                })
-              )}
+              data={this.props.viewer.profitValues}
             />
           </Grid>
           <Grid item xs={12} md={3}>
-            <Stat
+            <SalesStat
               label="DASHBOARD_SALES_LABEL"
-              data={_.map(
-                _.get(this.props.viewer, "salesValues.edges", []),
-                edge => ({
-                  date: new Date(_.get(edge, "node.date")),
-                  value: _.get(edge, "node.sales")
-                })
-              )}
+              data={this.props.viewer.salesValues}
             />
           </Grid>
           <Grid item xs={12} md={3}>
-            <Stat
+            <ClientsStat
               label="DASHBOARD_CLIENTS_LABEL"
-              data={_.map(
-                _.get(this.props.viewer, "clientsValues.edges", []),
-                edge => ({
-                  date: new Date(_.get(edge, "node.date")),
-                  value: _.get(edge, "node.clients")
-                })
-              )}
+              data={this.props.viewer.clientsValues}
             />
           </Grid>
           <Grid item xs={12} md={3}>
-            <Stat
+            <AvgTimeStat
               label="DASHBOARD_AVG_TIME_LABEL"
               precision={2}
-              data={_.map(
-                _.get(this.props.viewer, "avgTimeValues.edges", []),
-                edge => ({
-                  date: new Date(_.get(edge, "node.date")),
-                  value: _.get(edge, "node.avgTime")
-                })
-              )}
+              data={this.props.viewer.avgTimeValues}
             />
           </Grid>
           <Grid item xs={12} md={8}>
@@ -131,10 +102,13 @@ class Dashboard extends React.Component {
             />
           </Grid>
           <Grid item xs={12} md={4}>
-            <MarketShare
-              title={this.state.countryName}
-              data={this.state.countryShares}
-            />
+            <Slide direction="left" in={this.state.isLoaded}>
+              <MarketShare
+                selected={this.state.countryId}
+                viewer={this.props.viewer}
+                onLoaded={this.handleLoaded}
+              />
+            </Slide>
           </Grid>
         </Grid>
       </div>

@@ -337,7 +337,7 @@
       "publicPath": "/_next/static/chunks/commons.5f2aa0a20b7f70dd2655.js"
     }
   ],
-  "./pink": [
+  "../colors/pink": [
     {
       "id": "8rdq",
       "name": "./node_modules/@material-ui/core/colors/pink.js",
@@ -1089,7 +1089,7 @@
       "publicPath": "/_next/static/chunks/commons.5f2aa0a20b7f70dd2655.js"
     }
   ],
-  "./rules/StyleRule": [
+  "../rules/StyleRule": [
     {
       "id": "Rx9b",
       "name": "./node_modules/jss/lib/rules/StyleRule.js",
@@ -1231,7 +1231,7 @@
       "publicPath": "/_next/static/chunks/commons.5f2aa0a20b7f70dd2655.js"
     }
   ],
-  "../core-js/object/assign": [
+  "@babel/runtime-corejs2/core-js/object/assign": [
     {
       "id": "UXZV",
       "name": "./node_modules/@babel/runtime-corejs2/core-js/object/assign.js",
@@ -1311,7 +1311,7 @@
       "publicPath": "/_next/static/chunks/commons.5f2aa0a20b7f70dd2655.js"
     }
   ],
-  "../../modules/_core": [
+  "../modules/_core": [
     {
       "id": "WEpk",
       "name": "./node_modules/core-js/library/modules/_core.js",
@@ -1381,7 +1381,7 @@
       "publicPath": "/_next/static/chunks/commons.5f2aa0a20b7f70dd2655.js"
     }
   ],
-  "../StyleSheet": [
+  "./StyleSheet": [
     {
       "id": "XY0u",
       "name": "./node_modules/jss/lib/StyleSheet.js",
@@ -1661,7 +1661,7 @@
       "publicPath": "/_next/static/chunks/commons.5f2aa0a20b7f70dd2655.js"
     }
   ],
-  "./red": [
+  "../colors/red": [
     {
       "id": "fWIC",
       "name": "./node_modules/@material-ui/core/colors/red.js",
@@ -1853,7 +1853,7 @@
       "publicPath": "/_next/static/chunks/commons.5f2aa0a20b7f70dd2655.js"
     }
   ],
-  "./defineProperty": [
+  "@babel/runtime/helpers/defineProperty": [
     {
       "id": "lSNA",
       "name": "./node_modules/@babel/runtime/helpers/defineProperty.js",
@@ -2117,7 +2117,7 @@
       "publicPath": "/_next/static/chunks/commons.5f2aa0a20b7f70dd2655.js"
     }
   ],
-  "./common": [
+  "../colors/common": [
     {
       "id": "sAgZ",
       "name": "./node_modules/@material-ui/core/colors/common.js",
@@ -2309,7 +2309,7 @@
       "publicPath": "/_next/static/chunks/commons.5f2aa0a20b7f70dd2655.js"
     }
   ],
-  "./indigo": [
+  "../colors/indigo": [
     {
       "id": "xJ30",
       "name": "./node_modules/@material-ui/core/colors/indigo.js",
@@ -2325,7 +2325,7 @@
       "publicPath": "/_next/static/chunks/commons.5f2aa0a20b7f70dd2655.js"
     }
   ],
-  "../styles/transitions": [
+  "./transitions": [
     {
       "id": "yAQS",
       "name": "./node_modules/@material-ui/core/styles/transitions.js",

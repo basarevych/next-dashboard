@@ -80,7 +80,7 @@ class UsersRepository extends EventEmitter {
     return await this.user.model.countDocuments();
   }
 
-  async getUsersConnection(
+  async getUserConnection(
     context,
     { sortBy, sortDir, after, first, before, last } = {}
   ) {

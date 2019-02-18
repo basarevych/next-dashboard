@@ -1,6 +1,7 @@
 const EventEmitter = require("events");
 const {
   GraphQLNonNull,
+  GraphQLID,
   GraphQLInt,
   GraphQLFloat,
   GraphQLString,
@@ -54,9 +55,10 @@ class Dashboard extends EventEmitter {
     if (type === "AvgTimeValue")
       return this.dashboardRepo.getAvgTimeValue(context, { id });
     if (type === "MarketShareValue")
-      return this.dashboardRepo.getMarketShareValue(context, { id });
-    if (type === "MarketShare")
-      return this.dashboardRepo.getMarketShare(context, { id });
+      return this.dashboardRepo.getMarketSharesValue(context, { id });
+    if (type === "MarketShare") {
+      return this.dashboardRepo.getMarketShareByCountry(context, { id });
+    }
     return null;
   }
 
@@ -89,13 +91,13 @@ class Dashboard extends EventEmitter {
         name: { type: new GraphQLNonNull(GraphQLString) },
         callingCode: { type: new GraphQLNonNull(GraphQLString) },
         employees: {
-          type: root.employees.EmployeesConnection,
+          type: root.employees.EmployeeConnection,
           args: {
             dept: { type: root.employees.EmployeeDept },
             ...connectionArgs
           },
           resolve: (source, args, context) =>
-            this.employeesRepo.getEmployeesConnection(
+            this.employeesRepo.getEmployeeConnection(
               context,
               _.assign({}, args, {
                 country: source.id,
@@ -108,13 +110,13 @@ class Dashboard extends EventEmitter {
     });
 
     const {
-      connectionType: CountriesConnection,
+      connectionType: CountryConnection,
       edgeType: CountryEdge
     } = connectionDefinitions({
       name: "Country",
       nodeType: this.Country
     });
-    this.CountriesConnection = CountriesConnection;
+    this.CountryConnection = CountryConnection;
     this.CountryEdge = CountryEdge;
 
     this.ProfitValue = new GraphQLObjectType({
@@ -130,13 +132,13 @@ class Dashboard extends EventEmitter {
     });
 
     const {
-      connectionType: ProfitValuesConnection,
+      connectionType: ProfitValueConnection,
       edgeType: ProfitValueEdge
     } = connectionDefinitions({
       name: "ProfitValue",
       nodeType: this.ProfitValue
     });
-    this.ProfitValuesConnection = ProfitValuesConnection;
+    this.ProfitValueConnection = ProfitValueConnection;
     this.ProfitValueEdge = ProfitValueEdge;
 
     this.SalesValue = new GraphQLObjectType({
@@ -150,13 +152,13 @@ class Dashboard extends EventEmitter {
     });
 
     const {
-      connectionType: SalesValuesConnection,
+      connectionType: SalesValueConnection,
       edgeType: SalesValueEdge
     } = connectionDefinitions({
       name: "SalesValue",
       nodeType: this.SalesValue
     });
-    this.SalesValuesConnection = SalesValuesConnection;
+    this.SalesValueConnection = SalesValueConnection;
     this.SalesValueEdge = SalesValueEdge;
 
     this.ClientsValue = new GraphQLObjectType({
@@ -170,13 +172,13 @@ class Dashboard extends EventEmitter {
     });
 
     const {
-      connectionType: ClientsValuesConnection,
+      connectionType: ClientsValueConnection,
       edgeType: ClientsValueEdge
     } = connectionDefinitions({
       name: "ClientsValue",
       nodeType: this.ClientsValue
     });
-    this.ClientsValuesConnection = ClientsValuesConnection;
+    this.ClientsValueConnection = ClientsValueConnection;
     this.ClientsValueEdge = ClientsValueEdge;
 
     this.AvgTimeValue = new GraphQLObjectType({
@@ -190,13 +192,13 @@ class Dashboard extends EventEmitter {
     });
 
     const {
-      connectionType: AvgTimeValuesConnection,
+      connectionType: AvgTimeValueConnection,
       edgeType: AvgTimeValueEdge
     } = connectionDefinitions({
       name: "AvgTimeValue",
       nodeType: this.AvgTimeValue
     });
-    this.AvgTimeValuesConnection = AvgTimeValuesConnection;
+    this.AvgTimeValueConnection = AvgTimeValueConnection;
     this.AvgTimeValueEdge = AvgTimeValueEdge;
 
     this.MarketShareValue = new GraphQLObjectType({
@@ -204,26 +206,38 @@ class Dashboard extends EventEmitter {
       fields: () => ({
         id: globalIdField("MarketShareValue"),
         vendor: { type: new GraphQLNonNull(GraphQLString) },
-        value: { type: new GraphQLNonNull(GraphQLFloat) }
+        name: { type: new GraphQLNonNull(GraphQLString) },
+        values: { type: new GraphQLNonNull(new GraphQLList(GraphQLFloat)) }
       }),
       interfaces: [nodeInterface]
     });
 
     const {
-      connectionType: MarketShareValuesConnection,
+      connectionType: MarketShareValueConnection,
       edgeType: MarketShareValueEdge
     } = connectionDefinitions({
       name: "MarketShareValue",
       nodeType: this.MarketShareValue
     });
-    this.MarketShareValuesConnection = MarketShareValuesConnection;
+    this.MarketShareValueConnection = MarketShareValueConnection;
     this.MarketShareValueEdge = MarketShareValueEdge;
 
     this.MarketShare = new GraphQLObjectType({
       name: "MarketShare",
       fields: () => ({
         id: globalIdField("MarketShare"),
-        country: { type: new GraphQLNonNull(GraphQLString) },
+        country: {
+          type: this.Country,
+          resolve: (source, args, context) =>
+            source.id === "WORLD"
+              ? null
+              : this.dashboardRepo.getCountry(
+                  context,
+                  _.assign({}, args, {
+                    id: source.id
+                  })
+                )
+        },
         shares: {
           type: new GraphQLNonNull(new GraphQLList(this.MarketShareValue))
         }
@@ -232,18 +246,18 @@ class Dashboard extends EventEmitter {
     });
 
     const {
-      connectionType: MarketSharesConnection,
+      connectionType: MarketShareConnection,
       edgeType: MarketShareEdge
     } = connectionDefinitions({
       name: "MarketShare",
       nodeType: this.MarketShare
     });
-    this.MarketSharesConnection = MarketSharesConnection;
+    this.MarketShareConnection = MarketShareConnection;
     this.MarketShareEdge = MarketShareEdge;
 
     this.query = {
       countries: {
-        type: this.CountriesConnection,
+        type: this.CountryConnection,
         args: connectionArgs,
         resolve: (source, args, context) =>
           connectionFromPromisedArray(
@@ -252,7 +266,7 @@ class Dashboard extends EventEmitter {
           )
       },
       profitValues: {
-        type: this.ProfitValuesConnection,
+        type: this.ProfitValueConnection,
         args: connectionArgs,
         resolve: (source, args, context) =>
           connectionFromPromisedArray(
@@ -261,7 +275,7 @@ class Dashboard extends EventEmitter {
           )
       },
       salesValues: {
-        type: this.SalesValuesConnection,
+        type: this.SalesValueConnection,
         args: connectionArgs,
         resolve: (source, args, context) =>
           connectionFromPromisedArray(
@@ -270,7 +284,7 @@ class Dashboard extends EventEmitter {
           )
       },
       clientsValues: {
-        type: this.ClientsValuesConnection,
+        type: this.ClientsValueConnection,
         args: connectionArgs,
         resolve: (source, args, context) =>
           connectionFromPromisedArray(
@@ -279,7 +293,7 @@ class Dashboard extends EventEmitter {
           )
       },
       avgTimeValues: {
-        type: this.AvgTimeValuesConnection,
+        type: this.AvgTimeValueConnection,
         args: connectionArgs,
         resolve: (source, args, context) =>
           connectionFromPromisedArray(
@@ -287,8 +301,16 @@ class Dashboard extends EventEmitter {
             args
           )
       },
+      marketSharesByCountry: {
+        type: this.MarketShare,
+        args: {
+          country: { type: GraphQLID }
+        },
+        resolve: (source, args, context) =>
+          this.dashboardRepo.getMarketSharesByCountry(context, args)
+      },
       marketShares: {
-        type: this.MarketSharesConnection,
+        type: this.MarketShareConnection,
         args: connectionArgs,
         resolve: (source, args, context) =>
           connectionFromPromisedArray(

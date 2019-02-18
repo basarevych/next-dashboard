@@ -8,13 +8,7 @@ const mapStateToProps = state => {
   };
 };
 
-const DashboardPage = connect(
-  mapStateToProps,
-  null,
-  null,
-  { pure: false }
-)(DashboardPageComponent);
-
+const DashboardPage = connect(mapStateToProps)(DashboardPageComponent);
 DashboardPage.getInitialProps = DashboardPageComponent.getInitialProps;
 
 export default DashboardPage;

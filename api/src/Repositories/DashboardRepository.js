@@ -131,43 +131,58 @@ class DashboardRepository extends EventEmitter {
     ];
 
     const getRandomData = country => {
+      country = _.toUpper(country);
+
       let shares = [];
-      let variants = _.shuffle(vendors.slice());
+      let variants = _.shuffle(vendors);
+      let max = this.fake.getInt(3, 6);
 
       let sum = 0;
-      for (let i = 0; i < 3; i++) {
+      for (let i = 0; i < max; i++) {
         let vendor = variants.shift();
 
-        let value = this.fake.getInt(10, 30);
+        let value = this.fake.getInt(10, 100 / max);
         sum += value;
+
+        let sub1 = this.fake.getInt(1, value / 4);
+        let sub2 = this.fake.getInt(1, value / 4);
+        let sub3 = this.fake.getInt(1, value / 4);
 
         shares.push(
           new this.dashboard.MarketShareValueModel({
-            id: `${country.iso2}:${vendor}`,
-            vendor,
-            value
+            id: `${country}:${_.toUpper(vendor)}`,
+            vendor: _.toUpper(vendor),
+            name: vendor,
+            values: [sub1, sub2, sub3, value - sub1 - sub2 - sub3]
           })
         );
       }
 
+      let value = 100 - sum;
+      let sub1 = this.fake.getInt(1, value / 4);
+      let sub2 = this.fake.getInt(1, value / 4);
+      let sub3 = this.fake.getInt(1, value / 4);
+
       let vendor = variants.shift();
       shares.push(
         new this.dashboard.MarketShareValueModel({
-          id: `${country.iso2}:${vendor}`,
-          vendor,
-          value: 100 - sum
+          id: `${country}:${_.toUpper(vendor)}`,
+          vendor: _.toUpper(vendor),
+          name: vendor,
+          values: [sub1, sub2, sub3, value - sub1 - sub2 - sub3]
         })
       );
 
       return new this.dashboard.MarketShareModel({
-        id: country.iso2,
-        country: country.name,
+        id: country,
         shares
       });
     };
 
-    this.marketShares = _.map(allCountries, country => getRandomData(country));
-    this.marketShares.unshift(getRandomData({ iso2: "WORLD", name: "World" }));
+    this.marketShares = _.map(allCountries, country =>
+      getRandomData(country.iso2)
+    );
+    this.marketShares.unshift(getRandomData("WORLD"));
 
     this.marketSharesTime = Date.now();
     context.preCachePages({ path: ["/dashboard"] }).catch(console.error);
@@ -179,10 +194,10 @@ class DashboardRepository extends EventEmitter {
     let requester = await context.getUser();
     if (!requester) throw this.di.get("error.access");
 
-    const country = allCountries[iso2Lookup[id]];
+    const country = allCountries[iso2Lookup[_.toLower(id)]];
     if (!country) throw this.di.get("error.entityNotFound");
     return new this.dashboard.CountryModel({
-      id: country.iso2,
+      id: _.toUpper(country.iso2),
       name: country.name,
       callingCode: country.dialCode
     });
@@ -198,7 +213,7 @@ class DashboardRepository extends EventEmitter {
       allCountries,
       country =>
         new this.dashboard.CountryModel({
-          id: country.iso2,
+          id: _.toUpper(country.iso2),
           name: country.name,
           callingCode: country.dialCode
         })
@@ -309,8 +324,10 @@ class DashboardRepository extends EventEmitter {
     return this.avgTimes;
   }
 
-  async getMarketShare(context, { id }) {
+  async getMarketSharesByCountry(context, { id, country }) {
     debug("getMarketShare");
+
+    if (!country) country = id;
 
     let requester = await context.getUser();
     if (!requester) throw this.di.get("error.access");
@@ -318,13 +335,13 @@ class DashboardRepository extends EventEmitter {
     if (Date.now() - this.marketSharesTime > 24 * 60 * 60 * 1000)
       this.generateMarketShares(context);
 
-    const countryData = _.find(this.marketShares, ["id", id]);
+    const countryData = _.find(this.marketShares, ["id", _.toUpper(country)]);
     if (!countryData) throw this.di.get("error.entityNotFound");
 
     return countryData;
   }
 
-  async getMarketShareValue(context, { id }) {
+  async getMarketSharesValue(context, { id }) {
     debug("getMarketShareValue");
 
     let requester = await context.getUser();
@@ -335,8 +352,10 @@ class DashboardRepository extends EventEmitter {
 
     const [country, vendor] = _.split(id, ":");
 
-    const countryData = await this.getMarketShare(context, { id: country });
-    const vendorData = _.find(countryData.shares, ["id", vendor]);
+    const countryData = await this.getMarketSharesByCountry(context, {
+      country
+    });
+    const vendorData = _.find(countryData.shares, ["id", _.toUpper(vendor)]);
     if (!vendorData) throw this.di.get("error.entityNotFound");
 
     return vendorData;

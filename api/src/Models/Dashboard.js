@@ -55,17 +55,17 @@ class AvgTimeValueModel {
 }
 
 class MarketShareValueModel {
-  constructor({ id, vendor, value }) {
+  constructor({ id, vendor, name, values }) {
     this.id = id;
     this.vendor = vendor;
-    this.value = value;
+    this.name = name;
+    this.values = values;
   }
 }
 
 class MarketShareModel {
-  constructor({ id, country, shares }) {
+  constructor({ id, shares }) {
     this.id = id;
-    this.country = country;
     this.shares = shares;
   }
 }

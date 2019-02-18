@@ -90,7 +90,7 @@ class Users extends EventEmitter {
     });
 
     const {
-      connectionType: UsersConnection,
+      connectionType: UserConnection,
       edgeType: UserEdge
     } = connectionDefinitions({
       name: "User",
@@ -103,7 +103,7 @@ class Users extends EventEmitter {
         }
       })
     });
-    this.UsersConnection = UsersConnection;
+    this.UserConnection = UserConnection;
     this.UserEdge = UserEdge;
 
     this.UserSortBy = new GraphQLEnumType({
@@ -143,14 +143,14 @@ class Users extends EventEmitter {
           )
       },
       users: {
-        type: this.UsersConnection,
+        type: this.UserConnection,
         args: {
           sortBy: { type: this.UserSortBy },
           sortDir: { type: this.UserSortDir },
           ...connectionArgs
         },
         resolve: (source, args, context) =>
-          this.usersRepo.getUsersConnection(
+          this.usersRepo.getUserConnection(
             context,
             _.assign({}, args, {
               sortBy: args.sortBy && this.userModel.sortBy[args.sortBy],

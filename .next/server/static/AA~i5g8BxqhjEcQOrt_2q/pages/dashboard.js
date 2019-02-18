@@ -738,6 +738,33 @@ exports.deleteProfile = deleteProfile;
 
 /***/ }),
 
+/***/ "+Pi7":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _reactRelay = __webpack_require__("iuEU");
+
+var _StatContainer = _interopRequireDefault(__webpack_require__("8xuZ"));
+
+var ProfitStat = (0, _reactRelay.createFragmentContainer)(_StatContainer.default, {
+  data: function data() {
+    return __webpack_require__("4lmM");
+  }
+});
+var _default = ProfitStat;
+exports.default = _default;
+
+/***/ }),
+
 /***/ "+oT+":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -780,33 +807,6 @@ function _asyncToGenerator(fn) {
 }
 
 module.exports = _asyncToGenerator;
-
-/***/ }),
-
-/***/ "+v1d":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireWildcard = __webpack_require__("5Uuq");
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _reactIntl = __webpack_require__("k004");
-
-var _styles = __webpack_require__("9Pu4");
-
-var _Stat = _interopRequireWildcard(__webpack_require__("ru48"));
-
-var Stat = (0, _styles.withStyles)(_Stat.styles, {
-  withTheme: true
-})((0, _reactIntl.injectIntl)(_Stat.default));
-var _default = Stat;
-exports.default = _default;
 
 /***/ }),
 
@@ -954,6 +954,31 @@ exports.default = withRouter;
 /***/ (function(module, exports) {
 
 module.exports = require("relay-query-lookup-renderer");
+
+/***/ }),
+
+/***/ "19SY":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireWildcard = __webpack_require__("5Uuq");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _reactIntl = __webpack_require__("k004");
+
+var _styles = __webpack_require__("9Pu4");
+
+var _WorldMap = _interopRequireWildcard(__webpack_require__("nMfB"));
+
+var WorldMap = (0, _styles.withStyles)(_WorldMap.styles)((0, _reactIntl.injectIntl)(_WorldMap.default));
+var _default = WorldMap;
+exports.default = _default;
 
 /***/ }),
 
@@ -1152,6 +1177,8 @@ module.exports = node;
 "use strict";
 
 
+var _interopRequireWildcard = __webpack_require__("5Uuq");
+
 var _interopRequireDefault = __webpack_require__("KI45");
 
 Object.defineProperty(exports, "__esModule", {
@@ -1181,9 +1208,11 @@ var _reactRelay = __webpack_require__("iuEU");
 
 var _Relay = __webpack_require__("JyB7");
 
-var _DashboardContainer = _interopRequireDefault(__webpack_require__("GYkG"));
+var _DashboardContainer = _interopRequireWildcard(__webpack_require__("GYkG"));
 
-var defaultVariables = {};
+var defaultVariables = {
+  country: _DashboardContainer.defaultCountry
+};
 
 var query = function query() {
   return __webpack_require__("vsef");
@@ -1262,6 +1291,79 @@ function (_React$Component) {
 
 var _default = DashboardPage;
 exports.default = _default;
+
+/***/ }),
+
+/***/ "4lmM":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @flow
+ */
+
+/* eslint-disable */
+
+/*::
+import type { ReaderFragment } from 'relay-runtime';
+import type { FragmentReference } from "relay-runtime";
+declare export opaque type ProfitStatContainer_data$ref: FragmentReference;
+export type ProfitStatContainer_data = {|
+  +edges: ?$ReadOnlyArray<?{|
+    +node: ?{|
+      +date: any,
+      +value: number,
+    |}
+  |}>,
+  +$refType: ProfitStatContainer_data$ref,
+|};
+*/
+
+var node
+/*: ReaderFragment*/
+= {
+  "kind": "Fragment",
+  "name": "ProfitStatContainer_data",
+  "type": "ProfitValueConnection",
+  "metadata": null,
+  "argumentDefinitions": [],
+  "selections": [{
+    "kind": "LinkedField",
+    "alias": null,
+    "name": "edges",
+    "storageKey": null,
+    "args": null,
+    "concreteType": "ProfitValueEdge",
+    "plural": true,
+    "selections": [{
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "node",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "ProfitValue",
+      "plural": false,
+      "selections": [{
+        "kind": "ScalarField",
+        "alias": null,
+        "name": "date",
+        "args": null,
+        "storageKey": null
+      }, {
+        "kind": "ScalarField",
+        "alias": "value",
+        "name": "profit",
+        "args": null,
+        "storageKey": null
+      }]
+    }]
+  }]
+}; // prettier-ignore
+
+node
+/*: any*/
+.hash = '7db74ca7e91409fc43cd9eb186b0d09f';
+module.exports = node;
 
 /***/ }),
 
@@ -1376,25 +1478,11 @@ exports.default = _default;
 
 /***/ }),
 
-/***/ "6zo0":
-/***/ (function(module, exports) {
-
-module.exports = require("@material-ui/core/colors/cyan");
-
-/***/ }),
-
 /***/ 7:
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__("u9iw");
 
-
-/***/ }),
-
-/***/ "7U8d":
-/***/ (function(module, exports) {
-
-module.exports = require("@material-ui/core/colors/orange");
 
 /***/ }),
 
@@ -1444,6 +1532,23 @@ var isConnected = function isConnected(state) {
 };
 
 exports.isConnected = isConnected;
+
+/***/ }),
+
+/***/ "8+Nu":
+/***/ (function(module, exports, __webpack_require__) {
+
+var arrayWithHoles = __webpack_require__("8bdy");
+
+var iterableToArrayLimit = __webpack_require__("fprZ");
+
+var nonIterableRest = __webpack_require__("Bh1o");
+
+function _slicedToArray(arr, i) {
+  return arrayWithHoles(arr) || iterableToArrayLimit(arr, i) || nonIterableRest();
+}
+
+module.exports = _slicedToArray;
 
 /***/ }),
 
@@ -1748,6 +1853,46 @@ exports.getToken = getToken;
 
 /***/ }),
 
+/***/ "8bdy":
+/***/ (function(module, exports, __webpack_require__) {
+
+var _Array$isArray = __webpack_require__("p0XB");
+
+function _arrayWithHoles(arr) {
+  if (_Array$isArray(arr)) return arr;
+}
+
+module.exports = _arrayWithHoles;
+
+/***/ }),
+
+/***/ "8xuZ":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireWildcard = __webpack_require__("5Uuq");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _reactIntl = __webpack_require__("k004");
+
+var _styles = __webpack_require__("9Pu4");
+
+var _Stat = _interopRequireWildcard(__webpack_require__("Le1x"));
+
+var Stat = (0, _styles.withStyles)(_Stat.styles, {
+  withTheme: true
+})((0, _reactIntl.injectIntl)(_Stat.default));
+var _default = Stat;
+exports.default = _default;
+
+/***/ }),
+
 /***/ "9Pu4":
 /***/ (function(module, exports) {
 
@@ -1794,6 +1939,196 @@ function _objectSpread(target) {
 }
 
 module.exports = _objectSpread;
+
+/***/ }),
+
+/***/ "B5gx":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @flow
+ */
+
+/* eslint-disable */
+
+/*::
+import type { ReaderFragment } from 'relay-runtime';
+import type { FragmentReference } from "relay-runtime";
+declare export opaque type MarketShareContainer_viewer$ref: FragmentReference;
+export type MarketShareContainer_viewer = {|
+  +marketSharesByCountry: ?{|
+    +id: string,
+    +country: ?{|
+      +name: string
+    |},
+    +shares: $ReadOnlyArray<?{|
+      +vendor: string,
+      +name: string,
+      +values: $ReadOnlyArray<?number>,
+    |}>,
+  |},
+  +$refType: MarketShareContainer_viewer$ref,
+|};
+*/
+
+var node
+/*: ReaderFragment*/
+= function () {
+  var v0 = {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "name",
+    "args": null,
+    "storageKey": null
+  };
+  return {
+    "kind": "Fragment",
+    "name": "MarketShareContainer_viewer",
+    "type": "Viewer",
+    "metadata": null,
+    "argumentDefinitions": [{
+      "kind": "LocalArgument",
+      "name": "country",
+      "type": "ID",
+      "defaultValue": null
+    }],
+    "selections": [{
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "marketSharesByCountry",
+      "storageKey": null,
+      "args": [{
+        "kind": "Variable",
+        "name": "country",
+        "variableName": "country",
+        "type": "ID"
+      }],
+      "concreteType": "MarketShare",
+      "plural": false,
+      "selections": [{
+        "kind": "ScalarField",
+        "alias": null,
+        "name": "id",
+        "args": null,
+        "storageKey": null
+      }, {
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "country",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "Country",
+        "plural": false,
+        "selections": [v0
+        /*: any*/
+        ]
+      }, {
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "shares",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "MarketShareValue",
+        "plural": true,
+        "selections": [{
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "vendor",
+          "args": null,
+          "storageKey": null
+        }, v0
+        /*: any*/
+        , {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "values",
+          "args": null,
+          "storageKey": null
+        }]
+      }]
+    }]
+  };
+}(); // prettier-ignore
+
+
+node
+/*: any*/
+.hash = '1d66f4f648933aa7587e7bdb10a6efcc';
+module.exports = node;
+
+/***/ }),
+
+/***/ "BMWC":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @flow
+ */
+
+/* eslint-disable */
+
+/*::
+import type { ReaderFragment } from 'relay-runtime';
+import type { FragmentReference } from "relay-runtime";
+declare export opaque type ClientsStatContainer_data$ref: FragmentReference;
+export type ClientsStatContainer_data = {|
+  +edges: ?$ReadOnlyArray<?{|
+    +node: ?{|
+      +date: any,
+      +value: number,
+    |}
+  |}>,
+  +$refType: ClientsStatContainer_data$ref,
+|};
+*/
+
+var node
+/*: ReaderFragment*/
+= {
+  "kind": "Fragment",
+  "name": "ClientsStatContainer_data",
+  "type": "ClientsValueConnection",
+  "metadata": null,
+  "argumentDefinitions": [],
+  "selections": [{
+    "kind": "LinkedField",
+    "alias": null,
+    "name": "edges",
+    "storageKey": null,
+    "args": null,
+    "concreteType": "ClientsValueEdge",
+    "plural": true,
+    "selections": [{
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "node",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "ClientsValue",
+      "plural": false,
+      "selections": [{
+        "kind": "ScalarField",
+        "alias": null,
+        "name": "date",
+        "args": null,
+        "storageKey": null
+      }, {
+        "kind": "ScalarField",
+        "alias": "value",
+        "name": "clients",
+        "args": null,
+        "storageKey": null
+      }]
+    }]
+  }]
+}; // prettier-ignore
+
+node
+/*: any*/
+.hash = 'bbe164386ede175423c40a2a9334906c';
+module.exports = node;
 
 /***/ }),
 
@@ -1889,6 +2224,17 @@ module.exports = hoistNonReactStatics;
 
 /***/ }),
 
+/***/ "Bh1o":
+/***/ (function(module, exports) {
+
+function _nonIterableRest() {
+  throw new TypeError("Invalid attempt to destructure non-iterable instance");
+}
+
+module.exports = _nonIterableRest;
+
+/***/ }),
+
 /***/ "Bhuq":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1896,10 +2242,64 @@ module.exports = __webpack_require__("/+oN");
 
 /***/ }),
 
+/***/ "BkaX":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _reactRelay = __webpack_require__("iuEU");
+
+var _StatContainer = _interopRequireDefault(__webpack_require__("8xuZ"));
+
+var AvgTimeStat = (0, _reactRelay.createFragmentContainer)(_StatContainer.default, {
+  data: function data() {
+    return __webpack_require__("WfD6");
+  }
+});
+var _default = AvgTimeStat;
+exports.default = _default;
+
+/***/ }),
+
 /***/ "BlHF":
 /***/ (function(module, exports) {
 
 module.exports = require("react-intl/locale-data/en.js");
+
+/***/ }),
+
+/***/ "CW2C":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _reactRelay = __webpack_require__("iuEU");
+
+var _StatContainer = _interopRequireDefault(__webpack_require__("8xuZ"));
+
+var SalesStat = (0, _reactRelay.createFragmentContainer)(_StatContainer.default, {
+  data: function data() {
+    return __webpack_require__("bvoX");
+  }
+});
+var _default = SalesStat;
+exports.default = _default;
 
 /***/ }),
 
@@ -2018,6 +2418,210 @@ var node
 node
 /*: any*/
 .hash = '501ecd6de6ba0d802c7cd7159a7a1df4';
+module.exports = node;
+
+/***/ }),
+
+/***/ "Dpyv":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @flow
+ * @relayHash 67c7b5aabc01c2dcc8ac427c7b8e802e
+ */
+
+/* eslint-disable */
+
+/*::
+import type { ConcreteRequest } from 'relay-runtime';
+type MarketShareContainer_viewer$ref = any;
+export type MarketShareContainerQueryVariables = {|
+  country?: ?string
+|};
+export type MarketShareContainerQueryResponse = {|
+  +viewer: ?{|
+    +$fragmentRefs: MarketShareContainer_viewer$ref
+  |}
+|};
+export type MarketShareContainerQuery = {|
+  variables: MarketShareContainerQueryVariables,
+  response: MarketShareContainerQueryResponse,
+|};
+*/
+
+/*
+query MarketShareContainerQuery(
+  $country: ID
+) {
+  viewer {
+    ...MarketShareContainer_viewer_1vRKRZ
+  }
+}
+
+fragment MarketShareContainer_viewer_1vRKRZ on Viewer {
+  marketSharesByCountry(country: $country) {
+    id
+    country {
+      name
+      id
+    }
+    shares {
+      vendor
+      name
+      values
+      id
+    }
+  }
+}
+*/
+
+var node
+/*: ConcreteRequest*/
+= function () {
+  var v0 = [{
+    "kind": "LocalArgument",
+    "name": "country",
+    "type": "ID",
+    "defaultValue": null
+  }],
+      v1 = {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "id",
+    "args": null,
+    "storageKey": null
+  },
+      v2 = {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "name",
+    "args": null,
+    "storageKey": null
+  };
+  return {
+    "kind": "Request",
+    "fragment": {
+      "kind": "Fragment",
+      "name": "MarketShareContainerQuery",
+      "type": "Query",
+      "metadata": null,
+      "argumentDefinitions": v0
+      /*: any*/
+      ,
+      "selections": [{
+        "kind": "LinkedField",
+        "alias": "viewer",
+        "name": "__viewer_viewer",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "Viewer",
+        "plural": false,
+        "selections": [{
+          "kind": "FragmentSpread",
+          "name": "MarketShareContainer_viewer",
+          "args": [{
+            "kind": "Variable",
+            "name": "country",
+            "variableName": "country",
+            "type": null
+          }]
+        }]
+      }]
+    },
+    "operation": {
+      "kind": "Operation",
+      "name": "MarketShareContainerQuery",
+      "argumentDefinitions": v0
+      /*: any*/
+      ,
+      "selections": [{
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "viewer",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "Viewer",
+        "plural": false,
+        "selections": [{
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "marketSharesByCountry",
+          "storageKey": null,
+          "args": [{
+            "kind": "Variable",
+            "name": "country",
+            "variableName": "country",
+            "type": "ID"
+          }],
+          "concreteType": "MarketShare",
+          "plural": false,
+          "selections": [v1
+          /*: any*/
+          , {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "country",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "Country",
+            "plural": false,
+            "selections": [v2
+            /*: any*/
+            , v1
+            /*: any*/
+            ]
+          }, {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "shares",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "MarketShareValue",
+            "plural": true,
+            "selections": [{
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "vendor",
+              "args": null,
+              "storageKey": null
+            }, v2
+            /*: any*/
+            , {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "values",
+              "args": null,
+              "storageKey": null
+            }, v1
+            /*: any*/
+            ]
+          }]
+        }]
+      }, {
+        "kind": "LinkedHandle",
+        "alias": null,
+        "name": "viewer",
+        "args": null,
+        "handle": "viewer",
+        "key": "",
+        "filters": null
+      }]
+    },
+    "params": {
+      "operationKind": "query",
+      "name": "MarketShareContainerQuery",
+      "id": null,
+      "text": "query MarketShareContainerQuery(\n  $country: ID\n) {\n  viewer {\n    ...MarketShareContainer_viewer_1vRKRZ\n  }\n}\n\nfragment MarketShareContainer_viewer_1vRKRZ on Viewer {\n  marketSharesByCountry(country: $country) {\n    id\n    country {\n      name\n      id\n    }\n    shares {\n      vendor\n      name\n      values\n      id\n    }\n  }\n}\n",
+      "metadata": {}
+    }
+  };
+}(); // prettier-ignore
+
+
+node
+/*: any*/
+.hash = '855249396793496836a79fac35a348b0';
 module.exports = node;
 
 /***/ }),
@@ -2280,6 +2884,251 @@ exports.default = _default;
 
 /***/ }),
 
+/***/ "GJn5":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(_) {
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = exports.styles = void 0;
+
+var _slicedToArray2 = _interopRequireDefault(__webpack_require__("8+Nu"));
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
+
+var _react = _interopRequireDefault(__webpack_require__("cDcd"));
+
+var _propTypes = _interopRequireDefault(__webpack_require__("rf6O"));
+
+var _reactIntl = __webpack_require__("k004");
+
+var _reactVirtualized = __webpack_require__("xvxd");
+
+var _victory = __webpack_require__("wL32");
+
+var _Typography = _interopRequireDefault(__webpack_require__("UVoM"));
+
+var _amber = _interopRequireDefault(__webpack_require__("QaNM"));
+
+var _colors = __webpack_require__("I2ft");
+
+var styles = function styles() {
+  return {
+    root: {
+      textAlign: "center",
+      color: _amber.default[500]
+    }
+  };
+};
+
+exports.styles = styles;
+
+var MarketShare =
+/*#__PURE__*/
+function (_React$Component) {
+  (0, _inherits2.default)(MarketShare, _React$Component);
+
+  function MarketShare() {
+    (0, _classCallCheck2.default)(this, MarketShare);
+    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(MarketShare).apply(this, arguments));
+  }
+
+  (0, _createClass2.default)(MarketShare, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      var _this = this;
+
+      setTimeout(function () {
+        return _this.props.onLoaded();
+      });
+    }
+  }, {
+    key: "componentDidUpdate",
+    value: function componentDidUpdate(prevProps) {
+      var _this2 = this;
+
+      if (prevProps.selected !== this.props.selected) {
+        this.props.relay.refetch({
+          country: this.props.selected
+        }, null, function () {
+          return _this2.props.onLoaded();
+        }, {
+          force: true
+        });
+      }
+    }
+  }, {
+    key: "renderTitle",
+    value: function renderTitle() {
+      return _react.default.createElement(_Typography.default, {
+        variant: "h4",
+        color: "inherit"
+      }, _.get(this.props.viewer, "marketSharesByCountry.country") === null ? this.props.intl.formatMessage({
+        id: "DASHBOARD_WORLD_LABEL"
+      }) : _.get(this.props.viewer, "marketSharesByCountry.country.name"));
+    }
+  }, {
+    key: "renderChart",
+    value: function renderChart(width, height) {
+      var shares = _.get(this.props.viewer, "marketSharesByCountry.shares", []);
+
+      if (!shares.length) return null;
+      return _react.default.createElement(_react.default.Fragment, null, _react.default.createElement("svg", {
+        width: 0,
+        height: 0
+      }, _react.default.createElement("defs", null, _react.default.createElement("filter", {
+        id: "worldPieShadow"
+      }, _react.default.createElement("feGaussianBlur", {
+        in: "SourceAlpha",
+        stdDeviation: "5"
+      }), _react.default.createElement("feOffset", {
+        dx: "3",
+        dy: "3",
+        result: "offsetblur"
+      }), _react.default.createElement("feFlood", {
+        floodColor: "rgba(0, 0, 0, 0.85)"
+      }), _react.default.createElement("feComposite", {
+        in2: "offsetblur",
+        operator: "in"
+      }), _react.default.createElement("feMerge", null, _react.default.createElement("feMergeNode", null), _react.default.createElement("feMergeNode", {
+        in: "SourceGraphic"
+      }))), _.map([0, 1, 2, 3], function (index) {
+        var _getColorStart = (0, _colors.getColorStart)(index, 4),
+            _getColorStart2 = (0, _slicedToArray2.default)(_getColorStart, 3),
+            r1 = _getColorStart2[0],
+            g1 = _getColorStart2[1],
+            b1 = _getColorStart2[2];
+
+        var _getColorEnd = (0, _colors.getColorEnd)(index, 4),
+            _getColorEnd2 = (0, _slicedToArray2.default)(_getColorEnd, 3),
+            r2 = _getColorEnd2[0],
+            g2 = _getColorEnd2[1],
+            b2 = _getColorEnd2[2];
+
+        return _react.default.createElement("linearGradient", {
+          key: "gradient-".concat(index),
+          id: "worldPieGradient".concat(index + 1),
+          x1: "0%",
+          y1: "0%",
+          x2: "0%",
+          y2: "100%"
+        }, _react.default.createElement("stop", {
+          offset: "0%",
+          stopColor: "rgba(".concat(r1, ", ").concat(g1, ", ").concat(b1, ")")
+        }), _react.default.createElement("stop", {
+          offset: "100%",
+          stopColor: "rgba(".concat(r2, ", ").concat(g2, ", ").concat(b2, ")")
+        }));
+      }))), _react.default.createElement(_victory.VictoryChart, {
+        width: width,
+        height: height,
+        padding: 20,
+        polar: true,
+        containerComponent: _react.default.createElement(_victory.VictoryContainer, {
+          responsive: false,
+          style: {
+            filter: "url(#worldPieShadow)"
+          }
+        }),
+        theme: _.merge({}, _victory.VictoryTheme.material, {
+          axis: {
+            style: {
+              axis: {
+                display: "none"
+              },
+              ticks: {
+                display: "none"
+              },
+              tickLabels: {
+                display: "none"
+              },
+              grid: {
+                display: "none"
+              }
+            }
+          },
+          legend: {
+            colorScale: ["url(#worldPieGradient1)", "url(#worldPieGradient2)", "url(#worldPieGradient3)", "url(#worldPieGradient4)"],
+            style: {
+              labels: {
+                fill: "#ffffff"
+              }
+            }
+          },
+          stack: {
+            colorScale: ["url(#worldPieGradient1)", "url(#worldPieGradient2)", "url(#worldPieGradient3)", "url(#worldPieGradient4)"],
+            style: {
+              labels: {
+                fill: "#ffffff"
+              }
+            }
+          }
+        })
+      }, _react.default.createElement(_victory.VictoryAxis, null), _react.default.createElement(_victory.VictoryStack, {
+        labels: function labels(d) {
+          return d.vendor;
+        }
+      }, _.map([0, 1, 2, 3], function (index) {
+        return _react.default.createElement(_victory.VictoryBar, {
+          key: "bar-".concat(index),
+          data: shares,
+          x: "name",
+          y: function y(d) {
+            return d.values[index];
+          }
+        });
+      })), _react.default.createElement(_victory.VictoryLegend, {
+        orientation: "vertical",
+        gutter: 20,
+        data: [{
+          name: "Q1"
+        }, {
+          name: "Q2"
+        }, {
+          name: "Q3"
+        }, {
+          name: "Q4"
+        }]
+      })));
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this3 = this;
+
+      return _react.default.createElement("div", {
+        className: this.props.classes.root,
+        style: this.props.style
+      }, this.renderTitle(), _react.default.createElement("div", null, _react.default.createElement(_reactVirtualized.AutoSizer, {
+        disableHeight: true
+      }, function (_ref) {
+        var width = _ref.width;
+        return !!width && _this3.renderChart(width, width);
+      })));
+    }
+  }]);
+  return MarketShare;
+}(_react.default.Component);
+
+var _default = MarketShare;
+exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("YLtl")))
+
+/***/ }),
+
 /***/ "GKS8":
 /***/ (function(module, exports) {
 
@@ -2298,9 +3147,13 @@ var _interopRequireWildcard = __webpack_require__("5Uuq");
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+Object.defineProperty(exports, "defaultCountry", {
+  enumerable: true,
+  get: function get() {
+    return _Dashboard.defaultCountry;
+  }
+});
 exports.default = void 0;
-
-var _reactIntl = __webpack_require__("k004");
 
 var _styles = __webpack_require__("9Pu4");
 
@@ -2308,16 +3161,64 @@ var _Dashboard = _interopRequireWildcard(__webpack_require__("jDsb"));
 
 var Dashboard = (0, _styles.withStyles)(_Dashboard.styles, {
   withTheme: true
-})((0, _reactIntl.injectIntl)(_Dashboard.default));
+})(_Dashboard.default);
 var _default = Dashboard;
 exports.default = _default;
 
 /***/ }),
 
-/***/ "IC/e":
-/***/ (function(module, exports) {
+/***/ "I2ft":
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = require("@material-ui/core/colors/lightBlue");
+"use strict";
+
+
+function hueToRgb(p, q, t) {
+  if (t < 0) t += 1;
+  if (t > 1) t -= 1;
+  if (t < 1 / 6) return p + (q - p) * 6 * t;
+  if (t < 1 / 2) return q;
+  if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+  return p;
+}
+
+function hslToRgb(h, s, l) {
+  var r;
+  var g;
+  var b;
+
+  if (s === 0) {
+    r = g = b = l; // achromatic
+  } else {
+    var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+    var p = 2 * l - q;
+    r = hueToRgb(p, q, h + 1 / 3);
+    g = hueToRgb(p, q, h);
+    b = hueToRgb(p, q, h - 1 / 3);
+  }
+
+  return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
+}
+
+function getColorStart(index, length) {
+  return hslToRgb(index / length, 0.65, 0.7);
+}
+
+function getColorEnd(index, length) {
+  return hslToRgb(index / length, 0.65, 0.4);
+}
+
+function getColorAverage(index, length) {
+  return hslToRgb(index / length, 0.65, 0.55);
+}
+
+module.exports = {
+  hueToRgb: hueToRgb,
+  hslToRgb: hslToRgb,
+  getColorStart: getColorStart,
+  getColorEnd: getColorEnd,
+  getColorAverage: getColorAverage
+};
 
 /***/ }),
 
@@ -2625,31 +3526,6 @@ function subscribe(_ref) {
 
 /***/ }),
 
-/***/ "K0bS":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireWildcard = __webpack_require__("5Uuq");
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _styles = __webpack_require__("9Pu4");
-
-var _MarketShare = _interopRequireWildcard(__webpack_require__("z/H1"));
-
-var MarketShare = (0, _styles.withStyles)(_MarketShare.styles, {
-  withTheme: true
-})(_MarketShare.default);
-var _default = MarketShare;
-exports.default = _default;
-
-/***/ }),
-
 /***/ "K2gz":
 /***/ (function(module, exports) {
 
@@ -2711,28 +3587,264 @@ module.exports = _objectWithoutPropertiesLoose;
 
 /***/ }),
 
-/***/ "LKVz":
+/***/ "Le1x":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+/* WEBPACK VAR INJECTION */(function(_) {
 
-
-var _interopRequireWildcard = __webpack_require__("5Uuq");
+var _interopRequireDefault = __webpack_require__("KI45");
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports.default = exports.styles = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
+
+var _defineProperty2 = _interopRequireDefault(__webpack_require__("xHqa"));
+
+var _react = _interopRequireDefault(__webpack_require__("cDcd"));
+
+var _propTypes = _interopRequireDefault(__webpack_require__("rf6O"));
+
+var _classnames = _interopRequireDefault(__webpack_require__("K2gz"));
 
 var _reactIntl = __webpack_require__("k004");
 
-var _styles = __webpack_require__("9Pu4");
+var _reactVirtualized = __webpack_require__("xvxd");
 
-var _WorldMap = _interopRequireWildcard(__webpack_require__("mhXL"));
+var _victory = __webpack_require__("wL32");
 
-var WorldMap = (0, _styles.withStyles)(_WorldMap.styles)((0, _reactIntl.injectIntl)(_WorldMap.default));
-var _default = WorldMap;
+var _Typography = _interopRequireDefault(__webpack_require__("UVoM"));
+
+var _colorManipulator = __webpack_require__("oOPP");
+
+var _blue = _interopRequireDefault(__webpack_require__("td7P"));
+
+var _amber = _interopRequireDefault(__webpack_require__("QaNM"));
+
+var _green = _interopRequireDefault(__webpack_require__("Zo8Y"));
+
+var _red = _interopRequireDefault(__webpack_require__("RpH3"));
+
+var styles = function styles(theme) {
+  return {
+    root: {
+      boxShadow: "inset 0 0 6px rgba(0, 0, 0, 0.85)",
+      borderRadius: theme.shape.borderRadius,
+      background: "linear-gradient(to bottom, #484e5e 0, #363940 100%)",
+      color: _amber.default[500],
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "stretch",
+      position: "relative"
+    },
+    delta: {
+      position: "absolute",
+      top: 0,
+      right: 0,
+      borderTopRightRadius: 3,
+      borderBottomLeftRadius: 3,
+      padding: "0.25rem 0.5rem"
+    },
+    stat: {
+      paddingTop: "2rem",
+      width: "70%",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center"
+    },
+    chart: {
+      marginTop: "-1rem"
+    },
+    increasing: {
+      color: "#ffffff",
+      background: (0, _colorManipulator.fade)(_green.default[300], 0.65)
+    },
+    descreasing: {
+      color: "#ffffff",
+      background: (0, _colorManipulator.fade)(_red.default[300], 0.65)
+    }
+  };
+};
+
+exports.styles = styles;
+
+var Stat =
+/*#__PURE__*/
+function (_React$Component) {
+  (0, _inherits2.default)(Stat, _React$Component);
+
+  function Stat() {
+    (0, _classCallCheck2.default)(this, Stat);
+    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(Stat).apply(this, arguments));
+  }
+
+  (0, _createClass2.default)(Stat, [{
+    key: "getData",
+    value: function getData() {
+      return _.map(_.get(this.props.data, "edges", []), function (edge) {
+        return {
+          date: new Date(_.get(edge, "node.date")),
+          value: _.get(edge, "node.value")
+        };
+      });
+    }
+  }, {
+    key: "renderStat",
+    value: function renderStat() {
+      return _react.default.createElement("div", {
+        className: this.props.classes.stat
+      }, _react.default.createElement(_Typography.default, {
+        variant: "h4",
+        color: "inherit"
+      }, _react.default.createElement(_reactIntl.FormattedNumber, {
+        value: _.last(this.getData()).value,
+        maximumFractionDigits: this.props.precision
+      })), _react.default.createElement(_Typography.default, {
+        variant: "overline",
+        color: "inherit"
+      }, _react.default.createElement(_reactIntl.FormattedMessage, {
+        id: this.props.label
+      })));
+    }
+  }, {
+    key: "renderDelta",
+    value: function renderDelta() {
+      var items = _.slice(this.getData(), -2);
+
+      if (items.length !== 2) return null;
+      var delta = 100 * (items[1].value - items[0].value) / items[0].value;
+      var symbol = delta > 0 ? "▲" : delta < 0 ? "▼" : "";
+      var className = delta > 0 ? "increasing" : delta < 0 ? "descreasing" : null;
+      return _react.default.createElement("div", {
+        className: (0, _classnames.default)(this.props.classes.delta, className && this.props.classes[className])
+      }, symbol, _react.default.createElement(_reactIntl.FormattedNumber, {
+        value: Math.abs(delta),
+        maximumFractionDigits: 0
+      }), "%");
+    }
+  }, {
+    key: "renderChart",
+    value: function renderChart(width, height) {
+      var _this = this;
+
+      var max = _.reduce(this.getData(), function (acc, cur) {
+        return Math.max(acc, cur.value);
+      }, 0);
+
+      return _react.default.createElement(_react.default.Fragment, null, _react.default.createElement("svg", {
+        width: 0,
+        height: 0
+      }, _react.default.createElement("defs", null, _react.default.createElement("linearGradient", {
+        id: "statGradient",
+        x1: "0%",
+        y1: "0%",
+        x2: "100%",
+        y2: "0%"
+      }, _react.default.createElement("stop", {
+        offset: "0%",
+        stopColor: (0, _colorManipulator.fade)(_blue.default[500], 0.2)
+      }), _react.default.createElement("stop", {
+        offset: "100%",
+        stopColor: _blue.default[400]
+      })))), _react.default.createElement(_victory.VictoryChart, {
+        width: width,
+        height: height,
+        padding: 0,
+        domainPadding: {
+          x: [10, 10],
+          y: [5, 5]
+        },
+        containerComponent: _react.default.createElement(_victory.VictoryVoronoiContainer, {
+          responsive: false
+        })
+      }, _react.default.createElement(_victory.VictoryAxis, {
+        dependentAxis: true,
+        domain: {
+          y: [0, max]
+        },
+        orientation: "left",
+        style: {
+          axis: {
+            display: "none"
+          },
+          ticks: {
+            display: "none"
+          },
+          tickLabels: {
+            display: "none"
+          },
+          grid: {
+            stroke: (0, _colorManipulator.fade)(_amber.default[300], 0.3),
+            strokeWidth: 1
+          }
+        }
+      }), _react.default.createElement(_victory.VictoryLine, {
+        data: this.getData(),
+        x: "date",
+        y: "value",
+        interpolation: "monotoneX",
+        style: {
+          data: {
+            stroke: "url(#statGradient)",
+            strokeWidth: 2
+          }
+        }
+      }), _react.default.createElement(_victory.VictoryScatter, {
+        data: this.getData(),
+        x: "date",
+        y: "value",
+        labels: function labels(d) {
+          return _this.props.intl.formatMessage({
+            id: _this.props.label
+          }) + ": " + d.value + "\n" + _this.props.intl.formatDate(d.date);
+        },
+        labelComponent: _react.default.createElement(_victory.VictoryTooltip, null),
+        size: 1,
+        style: {
+          data: {
+            stroke: _blue.default[300],
+            strokeWidth: 2
+          }
+        }
+      })));
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this2 = this;
+
+      return _react.default.createElement("div", {
+        className: this.props.classes.root
+      }, this.renderDelta(), this.renderStat(), _react.default.createElement("div", {
+        className: this.props.classes.chart
+      }, _react.default.createElement(_reactVirtualized.AutoSizer, {
+        disableHeight: true
+      }, function (_ref) {
+        var width = _ref.width;
+        return !!width && _this2.renderChart(width, 0.5 * width);
+      })));
+    }
+  }]);
+  return Stat;
+}(_react.default.Component);
+
+(0, _defineProperty2.default)(Stat, "defaultProps", {
+  precision: 0
+});
+var _default = Stat;
 exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("YLtl")))
 
 /***/ }),
 
@@ -3032,6 +4144,41 @@ module.exports = node;
 
 /***/ }),
 
+/***/ "Q28+":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireWildcard = __webpack_require__("5Uuq");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _reactIntl = __webpack_require__("k004");
+
+var _styles = __webpack_require__("9Pu4");
+
+var _reactRelay = __webpack_require__("iuEU");
+
+var _MarketShare = _interopRequireWildcard(__webpack_require__("GJn5"));
+
+var MarketShare = (0, _reactRelay.createRefetchContainer)((0, _styles.withStyles)(_MarketShare.styles, {
+  withTheme: true
+})((0, _reactIntl.injectIntl)(_MarketShare.default)), {
+  viewer: function viewer() {
+    return __webpack_require__("B5gx");
+  }
+}, function () {
+  return __webpack_require__("Dpyv");
+});
+var _default = MarketShare;
+exports.default = _default;
+
+/***/ }),
+
 /***/ "Q7hD":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -3104,6 +4251,13 @@ exports.default = _default;
 /***/ (function(module, exports) {
 
 module.exports = require("@material-ui/core/colors/amber");
+
+/***/ }),
+
+/***/ "R2Q7":
+/***/ (function(module, exports) {
+
+module.exports = require("core-js/library/fn/array/is-array");
 
 /***/ }),
 
@@ -3237,6 +4391,33 @@ module.exports = require("@material-ui/core/colors/red");
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__("o5io");
+
+/***/ }),
+
+/***/ "TAfE":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _reactRelay = __webpack_require__("iuEU");
+
+var _StatContainer = _interopRequireDefault(__webpack_require__("8xuZ"));
+
+var ClientsStat = (0, _reactRelay.createFragmentContainer)(_StatContainer.default, {
+  data: function data() {
+    return __webpack_require__("BMWC");
+  }
+});
+var _default = ClientsStat;
+exports.default = _default;
 
 /***/ }),
 
@@ -3506,6 +4687,79 @@ module.exports = _createClass;
 
 /***/ }),
 
+/***/ "WfD6":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @flow
+ */
+
+/* eslint-disable */
+
+/*::
+import type { ReaderFragment } from 'relay-runtime';
+import type { FragmentReference } from "relay-runtime";
+declare export opaque type AvgTimeStatContainer_data$ref: FragmentReference;
+export type AvgTimeStatContainer_data = {|
+  +edges: ?$ReadOnlyArray<?{|
+    +node: ?{|
+      +date: any,
+      +value: number,
+    |}
+  |}>,
+  +$refType: AvgTimeStatContainer_data$ref,
+|};
+*/
+
+var node
+/*: ReaderFragment*/
+= {
+  "kind": "Fragment",
+  "name": "AvgTimeStatContainer_data",
+  "type": "AvgTimeValueConnection",
+  "metadata": null,
+  "argumentDefinitions": [],
+  "selections": [{
+    "kind": "LinkedField",
+    "alias": null,
+    "name": "edges",
+    "storageKey": null,
+    "args": null,
+    "concreteType": "AvgTimeValueEdge",
+    "plural": true,
+    "selections": [{
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "node",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "AvgTimeValue",
+      "plural": false,
+      "selections": [{
+        "kind": "ScalarField",
+        "alias": null,
+        "name": "date",
+        "args": null,
+        "storageKey": null
+      }, {
+        "kind": "ScalarField",
+        "alias": "value",
+        "name": "avgTime",
+        "args": null,
+        "storageKey": null
+      }]
+    }]
+  }]
+}; // prettier-ignore
+
+node
+/*: any*/
+.hash = '3fe0c3d474aa96c02c0e24295b991aef';
+module.exports = node;
+
+/***/ }),
+
 /***/ "Wk4r":
 /***/ (function(module, exports) {
 
@@ -3531,13 +4785,6 @@ module.exports = __webpack_require__("J3/a");
 /***/ (function(module, exports) {
 
 module.exports = require("lodash");
-
-/***/ }),
-
-/***/ "Ygce":
-/***/ (function(module, exports) {
-
-module.exports = require("graphql-relay");
 
 /***/ }),
 
@@ -3613,9 +4860,7 @@ var mapStateToProps = function mapStateToProps(state) {
   };
 };
 
-var DashboardPage = (0, _reactRedux.connect)(mapStateToProps, null, null, {
-  pure: false
-})(_DashboardPage.default);
+var DashboardPage = (0, _reactRedux.connect)(mapStateToProps)(_DashboardPage.default);
 DashboardPage.getInitialProps = _DashboardPage.default.getInitialProps;
 var _default = DashboardPage;
 exports.default = _default;
@@ -3813,6 +5058,79 @@ var node
 node
 /*: any*/
 .hash = '153fa344d90b87f0fcb641bc7a1ed120';
+module.exports = node;
+
+/***/ }),
+
+/***/ "bvoX":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @flow
+ */
+
+/* eslint-disable */
+
+/*::
+import type { ReaderFragment } from 'relay-runtime';
+import type { FragmentReference } from "relay-runtime";
+declare export opaque type SalesStatContainer_data$ref: FragmentReference;
+export type SalesStatContainer_data = {|
+  +edges: ?$ReadOnlyArray<?{|
+    +node: ?{|
+      +date: any,
+      +value: number,
+    |}
+  |}>,
+  +$refType: SalesStatContainer_data$ref,
+|};
+*/
+
+var node
+/*: ReaderFragment*/
+= {
+  "kind": "Fragment",
+  "name": "SalesStatContainer_data",
+  "type": "SalesValueConnection",
+  "metadata": null,
+  "argumentDefinitions": [],
+  "selections": [{
+    "kind": "LinkedField",
+    "alias": null,
+    "name": "edges",
+    "storageKey": null,
+    "args": null,
+    "concreteType": "SalesValueEdge",
+    "plural": true,
+    "selections": [{
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "node",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "SalesValue",
+      "plural": false,
+      "selections": [{
+        "kind": "ScalarField",
+        "alias": null,
+        "name": "date",
+        "args": null,
+        "storageKey": null
+      }, {
+        "kind": "ScalarField",
+        "alias": "value",
+        "name": "sales",
+        "args": null,
+        "storageKey": null
+      }]
+    }]
+  }]
+}; // prettier-ignore
+
+node
+/*: any*/
+.hash = '71d23134552b169b766e1af58ad071ce';
 module.exports = node;
 
 /***/ }),
@@ -4188,6 +5506,41 @@ module.exports = node;
 
 /***/ }),
 
+/***/ "fprZ":
+/***/ (function(module, exports, __webpack_require__) {
+
+var _getIterator = __webpack_require__("XXOK");
+
+function _iterableToArrayLimit(arr, i) {
+  var _arr = [];
+  var _n = true;
+  var _d = false;
+  var _e = undefined;
+
+  try {
+    for (var _i = _getIterator(arr), _s; !(_n = (_s = _i.next()).done); _n = true) {
+      _arr.push(_s.value);
+
+      if (i && _arr.length === i) break;
+    }
+  } catch (err) {
+    _d = true;
+    _e = err;
+  } finally {
+    try {
+      if (!_n && _i["return"] != null) _i["return"]();
+    } finally {
+      if (_d) throw _e;
+    }
+  }
+
+  return _arr;
+}
+
+module.exports = _iterableToArrayLimit;
+
+/***/ }),
+
 /***/ "gH/O":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -4487,14 +5840,14 @@ module.exports = require("react-simple-maps");
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(_) {
+
 
 var _interopRequireDefault = __webpack_require__("KI45");
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = exports.styles = void 0;
+exports.default = exports.styles = exports.defaultCountry = void 0;
 
 var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
 
@@ -4512,17 +5865,24 @@ var _react = _interopRequireDefault(__webpack_require__("cDcd"));
 
 var _propTypes = _interopRequireDefault(__webpack_require__("rf6O"));
 
-var _reactIntl = __webpack_require__("k004");
-
-var _graphqlRelay = __webpack_require__("Ygce");
-
 var _Grid = _interopRequireDefault(__webpack_require__("JQ2V"));
 
-var _StatContainer = _interopRequireDefault(__webpack_require__("+v1d"));
+var _Slide = _interopRequireDefault(__webpack_require__("mz+e"));
 
-var _WorldMapContainer = _interopRequireDefault(__webpack_require__("LKVz"));
+var _ProfitStatContainer = _interopRequireDefault(__webpack_require__("+Pi7"));
 
-var _MarketShareContainer = _interopRequireDefault(__webpack_require__("K0bS"));
+var _SalesStatContainer = _interopRequireDefault(__webpack_require__("CW2C"));
+
+var _ClientsStatContainer = _interopRequireDefault(__webpack_require__("TAfE"));
+
+var _AvgTimeStatContainer = _interopRequireDefault(__webpack_require__("BkaX"));
+
+var _WorldMapContainer = _interopRequireDefault(__webpack_require__("19SY"));
+
+var _MarketShareContainer = _interopRequireDefault(__webpack_require__("Q28+"));
+
+var defaultCountry = "WORLD";
+exports.defaultCountry = defaultCountry;
 
 var styles = function styles(theme) {
   return {
@@ -4547,48 +5907,47 @@ function (_React$Component) {
     (0, _classCallCheck2.default)(this, Dashboard);
     _this = (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(Dashboard).call(this, props));
     _this.state = {
-      countryId: null,
-      countryName: null,
-      countryShares: null
+      countryId: defaultCountry,
+      isLoaded: false
     };
+    _this.isTransitioning = false;
+    _this.isDestroyed = false;
     _this.handleCountrySelected = _this.handleCountrySelected.bind((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)));
+    _this.handleLoaded = _this.handleLoaded.bind((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)));
     return _this;
   }
 
   (0, _createClass2.default)(Dashboard, [{
-    key: "componentDidMount",
-    value: function componentDidMount() {
-      this.handleCountrySelected();
-    }
-  }, {
-    key: "getCountry",
-    value: function getCountry(id) {
-      return _.find(_.get(this.props.viewer, "marketShares.edges", []), function (edge) {
-        return _.toLower((0, _graphqlRelay.fromGlobalId)(_.get(edge, "node.id")).id) === _.toLower(id);
-      });
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      this.isDestroyed = true;
     }
   }, {
     key: "handleCountrySelected",
     value: function handleCountrySelected(id) {
-      var country, name, shares;
-      if (id) country = this.getCountry(id);
+      var _this2 = this;
 
-      if (country) {
-        name = _.get(country, "node.country");
-        shares = _.get(country, "node.shares");
-      } else {
-        id = "WORLD";
-        country = this.getCountry(id);
-        name = this.props.intl.formatMessage({
-          id: "DASHBOARD_WORLD_LABEL"
-        });
-        shares = _.get(country, "node.shares");
-      }
-
+      if (this.isTransitioning) return;
+      this.isTransitioning = true;
       this.setState({
-        countryId: id,
-        countryName: name,
-        countryShares: shares
+        isLoaded: false
+      }, function () {
+        setTimeout(function () {
+          _this2.isTransitioning = false;
+          if (_this2.isDestroyed) return;
+
+          _this2.setState({
+            countryId: id
+          });
+        }, _this2.props.theme.transitions.duration.leavingScreen);
+      });
+    }
+  }, {
+    key: "handleLoaded",
+    value: function handleLoaded() {
+      if (this.isDestroyed) return;
+      this.setState({
+        isLoaded: true
       });
     }
   }, {
@@ -4604,51 +5963,31 @@ function (_React$Component) {
         item: true,
         xs: 12,
         md: 3
-      }, _react.default.createElement(_StatContainer.default, {
+      }, _react.default.createElement(_ProfitStatContainer.default, {
         label: "DASHBOARD_PROFIT_LABEL",
-        data: _.map(_.get(this.props.viewer, "profitValues.edges", []), function (edge) {
-          return {
-            date: new Date(_.get(edge, "node.date")),
-            value: _.get(edge, "node.profit")
-          };
-        })
+        data: this.props.viewer.profitValues
       })), _react.default.createElement(_Grid.default, {
         item: true,
         xs: 12,
         md: 3
-      }, _react.default.createElement(_StatContainer.default, {
+      }, _react.default.createElement(_SalesStatContainer.default, {
         label: "DASHBOARD_SALES_LABEL",
-        data: _.map(_.get(this.props.viewer, "salesValues.edges", []), function (edge) {
-          return {
-            date: new Date(_.get(edge, "node.date")),
-            value: _.get(edge, "node.sales")
-          };
-        })
+        data: this.props.viewer.salesValues
       })), _react.default.createElement(_Grid.default, {
         item: true,
         xs: 12,
         md: 3
-      }, _react.default.createElement(_StatContainer.default, {
+      }, _react.default.createElement(_ClientsStatContainer.default, {
         label: "DASHBOARD_CLIENTS_LABEL",
-        data: _.map(_.get(this.props.viewer, "clientsValues.edges", []), function (edge) {
-          return {
-            date: new Date(_.get(edge, "node.date")),
-            value: _.get(edge, "node.clients")
-          };
-        })
+        data: this.props.viewer.clientsValues
       })), _react.default.createElement(_Grid.default, {
         item: true,
         xs: 12,
         md: 3
-      }, _react.default.createElement(_StatContainer.default, {
+      }, _react.default.createElement(_AvgTimeStatContainer.default, {
         label: "DASHBOARD_AVG_TIME_LABEL",
         precision: 2,
-        data: _.map(_.get(this.props.viewer, "avgTimeValues.edges", []), function (edge) {
-          return {
-            date: new Date(_.get(edge, "node.date")),
-            value: _.get(edge, "node.avgTime")
-          };
-        })
+        data: this.props.viewer.avgTimeValues
       })), _react.default.createElement(_Grid.default, {
         item: true,
         xs: 12,
@@ -4660,10 +5999,14 @@ function (_React$Component) {
         item: true,
         xs: 12,
         md: 4
+      }, _react.default.createElement(_Slide.default, {
+        direction: "left",
+        in: this.state.isLoaded
       }, _react.default.createElement(_MarketShareContainer.default, {
-        title: this.state.countryName,
-        data: this.state.countryShares
-      }))));
+        selected: this.state.countryId,
+        viewer: this.props.viewer,
+        onLoaded: this.handleLoaded
+      })))));
     }
   }]);
   return Dashboard;
@@ -4671,7 +6014,6 @@ function (_React$Component) {
 
 var _default = Dashboard;
 exports.default = _default;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("YLtl")))
 
 /***/ }),
 
@@ -4768,7 +6110,14 @@ exports.FormFieldsContext = FormFieldsContext;
 
 /***/ }),
 
-/***/ "mhXL":
+/***/ "mz+e":
+/***/ (function(module, exports) {
+
+module.exports = require("@material-ui/core/Slide");
+
+/***/ }),
+
+/***/ "nMfB":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4885,7 +6234,7 @@ function (_React$Component) {
           return geography.id !== "ATA" && _react.default.createElement(_reactSimpleMaps.Geography, {
             key: i,
             onClick: function onClick() {
-              return _this.props.onSelect((0, _countryIso3To.default)(geography.id));
+              _this.props.onSelect((0, _countryIso3To.default)(geography.id));
             },
             geography: geography,
             projection: projection,
@@ -5324,6 +6673,13 @@ exports.getUserProviders = getUserProviders;
 
 /***/ }),
 
+/***/ "p0XB":
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__("R2Q7");
+
+/***/ }),
+
 /***/ "p8BD":
 /***/ (function(module, exports) {
 
@@ -5377,257 +6733,6 @@ module.exports = require("core-js/library/fn/array/from");
 /***/ (function(module, exports) {
 
 module.exports = require("prop-types");
-
-/***/ }),
-
-/***/ "ru48":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(_) {
-
-var _interopRequireDefault = __webpack_require__("KI45");
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = exports.styles = void 0;
-
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
-
-var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
-
-var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
-
-var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
-
-var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
-
-var _defineProperty2 = _interopRequireDefault(__webpack_require__("xHqa"));
-
-var _react = _interopRequireDefault(__webpack_require__("cDcd"));
-
-var _propTypes = _interopRequireDefault(__webpack_require__("rf6O"));
-
-var _classnames = _interopRequireDefault(__webpack_require__("K2gz"));
-
-var _reactIntl = __webpack_require__("k004");
-
-var _reactVirtualized = __webpack_require__("xvxd");
-
-var _victory = __webpack_require__("wL32");
-
-var _Typography = _interopRequireDefault(__webpack_require__("UVoM"));
-
-var _colorManipulator = __webpack_require__("oOPP");
-
-var _blue = _interopRequireDefault(__webpack_require__("td7P"));
-
-var _amber = _interopRequireDefault(__webpack_require__("QaNM"));
-
-var _green = _interopRequireDefault(__webpack_require__("Zo8Y"));
-
-var _red = _interopRequireDefault(__webpack_require__("RpH3"));
-
-var styles = function styles(theme) {
-  return {
-    root: {
-      boxShadow: "inset 0 0 6px rgba(0, 0, 0, 0.85)",
-      borderRadius: theme.shape.borderRadius,
-      background: "linear-gradient(to bottom, #484e5e 0, #363940 100%)",
-      color: _amber.default[500],
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "stretch",
-      position: "relative"
-    },
-    delta: {
-      position: "absolute",
-      top: 0,
-      right: 0,
-      borderTopRightRadius: 3,
-      borderBottomLeftRadius: 3,
-      padding: "0.25rem 0.5rem"
-    },
-    stat: {
-      paddingTop: "2rem",
-      width: "70%",
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center"
-    },
-    chart: {
-      marginTop: "-1rem"
-    },
-    increasing: {
-      color: "#ffffff",
-      background: (0, _colorManipulator.fade)(_green.default[300], 0.65)
-    },
-    descreasing: {
-      color: "#ffffff",
-      background: (0, _colorManipulator.fade)(_red.default[300], 0.65)
-    }
-  };
-};
-
-exports.styles = styles;
-
-var Stat =
-/*#__PURE__*/
-function (_React$Component) {
-  (0, _inherits2.default)(Stat, _React$Component);
-
-  function Stat() {
-    (0, _classCallCheck2.default)(this, Stat);
-    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(Stat).apply(this, arguments));
-  }
-
-  (0, _createClass2.default)(Stat, [{
-    key: "renderStat",
-    value: function renderStat() {
-      return _react.default.createElement("div", {
-        className: this.props.classes.stat
-      }, _react.default.createElement(_Typography.default, {
-        variant: "h4",
-        color: "inherit"
-      }, _react.default.createElement(_reactIntl.FormattedNumber, {
-        value: _.last(this.props.data).value,
-        maximumFractionDigits: this.props.precision
-      })), _react.default.createElement(_Typography.default, {
-        variant: "overline",
-        color: "inherit"
-      }, _react.default.createElement(_reactIntl.FormattedMessage, {
-        id: this.props.label
-      })));
-    }
-  }, {
-    key: "renderDelta",
-    value: function renderDelta() {
-      var items = _.slice(this.props.data, -2);
-
-      if (items.length !== 2) return null;
-      var delta = 100 * (items[1].value - items[0].value) / items[0].value;
-      var symbol = delta > 0 ? "▲" : delta < 0 ? "▼" : "";
-      var className = delta > 0 ? "increasing" : delta < 0 ? "descreasing" : null;
-      return _react.default.createElement("div", {
-        className: (0, _classnames.default)(this.props.classes.delta, className && this.props.classes[className])
-      }, symbol, _react.default.createElement(_reactIntl.FormattedNumber, {
-        value: Math.abs(delta),
-        maximumFractionDigits: 0
-      }), "%");
-    }
-  }, {
-    key: "renderChart",
-    value: function renderChart(width, height) {
-      var _this = this;
-
-      var max = _.reduce(this.props.data, function (acc, cur) {
-        return Math.max(acc, cur.value);
-      }, 0);
-
-      return _react.default.createElement(_react.default.Fragment, null, _react.default.createElement("svg", {
-        width: 0,
-        height: 0
-      }, _react.default.createElement("defs", null, _react.default.createElement("linearGradient", {
-        id: "statGradient",
-        x1: "0%",
-        y1: "0%",
-        x2: "100%",
-        y2: "0%"
-      }, _react.default.createElement("stop", {
-        offset: "0%",
-        stopColor: (0, _colorManipulator.fade)(_blue.default[500], 0.2)
-      }), _react.default.createElement("stop", {
-        offset: "100%",
-        stopColor: _blue.default[400]
-      })))), _react.default.createElement(_victory.VictoryChart, {
-        width: width,
-        height: height,
-        padding: 0,
-        domainPadding: {
-          x: [10, 10],
-          y: [5, 5]
-        },
-        containerComponent: _react.default.createElement(_victory.VictoryVoronoiContainer, {
-          responsive: false
-        })
-      }, _react.default.createElement(_victory.VictoryAxis, {
-        dependentAxis: true,
-        domain: {
-          y: [0, max]
-        },
-        orientation: "left",
-        style: {
-          axis: {
-            display: "none"
-          },
-          ticks: {
-            display: "none"
-          },
-          tickLabels: {
-            display: "none"
-          },
-          grid: {
-            stroke: (0, _colorManipulator.fade)(_amber.default[300], 0.3),
-            strokeWidth: 1
-          }
-        }
-      }), _react.default.createElement(_victory.VictoryLine, {
-        data: this.props.data,
-        x: "date",
-        y: "value",
-        interpolation: "monotoneX",
-        style: {
-          data: {
-            stroke: "url(#statGradient)",
-            strokeWidth: 2
-          }
-        }
-      }), _react.default.createElement(_victory.VictoryScatter, {
-        data: this.props.data,
-        x: "date",
-        y: "value",
-        labels: function labels(d) {
-          return _this.props.intl.formatMessage({
-            id: _this.props.label
-          }) + ": " + d.value + "\n" + _this.props.intl.formatDate(d.date);
-        },
-        labelComponent: _react.default.createElement(_victory.VictoryTooltip, null),
-        size: 1,
-        style: {
-          data: {
-            stroke: _blue.default[300],
-            strokeWidth: 2
-          }
-        }
-      })));
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      var _this2 = this;
-
-      return _react.default.createElement("div", {
-        className: this.props.classes.root
-      }, this.renderDelta(), this.renderStat(), _react.default.createElement("div", {
-        className: this.props.classes.chart
-      }, _react.default.createElement(_reactVirtualized.AutoSizer, {
-        disableHeight: true
-      }, function (_ref) {
-        var width = _ref.width;
-        return !!width && _this2.renderChart(width, 0.5 * width);
-      })));
-    }
-  }]);
-  return Stat;
-}(_react.default.Component);
-
-(0, _defineProperty2.default)(Stat, "defaultProps", {
-  precision: 0
-});
-var _default = Stat;
-exports.default = _default;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("YLtl")))
 
 /***/ }),
 
@@ -5732,60 +6837,36 @@ module.exports = require("core-js/library/fn/symbol");
 "use strict";
 /**
  * @flow
- * @relayHash d381c6bbef51990f1c1f571bcb01ebd2
+ * @relayHash 108bde8143f4ba6d9c116c7b378a576b
  */
 
 /* eslint-disable */
 
 /*::
 import type { ConcreteRequest } from 'relay-runtime';
-export type DashboardPageQueryVariables = {||};
+type AvgTimeStatContainer_data$ref = any;
+type ClientsStatContainer_data$ref = any;
+type MarketShareContainer_viewer$ref = any;
+type ProfitStatContainer_data$ref = any;
+type SalesStatContainer_data$ref = any;
+export type DashboardPageQueryVariables = {|
+  country?: ?string
+|};
 export type DashboardPageQueryResponse = {|
   +viewer: ?{|
     +profitValues: ?{|
-      +edges: ?$ReadOnlyArray<?{|
-        +node: ?{|
-          +date: any,
-          +profit: number,
-        |}
-      |}>
+      +$fragmentRefs: ProfitStatContainer_data$ref
     |},
     +salesValues: ?{|
-      +edges: ?$ReadOnlyArray<?{|
-        +node: ?{|
-          +date: any,
-          +sales: number,
-        |}
-      |}>
+      +$fragmentRefs: SalesStatContainer_data$ref
     |},
     +clientsValues: ?{|
-      +edges: ?$ReadOnlyArray<?{|
-        +node: ?{|
-          +date: any,
-          +clients: number,
-        |}
-      |}>
+      +$fragmentRefs: ClientsStatContainer_data$ref
     |},
     +avgTimeValues: ?{|
-      +edges: ?$ReadOnlyArray<?{|
-        +node: ?{|
-          +date: any,
-          +avgTime: number,
-        |}
-      |}>
+      +$fragmentRefs: AvgTimeStatContainer_data$ref
     |},
-    +marketShares: ?{|
-      +edges: ?$ReadOnlyArray<?{|
-        +node: ?{|
-          +id: string,
-          +country: string,
-          +shares: $ReadOnlyArray<?{|
-            +vendor: string,
-            +value: number,
-          |}>,
-        |}
-      |}>
-    |},
+    +$fragmentRefs: MarketShareContainer_viewer$ref,
   |}
 |};
 export type DashboardPageQuery = {|
@@ -5795,56 +6876,78 @@ export type DashboardPageQuery = {|
 */
 
 /*
-query DashboardPageQuery {
+query DashboardPageQuery(
+  $country: ID
+) {
   viewer {
     profitValues {
-      edges {
-        node {
-          date
-          profit
-          id
-        }
-      }
+      ...ProfitStatContainer_data
     }
     salesValues {
-      edges {
-        node {
-          date
-          sales
-          id
-        }
-      }
+      ...SalesStatContainer_data
     }
     clientsValues {
-      edges {
-        node {
-          date
-          clients
-          id
-        }
-      }
+      ...ClientsStatContainer_data
     }
     avgTimeValues {
-      edges {
-        node {
-          date
-          avgTime
-          id
-        }
-      }
+      ...AvgTimeStatContainer_data
     }
-    marketShares {
-      edges {
-        node {
-          id
-          country
-          shares {
-            vendor
-            value
-            id
-          }
-        }
-      }
+    ...MarketShareContainer_viewer_1vRKRZ
+  }
+}
+
+fragment ProfitStatContainer_data on ProfitValueConnection {
+  edges {
+    node {
+      date
+      value: profit
+      id
+    }
+  }
+}
+
+fragment SalesStatContainer_data on SalesValueConnection {
+  edges {
+    node {
+      date
+      value: sales
+      id
+    }
+  }
+}
+
+fragment ClientsStatContainer_data on ClientsValueConnection {
+  edges {
+    node {
+      date
+      value: clients
+      id
+    }
+  }
+}
+
+fragment AvgTimeStatContainer_data on AvgTimeValueConnection {
+  edges {
+    node {
+      date
+      value: avgTime
+      id
+    }
+  }
+}
+
+fragment MarketShareContainer_viewer_1vRKRZ on Viewer {
+  marketSharesByCountry(country: $country) {
+    id
+    country {
+      name
+      id
+    }
+    shares {
+      vendor
+      name
+      values
+      id
     }
   }
 }
@@ -5853,66 +6956,30 @@ query DashboardPageQuery {
 var node
 /*: ConcreteRequest*/
 = function () {
-  var v0 = {
+  var v0 = [{
+    "kind": "LocalArgument",
+    "name": "country",
+    "type": "ID",
+    "defaultValue": null
+  }],
+      v1 = {
     "kind": "ScalarField",
     "alias": null,
     "name": "date",
     "args": null,
     "storageKey": null
   },
-      v1 = {
-    "kind": "ScalarField",
-    "alias": null,
-    "name": "profit",
-    "args": null,
-    "storageKey": null
-  },
       v2 = {
-    "kind": "ScalarField",
-    "alias": null,
-    "name": "sales",
-    "args": null,
-    "storageKey": null
-  },
-      v3 = {
-    "kind": "ScalarField",
-    "alias": null,
-    "name": "clients",
-    "args": null,
-    "storageKey": null
-  },
-      v4 = {
-    "kind": "ScalarField",
-    "alias": null,
-    "name": "avgTime",
-    "args": null,
-    "storageKey": null
-  },
-      v5 = {
     "kind": "ScalarField",
     "alias": null,
     "name": "id",
     "args": null,
     "storageKey": null
   },
-      v6 = {
+      v3 = {
     "kind": "ScalarField",
     "alias": null,
-    "name": "country",
-    "args": null,
-    "storageKey": null
-  },
-      v7 = {
-    "kind": "ScalarField",
-    "alias": null,
-    "name": "vendor",
-    "args": null,
-    "storageKey": null
-  },
-      v8 = {
-    "kind": "ScalarField",
-    "alias": null,
-    "name": "value",
+    "name": "name",
     "args": null,
     "storageKey": null
   };
@@ -5923,7 +6990,9 @@ var node
       "name": "DashboardPageQuery",
       "type": "Query",
       "metadata": null,
-      "argumentDefinitions": [],
+      "argumentDefinitions": v0
+      /*: any*/
+      ,
       "selections": [{
         "kind": "LinkedField",
         "alias": "viewer",
@@ -5941,27 +7010,9 @@ var node
           "concreteType": "ProfitValueConnection",
           "plural": false,
           "selections": [{
-            "kind": "LinkedField",
-            "alias": null,
-            "name": "edges",
-            "storageKey": null,
-            "args": null,
-            "concreteType": "ProfitValueEdge",
-            "plural": true,
-            "selections": [{
-              "kind": "LinkedField",
-              "alias": null,
-              "name": "node",
-              "storageKey": null,
-              "args": null,
-              "concreteType": "ProfitValue",
-              "plural": false,
-              "selections": [v0
-              /*: any*/
-              , v1
-              /*: any*/
-              ]
-            }]
+            "kind": "FragmentSpread",
+            "name": "ProfitStatContainer_data",
+            "args": null
           }]
         }, {
           "kind": "LinkedField",
@@ -5972,27 +7023,9 @@ var node
           "concreteType": "SalesValueConnection",
           "plural": false,
           "selections": [{
-            "kind": "LinkedField",
-            "alias": null,
-            "name": "edges",
-            "storageKey": null,
-            "args": null,
-            "concreteType": "SalesValueEdge",
-            "plural": true,
-            "selections": [{
-              "kind": "LinkedField",
-              "alias": null,
-              "name": "node",
-              "storageKey": null,
-              "args": null,
-              "concreteType": "SalesValue",
-              "plural": false,
-              "selections": [v0
-              /*: any*/
-              , v2
-              /*: any*/
-              ]
-            }]
+            "kind": "FragmentSpread",
+            "name": "SalesStatContainer_data",
+            "args": null
           }]
         }, {
           "kind": "LinkedField",
@@ -6003,27 +7036,9 @@ var node
           "concreteType": "ClientsValueConnection",
           "plural": false,
           "selections": [{
-            "kind": "LinkedField",
-            "alias": null,
-            "name": "edges",
-            "storageKey": null,
-            "args": null,
-            "concreteType": "ClientsValueEdge",
-            "plural": true,
-            "selections": [{
-              "kind": "LinkedField",
-              "alias": null,
-              "name": "node",
-              "storageKey": null,
-              "args": null,
-              "concreteType": "ClientsValue",
-              "plural": false,
-              "selections": [v0
-              /*: any*/
-              , v3
-              /*: any*/
-              ]
-            }]
+            "kind": "FragmentSpread",
+            "name": "ClientsStatContainer_data",
+            "args": null
           }]
         }, {
           "kind": "LinkedField",
@@ -6034,71 +7049,18 @@ var node
           "concreteType": "AvgTimeValueConnection",
           "plural": false,
           "selections": [{
-            "kind": "LinkedField",
-            "alias": null,
-            "name": "edges",
-            "storageKey": null,
-            "args": null,
-            "concreteType": "AvgTimeValueEdge",
-            "plural": true,
-            "selections": [{
-              "kind": "LinkedField",
-              "alias": null,
-              "name": "node",
-              "storageKey": null,
-              "args": null,
-              "concreteType": "AvgTimeValue",
-              "plural": false,
-              "selections": [v0
-              /*: any*/
-              , v4
-              /*: any*/
-              ]
-            }]
+            "kind": "FragmentSpread",
+            "name": "AvgTimeStatContainer_data",
+            "args": null
           }]
         }, {
-          "kind": "LinkedField",
-          "alias": null,
-          "name": "marketShares",
-          "storageKey": null,
-          "args": null,
-          "concreteType": "MarketShareConnection",
-          "plural": false,
-          "selections": [{
-            "kind": "LinkedField",
-            "alias": null,
-            "name": "edges",
-            "storageKey": null,
-            "args": null,
-            "concreteType": "MarketShareEdge",
-            "plural": true,
-            "selections": [{
-              "kind": "LinkedField",
-              "alias": null,
-              "name": "node",
-              "storageKey": null,
-              "args": null,
-              "concreteType": "MarketShare",
-              "plural": false,
-              "selections": [v5
-              /*: any*/
-              , v6
-              /*: any*/
-              , {
-                "kind": "LinkedField",
-                "alias": null,
-                "name": "shares",
-                "storageKey": null,
-                "args": null,
-                "concreteType": "MarketShareValue",
-                "plural": true,
-                "selections": [v7
-                /*: any*/
-                , v8
-                /*: any*/
-                ]
-              }]
-            }]
+          "kind": "FragmentSpread",
+          "name": "MarketShareContainer_viewer",
+          "args": [{
+            "kind": "Variable",
+            "name": "country",
+            "variableName": "country",
+            "type": null
           }]
         }]
       }]
@@ -6106,7 +7068,9 @@ var node
     "operation": {
       "kind": "Operation",
       "name": "DashboardPageQuery",
-      "argumentDefinitions": [],
+      "argumentDefinitions": v0
+      /*: any*/
+      ,
       "selections": [{
         "kind": "LinkedField",
         "alias": null,
@@ -6139,11 +7103,15 @@ var node
               "args": null,
               "concreteType": "ProfitValue",
               "plural": false,
-              "selections": [v0
+              "selections": [v1
               /*: any*/
-              , v1
-              /*: any*/
-              , v5
+              , {
+                "kind": "ScalarField",
+                "alias": "value",
+                "name": "profit",
+                "args": null,
+                "storageKey": null
+              }, v2
               /*: any*/
               ]
             }]
@@ -6172,11 +7140,15 @@ var node
               "args": null,
               "concreteType": "SalesValue",
               "plural": false,
-              "selections": [v0
+              "selections": [v1
               /*: any*/
-              , v2
-              /*: any*/
-              , v5
+              , {
+                "kind": "ScalarField",
+                "alias": "value",
+                "name": "sales",
+                "args": null,
+                "storageKey": null
+              }, v2
               /*: any*/
               ]
             }]
@@ -6205,11 +7177,15 @@ var node
               "args": null,
               "concreteType": "ClientsValue",
               "plural": false,
-              "selections": [v0
+              "selections": [v1
               /*: any*/
-              , v3
-              /*: any*/
-              , v5
+              , {
+                "kind": "ScalarField",
+                "alias": "value",
+                "name": "clients",
+                "args": null,
+                "storageKey": null
+              }, v2
               /*: any*/
               ]
             }]
@@ -6238,11 +7214,15 @@ var node
               "args": null,
               "concreteType": "AvgTimeValue",
               "plural": false,
-              "selections": [v0
+              "selections": [v1
               /*: any*/
-              , v4
-              /*: any*/
-              , v5
+              , {
+                "kind": "ScalarField",
+                "alias": "value",
+                "name": "avgTime",
+                "args": null,
+                "storageKey": null
+              }, v2
               /*: any*/
               ]
             }]
@@ -6250,48 +7230,56 @@ var node
         }, {
           "kind": "LinkedField",
           "alias": null,
-          "name": "marketShares",
+          "name": "marketSharesByCountry",
           "storageKey": null,
-          "args": null,
-          "concreteType": "MarketShareConnection",
+          "args": [{
+            "kind": "Variable",
+            "name": "country",
+            "variableName": "country",
+            "type": "ID"
+          }],
+          "concreteType": "MarketShare",
           "plural": false,
-          "selections": [{
+          "selections": [v2
+          /*: any*/
+          , {
             "kind": "LinkedField",
             "alias": null,
-            "name": "edges",
+            "name": "country",
             "storageKey": null,
             "args": null,
-            "concreteType": "MarketShareEdge",
+            "concreteType": "Country",
+            "plural": false,
+            "selections": [v3
+            /*: any*/
+            , v2
+            /*: any*/
+            ]
+          }, {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "shares",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "MarketShareValue",
             "plural": true,
             "selections": [{
-              "kind": "LinkedField",
+              "kind": "ScalarField",
               "alias": null,
-              "name": "node",
-              "storageKey": null,
+              "name": "vendor",
               "args": null,
-              "concreteType": "MarketShare",
-              "plural": false,
-              "selections": [v5
-              /*: any*/
-              , v6
-              /*: any*/
-              , {
-                "kind": "LinkedField",
-                "alias": null,
-                "name": "shares",
-                "storageKey": null,
-                "args": null,
-                "concreteType": "MarketShareValue",
-                "plural": true,
-                "selections": [v7
-                /*: any*/
-                , v8
-                /*: any*/
-                , v5
-                /*: any*/
-                ]
-              }]
-            }]
+              "storageKey": null
+            }, v3
+            /*: any*/
+            , {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "values",
+              "args": null,
+              "storageKey": null
+            }, v2
+            /*: any*/
+            ]
           }]
         }]
       }, {
@@ -6308,7 +7296,7 @@ var node
       "operationKind": "query",
       "name": "DashboardPageQuery",
       "id": null,
-      "text": "query DashboardPageQuery {\n  viewer {\n    profitValues {\n      edges {\n        node {\n          date\n          profit\n          id\n        }\n      }\n    }\n    salesValues {\n      edges {\n        node {\n          date\n          sales\n          id\n        }\n      }\n    }\n    clientsValues {\n      edges {\n        node {\n          date\n          clients\n          id\n        }\n      }\n    }\n    avgTimeValues {\n      edges {\n        node {\n          date\n          avgTime\n          id\n        }\n      }\n    }\n    marketShares {\n      edges {\n        node {\n          id\n          country\n          shares {\n            vendor\n            value\n            id\n          }\n        }\n      }\n    }\n  }\n}\n",
+      "text": "query DashboardPageQuery(\n  $country: ID\n) {\n  viewer {\n    profitValues {\n      ...ProfitStatContainer_data\n    }\n    salesValues {\n      ...SalesStatContainer_data\n    }\n    clientsValues {\n      ...ClientsStatContainer_data\n    }\n    avgTimeValues {\n      ...AvgTimeStatContainer_data\n    }\n    ...MarketShareContainer_viewer_1vRKRZ\n  }\n}\n\nfragment ProfitStatContainer_data on ProfitValueConnection {\n  edges {\n    node {\n      date\n      value: profit\n      id\n    }\n  }\n}\n\nfragment SalesStatContainer_data on SalesValueConnection {\n  edges {\n    node {\n      date\n      value: sales\n      id\n    }\n  }\n}\n\nfragment ClientsStatContainer_data on ClientsValueConnection {\n  edges {\n    node {\n      date\n      value: clients\n      id\n    }\n  }\n}\n\nfragment AvgTimeStatContainer_data on AvgTimeValueConnection {\n  edges {\n    node {\n      date\n      value: avgTime\n      id\n    }\n  }\n}\n\nfragment MarketShareContainer_viewer_1vRKRZ on Viewer {\n  marketSharesByCountry(country: $country) {\n    id\n    country {\n      name\n      id\n    }\n    shares {\n      vendor\n      name\n      values\n      id\n    }\n  }\n}\n",
       "metadata": {}
     }
   };
@@ -6317,7 +7305,7 @@ var node
 
 node
 /*: any*/
-.hash = '4e35ecfd1a7798c6cad886f912bf61e0';
+.hash = 'fffcff7da4c5d6f6ca5fc0ba80797ae9';
 module.exports = node;
 
 /***/ }),
@@ -6566,169 +7554,6 @@ var setGoogleMapsKey = function setGoogleMapsKey(_ref2) {
 };
 
 exports.setGoogleMapsKey = setGoogleMapsKey;
-
-/***/ }),
-
-/***/ "z/H1":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__("KI45");
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = exports.styles = void 0;
-
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
-
-var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
-
-var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
-
-var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
-
-var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
-
-var _react = _interopRequireDefault(__webpack_require__("cDcd"));
-
-var _propTypes = _interopRequireDefault(__webpack_require__("rf6O"));
-
-var _reactVirtualized = __webpack_require__("xvxd");
-
-var _victory = __webpack_require__("wL32");
-
-var _Typography = _interopRequireDefault(__webpack_require__("UVoM"));
-
-var _lightBlue = _interopRequireDefault(__webpack_require__("IC/e"));
-
-var _amber = _interopRequireDefault(__webpack_require__("QaNM"));
-
-var _orange = _interopRequireDefault(__webpack_require__("7U8d"));
-
-var _cyan = _interopRequireDefault(__webpack_require__("6zo0"));
-
-var styles = function styles(theme) {
-  return {
-    root: {
-      textAlign: "center",
-      color: _amber.default[500]
-    }
-  };
-};
-
-exports.styles = styles;
-
-var MarketShare =
-/*#__PURE__*/
-function (_React$Component) {
-  (0, _inherits2.default)(MarketShare, _React$Component);
-
-  function MarketShare() {
-    (0, _classCallCheck2.default)(this, MarketShare);
-    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(MarketShare).apply(this, arguments));
-  }
-
-  (0, _createClass2.default)(MarketShare, [{
-    key: "renderTitle",
-    value: function renderTitle() {
-      return _react.default.createElement(_Typography.default, {
-        variant: "h4",
-        color: "inherit"
-      }, this.props.title);
-    }
-  }, {
-    key: "renderChart",
-    value: function renderChart(width, height) {
-      if (!this.props.data) return _react.default.createElement("div", {
-        style: {
-          width: width,
-          height: height
-        }
-      });
-      return _react.default.createElement(_react.default.Fragment, null, _react.default.createElement("svg", {
-        width: 0,
-        height: 0
-      }, _react.default.createElement("defs", null, _react.default.createElement("filter", {
-        id: "worldPieShadow"
-      }, _react.default.createElement("feGaussianBlur", {
-        in: "SourceAlpha",
-        stdDeviation: "5"
-      }), _react.default.createElement("feOffset", {
-        dx: "3",
-        dy: "3",
-        result: "offsetblur"
-      }), _react.default.createElement("feFlood", {
-        floodColor: "rgba(0, 0, 0, 0.85)"
-      }), _react.default.createElement("feComposite", {
-        in2: "offsetblur",
-        operator: "in"
-      }), _react.default.createElement("feMerge", null, _react.default.createElement("feMergeNode", null), _react.default.createElement("feMergeNode", {
-        in: "SourceGraphic"
-      }))))), _react.default.createElement(_victory.VictoryChart, {
-        width: width,
-        height: height,
-        padding: 20,
-        containerComponent: _react.default.createElement(_victory.VictoryContainer, {
-          responsive: false,
-          style: {
-            filter: "url(#worldPieShadow)"
-          }
-        }),
-        theme: _victory.VictoryTheme.material
-      }, _react.default.createElement(_victory.VictoryPie, {
-        animate: true,
-        colorScale: [_lightBlue.default[200], _orange.default[200], _amber.default[200], _cyan.default[200]],
-        data: this.props.data,
-        x: "vendor",
-        y: "value",
-        innerRadius: 60,
-        labelRadius: 100,
-        style: {
-          labels: {
-            fontSize: 20,
-            fill: "#000000"
-          }
-        }
-      }), _react.default.createElement(_victory.VictoryAxis, {
-        style: {
-          axis: {
-            display: "none"
-          },
-          ticks: {
-            display: "none"
-          },
-          tickLabels: {
-            display: "none"
-          },
-          grid: {
-            display: "none"
-          }
-        }
-      })));
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      var _this = this;
-
-      return _react.default.createElement("div", {
-        className: this.props.classes.root
-      }, this.renderTitle(), _react.default.createElement("div", null, _react.default.createElement(_reactVirtualized.AutoSizer, {
-        disableHeight: true
-      }, function (_ref) {
-        var width = _ref.width;
-        return !!width && _this.renderChart(width, width);
-      })));
-    }
-  }]);
-  return MarketShare;
-}(_react.default.Component);
-
-var _default = MarketShare;
-exports.default = _default;
 
 /***/ })
 
