@@ -173,6 +173,12 @@ class DashboardRepository extends EventEmitter {
         })
       );
 
+      shares.sort(
+        (a, b) =>
+          _.reduce(a.values, (acc, cur) => acc + cur, 0) -
+          _.reduce(b.values, (acc, cur) => acc + cur, 0)
+      );
+
       return new this.dashboard.MarketShareModel({
         id: country,
         shares

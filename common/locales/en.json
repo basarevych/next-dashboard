@@ -28,6 +28,7 @@
   "DASHBOARD_AVG_TIME_LABEL": "Avg Time",
   "DASHBOARD_WORLD_LABEL": "World",
   "DASHBOARD_CLICK_MAP_LABEL": "Click to select",
+  "DASHBOARD_NOT_REALLY_LABEL": "(not really)",
   "DEPT_PRODUCTION": "Production",
   "DEPT_RD": "R&D",
   "DEPT_PURCHASING": "Purchasing",
@@ -36,8 +37,8 @@
   "DEPT_ACCOUNTING": "Accounting",
   "EMPLOYEES_MESSAGE_TITLE": "It's alive!",
   "EMPLOYEES_MESSAGE_CONTENT": [
-    "This table is powered by GraphQL API (React Relay Modern). Try changing a value in another browser or tab and you will see it",
-    " updated for all the browsers connected to this page thanks to GraphQL Subscriptions."
+    "This table is powered by GraphQL API and uses React Relay Modern. Try changing a value in another browser or tab and",
+    " you will see it updated in all the browsers connected to this page thanks to GraphQL Subscriptions."
   ],
   "EMPLOYEES_UID_COLUMN": "UID",
   "EMPLOYEES_NAME_COLUMN": "Name",
@@ -86,8 +87,8 @@
   "DELETE_USER_SUBMIT": "Delete",
   "FORMS_MESSAGE_TITLE": "It's alive!",
   "FORMS_MESSAGE_CONTENT": [
-    "The form example below is fully functional, the fields normalize and validate their input accordingly to this form's",
-    " description file. Try to fill out and submit this form to see it in action."
+    "The form example below is fully functional, the fields normalize and validate the input using this form's",
+    " declaration file. And the server can use the very same declaration file to revalidate the form upon submitting."
   ],
   "FORMS_SUCCESS_TITLE": "Congratulations!",
   "FORMS_SUCCESS_TEXT": "The form is finished and ready to be submitted to the backend",

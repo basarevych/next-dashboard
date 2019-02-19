@@ -1,13 +1,14 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Grid from "@material-ui/core/Grid";
-import Slide from "@material-ui/core/Slide";
+import Fade from "@material-ui/core/Fade";
 import ProfitStat from "./Stat/ProfitStatContainer";
 import SalesStat from "./Stat/SalesStatContainer";
 import ClientsStat from "./Stat/ClientsStatContainer";
 import AvgTimeStat from "./Stat/AvgTimeStatContainer";
 import WorldMap from "./WorldMarket/WorldMapContainer";
 import MarketShare from "./WorldMarket/MarketShareContainer";
+import MarketSpinner from "./WorldMarket/MarketSpinnerContainer";
 
 export const defaultCountry = "WORLD";
 
@@ -16,6 +17,16 @@ export const styles = theme => ({
     width: "100%",
     flex: 1,
     padding: theme.main.spacing
+  },
+  spinnerWrapper: {
+    position: "relative"
+  },
+  spinner: {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate3d(-50%, -50%, 0)",
+    color: theme.palette.primary.contrastText
   }
 });
 
@@ -47,6 +58,7 @@ class Dashboard extends React.Component {
 
   handleCountrySelected(id) {
     if (this.isTransitioning) return;
+    if (this.state.countryId === id) return;
     this.isTransitioning = true;
     this.setState({ isLoaded: false }, () => {
       setTimeout(() => {
@@ -102,13 +114,15 @@ class Dashboard extends React.Component {
             />
           </Grid>
           <Grid item xs={12} md={4}>
-            <Slide direction="left" in={this.state.isLoaded}>
+            <MarketSpinner isActive={!this.state.isLoaded} />
+            <Fade in={this.state.isLoaded}>
               <MarketShare
                 selected={this.state.countryId}
                 viewer={this.props.viewer}
                 onLoaded={this.handleLoaded}
+                onSelect={this.handleCountrySelected}
               />
-            </Slide>
+            </Fade>
           </Grid>
         </Grid>
       </div>

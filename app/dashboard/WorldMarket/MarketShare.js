@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { intlShape } from "react-intl";
+import { intlShape, FormattedMessage } from "react-intl";
 import { AutoSizer } from "react-virtualized";
 import {
   VictoryChart,
@@ -31,7 +31,8 @@ class MarketShare extends React.Component {
     selected: PropTypes.string.isRequired,
     viewer: PropTypes.object.isRequired,
     style: PropTypes.object,
-    onLoaded: PropTypes.func.isRequired
+    onLoaded: PropTypes.func.isRequired,
+    onSelect: PropTypes.func.isRequired
   };
 
   componentDidMount() {
@@ -44,20 +45,23 @@ class MarketShare extends React.Component {
         { country: this.props.selected },
         null,
         () => this.props.onLoaded(),
-        {
-          force: true
-        }
+        { force: true }
       );
     }
   }
 
   renderTitle() {
     return (
-      <Typography variant="h4" color="inherit">
-        {_.get(this.props.viewer, "marketSharesByCountry.country") === null
-          ? this.props.intl.formatMessage({ id: "DASHBOARD_WORLD_LABEL" })
-          : _.get(this.props.viewer, "marketSharesByCountry.country.name")}
-      </Typography>
+      <React.Fragment>
+        <Typography variant="h4" color="inherit">
+          {_.get(this.props.viewer, "marketSharesByCountry.country") === null
+            ? this.props.intl.formatMessage({ id: "DASHBOARD_WORLD_LABEL" })
+            : _.get(this.props.viewer, "marketSharesByCountry.country.name")}
+        </Typography>
+        <Typography variant="body2">
+          <FormattedMessage id="DASHBOARD_NOT_REALLY_LABEL" />
+        </Typography>
+      </React.Fragment>
     );
   }
 
@@ -103,6 +107,14 @@ class MarketShare extends React.Component {
           height={height}
           padding={20}
           polar
+          events={[
+            {
+              childName: "all",
+              eventHandlers: {
+                onClick: () => this.props.onSelect("WORLD")
+              }
+            }
+          ]}
           containerComponent={
             <VictoryContainer
               responsive={false}
