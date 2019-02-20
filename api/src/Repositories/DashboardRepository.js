@@ -130,48 +130,30 @@ class DashboardRepository extends EventEmitter {
       "Fujitsu"
     ];
 
-    const getValues = value => {
-      let sub1 = this.fake.getFloat(value / 5, value / 3);
-      let sub2 = this.fake.getFloat(value / 5, value / 3);
-      let sub3 = this.fake.getFloat(value / 5, value / 3);
-      let sub4 = value - sub1 - sub2 - sub3;
-      if (sub4 < 0) sub4 = 0;
-      return [sub1, sub2, sub3, sub4];
-    };
-
     const getRandomData = country => {
       country = _.toUpper(country);
 
       let shares = [];
       let variants = _.shuffle(vendors);
-      let max = this.fake.getInt(3, 6);
+      let maxVendors = this.fake.getInt(5, vendors.length - 1);
 
       let sum = 0;
-      for (let i = 0; i < max; i++) {
-        let vendor = variants.shift();
+      for (let i = 0; i < maxVendors; i++) {
+        let name = variants.shift();
+        let vendor = _.toUpper(name);
 
-        let value = this.fake.getInt(50 / max, 100 / max);
-        sum += value;
+        let values = [];
+        for (let j = 0; j < 4; j++) values.push(this.fake.getFloat(10, 30));
 
         shares.push(
           new this.dashboard.MarketShareValueModel({
-            id: `${country}:${_.toUpper(vendor)}`,
-            vendor: _.toUpper(vendor),
-            name: vendor,
-            values: getValues(value)
+            id: `${country}:${vendor}`,
+            vendor,
+            name,
+            values
           })
         );
       }
-
-      let vendor = variants.shift();
-      shares.push(
-        new this.dashboard.MarketShareValueModel({
-          id: `${country}:${_.toUpper(vendor)}`,
-          vendor: _.toUpper(vendor),
-          name: vendor,
-          values: getValues(100 - sum)
-        })
-      );
 
       shares.sort(
         (a, b) =>

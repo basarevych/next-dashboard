@@ -203,7 +203,7 @@
       "publicPath": "/_next/static/chunks/commons.4e10d812dfa90288de31.js"
     }
   ],
-  "./../../../node_modules/next/node_modules/webpack/buildin/global.js": [
+  "./../node_modules/next/node_modules/webpack/buildin/global.js": [
     {
       "id": "3r9c",
       "name": "./node_modules/next/node_modules/webpack/buildin/global.js",
@@ -369,7 +369,7 @@
       "publicPath": "/_next/static/chunks/commons.4e10d812dfa90288de31.js"
     }
   ],
-  "./withTheme": [
+  "../styles/withTheme": [
     {
       "id": "A3JV",
       "name": "./node_modules/@material-ui/core/styles/withTheme.js",
@@ -393,7 +393,7 @@
       "publicPath": "/_next/static/chunks/commons.4e10d812dfa90288de31.js"
     }
   ],
-  "../styles/mergeClasses": [
+  "./mergeClasses": [
     {
       "id": "Ap+j",
       "name": "./node_modules/@material-ui/core/styles/mergeClasses.js",
@@ -661,7 +661,7 @@
       "publicPath": "/_next/static/chunks/commons.4e10d812dfa90288de31.js"
     }
   ],
-  "./withStyles": [
+  "../styles/withStyles": [
     {
       "id": "Hk+Y",
       "name": "./node_modules/@material-ui/core/styles/withStyles.js",
@@ -1207,7 +1207,7 @@
       "publicPath": "/_next/static/chunks/commons.4e10d812dfa90288de31.js"
     }
   ],
-  "./isObservable": [
+  "../utils/isObservable": [
     {
       "id": "UCXN",
       "name": "./node_modules/jss/lib/utils/isObservable.js",
@@ -1311,7 +1311,7 @@
       "publicPath": "/_next/static/chunks/commons.4e10d812dfa90288de31.js"
     }
   ],
-  "../modules/_core": [
+  "../../modules/_core": [
     {
       "id": "WEpk",
       "name": "./node_modules/core-js/library/modules/_core.js",
@@ -1381,7 +1381,7 @@
       "publicPath": "/_next/static/chunks/commons.4e10d812dfa90288de31.js"
     }
   ],
-  "../StyleSheet": [
+  "./StyleSheet": [
     {
       "id": "XY0u",
       "name": "./node_modules/jss/lib/StyleSheet.js",
@@ -1517,7 +1517,7 @@
       "publicPath": "/_next/static/chunks/commons.4e10d812dfa90288de31.js"
     }
   ],
-  "./createStyles": [
+  "@material-ui/core/styles/createStyles": [
     {
       "id": "az50",
       "name": "./node_modules/@material-ui/core/styles/createStyles.js",
@@ -1661,7 +1661,7 @@
       "publicPath": "/_next/static/chunks/commons.4e10d812dfa90288de31.js"
     }
   ],
-  "../colors/red": [
+  "@material-ui/core/colors/red": [
     {
       "id": "fWIC",
       "name": "./node_modules/@material-ui/core/colors/red.js",
@@ -1853,7 +1853,7 @@
       "publicPath": "/_next/static/chunks/commons.4e10d812dfa90288de31.js"
     }
   ],
-  "@babel/runtime/helpers/defineProperty": [
+  "./defineProperty": [
     {
       "id": "lSNA",
       "name": "./node_modules/@babel/runtime/helpers/defineProperty.js",
@@ -1957,7 +1957,7 @@
       "publicPath": "/_next/static/chunks/commons.4e10d812dfa90288de31.js"
     }
   ],
-  "../../../common/constants": [
+  "../common/constants": [
     {
       "id": "o4p3",
       "name": "./common/constants.js",
@@ -2125,7 +2125,7 @@
       "publicPath": "/_next/static/chunks/commons.4e10d812dfa90288de31.js"
     }
   ],
-  "../colors/grey": [
+  "./grey": [
     {
       "id": "sFvP",
       "name": "./node_modules/@material-ui/core/colors/grey.js",
