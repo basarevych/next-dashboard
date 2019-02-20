@@ -13,7 +13,7 @@ import isRouteAllowed from "../../common/isRouteAllowed";
 const defaultVariables = { first: pageSize, sortBy, sortDir };
 
 export const query = graphql`
-  query TablesPageQuery(
+  query EmployeesPageQuery(
     $sortBy: EmployeeSortBy
     $sortDir: EmployeeSortDir
     $first: Int
@@ -35,7 +35,7 @@ export const query = graphql`
   }
 `;
 
-class TablesPage extends React.Component {
+class EmployeesPage extends React.Component {
   static propTypes = {
     userRoles: PropTypes.array.isRequired
   };
@@ -62,4 +62,4 @@ class TablesPage extends React.Component {
   }
 }
 
-export default TablesPage;
+export default EmployeesPage;

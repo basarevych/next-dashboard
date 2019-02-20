@@ -2,12 +2,33 @@ import React from "react";
 import PropTypes from "prop-types";
 import { graphql } from "react-relay";
 import { NextQueryRenderer } from "../app/providers/Relay";
-import Dashboard, { defaultCountry } from "./DashboardContainer";
+import Dashboard, {
+  defaultCountry,
+  defaultDept,
+  pageSize,
+  sortBy,
+  sortDir
+} from "./DashboardContainer";
 
-const defaultVariables = { country: defaultCountry };
+const defaultVariables = {
+  country: defaultCountry,
+  dept: defaultDept,
+  first: pageSize,
+  sortBy,
+  sortDir
+};
 
 export const query = graphql`
-  query DashboardPageQuery($country: ID) {
+  query DashboardPageQuery(
+    $country: ID
+    $dept: EmployeeDept
+    $sortBy: EmployeeSortBy
+    $sortDir: EmployeeSortDir
+    $first: Int
+    $after: String
+    $last: Int
+    $before: String
+  ) {
     viewer {
       profitValues {
         ...ProfitStatContainer_data
@@ -22,6 +43,16 @@ export const query = graphql`
         ...AvgTimeStatContainer_data
       }
       ...MarketShareContainer_viewer @arguments(country: $country)
+      ...DemoListContainer_viewer
+        @arguments(
+          dept: $dept
+          sortBy: $sortBy
+          sortDir: $sortDir
+          first: $first
+          after: $after
+          last: $last
+          before: $before
+        )
     }
   }
 `;

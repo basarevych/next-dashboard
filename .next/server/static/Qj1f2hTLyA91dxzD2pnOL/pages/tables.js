@@ -3622,11 +3622,11 @@ Object.defineProperty(exports, "__esModule", {
 Object.defineProperty(exports, "default", {
   enumerable: true,
   get: function get() {
-    return _TablesPageContainer.default;
+    return _EmployeesPageContainer.default;
   }
 });
 
-var _TablesPageContainer = _interopRequireDefault(__webpack_require__("urzU"));
+var _EmployeesPageContainer = _interopRequireDefault(__webpack_require__("sLDs"));
 
 /***/ }),
 
@@ -5572,6 +5572,138 @@ module.exports = require("http-status-codes");
 
 /***/ }),
 
+/***/ "MW/T":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireWildcard = __webpack_require__("5Uuq");
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = exports.query = void 0;
+
+var _regenerator = _interopRequireDefault(__webpack_require__("ln6h"));
+
+var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__("+oT+"));
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
+
+var _react = _interopRequireDefault(__webpack_require__("cDcd"));
+
+var _propTypes = _interopRequireDefault(__webpack_require__("rf6O"));
+
+var _reactRelay = __webpack_require__("iuEU");
+
+var _Relay = __webpack_require__("JyB7");
+
+var _EmployeeListContainer = _interopRequireWildcard(__webpack_require__("Plze"));
+
+var _ErrorMessageContainer = _interopRequireDefault(__webpack_require__("Y3Ay"));
+
+var _isRouteAllowed = _interopRequireDefault(__webpack_require__("jRAA"));
+
+var defaultVariables = {
+  first: _EmployeeListContainer.pageSize,
+  sortBy: _EmployeeListContainer.sortBy,
+  sortDir: _EmployeeListContainer.sortDir
+};
+
+var query = function query() {
+  return __webpack_require__("gkwM");
+};
+
+exports.query = query;
+
+var EmployeesPage =
+/*#__PURE__*/
+function (_React$Component) {
+  (0, _inherits2.default)(EmployeesPage, _React$Component);
+
+  function EmployeesPage() {
+    (0, _classCallCheck2.default)(this, EmployeesPage);
+    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(EmployeesPage).apply(this, arguments));
+  }
+
+  (0, _createClass2.default)(EmployeesPage, [{
+    key: "render",
+    value: function render() {
+      if (!(0, _isRouteAllowed.default)("/tables", this.props.userRoles)) return null;
+      return _react.default.createElement(_Relay.NextQueryRenderer, {
+        query: query,
+        variables: defaultVariables,
+        render: function render(_ref) {
+          var error = _ref.error,
+              props = _ref.props;
+          if (error) return _react.default.createElement(_ErrorMessageContainer.default, {
+            error: error
+          });
+          if (!props) return null;
+          return _react.default.createElement(_EmployeeListContainer.default, {
+            viewer: props.viewer
+          });
+        }
+      });
+    }
+  }], [{
+    key: "getInitialProps",
+    value: function () {
+      var _getInitialProps = (0, _asyncToGenerator2.default)(
+      /*#__PURE__*/
+      _regenerator.default.mark(function _callee(_ref2) {
+        var statusCode, fetchQuery;
+        return _regenerator.default.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                statusCode = _ref2.statusCode, fetchQuery = _ref2.fetchQuery;
+
+                if (!(statusCode !== 200)) {
+                  _context.next = 3;
+                  break;
+                }
+
+                return _context.abrupt("return");
+
+              case 3:
+                _context.next = 5;
+                return fetchQuery(query, defaultVariables);
+
+              case 5:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function getInitialProps(_x) {
+        return _getInitialProps.apply(this, arguments);
+      }
+
+      return getInitialProps;
+    }()
+  }]);
+  return EmployeesPage;
+}(_react.default.Component);
+
+var _default = EmployeesPage;
+exports.default = _default;
+
+/***/ }),
+
 /***/ "MWqi":
 /***/ (function(module, exports) {
 
@@ -6100,370 +6232,6 @@ exports.default = _default;
 
 /***/ }),
 
-/***/ "Qs5A":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @flow
- * @relayHash 412ef3de1abe4309564e87b1814dd07c
- */
-
-/* eslint-disable */
-
-/*::
-import type { ConcreteRequest } from 'relay-runtime';
-type EmployeeListContainer_viewer$ref = any;
-export type EmployeeSortBy = "checked" | "country" | "dept" | "name" | "salary" | "title" | "uid" | "%future added value";
-export type EmployeeSortDir = "asc" | "desc" | "%future added value";
-export type TablesPageQueryVariables = {|
-  sortBy?: ?EmployeeSortBy,
-  sortDir?: ?EmployeeSortDir,
-  first?: ?number,
-  after?: ?string,
-  last?: ?number,
-  before?: ?string,
-|};
-export type TablesPageQueryResponse = {|
-  +viewer: ?{|
-    +$fragmentRefs: EmployeeListContainer_viewer$ref
-  |}
-|};
-export type TablesPageQuery = {|
-  variables: TablesPageQueryVariables,
-  response: TablesPageQueryResponse,
-|};
-*/
-
-/*
-query TablesPageQuery(
-  $sortBy: EmployeeSortBy
-  $sortDir: EmployeeSortDir
-  $first: Int
-  $after: String
-  $last: Int
-  $before: String
-) {
-  viewer {
-    ...EmployeeListContainer_viewer_3WF44T
-  }
-}
-
-fragment EmployeeListContainer_viewer_3WF44T on Viewer {
-  employees(sortBy: $sortBy, sortDir: $sortDir, first: $first, after: $after, last: $last, before: $before) {
-    edges {
-      cursor
-      node {
-        id
-        ...EmployeeItemContainer_node
-      }
-    }
-    pageInfo {
-      startCursor
-      endCursor
-    }
-    totalCount
-  }
-}
-
-fragment EmployeeItemContainer_node on Employee {
-  id
-  uid
-  checked
-  name
-  dept
-  title
-  country {
-    id
-    name
-  }
-  salary
-}
-*/
-
-var node
-/*: ConcreteRequest*/
-= function () {
-  var v0 = [{
-    "kind": "LocalArgument",
-    "name": "sortBy",
-    "type": "EmployeeSortBy",
-    "defaultValue": null
-  }, {
-    "kind": "LocalArgument",
-    "name": "sortDir",
-    "type": "EmployeeSortDir",
-    "defaultValue": null
-  }, {
-    "kind": "LocalArgument",
-    "name": "first",
-    "type": "Int",
-    "defaultValue": null
-  }, {
-    "kind": "LocalArgument",
-    "name": "after",
-    "type": "String",
-    "defaultValue": null
-  }, {
-    "kind": "LocalArgument",
-    "name": "last",
-    "type": "Int",
-    "defaultValue": null
-  }, {
-    "kind": "LocalArgument",
-    "name": "before",
-    "type": "String",
-    "defaultValue": null
-  }],
-      v1 = {
-    "kind": "ScalarField",
-    "alias": null,
-    "name": "id",
-    "args": null,
-    "storageKey": null
-  },
-      v2 = {
-    "kind": "ScalarField",
-    "alias": null,
-    "name": "name",
-    "args": null,
-    "storageKey": null
-  };
-  return {
-    "kind": "Request",
-    "fragment": {
-      "kind": "Fragment",
-      "name": "TablesPageQuery",
-      "type": "Query",
-      "metadata": null,
-      "argumentDefinitions": v0
-      /*: any*/
-      ,
-      "selections": [{
-        "kind": "LinkedField",
-        "alias": "viewer",
-        "name": "__viewer_viewer",
-        "storageKey": null,
-        "args": null,
-        "concreteType": "Viewer",
-        "plural": false,
-        "selections": [{
-          "kind": "FragmentSpread",
-          "name": "EmployeeListContainer_viewer",
-          "args": [{
-            "kind": "Variable",
-            "name": "after",
-            "variableName": "after",
-            "type": null
-          }, {
-            "kind": "Variable",
-            "name": "before",
-            "variableName": "before",
-            "type": null
-          }, {
-            "kind": "Variable",
-            "name": "first",
-            "variableName": "first",
-            "type": null
-          }, {
-            "kind": "Variable",
-            "name": "last",
-            "variableName": "last",
-            "type": null
-          }, {
-            "kind": "Variable",
-            "name": "sortBy",
-            "variableName": "sortBy",
-            "type": null
-          }, {
-            "kind": "Variable",
-            "name": "sortDir",
-            "variableName": "sortDir",
-            "type": null
-          }]
-        }]
-      }]
-    },
-    "operation": {
-      "kind": "Operation",
-      "name": "TablesPageQuery",
-      "argumentDefinitions": v0
-      /*: any*/
-      ,
-      "selections": [{
-        "kind": "LinkedField",
-        "alias": null,
-        "name": "viewer",
-        "storageKey": null,
-        "args": null,
-        "concreteType": "Viewer",
-        "plural": false,
-        "selections": [{
-          "kind": "LinkedField",
-          "alias": null,
-          "name": "employees",
-          "storageKey": null,
-          "args": [{
-            "kind": "Variable",
-            "name": "after",
-            "variableName": "after",
-            "type": "String"
-          }, {
-            "kind": "Variable",
-            "name": "before",
-            "variableName": "before",
-            "type": "String"
-          }, {
-            "kind": "Variable",
-            "name": "first",
-            "variableName": "first",
-            "type": "Int"
-          }, {
-            "kind": "Variable",
-            "name": "last",
-            "variableName": "last",
-            "type": "Int"
-          }, {
-            "kind": "Variable",
-            "name": "sortBy",
-            "variableName": "sortBy",
-            "type": "EmployeeSortBy"
-          }, {
-            "kind": "Variable",
-            "name": "sortDir",
-            "variableName": "sortDir",
-            "type": "EmployeeSortDir"
-          }],
-          "concreteType": "EmployeeConnection",
-          "plural": false,
-          "selections": [{
-            "kind": "LinkedField",
-            "alias": null,
-            "name": "edges",
-            "storageKey": null,
-            "args": null,
-            "concreteType": "EmployeeEdge",
-            "plural": true,
-            "selections": [{
-              "kind": "ScalarField",
-              "alias": null,
-              "name": "cursor",
-              "args": null,
-              "storageKey": null
-            }, {
-              "kind": "LinkedField",
-              "alias": null,
-              "name": "node",
-              "storageKey": null,
-              "args": null,
-              "concreteType": "Employee",
-              "plural": false,
-              "selections": [v1
-              /*: any*/
-              , {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "uid",
-                "args": null,
-                "storageKey": null
-              }, {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "checked",
-                "args": null,
-                "storageKey": null
-              }, v2
-              /*: any*/
-              , {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "dept",
-                "args": null,
-                "storageKey": null
-              }, {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "title",
-                "args": null,
-                "storageKey": null
-              }, {
-                "kind": "LinkedField",
-                "alias": null,
-                "name": "country",
-                "storageKey": null,
-                "args": null,
-                "concreteType": "Country",
-                "plural": false,
-                "selections": [v1
-                /*: any*/
-                , v2
-                /*: any*/
-                ]
-              }, {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "salary",
-                "args": null,
-                "storageKey": null
-              }]
-            }]
-          }, {
-            "kind": "LinkedField",
-            "alias": null,
-            "name": "pageInfo",
-            "storageKey": null,
-            "args": null,
-            "concreteType": "PageInfo",
-            "plural": false,
-            "selections": [{
-              "kind": "ScalarField",
-              "alias": null,
-              "name": "startCursor",
-              "args": null,
-              "storageKey": null
-            }, {
-              "kind": "ScalarField",
-              "alias": null,
-              "name": "endCursor",
-              "args": null,
-              "storageKey": null
-            }]
-          }, {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "totalCount",
-            "args": null,
-            "storageKey": null
-          }]
-        }]
-      }, {
-        "kind": "LinkedHandle",
-        "alias": null,
-        "name": "viewer",
-        "args": null,
-        "handle": "viewer",
-        "key": "",
-        "filters": null
-      }]
-    },
-    "params": {
-      "operationKind": "query",
-      "name": "TablesPageQuery",
-      "id": null,
-      "text": "query TablesPageQuery(\n  $sortBy: EmployeeSortBy\n  $sortDir: EmployeeSortDir\n  $first: Int\n  $after: String\n  $last: Int\n  $before: String\n) {\n  viewer {\n    ...EmployeeListContainer_viewer_3WF44T\n  }\n}\n\nfragment EmployeeListContainer_viewer_3WF44T on Viewer {\n  employees(sortBy: $sortBy, sortDir: $sortDir, first: $first, after: $after, last: $last, before: $before) {\n    edges {\n      cursor\n      node {\n        id\n        ...EmployeeItemContainer_node\n      }\n    }\n    pageInfo {\n      startCursor\n      endCursor\n    }\n    totalCount\n  }\n}\n\nfragment EmployeeItemContainer_node on Employee {\n  id\n  uid\n  checked\n  name\n  dept\n  title\n  country {\n    id\n    name\n  }\n  salary\n}\n",
-      "metadata": {}
-    }
-  };
-}(); // prettier-ignore
-
-
-node
-/*: any*/
-.hash = '8564d42535411b5a691a5b3cb82192ed';
-module.exports = node;
-
-/***/ }),
-
 /***/ "RGyf":
 /***/ (function(module, exports) {
 
@@ -6587,138 +6355,6 @@ module.exports = node;
 /***/ (function(module, exports) {
 
 module.exports = require("@material-ui/core/colors/red");
-
-/***/ }),
-
-/***/ "SJw0":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireWildcard = __webpack_require__("5Uuq");
-
-var _interopRequireDefault = __webpack_require__("KI45");
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = exports.query = void 0;
-
-var _regenerator = _interopRequireDefault(__webpack_require__("ln6h"));
-
-var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__("+oT+"));
-
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
-
-var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
-
-var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
-
-var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
-
-var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
-
-var _react = _interopRequireDefault(__webpack_require__("cDcd"));
-
-var _propTypes = _interopRequireDefault(__webpack_require__("rf6O"));
-
-var _reactRelay = __webpack_require__("iuEU");
-
-var _Relay = __webpack_require__("JyB7");
-
-var _EmployeeListContainer = _interopRequireWildcard(__webpack_require__("Plze"));
-
-var _ErrorMessageContainer = _interopRequireDefault(__webpack_require__("Y3Ay"));
-
-var _isRouteAllowed = _interopRequireDefault(__webpack_require__("jRAA"));
-
-var defaultVariables = {
-  first: _EmployeeListContainer.pageSize,
-  sortBy: _EmployeeListContainer.sortBy,
-  sortDir: _EmployeeListContainer.sortDir
-};
-
-var query = function query() {
-  return __webpack_require__("Qs5A");
-};
-
-exports.query = query;
-
-var TablesPage =
-/*#__PURE__*/
-function (_React$Component) {
-  (0, _inherits2.default)(TablesPage, _React$Component);
-
-  function TablesPage() {
-    (0, _classCallCheck2.default)(this, TablesPage);
-    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(TablesPage).apply(this, arguments));
-  }
-
-  (0, _createClass2.default)(TablesPage, [{
-    key: "render",
-    value: function render() {
-      if (!(0, _isRouteAllowed.default)("/tables", this.props.userRoles)) return null;
-      return _react.default.createElement(_Relay.NextQueryRenderer, {
-        query: query,
-        variables: defaultVariables,
-        render: function render(_ref) {
-          var error = _ref.error,
-              props = _ref.props;
-          if (error) return _react.default.createElement(_ErrorMessageContainer.default, {
-            error: error
-          });
-          if (!props) return null;
-          return _react.default.createElement(_EmployeeListContainer.default, {
-            viewer: props.viewer
-          });
-        }
-      });
-    }
-  }], [{
-    key: "getInitialProps",
-    value: function () {
-      var _getInitialProps = (0, _asyncToGenerator2.default)(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee(_ref2) {
-        var statusCode, fetchQuery;
-        return _regenerator.default.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                statusCode = _ref2.statusCode, fetchQuery = _ref2.fetchQuery;
-
-                if (!(statusCode !== 200)) {
-                  _context.next = 3;
-                  break;
-                }
-
-                return _context.abrupt("return");
-
-              case 3:
-                _context.next = 5;
-                return fetchQuery(query, defaultVariables);
-
-              case 5:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee, this);
-      }));
-
-      function getInitialProps(_x) {
-        return _getInitialProps.apply(this, arguments);
-      }
-
-      return getInitialProps;
-    }()
-  }]);
-  return TablesPage;
-}(_react.default.Component);
-
-var _default = TablesPage;
-exports.default = _default;
 
 /***/ }),
 
@@ -9391,6 +9027,370 @@ exports.getEditModalEmployeeId = getEditModalEmployeeId;
 
 /***/ }),
 
+/***/ "gkwM":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @flow
+ * @relayHash 65d29055aa3ccbf9dcadbcfd12c7f271
+ */
+
+/* eslint-disable */
+
+/*::
+import type { ConcreteRequest } from 'relay-runtime';
+type EmployeeListContainer_viewer$ref = any;
+export type EmployeeSortBy = "checked" | "country" | "dept" | "name" | "salary" | "title" | "uid" | "%future added value";
+export type EmployeeSortDir = "asc" | "desc" | "%future added value";
+export type EmployeesPageQueryVariables = {|
+  sortBy?: ?EmployeeSortBy,
+  sortDir?: ?EmployeeSortDir,
+  first?: ?number,
+  after?: ?string,
+  last?: ?number,
+  before?: ?string,
+|};
+export type EmployeesPageQueryResponse = {|
+  +viewer: ?{|
+    +$fragmentRefs: EmployeeListContainer_viewer$ref
+  |}
+|};
+export type EmployeesPageQuery = {|
+  variables: EmployeesPageQueryVariables,
+  response: EmployeesPageQueryResponse,
+|};
+*/
+
+/*
+query EmployeesPageQuery(
+  $sortBy: EmployeeSortBy
+  $sortDir: EmployeeSortDir
+  $first: Int
+  $after: String
+  $last: Int
+  $before: String
+) {
+  viewer {
+    ...EmployeeListContainer_viewer_3WF44T
+  }
+}
+
+fragment EmployeeListContainer_viewer_3WF44T on Viewer {
+  employees(sortBy: $sortBy, sortDir: $sortDir, first: $first, after: $after, last: $last, before: $before) {
+    edges {
+      cursor
+      node {
+        id
+        ...EmployeeItemContainer_node
+      }
+    }
+    pageInfo {
+      startCursor
+      endCursor
+    }
+    totalCount
+  }
+}
+
+fragment EmployeeItemContainer_node on Employee {
+  id
+  uid
+  checked
+  name
+  dept
+  title
+  country {
+    id
+    name
+  }
+  salary
+}
+*/
+
+var node
+/*: ConcreteRequest*/
+= function () {
+  var v0 = [{
+    "kind": "LocalArgument",
+    "name": "sortBy",
+    "type": "EmployeeSortBy",
+    "defaultValue": null
+  }, {
+    "kind": "LocalArgument",
+    "name": "sortDir",
+    "type": "EmployeeSortDir",
+    "defaultValue": null
+  }, {
+    "kind": "LocalArgument",
+    "name": "first",
+    "type": "Int",
+    "defaultValue": null
+  }, {
+    "kind": "LocalArgument",
+    "name": "after",
+    "type": "String",
+    "defaultValue": null
+  }, {
+    "kind": "LocalArgument",
+    "name": "last",
+    "type": "Int",
+    "defaultValue": null
+  }, {
+    "kind": "LocalArgument",
+    "name": "before",
+    "type": "String",
+    "defaultValue": null
+  }],
+      v1 = {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "id",
+    "args": null,
+    "storageKey": null
+  },
+      v2 = {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "name",
+    "args": null,
+    "storageKey": null
+  };
+  return {
+    "kind": "Request",
+    "fragment": {
+      "kind": "Fragment",
+      "name": "EmployeesPageQuery",
+      "type": "Query",
+      "metadata": null,
+      "argumentDefinitions": v0
+      /*: any*/
+      ,
+      "selections": [{
+        "kind": "LinkedField",
+        "alias": "viewer",
+        "name": "__viewer_viewer",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "Viewer",
+        "plural": false,
+        "selections": [{
+          "kind": "FragmentSpread",
+          "name": "EmployeeListContainer_viewer",
+          "args": [{
+            "kind": "Variable",
+            "name": "after",
+            "variableName": "after",
+            "type": null
+          }, {
+            "kind": "Variable",
+            "name": "before",
+            "variableName": "before",
+            "type": null
+          }, {
+            "kind": "Variable",
+            "name": "first",
+            "variableName": "first",
+            "type": null
+          }, {
+            "kind": "Variable",
+            "name": "last",
+            "variableName": "last",
+            "type": null
+          }, {
+            "kind": "Variable",
+            "name": "sortBy",
+            "variableName": "sortBy",
+            "type": null
+          }, {
+            "kind": "Variable",
+            "name": "sortDir",
+            "variableName": "sortDir",
+            "type": null
+          }]
+        }]
+      }]
+    },
+    "operation": {
+      "kind": "Operation",
+      "name": "EmployeesPageQuery",
+      "argumentDefinitions": v0
+      /*: any*/
+      ,
+      "selections": [{
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "viewer",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "Viewer",
+        "plural": false,
+        "selections": [{
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "employees",
+          "storageKey": null,
+          "args": [{
+            "kind": "Variable",
+            "name": "after",
+            "variableName": "after",
+            "type": "String"
+          }, {
+            "kind": "Variable",
+            "name": "before",
+            "variableName": "before",
+            "type": "String"
+          }, {
+            "kind": "Variable",
+            "name": "first",
+            "variableName": "first",
+            "type": "Int"
+          }, {
+            "kind": "Variable",
+            "name": "last",
+            "variableName": "last",
+            "type": "Int"
+          }, {
+            "kind": "Variable",
+            "name": "sortBy",
+            "variableName": "sortBy",
+            "type": "EmployeeSortBy"
+          }, {
+            "kind": "Variable",
+            "name": "sortDir",
+            "variableName": "sortDir",
+            "type": "EmployeeSortDir"
+          }],
+          "concreteType": "EmployeeConnection",
+          "plural": false,
+          "selections": [{
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "edges",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "EmployeeEdge",
+            "plural": true,
+            "selections": [{
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "cursor",
+              "args": null,
+              "storageKey": null
+            }, {
+              "kind": "LinkedField",
+              "alias": null,
+              "name": "node",
+              "storageKey": null,
+              "args": null,
+              "concreteType": "Employee",
+              "plural": false,
+              "selections": [v1
+              /*: any*/
+              , {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "uid",
+                "args": null,
+                "storageKey": null
+              }, {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "checked",
+                "args": null,
+                "storageKey": null
+              }, v2
+              /*: any*/
+              , {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "dept",
+                "args": null,
+                "storageKey": null
+              }, {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "title",
+                "args": null,
+                "storageKey": null
+              }, {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "country",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "Country",
+                "plural": false,
+                "selections": [v1
+                /*: any*/
+                , v2
+                /*: any*/
+                ]
+              }, {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "salary",
+                "args": null,
+                "storageKey": null
+              }]
+            }]
+          }, {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "pageInfo",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "PageInfo",
+            "plural": false,
+            "selections": [{
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "startCursor",
+              "args": null,
+              "storageKey": null
+            }, {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "endCursor",
+              "args": null,
+              "storageKey": null
+            }]
+          }, {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "totalCount",
+            "args": null,
+            "storageKey": null
+          }]
+        }]
+      }, {
+        "kind": "LinkedHandle",
+        "alias": null,
+        "name": "viewer",
+        "args": null,
+        "handle": "viewer",
+        "key": "",
+        "filters": null
+      }]
+    },
+    "params": {
+      "operationKind": "query",
+      "name": "EmployeesPageQuery",
+      "id": null,
+      "text": "query EmployeesPageQuery(\n  $sortBy: EmployeeSortBy\n  $sortDir: EmployeeSortDir\n  $first: Int\n  $after: String\n  $last: Int\n  $before: String\n) {\n  viewer {\n    ...EmployeeListContainer_viewer_3WF44T\n  }\n}\n\nfragment EmployeeListContainer_viewer_3WF44T on Viewer {\n  employees(sortBy: $sortBy, sortDir: $sortDir, first: $first, after: $after, last: $last, before: $before) {\n    edges {\n      cursor\n      node {\n        id\n        ...EmployeeItemContainer_node\n      }\n    }\n    pageInfo {\n      startCursor\n      endCursor\n    }\n    totalCount\n  }\n}\n\nfragment EmployeeItemContainer_node on Employee {\n  id\n  uid\n  checked\n  name\n  dept\n  title\n  country {\n    id\n    name\n  }\n  salary\n}\n",
+      "metadata": {}
+    }
+  };
+}(); // prettier-ignore
+
+
+node
+/*: any*/
+.hash = '82e6c3ca4887d2d6592db4b830652cf7';
+module.exports = node;
+
+/***/ }),
+
 /***/ "h74D":
 /***/ (function(module, exports) {
 
@@ -11135,6 +11135,38 @@ exports.SET_LOCALE = SET_LOCALE;
 
 /***/ }),
 
+/***/ "sLDs":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _reactRedux = __webpack_require__("h74D");
+
+var _state = __webpack_require__("Yoxy");
+
+var _EmployeesPage = _interopRequireDefault(__webpack_require__("MW/T"));
+
+var mapStateToProps = function mapStateToProps(state) {
+  return {
+    userRoles: _state.authSelectors.getRoles(state)
+  };
+};
+
+var EmployeesPage = (0, _reactRedux.connect)(mapStateToProps)(_EmployeesPage.default);
+EmployeesPage.getInitialProps = _EmployeesPage.default.getInitialProps;
+var _default = EmployeesPage;
+exports.default = _default;
+
+/***/ }),
+
 /***/ "tBFs":
 /***/ (function(module, exports) {
 
@@ -11194,38 +11226,6 @@ exports.default = _default;
 /***/ (function(module, exports) {
 
 module.exports = require("@material-ui/icons/Refresh");
-
-/***/ }),
-
-/***/ "urzU":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__("KI45");
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _reactRedux = __webpack_require__("h74D");
-
-var _state = __webpack_require__("Yoxy");
-
-var _TablesPage = _interopRequireDefault(__webpack_require__("SJw0"));
-
-var mapStateToProps = function mapStateToProps(state) {
-  return {
-    userRoles: _state.authSelectors.getRoles(state)
-  };
-};
-
-var TablesPage = (0, _reactRedux.connect)(mapStateToProps)(_TablesPage.default);
-TablesPage.getInitialProps = _TablesPage.default.getInitialProps;
-var _default = TablesPage;
-exports.default = _default;
 
 /***/ }),
 

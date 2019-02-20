@@ -19,7 +19,7 @@ export const styles = theme => ({
   }
 });
 
-class MarketSpinner extends React.PureComponent {
+class MarketSpinner extends React.Component {
   static propTypes = {
     classes: PropTypes.object.isRequired,
     isActive: PropTypes.bool.isRequired

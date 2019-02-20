@@ -9,8 +9,15 @@ import AvgTimeStat from "./Stat/AvgTimeStatContainer";
 import WorldMap from "./WorldMarket/WorldMapContainer";
 import MarketShare from "./WorldMarket/MarketShareContainer";
 import MarketSpinner from "./WorldMarket/MarketSpinnerContainer";
+import DemoTable, {
+  defaultDept,
+  pageSize,
+  sortBy,
+  sortDir
+} from "./DemoTable/DemoTableContainer";
 
 export const defaultCountry = "WORLD";
+export { defaultDept, pageSize, sortBy, sortDir };
 
 export const styles = theme => ({
   layout: {
@@ -123,6 +130,9 @@ class Dashboard extends React.Component {
                 onSelect={this.handleCountrySelected}
               />
             </Fade>
+          </Grid>
+          <Grid item xs={12}>
+            <DemoTable viewer={this.props.viewer} />
           </Grid>
         </Grid>
       </div>

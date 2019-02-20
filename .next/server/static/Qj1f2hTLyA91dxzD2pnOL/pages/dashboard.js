@@ -867,6 +867,265 @@ module.exports = _classCallCheck;
 
 /***/ }),
 
+/***/ "/iUP":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @flow
+ * @relayHash 95535901148ba064862dd4c92398112c
+ */
+
+/* eslint-disable */
+
+/*::
+import type { ConcreteRequest } from 'relay-runtime';
+export type EmployeeDept = "ACCOUNTING" | "HR" | "MARKETING" | "PRODUCTION" | "PURCHASING" | "RD" | "%future added value";
+export type CreateEmployeeInput = {|
+  uid?: ?string,
+  checked?: ?boolean,
+  name?: ?string,
+  dept?: ?EmployeeDept,
+  title?: ?string,
+  country?: ?string,
+  salary?: ?number,
+  clientMutationId?: ?string,
+|};
+export type CreateEmployeeMutationVariables = {|
+  input: CreateEmployeeInput
+|};
+export type CreateEmployeeMutationResponse = {|
+  +createEmployee: ?{|
+    +employee: ?{|
+      +id: string
+    |}
+  |}
+|};
+export type CreateEmployeeMutation = {|
+  variables: CreateEmployeeMutationVariables,
+  response: CreateEmployeeMutationResponse,
+|};
+*/
+
+/*
+mutation CreateEmployeeMutation(
+  $input: CreateEmployeeInput!
+) {
+  createEmployee(input: $input) {
+    employee {
+      id
+    }
+  }
+}
+*/
+
+var node
+/*: ConcreteRequest*/
+= function () {
+  var v0 = [{
+    "kind": "LocalArgument",
+    "name": "input",
+    "type": "CreateEmployeeInput!",
+    "defaultValue": null
+  }],
+      v1 = [{
+    "kind": "LinkedField",
+    "alias": null,
+    "name": "createEmployee",
+    "storageKey": null,
+    "args": [{
+      "kind": "Variable",
+      "name": "input",
+      "variableName": "input",
+      "type": "CreateEmployeeInput!"
+    }],
+    "concreteType": "CreateEmployeePayload",
+    "plural": false,
+    "selections": [{
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "employee",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "Employee",
+      "plural": false,
+      "selections": [{
+        "kind": "ScalarField",
+        "alias": null,
+        "name": "id",
+        "args": null,
+        "storageKey": null
+      }]
+    }]
+  }];
+  return {
+    "kind": "Request",
+    "fragment": {
+      "kind": "Fragment",
+      "name": "CreateEmployeeMutation",
+      "type": "Mutation",
+      "metadata": null,
+      "argumentDefinitions": v0
+      /*: any*/
+      ,
+      "selections": v1
+      /*: any*/
+
+    },
+    "operation": {
+      "kind": "Operation",
+      "name": "CreateEmployeeMutation",
+      "argumentDefinitions": v0
+      /*: any*/
+      ,
+      "selections": v1
+      /*: any*/
+
+    },
+    "params": {
+      "operationKind": "mutation",
+      "name": "CreateEmployeeMutation",
+      "id": null,
+      "text": "mutation CreateEmployeeMutation(\n  $input: CreateEmployeeInput!\n) {\n  createEmployee(input: $input) {\n    employee {\n      id\n    }\n  }\n}\n",
+      "metadata": {}
+    }
+  };
+}(); // prettier-ignore
+
+
+node
+/*: any*/
+.hash = '88a7c7e8df38fa5fa4ff48e3f8284213';
+module.exports = node;
+
+/***/ }),
+
+/***/ "07Y+":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @flow
+ * @relayHash 9e4b3d48c1e718853e89dc742f6bb7ad
+ */
+
+/* eslint-disable */
+
+/*::
+import type { ConcreteRequest } from 'relay-runtime';
+export type DeleteEmployeeInput = {|
+  id: string,
+  clientMutationId?: ?string,
+|};
+export type DeleteEmployeeMutationVariables = {|
+  input: DeleteEmployeeInput
+|};
+export type DeleteEmployeeMutationResponse = {|
+  +deleteEmployee: ?{|
+    +employee: ?{|
+      +id: string
+    |}
+  |}
+|};
+export type DeleteEmployeeMutation = {|
+  variables: DeleteEmployeeMutationVariables,
+  response: DeleteEmployeeMutationResponse,
+|};
+*/
+
+/*
+mutation DeleteEmployeeMutation(
+  $input: DeleteEmployeeInput!
+) {
+  deleteEmployee(input: $input) {
+    employee {
+      id
+    }
+  }
+}
+*/
+
+var node
+/*: ConcreteRequest*/
+= function () {
+  var v0 = [{
+    "kind": "LocalArgument",
+    "name": "input",
+    "type": "DeleteEmployeeInput!",
+    "defaultValue": null
+  }],
+      v1 = [{
+    "kind": "LinkedField",
+    "alias": null,
+    "name": "deleteEmployee",
+    "storageKey": null,
+    "args": [{
+      "kind": "Variable",
+      "name": "input",
+      "variableName": "input",
+      "type": "DeleteEmployeeInput!"
+    }],
+    "concreteType": "DeleteEmployeePayload",
+    "plural": false,
+    "selections": [{
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "employee",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "Employee",
+      "plural": false,
+      "selections": [{
+        "kind": "ScalarField",
+        "alias": null,
+        "name": "id",
+        "args": null,
+        "storageKey": null
+      }]
+    }]
+  }];
+  return {
+    "kind": "Request",
+    "fragment": {
+      "kind": "Fragment",
+      "name": "DeleteEmployeeMutation",
+      "type": "Mutation",
+      "metadata": null,
+      "argumentDefinitions": v0
+      /*: any*/
+      ,
+      "selections": v1
+      /*: any*/
+
+    },
+    "operation": {
+      "kind": "Operation",
+      "name": "DeleteEmployeeMutation",
+      "argumentDefinitions": v0
+      /*: any*/
+      ,
+      "selections": v1
+      /*: any*/
+
+    },
+    "params": {
+      "operationKind": "mutation",
+      "name": "DeleteEmployeeMutation",
+      "id": null,
+      "text": "mutation DeleteEmployeeMutation(\n  $input: DeleteEmployeeInput!\n) {\n  deleteEmployee(input: $input) {\n    employee {\n      id\n    }\n  }\n}\n",
+      "metadata": {}
+    }
+  };
+}(); // prettier-ignore
+
+
+node
+/*: any*/
+.hash = 'e6744264438a7d81d3212a35a47c6ca0';
+module.exports = node;
+
+/***/ }),
+
 /***/ "0Bsm":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -957,6 +1216,198 @@ module.exports = require("relay-query-lookup-renderer");
 
 /***/ }),
 
+/***/ "0bJo":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @flow
+ */
+
+/* eslint-disable */
+
+/*::
+import type { ReaderFragment } from 'relay-runtime';
+type DemoItemContainer_node$ref = any;
+import type { FragmentReference } from "relay-runtime";
+declare export opaque type DemoListContainer_viewer$ref: FragmentReference;
+export type DemoListContainer_viewer = {|
+  +employees: ?{|
+    +edges: ?$ReadOnlyArray<?{|
+      +cursor: string,
+      +node: ?{|
+        +id: string,
+        +$fragmentRefs: DemoItemContainer_node$ref,
+      |},
+    |}>,
+    +pageInfo: {|
+      +startCursor: ?string,
+      +endCursor: ?string,
+    |},
+    +totalCount: ?number,
+  |},
+  +$refType: DemoListContainer_viewer$ref,
+|};
+*/
+
+var node
+/*: ReaderFragment*/
+= {
+  "kind": "Fragment",
+  "name": "DemoListContainer_viewer",
+  "type": "Viewer",
+  "metadata": null,
+  "argumentDefinitions": [{
+    "kind": "LocalArgument",
+    "name": "dept",
+    "type": "EmployeeDept",
+    "defaultValue": null
+  }, {
+    "kind": "LocalArgument",
+    "name": "sortBy",
+    "type": "EmployeeSortBy",
+    "defaultValue": null
+  }, {
+    "kind": "LocalArgument",
+    "name": "sortDir",
+    "type": "EmployeeSortDir",
+    "defaultValue": null
+  }, {
+    "kind": "LocalArgument",
+    "name": "first",
+    "type": "Int",
+    "defaultValue": null
+  }, {
+    "kind": "LocalArgument",
+    "name": "after",
+    "type": "String",
+    "defaultValue": null
+  }, {
+    "kind": "LocalArgument",
+    "name": "last",
+    "type": "Int",
+    "defaultValue": null
+  }, {
+    "kind": "LocalArgument",
+    "name": "before",
+    "type": "String",
+    "defaultValue": null
+  }],
+  "selections": [{
+    "kind": "LinkedField",
+    "alias": null,
+    "name": "employees",
+    "storageKey": null,
+    "args": [{
+      "kind": "Variable",
+      "name": "after",
+      "variableName": "after",
+      "type": "String"
+    }, {
+      "kind": "Variable",
+      "name": "before",
+      "variableName": "before",
+      "type": "String"
+    }, {
+      "kind": "Variable",
+      "name": "dept",
+      "variableName": "dept",
+      "type": "EmployeeDept"
+    }, {
+      "kind": "Variable",
+      "name": "first",
+      "variableName": "first",
+      "type": "Int"
+    }, {
+      "kind": "Variable",
+      "name": "last",
+      "variableName": "last",
+      "type": "Int"
+    }, {
+      "kind": "Variable",
+      "name": "sortBy",
+      "variableName": "sortBy",
+      "type": "EmployeeSortBy"
+    }, {
+      "kind": "Variable",
+      "name": "sortDir",
+      "variableName": "sortDir",
+      "type": "EmployeeSortDir"
+    }],
+    "concreteType": "EmployeeConnection",
+    "plural": false,
+    "selections": [{
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "edges",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "EmployeeEdge",
+      "plural": true,
+      "selections": [{
+        "kind": "ScalarField",
+        "alias": null,
+        "name": "cursor",
+        "args": null,
+        "storageKey": null
+      }, {
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "node",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "Employee",
+        "plural": false,
+        "selections": [{
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "id",
+          "args": null,
+          "storageKey": null
+        }, {
+          "kind": "FragmentSpread",
+          "name": "DemoItemContainer_node",
+          "args": null
+        }]
+      }]
+    }, {
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "pageInfo",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "PageInfo",
+      "plural": false,
+      "selections": [{
+        "kind": "ScalarField",
+        "alias": null,
+        "name": "startCursor",
+        "args": null,
+        "storageKey": null
+      }, {
+        "kind": "ScalarField",
+        "alias": null,
+        "name": "endCursor",
+        "args": null,
+        "storageKey": null
+      }]
+    }, {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "totalCount",
+      "args": null,
+      "storageKey": null
+    }]
+  }]
+}; // prettier-ignore
+
+node
+/*: any*/
+.hash = 'bc9f025d4edc58fa2cdbbb87e4ec613e';
+module.exports = node;
+
+/***/ }),
+
 /***/ "19SY":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -979,6 +1430,140 @@ var _WorldMap = _interopRequireWildcard(__webpack_require__("nMfB"));
 var WorldMap = (0, _styles.withStyles)(_WorldMap.styles)((0, _reactIntl.injectIntl)(_WorldMap.default));
 var _default = WorldMap;
 exports.default = _default;
+
+/***/ }),
+
+/***/ "1S23":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @flow
+ * @relayHash 5e890b96f60ffa169e5a9c25cea10539
+ */
+
+/* eslint-disable */
+
+/*::
+import type { ConcreteRequest } from 'relay-runtime';
+export type EmployeeDept = "ACCOUNTING" | "HR" | "MARKETING" | "PRODUCTION" | "PURCHASING" | "RD" | "%future added value";
+export type EditEmployeeInput = {|
+  id: string,
+  uid?: ?string,
+  checked?: ?boolean,
+  name?: ?string,
+  dept?: ?EmployeeDept,
+  title?: ?string,
+  country?: ?string,
+  salary?: ?number,
+  clientMutationId?: ?string,
+|};
+export type EditEmployeeMutationVariables = {|
+  input: EditEmployeeInput
+|};
+export type EditEmployeeMutationResponse = {|
+  +editEmployee: ?{|
+    +employee: ?{|
+      +id: string
+    |}
+  |}
+|};
+export type EditEmployeeMutation = {|
+  variables: EditEmployeeMutationVariables,
+  response: EditEmployeeMutationResponse,
+|};
+*/
+
+/*
+mutation EditEmployeeMutation(
+  $input: EditEmployeeInput!
+) {
+  editEmployee(input: $input) {
+    employee {
+      id
+    }
+  }
+}
+*/
+
+var node
+/*: ConcreteRequest*/
+= function () {
+  var v0 = [{
+    "kind": "LocalArgument",
+    "name": "input",
+    "type": "EditEmployeeInput!",
+    "defaultValue": null
+  }],
+      v1 = [{
+    "kind": "LinkedField",
+    "alias": null,
+    "name": "editEmployee",
+    "storageKey": null,
+    "args": [{
+      "kind": "Variable",
+      "name": "input",
+      "variableName": "input",
+      "type": "EditEmployeeInput!"
+    }],
+    "concreteType": "EditEmployeePayload",
+    "plural": false,
+    "selections": [{
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "employee",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "Employee",
+      "plural": false,
+      "selections": [{
+        "kind": "ScalarField",
+        "alias": null,
+        "name": "id",
+        "args": null,
+        "storageKey": null
+      }]
+    }]
+  }];
+  return {
+    "kind": "Request",
+    "fragment": {
+      "kind": "Fragment",
+      "name": "EditEmployeeMutation",
+      "type": "Mutation",
+      "metadata": null,
+      "argumentDefinitions": v0
+      /*: any*/
+      ,
+      "selections": v1
+      /*: any*/
+
+    },
+    "operation": {
+      "kind": "Operation",
+      "name": "EditEmployeeMutation",
+      "argumentDefinitions": v0
+      /*: any*/
+      ,
+      "selections": v1
+      /*: any*/
+
+    },
+    "params": {
+      "operationKind": "mutation",
+      "name": "EditEmployeeMutation",
+      "id": null,
+      "text": "mutation EditEmployeeMutation(\n  $input: EditEmployeeInput!\n) {\n  editEmployee(input: $input) {\n    employee {\n      id\n    }\n  }\n}\n",
+      "metadata": {}
+    }
+  };
+}(); // prettier-ignore
+
+
+node
+/*: any*/
+.hash = '544d4606cbbbd95fc31a953d239c7598';
+module.exports = node;
 
 /***/ }),
 
@@ -1054,6 +1639,260 @@ exports.default = _default;
 /***/ (function(module, exports) {
 
 module.exports = require("@material-ui/core/CircularProgress");
+
+/***/ }),
+
+/***/ "2+Lp":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(_) {
+
+var _interopRequireWildcard = __webpack_require__("5Uuq");
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.remove = exports.edit = exports.create = exports.editFirstSelected = exports.deselectAll = exports.selectAll = exports.setSelected = exports.hideEditModal = exports.showEditModal = void 0;
+
+var _regenerator = _interopRequireDefault(__webpack_require__("ln6h"));
+
+var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__("+oT+"));
+
+var actions = _interopRequireWildcard(__webpack_require__("gWH5"));
+
+var selectors = _interopRequireWildcard(__webpack_require__("ghjP"));
+
+var _connectForm = __webpack_require__("ciYs");
+
+var _CreateEmployee = _interopRequireDefault(__webpack_require__("Y/f1"));
+
+var _EditEmployee = _interopRequireDefault(__webpack_require__("jxgt"));
+
+var _DeleteEmployee = _interopRequireDefault(__webpack_require__("am9M"));
+
+var showEditModal = actions.showEditModal;
+exports.showEditModal = showEditModal;
+var hideEditModal = actions.hideEditModal;
+exports.hideEditModal = hideEditModal;
+var setSelected = actions.setSelected;
+exports.setSelected = setSelected;
+var selectAll = actions.selectAll;
+exports.selectAll = selectAll;
+var deselectAll = actions.deselectAll;
+exports.deselectAll = deselectAll;
+
+var editFirstSelected = function editFirstSelected() {
+  return (
+    /*#__PURE__*/
+    function () {
+      var _ref = (0, _asyncToGenerator2.default)(
+      /*#__PURE__*/
+      _regenerator.default.mark(function _callee(dispatch, getState) {
+        var selected;
+        return _regenerator.default.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                selected = selectors.getSelected(getState());
+
+                if (!selected.length) {
+                  _context.next = 3;
+                  break;
+                }
+
+                return _context.abrupt("return", dispatch(actions.showEditModal({
+                  employeeId: selected[0]
+                })));
+
+              case 3:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      return function (_x, _x2) {
+        return _ref.apply(this, arguments);
+      };
+    }()
+  );
+};
+
+exports.editFirstSelected = editFirstSelected;
+
+var create = function create(_ref2) {
+  var uid = _ref2.uid,
+      checked = _ref2.checked,
+      name = _ref2.name,
+      dept = _ref2.dept,
+      title = _ref2.title,
+      country = _ref2.country,
+      salary = _ref2.salary;
+  return (
+    /*#__PURE__*/
+    function () {
+      var _ref3 = (0, _asyncToGenerator2.default)(
+      /*#__PURE__*/
+      _regenerator.default.mark(function _callee2(dispatch, getState, di) {
+        var data;
+        return _regenerator.default.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.next = 2;
+                return (0, _CreateEmployee.default)(di, {
+                  uid: uid,
+                  checked: checked,
+                  name: name,
+                  dept: dept,
+                  title: title,
+                  country: country,
+                  salary: salary
+                });
+
+              case 2:
+                data = _context2.sent;
+
+                if (!_.get(data, "data.createEmployee.employee.id", null)) {
+                  _context2.next = 7;
+                  break;
+                }
+
+                _context2.next = 6;
+                return dispatch(actions.hideEditModal());
+
+              case 6:
+                return _context2.abrupt("return", true);
+
+              case 7:
+                return _context2.abrupt("return", (0, _connectForm.getFormErrors)(data));
+
+              case 8:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this);
+      }));
+
+      return function (_x3, _x4, _x5) {
+        return _ref3.apply(this, arguments);
+      };
+    }()
+  );
+};
+
+exports.create = create;
+
+var edit = function edit(_ref4) {
+  var id = _ref4.id,
+      uid = _ref4.uid,
+      checked = _ref4.checked,
+      name = _ref4.name,
+      dept = _ref4.dept,
+      title = _ref4.title,
+      country = _ref4.country,
+      salary = _ref4.salary;
+  return (
+    /*#__PURE__*/
+    function () {
+      var _ref5 = (0, _asyncToGenerator2.default)(
+      /*#__PURE__*/
+      _regenerator.default.mark(function _callee3(dispatch, getState, di) {
+        var data;
+        return _regenerator.default.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                _context3.next = 2;
+                return (0, _EditEmployee.default)(di, {
+                  id: id,
+                  uid: uid,
+                  checked: checked,
+                  name: name,
+                  dept: dept,
+                  title: title,
+                  country: country,
+                  salary: salary
+                });
+
+              case 2:
+                data = _context3.sent;
+
+                if (!_.get(data, "data.editEmployee.employee.id", null)) {
+                  _context3.next = 7;
+                  break;
+                }
+
+                _context3.next = 6;
+                return dispatch(actions.hideEditModal());
+
+              case 6:
+                return _context3.abrupt("return", true);
+
+              case 7:
+                return _context3.abrupt("return", (0, _connectForm.getFormErrors)(data));
+
+              case 8:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3, this);
+      }));
+
+      return function (_x6, _x7, _x8) {
+        return _ref5.apply(this, arguments);
+      };
+    }()
+  );
+};
+
+exports.edit = edit;
+
+var remove = function remove(_ref6) {
+  var id = _ref6.id;
+  return (
+    /*#__PURE__*/
+    function () {
+      var _ref7 = (0, _asyncToGenerator2.default)(
+      /*#__PURE__*/
+      _regenerator.default.mark(function _callee4(dispatch, getState, di) {
+        var data;
+        return _regenerator.default.wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                _context4.next = 2;
+                return (0, _DeleteEmployee.default)(di, {
+                  id: id
+                });
+
+              case 2:
+                data = _context4.sent;
+                return _context4.abrupt("return", !!_.get(data, "data.deleteEmployee.employee.id", null));
+
+              case 4:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4, this);
+      }));
+
+      return function (_x9, _x10, _x11) {
+        return _ref7.apply(this, arguments);
+      };
+    }()
+  );
+};
+
+exports.remove = remove;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("YLtl")))
 
 /***/ }),
 
@@ -1178,6 +2017,20 @@ module.exports = node;
 
 /***/ }),
 
+/***/ "30mr":
+/***/ (function(module, exports) {
+
+module.exports = require("@material-ui/core/TableBody");
+
+/***/ }),
+
+/***/ "4151":
+/***/ (function(module, exports) {
+
+module.exports = require("@material-ui/core/AppBar");
+
+/***/ }),
+
 /***/ "4SgA":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1218,7 +2071,11 @@ var _Relay = __webpack_require__("JyB7");
 var _DashboardContainer = _interopRequireWildcard(__webpack_require__("GYkG"));
 
 var defaultVariables = {
-  country: _DashboardContainer.defaultCountry
+  country: _DashboardContainer.defaultCountry,
+  dept: _DashboardContainer.defaultDept,
+  first: _DashboardContainer.pageSize,
+  sortBy: _DashboardContainer.sortBy,
+  sortDir: _DashboardContainer.sortDir
 };
 
 var query = function query() {
@@ -1485,6 +2342,13 @@ exports.default = _default;
 
 /***/ }),
 
+/***/ "6Yxu":
+/***/ (function(module, exports) {
+
+module.exports = require("@material-ui/core/Tab");
+
+/***/ }),
+
 /***/ "6u3M":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1538,8 +2402,8 @@ exports.styles = styles;
 
 var MarketSpinner =
 /*#__PURE__*/
-function (_React$PureComponent) {
-  (0, _inherits2.default)(MarketSpinner, _React$PureComponent);
+function (_React$Component) {
+  (0, _inherits2.default)(MarketSpinner, _React$Component);
 
   function MarketSpinner() {
     (0, _classCallCheck2.default)(this, MarketSpinner);
@@ -1574,7 +2438,7 @@ function (_React$PureComponent) {
     }
   }]);
   return MarketSpinner;
-}(_react.default.PureComponent);
+}(_react.default.Component);
 
 var _default = MarketSpinner;
 exports.default = _default;
@@ -1969,6 +2833,111 @@ module.exports = _arrayWithHoles;
 
 /***/ }),
 
+/***/ "8s86":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @flow
+ */
+
+/* eslint-disable */
+
+/*::
+import type { ReaderFragment } from 'relay-runtime';
+import type { FragmentReference } from "relay-runtime";
+declare export opaque type DemoItemContainer_node$ref: FragmentReference;
+export type DemoItemContainer_node = {|
+  +id: string,
+  +uid: string,
+  +checked: boolean,
+  +name: string,
+  +title: string,
+  +country: {|
+    +id: string,
+    +name: string,
+  |},
+  +salary: number,
+  +$refType: DemoItemContainer_node$ref,
+|};
+*/
+
+var node
+/*: ReaderFragment*/
+= function () {
+  var v0 = {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "id",
+    "args": null,
+    "storageKey": null
+  },
+      v1 = {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "name",
+    "args": null,
+    "storageKey": null
+  };
+  return {
+    "kind": "Fragment",
+    "name": "DemoItemContainer_node",
+    "type": "Employee",
+    "metadata": null,
+    "argumentDefinitions": [],
+    "selections": [v0
+    /*: any*/
+    , {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "uid",
+      "args": null,
+      "storageKey": null
+    }, {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "checked",
+      "args": null,
+      "storageKey": null
+    }, v1
+    /*: any*/
+    , {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "title",
+      "args": null,
+      "storageKey": null
+    }, {
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "country",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "Country",
+      "plural": false,
+      "selections": [v0
+      /*: any*/
+      , v1
+      /*: any*/
+      ]
+    }, {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "salary",
+      "args": null,
+      "storageKey": null
+    }]
+  };
+}(); // prettier-ignore
+
+
+node
+/*: any*/
+.hash = '2c78cd51b1270a58f66e341c5e768b57';
+module.exports = node;
+
+/***/ }),
+
 /***/ "8xuZ":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2007,6 +2976,13 @@ module.exports = require("@material-ui/core/styles");
 /***/ (function(module, exports) {
 
 module.exports = require("relay-runtime");
+
+/***/ }),
+
+/***/ "Ai9N":
+/***/ (function(module, exports) {
+
+module.exports = require("@material-ui/core/TableCell");
 
 /***/ }),
 
@@ -2342,6 +3318,13 @@ module.exports = _nonIterableRest;
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__("/+oN");
+
+/***/ }),
+
+/***/ "BjFw":
+/***/ (function(module, exports) {
+
+module.exports = require("@material-ui/core/Table");
 
 /***/ }),
 
@@ -3270,6 +4253,30 @@ Object.defineProperty(exports, "defaultCountry", {
     return _Dashboard.defaultCountry;
   }
 });
+Object.defineProperty(exports, "defaultDept", {
+  enumerable: true,
+  get: function get() {
+    return _Dashboard.defaultDept;
+  }
+});
+Object.defineProperty(exports, "pageSize", {
+  enumerable: true,
+  get: function get() {
+    return _Dashboard.pageSize;
+  }
+});
+Object.defineProperty(exports, "sortBy", {
+  enumerable: true,
+  get: function get() {
+    return _Dashboard.sortBy;
+  }
+});
+Object.defineProperty(exports, "sortDir", {
+  enumerable: true,
+  get: function get() {
+    return _Dashboard.sortDir;
+  }
+});
 exports.default = void 0;
 
 var _styles = __webpack_require__("9Pu4");
@@ -3281,6 +4288,180 @@ var Dashboard = (0, _styles.withStyles)(_Dashboard.styles, {
 })(_Dashboard.default);
 var _default = Dashboard;
 exports.default = _default;
+
+/***/ }),
+
+/***/ "HSb4":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _default = function _default(theme) {
+  return {
+    "& table": {
+      display: ["block", "!important"]
+    },
+    "& thead": {
+      display: ["none", "!important"],
+      background: [theme.palette.background.paper, "!important"]
+    },
+    "& tbody": {
+      display: ["block", "!important"]
+    },
+    "& th": {
+      display: ["block", "!important"],
+      width: "100%",
+      paddingLeft: ["1rem", "!important"],
+      paddingRight: ["1rem", "!important"],
+      "&:not(:last-child)": {
+        borderColor: "transparent"
+      }
+    },
+    "& td": {
+      display: ["block", "!important"],
+      width: "100%",
+      paddingLeft: ["1rem", "!important"],
+      paddingRight: ["1rem", "!important"],
+      "&:not(:last-child)": {
+        borderColor: "transparent"
+      }
+    },
+    "& tr": {
+      height: ["100%", "!important"],
+      display: ["block", "!important"],
+      paddingTop: ["0.25rem", "!important"],
+      marginBottom: ["0.25rem", "!important"]
+    }
+  };
+};
+
+exports.default = _default;
+
+/***/ }),
+
+/***/ "I1Aa":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(_) {
+
+var _interopRequireWildcard = __webpack_require__("5Uuq");
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+Object.defineProperty(exports, "pageSize", {
+  enumerable: true,
+  get: function get() {
+    return _DemoListContainer.pageSize;
+  }
+});
+Object.defineProperty(exports, "sortBy", {
+  enumerable: true,
+  get: function get() {
+    return _DemoListContainer.sortBy;
+  }
+});
+Object.defineProperty(exports, "sortDir", {
+  enumerable: true,
+  get: function get() {
+    return _DemoListContainer.sortDir;
+  }
+});
+exports.default = exports.defaultDept = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
+
+var _assertThisInitialized2 = _interopRequireDefault(__webpack_require__("K47E"));
+
+var _react = _interopRequireDefault(__webpack_require__("cDcd"));
+
+var _reactIntl = __webpack_require__("k004");
+
+var _AppBar = _interopRequireDefault(__webpack_require__("4151"));
+
+var _Tabs = _interopRequireDefault(__webpack_require__("SJC6"));
+
+var _Tab = _interopRequireDefault(__webpack_require__("6Yxu"));
+
+var _DemoListContainer = _interopRequireWildcard(__webpack_require__("kUfH"));
+
+var _constants = _interopRequireDefault(__webpack_require__("o4p3"));
+
+var defaultDept = _.values(_constants.default.depts)[0];
+
+exports.defaultDept = defaultDept;
+
+var DemoTable =
+/*#__PURE__*/
+function (_React$Component) {
+  (0, _inherits2.default)(DemoTable, _React$Component);
+
+  function DemoTable(props) {
+    var _this;
+
+    (0, _classCallCheck2.default)(this, DemoTable);
+    _this = (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(DemoTable).call(this, props));
+    _this.depts = _.values(_constants.default.depts);
+    _this.state = {
+      index: _.indexOf(_this.depts, defaultDept)
+    };
+    _this.handleChange = _this.handleChange.bind((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)));
+    return _this;
+  }
+
+  (0, _createClass2.default)(DemoTable, [{
+    key: "handleChange",
+    value: function handleChange(event, index) {
+      this.setState({
+        index: index
+      });
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this2 = this;
+
+      return _react.default.createElement(_react.default.Fragment, null, _react.default.createElement(_AppBar.default, {
+        position: "static"
+      }, _react.default.createElement(_Tabs.default, {
+        value: this.state.index,
+        onChange: this.handleChange
+      }, _.map(this.depts, function (dept) {
+        return _react.default.createElement(_Tab.default, {
+          key: "tab-".concat(dept),
+          label: _this2.props.intl.formatMessage({
+            id: "DEPT_".concat(dept)
+          })
+        });
+      }))), _react.default.createElement(_DemoListContainer.default, {
+        dept: this.depts[this.state.index],
+        viewer: this.props.viewer
+      }));
+    }
+  }]);
+  return DemoTable;
+}(_react.default.Component);
+
+var _default = DemoTable;
+exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("YLtl")))
 
 /***/ }),
 
@@ -3675,6 +4856,56 @@ function _interopRequireDefault(obj) {
 }
 
 module.exports = _interopRequireDefault;
+
+/***/ }),
+
+/***/ "KUZr":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireWildcard = __webpack_require__("5Uuq");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+Object.defineProperty(exports, "styles", {
+  enumerable: true,
+  get: function get() {
+    return _DemoItem.styles;
+  }
+});
+exports.default = void 0;
+
+var _reactRedux = __webpack_require__("h74D");
+
+var _styles = __webpack_require__("9Pu4");
+
+var _reactRelay = __webpack_require__("iuEU");
+
+var _state = __webpack_require__("ZKx5");
+
+var _DemoItem = _interopRequireWildcard(__webpack_require__("WUkW"));
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+  return {
+    onSwitch: function onSwitch(id, checked) {
+      return dispatch(_state.employeesOperations.edit({
+        id: id,
+        checked: checked
+      }));
+    }
+  };
+};
+
+var DemoItem = (0, _reactRelay.createFragmentContainer)((0, _styles.withStyles)(_DemoItem.styles)((0, _reactRedux.connect)(null, mapDispatchToProps)(_DemoItem.default)), {
+  node: function node() {
+    return __webpack_require__("8s86");
+  }
+});
+var _default = DemoItem;
+exports.default = _default;
 
 /***/ }),
 
@@ -4511,6 +5742,13 @@ module.exports = require("@material-ui/core/colors/red");
 
 /***/ }),
 
+/***/ "SJC6":
+/***/ (function(module, exports) {
+
+module.exports = require("@material-ui/core/Tabs");
+
+/***/ }),
+
 /***/ "SqZg":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -4556,6 +5794,13 @@ module.exports = __webpack_require__("Wk4r");
 /***/ (function(module, exports) {
 
 module.exports = require("core-js/library/fn/object/define-property");
+
+/***/ }),
+
+/***/ "TWtx":
+/***/ (function(module, exports) {
+
+module.exports = require("@material-ui/core/TableHead");
 
 /***/ }),
 
@@ -4785,6 +6030,96 @@ exports.default = _default;
 
 /***/ }),
 
+/***/ "WUkW":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = exports.styles = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
+
+var _react = _interopRequireDefault(__webpack_require__("cDcd"));
+
+var _propTypes = _interopRequireDefault(__webpack_require__("rf6O"));
+
+var _reactIntl = __webpack_require__("k004");
+
+var _TableCell = _interopRequireDefault(__webpack_require__("Ai9N"));
+
+var _TableRow = _interopRequireDefault(__webpack_require__("iDDF"));
+
+var _Switch = _interopRequireDefault(__webpack_require__("lOiU"));
+
+var styles = function styles() {
+  return {
+    checkboxField: {
+      width: 1
+    }
+  };
+};
+
+exports.styles = styles;
+
+var DemoItem =
+/*#__PURE__*/
+function (_React$Component) {
+  (0, _inherits2.default)(DemoItem, _React$Component);
+
+  function DemoItem() {
+    (0, _classCallCheck2.default)(this, DemoItem);
+    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(DemoItem).apply(this, arguments));
+  }
+
+  (0, _createClass2.default)(DemoItem, [{
+    key: "render",
+    value: function render() {
+      var _this = this;
+
+      return _react.default.createElement(_TableRow.default, null, _react.default.createElement(_TableCell.default, {
+        component: "th",
+        scope: "row"
+      }, this.props.node.uid), _react.default.createElement(_TableCell.default, {
+        padding: "checkbox",
+        classes: {
+          root: this.props.classes.checkboxField
+        }
+      }, _react.default.createElement(_Switch.default, {
+        checked: this.props.node.checked,
+        onChange: function onChange(evt, checked) {
+          return _this.props.onSwitch(_this.props.node.id, checked);
+        },
+        value: "on",
+        color: "default"
+      })), _react.default.createElement(_TableCell.default, null, this.props.node.name), _react.default.createElement(_TableCell.default, null, this.props.node.title), _react.default.createElement(_TableCell.default, null, this.props.node.country.name), _react.default.createElement(_TableCell.default, {
+        align: "right"
+      }, _react.default.createElement(_reactIntl.FormattedNumber, {
+        value: this.props.node.salary
+      })));
+    }
+  }]);
+  return DemoItem;
+}(_react.default.Component);
+
+var _default = DemoItem;
+exports.default = _default;
+
+/***/ }),
+
 /***/ "WaGi":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -4905,6 +6240,74 @@ module.exports = __webpack_require__("J3/a");
 
 /***/ }),
 
+/***/ "Y/f1":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _regenerator = _interopRequireDefault(__webpack_require__("ln6h"));
+
+var _promise = _interopRequireDefault(__webpack_require__("eVuF"));
+
+var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__("+oT+"));
+
+var _reactRelay = __webpack_require__("iuEU");
+
+var mutation = function mutation() {
+  return __webpack_require__("/iUP");
+};
+
+var _default =
+/*#__PURE__*/
+function () {
+  var _ref = (0, _asyncToGenerator2.default)(
+  /*#__PURE__*/
+  _regenerator.default.mark(function _callee(di, input) {
+    return _regenerator.default.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            return _context.abrupt("return", new _promise.default(function (resolve, reject) {
+              (0, _reactRelay.commitMutation)(di.get("env"), {
+                mutation: mutation,
+                variables: {
+                  input: input || {}
+                },
+                onCompleted: function onCompleted(data, errors) {
+                  return resolve({
+                    data: data,
+                    errors: errors
+                  });
+                },
+                onError: reject
+              });
+            }));
+
+          case 1:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee, this);
+  }));
+
+  return function (_x, _x2) {
+    return _ref.apply(this, arguments);
+  };
+}();
+
+exports.default = _default;
+
+/***/ }),
+
 /***/ "YLtl":
 /***/ (function(module, exports) {
 
@@ -5010,6 +6413,39 @@ module.exports = _possibleConstructorReturn;
 
 /***/ }),
 
+/***/ "ZKx5":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireWildcard = __webpack_require__("5Uuq");
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.employeesSelectors = exports.employeesOperations = exports.employeesTypes = exports.default = void 0;
+
+var _reducers = _interopRequireDefault(__webpack_require__("jFLn"));
+
+var employeesTypes = _interopRequireWildcard(__webpack_require__("vj2+"));
+
+exports.employeesTypes = employeesTypes;
+
+var employeesOperations = _interopRequireWildcard(__webpack_require__("2+Lp"));
+
+exports.employeesOperations = employeesOperations;
+
+var employeesSelectors = _interopRequireWildcard(__webpack_require__("ghjP"));
+
+exports.employeesSelectors = employeesSelectors;
+var _default = _reducers.default;
+exports.default = _default;
+
+/***/ }),
+
 /***/ "Zo8Y":
 /***/ (function(module, exports) {
 
@@ -5028,6 +6464,74 @@ module.exports = require("core-js/library/fn/reflect/construct");
 /***/ (function(module, exports) {
 
 module.exports = require("core-js/library/fn/promise");
+
+/***/ }),
+
+/***/ "am9M":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _regenerator = _interopRequireDefault(__webpack_require__("ln6h"));
+
+var _promise = _interopRequireDefault(__webpack_require__("eVuF"));
+
+var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__("+oT+"));
+
+var _reactRelay = __webpack_require__("iuEU");
+
+var mutation = function mutation() {
+  return __webpack_require__("07Y+");
+};
+
+var _default =
+/*#__PURE__*/
+function () {
+  var _ref = (0, _asyncToGenerator2.default)(
+  /*#__PURE__*/
+  _regenerator.default.mark(function _callee(di, input) {
+    return _regenerator.default.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            return _context.abrupt("return", new _promise.default(function (resolve, reject) {
+              (0, _reactRelay.commitMutation)(di.get("env"), {
+                mutation: mutation,
+                variables: {
+                  input: input || {}
+                },
+                onCompleted: function onCompleted(data, errors) {
+                  return resolve({
+                    data: data,
+                    errors: errors
+                  });
+                },
+                onError: reject
+              });
+            }));
+
+          case 1:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee, this);
+  }));
+
+  return function (_x, _x2) {
+    return _ref.apply(this, arguments);
+  };
+}();
+
+exports.default = _default;
 
 /***/ }),
 
@@ -5256,6 +6760,13 @@ node
 /*: any*/
 .hash = '71d23134552b169b766e1af58ad071ce';
 module.exports = node;
+
+/***/ }),
+
+/***/ "bzUq":
+/***/ (function(module, exports) {
+
+module.exports = require("@material-ui/core/TablePagination");
 
 /***/ }),
 
@@ -5894,6 +7405,75 @@ exports.setLocale = setLocale;
 
 /***/ }),
 
+/***/ "gWH5":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireWildcard = __webpack_require__("5Uuq");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.hideEditModal = exports.showEditModal = exports.deselectAll = exports.selectAll = exports.setSelected = void 0;
+
+var types = _interopRequireWildcard(__webpack_require__("vj2+"));
+
+var setSelected = function setSelected(_ref) {
+  var employeeId = _ref.employeeId,
+      isSelected = _ref.isSelected;
+  return {
+    type: types.SET_SELECTED,
+    employeeId: employeeId,
+    isSelected: isSelected
+  };
+};
+
+exports.setSelected = setSelected;
+
+var selectAll = function selectAll(_ref2) {
+  var employeeIds = _ref2.employeeIds;
+  return {
+    type: types.SELECT_ALL,
+    employeeIds: employeeIds
+  };
+};
+
+exports.selectAll = selectAll;
+
+var deselectAll = function deselectAll(_ref3) {
+  var exceptEmployeeIds = _ref3.exceptEmployeeIds;
+  return {
+    type: types.DESELECT_ALL,
+    exceptEmployeeIds: exceptEmployeeIds
+  };
+};
+
+exports.deselectAll = deselectAll;
+
+var showEditModal = function showEditModal() {
+  var _ref4 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+      employeeId = _ref4.employeeId;
+
+  return {
+    type: types.SHOW_EDIT_MODAL,
+    employeeId: employeeId
+  };
+};
+
+exports.showEditModal = showEditModal;
+
+var hideEditModal = function hideEditModal() {
+  return {
+    type: types.HIDE_EDIT_MODAL
+  };
+};
+
+exports.hideEditModal = hideEditModal;
+
+/***/ }),
+
 /***/ "gbDh":
 /***/ (function(module) {
 
@@ -5901,10 +7481,477 @@ module.exports = {};
 
 /***/ }),
 
+/***/ "ghjP":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.getEditModalEmployeeId = exports.isEditModalOpen = exports.getSelected = void 0;
+
+var _reselect = __webpack_require__("MWqi");
+
+var getSelected = (0, _reselect.createSelector)(function (state) {
+  return state.getIn(["employees", "selected"]);
+}, function (selected) {
+  return selected.toJS();
+});
+exports.getSelected = getSelected;
+
+var isEditModalOpen = function isEditModalOpen(state) {
+  return state.getIn(["employees", "isEditModalOpen"]);
+};
+
+exports.isEditModalOpen = isEditModalOpen;
+
+var getEditModalEmployeeId = function getEditModalEmployeeId(state) {
+  return state.getIn(["employees", "editModalEmployeeId"]);
+};
+
+exports.getEditModalEmployeeId = getEditModalEmployeeId;
+
+/***/ }),
+
 /***/ "h74D":
 /***/ (function(module, exports) {
 
 module.exports = require("react-redux");
+
+/***/ }),
+
+/***/ "hN1G":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(_) {
+
+var _interopRequireWildcard = __webpack_require__("5Uuq");
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = exports.styles = exports.sortDir = exports.sortBy = exports.pageSize = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
+
+var _assertThisInitialized2 = _interopRequireDefault(__webpack_require__("K47E"));
+
+var _defineProperty2 = _interopRequireDefault(__webpack_require__("xHqa"));
+
+var _objectSpread2 = _interopRequireDefault(__webpack_require__("Avpf"));
+
+var _react = _interopRequireDefault(__webpack_require__("cDcd"));
+
+var _propTypes = _interopRequireDefault(__webpack_require__("rf6O"));
+
+var _reactIntl = __webpack_require__("k004");
+
+var _reactRelay = __webpack_require__("iuEU");
+
+var _Table = _interopRequireDefault(__webpack_require__("BjFw"));
+
+var _TableBody = _interopRequireDefault(__webpack_require__("30mr"));
+
+var _TableCell = _interopRequireDefault(__webpack_require__("Ai9N"));
+
+var _TableHead = _interopRequireDefault(__webpack_require__("TWtx"));
+
+var _TableRow = _interopRequireDefault(__webpack_require__("iDDF"));
+
+var _TablePagination = _interopRequireDefault(__webpack_require__("bzUq"));
+
+var _TableSortLabel = _interopRequireDefault(__webpack_require__("jOOh"));
+
+var _Paper = _interopRequireDefault(__webpack_require__("qt1I"));
+
+var _colorManipulator = __webpack_require__("oOPP");
+
+var _responsiveTable = _interopRequireDefault(__webpack_require__("HSb4"));
+
+var _DemoItemContainer = _interopRequireWildcard(__webpack_require__("KUZr"));
+
+var _Relay = __webpack_require__("JyB7");
+
+var pageSize = 5;
+exports.pageSize = pageSize;
+var sortBy = "uid";
+exports.sortBy = sortBy;
+var sortDir = "asc";
+exports.sortDir = sortDir;
+
+var styles = function styles(theme) {
+  return (0, _objectSpread2.default)({
+    message: (0, _defineProperty2.default)({
+      background: (0, _colorManipulator.lighten)(theme.palette.background.paper, 0.1),
+      width: "100%",
+      marginTop: "-2rem",
+      display: "flex",
+      justifyContent: "stretch",
+      alignItems: "center"
+    }, theme.breakpoints.down("sm"), {
+      flexDirection: "column"
+    }),
+    messageTitle: {
+      fontSize: 26,
+      margin: "3rem 3rem 1rem 3rem"
+    },
+    messageContent: {
+      flex: 1,
+      maxWidth: "600px",
+      margin: "3rem 1rem 1rem 1rem"
+    },
+    layout: {
+      width: "100%",
+      flex: 1,
+      padding: theme.main.spacing
+    },
+    buttons: {
+      marginTop: "3rem",
+      width: "100%",
+      display: "flex",
+      flexDirection: "row",
+      justifyContent: "flex-start",
+      alignContent: "stretch"
+    },
+    button: {
+      margin: "0.5rem"
+    },
+    paper: {
+      background: theme.main.paper
+    },
+    table: (0, _defineProperty2.default)({}, theme.breakpoints.down("sm"), (0, _responsiveTable.default)(theme)),
+    grow: {
+      flex: 1
+    }
+  }, (0, _DemoItemContainer.styles)(theme));
+};
+
+exports.styles = styles;
+
+var subscription = function subscription() {
+  return __webpack_require__("ty8e");
+};
+
+var DemoList =
+/*#__PURE__*/
+function (_React$Component) {
+  (0, _inherits2.default)(DemoList, _React$Component);
+
+  function DemoList(props) {
+    var _this;
+
+    (0, _classCallCheck2.default)(this, DemoList);
+    _this = (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(DemoList).call(this, props));
+    _this.state = {
+      pageSize: pageSize,
+      pageNumber: 0,
+      variables: {
+        dept: props.dept,
+        sortBy: sortBy,
+        sortDir: sortDir,
+        first: pageSize
+      },
+      isConfirmOpen: false
+    };
+    _this.handleRefreshAction = _this.handleRefreshAction.bind((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)));
+    _this.handleChangePage = _this.handleChangePage.bind((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)));
+    _this.handleChangeRowsPerPage = _this.handleChangeRowsPerPage.bind((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)));
+    return _this;
+  }
+
+  (0, _createClass2.default)(DemoList, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      this.unsubscribe = (0, _Relay.subscribe)({
+        subscription: subscription,
+        getToken: this.props.getToken,
+        environment: this.context,
+        callback: this.handleRefreshAction
+      });
+    }
+  }, {
+    key: "componentDidUpdate",
+    value: function componentDidUpdate() {
+      var _this2 = this;
+
+      if (this.state.variables.dept !== this.props.dept) {
+        var variables = {
+          dept: this.props.dept,
+          sortBy: sortBy,
+          sortDir: sortDir,
+          first: this.state.pageSize
+        };
+        return this.setState({
+          pageNumber: 0,
+          variables: variables
+        }, function () {
+          return _this2.props.relay.refetch(variables, null, null, {
+            force: true
+          });
+        });
+      }
+
+      var total = _.get(this.props.viewer, "employees.totalCount", 0);
+
+      if (total && this.state.pageNumber * this.state.pageSize >= total) {
+        // we fell off the list - reset to the beginning
+        var _variables = {
+          dept: this.state.variables.dept,
+          sortBy: sortBy,
+          sortDir: sortDir,
+          first: this.state.pageSize
+        };
+        this.setState({
+          pageNumber: 0,
+          variables: _variables
+        }, function () {
+          return _this2.props.relay.refetch(_variables, null, null, {
+            force: true
+          });
+        });
+      }
+    }
+  }, {
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      if (this.unsubscribe) {
+        this.unsubscribe();
+        this.unsubscribe = null;
+      }
+    }
+  }, {
+    key: "handleRefreshAction",
+    value: function handleRefreshAction() {
+      this.props.relay.refetch(this.state.variables, null, null, {
+        force: true
+      });
+    }
+  }, {
+    key: "handleSort",
+    value: function handleSort(sortBy) {
+      var _this3 = this;
+
+      var sortDir = "asc";
+      if (this.state.variables.sortBy === sortBy) sortDir = this.state.variables.sortDir === "asc" ? "desc" : "asc";
+      var variables = {
+        dept: this.state.variables.dept,
+        sortBy: sortBy,
+        sortDir: sortDir,
+        first: this.state.pageSize
+      };
+      this.setState({
+        pageNumber: 0,
+        variables: variables
+      }, function () {
+        return _this3.props.relay.refetch(variables, null, null, {
+          force: true
+        });
+      });
+    }
+  }, {
+    key: "handleChangeRowsPerPage",
+    value: function handleChangeRowsPerPage(evt) {
+      var _this4 = this;
+
+      var pageSize = evt.target.value;
+      var variables = {
+        dept: this.state.variables.dept,
+        sortBy: this.state.variables.sortBy,
+        sortDir: this.state.variables.sortDir,
+        first: pageSize
+      };
+      this.setState({
+        pageSize: pageSize,
+        pageNumber: 0,
+        variables: variables
+      }, function () {
+        return _this4.props.relay.refetch(variables, null, null, {
+          force: true
+        });
+      });
+    }
+  }, {
+    key: "handleChangePage",
+    value: function handleChangePage(evt, pageNumber) {
+      var _this5 = this;
+
+      if (this.state.pageNumber === pageNumber) return;
+      var variables = {
+        dept: this.state.variables.dept,
+        sortBy: this.state.variables.sortBy,
+        sortDir: this.state.variables.sortDir
+      };
+
+      if (pageNumber === 0) {
+        variables.first = this.state.pageSize;
+      } else if (pageNumber > this.state.pageNumber) {
+        if (pageNumber + 1 > Math.ceil(_.get(this.props.viewer, "employees.totalCount", 0) / this.state.pageSize)) {
+          return;
+        }
+
+        variables.first = this.state.pageSize;
+        variables.after = _.get(this.props.viewer, "employees.pageInfo.endCursor", null);
+      } else {
+        if (this.state.pageNumber <= 0) return;
+        variables.last = this.state.pageSize;
+        variables.before = _.get(this.props.viewer, "employees.pageInfo.startCursor", null);
+      }
+
+      this.setState({
+        pageNumber: pageNumber,
+        variables: variables
+      }, function () {
+        return _this5.props.relay.refetch(variables, null, null, {
+          force: true
+        });
+      });
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this6 = this;
+
+      return _react.default.createElement(_Paper.default, {
+        className: this.props.classes.paper
+      }, _react.default.createElement(_Table.default, {
+        padding: "dense",
+        className: this.props.classes.table
+      }, _react.default.createElement(_TableHead.default, null, _react.default.createElement(_TableRow.default, null, _react.default.createElement(_TableCell.default, {
+        sortDirection: this.state.variables.sortBy === "uid" ? this.state.variables.sortDir : false
+      }, _react.default.createElement(_TableSortLabel.default, {
+        active: this.state.variables.sortBy === "uid",
+        direction: this.state.variables.sortDir,
+        onClick: function onClick() {
+          return _this6.handleSort("uid");
+        }
+      }, _react.default.createElement(_reactIntl.FormattedMessage, {
+        id: "EMPLOYEES_UID_COLUMN"
+      }))), _react.default.createElement(_TableCell.default, {
+        padding: "checkbox"
+      }), _react.default.createElement(_TableCell.default, {
+        sortDirection: this.state.variables.sortBy === "name" ? this.state.variables.sortDir : false
+      }, _react.default.createElement(_TableSortLabel.default, {
+        active: this.state.variables.sortBy === "name",
+        direction: this.state.variables.sortDir,
+        onClick: function onClick() {
+          return _this6.handleSort("name");
+        }
+      }, _react.default.createElement(_reactIntl.FormattedMessage, {
+        id: "EMPLOYEES_NAME_COLUMN"
+      }))), _react.default.createElement(_TableCell.default, {
+        sortDirection: this.state.variables.sortBy === "title" ? this.state.variables.sortDir : false
+      }, _react.default.createElement(_TableSortLabel.default, {
+        active: this.state.variables.sortBy === "title",
+        direction: this.state.variables.sortDir,
+        onClick: function onClick() {
+          return _this6.handleSort("title");
+        }
+      }, _react.default.createElement(_reactIntl.FormattedMessage, {
+        id: "EMPLOYEES_TITLE_COLUMN"
+      }))), _react.default.createElement(_TableCell.default, {
+        sortDirection: this.state.variables.sortBy === "country" ? this.state.variables.sortDir : false
+      }, _react.default.createElement(_TableSortLabel.default, {
+        active: this.state.variables.sortBy === "country",
+        direction: this.state.variables.sortDir,
+        onClick: function onClick() {
+          return _this6.handleSort("country");
+        }
+      }, _react.default.createElement(_reactIntl.FormattedMessage, {
+        id: "EMPLOYEES_COUNTRY_COLUMN"
+      }))), _react.default.createElement(_TableCell.default, {
+        align: "right",
+        sortDirection: this.state.variables.sortBy === "salary" ? this.state.variables.sortDir : false
+      }, _react.default.createElement(_TableSortLabel.default, {
+        active: this.state.variables.sortBy === "salary",
+        direction: this.state.variables.sortDir,
+        onClick: function onClick() {
+          return _this6.handleSort("salary");
+        }
+      }, _react.default.createElement(_reactIntl.FormattedMessage, {
+        id: "EMPLOYEES_SALARY_COLUMN"
+      }))))), _react.default.createElement(_TableBody.default, null, _.map(_.get(this.props.viewer, "employees.edges", []), function (edge) {
+        return _react.default.createElement(_DemoItemContainer.default, {
+          key: edge.cursor,
+          node: edge.node
+        });
+      }))), _react.default.createElement(_TablePagination.default, {
+        rowsPerPageOptions: [5, 10, 20, 30, 50, 100],
+        component: "div",
+        count: this.props.viewer.employees.totalCount,
+        rowsPerPage: this.state.pageSize,
+        page: this.state.pageNumber,
+        onChangeRowsPerPage: this.handleChangeRowsPerPage,
+        onChangePage: this.handleChangePage
+      }));
+    }
+  }]);
+  return DemoList;
+}(_react.default.Component);
+
+(0, _defineProperty2.default)(DemoList, "contextType", _Relay.RelayContext);
+var _default = DemoList;
+exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("YLtl")))
+
+/***/ }),
+
+/***/ "hcU9":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireWildcard = __webpack_require__("5Uuq");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+Object.defineProperty(exports, "defaultDept", {
+  enumerable: true,
+  get: function get() {
+    return _DemoTable.defaultDept;
+  }
+});
+Object.defineProperty(exports, "pageSize", {
+  enumerable: true,
+  get: function get() {
+    return _DemoTable.pageSize;
+  }
+});
+Object.defineProperty(exports, "sortBy", {
+  enumerable: true,
+  get: function get() {
+    return _DemoTable.sortBy;
+  }
+});
+Object.defineProperty(exports, "sortDir", {
+  enumerable: true,
+  get: function get() {
+    return _DemoTable.sortDir;
+  }
+});
+exports.default = void 0;
+
+var _reactIntl = __webpack_require__("k004");
+
+var _DemoTable = _interopRequireWildcard(__webpack_require__("I1Aa"));
+
+var DemoTable = (0, _reactIntl.injectIntl)(_DemoTable.default);
+var _default = DemoTable;
+exports.default = _default;
 
 /***/ }),
 
@@ -5939,6 +7986,13 @@ function _extends() {
 }
 
 module.exports = _extends;
+
+/***/ }),
+
+/***/ "iDDF":
+/***/ (function(module, exports) {
+
+module.exports = require("@material-ui/core/TableRow");
 
 /***/ }),
 
@@ -5989,10 +8043,36 @@ module.exports = require("react-simple-maps");
 "use strict";
 
 
+var _interopRequireWildcard = __webpack_require__("5Uuq");
+
 var _interopRequireDefault = __webpack_require__("KI45");
 
 Object.defineProperty(exports, "__esModule", {
   value: true
+});
+Object.defineProperty(exports, "defaultDept", {
+  enumerable: true,
+  get: function get() {
+    return _DemoTableContainer.defaultDept;
+  }
+});
+Object.defineProperty(exports, "pageSize", {
+  enumerable: true,
+  get: function get() {
+    return _DemoTableContainer.pageSize;
+  }
+});
+Object.defineProperty(exports, "sortBy", {
+  enumerable: true,
+  get: function get() {
+    return _DemoTableContainer.sortBy;
+  }
+});
+Object.defineProperty(exports, "sortDir", {
+  enumerable: true,
+  get: function get() {
+    return _DemoTableContainer.sortDir;
+  }
 });
 exports.default = exports.styles = exports.defaultCountry = void 0;
 
@@ -6029,6 +8109,8 @@ var _WorldMapContainer = _interopRequireDefault(__webpack_require__("19SY"));
 var _MarketShareContainer = _interopRequireDefault(__webpack_require__("Q28+"));
 
 var _MarketSpinnerContainer = _interopRequireDefault(__webpack_require__("fGOC"));
+
+var _DemoTableContainer = _interopRequireWildcard(__webpack_require__("hcU9"));
 
 var defaultCountry = "WORLD";
 exports.defaultCountry = defaultCountry;
@@ -6168,7 +8250,12 @@ function (_React$Component) {
         viewer: this.props.viewer,
         onLoaded: this.handleLoaded,
         onSelect: this.handleCountrySelected
-      })))));
+      }))), _react.default.createElement(_Grid.default, {
+        item: true,
+        xs: 12
+      }, _react.default.createElement(_DemoTableContainer.default, {
+        viewer: this.props.viewer
+      }))));
     }
   }]);
   return Dashboard;
@@ -6176,6 +8263,134 @@ function (_React$Component) {
 
 var _default = Dashboard;
 exports.default = _default;
+
+/***/ }),
+
+/***/ "jFLn":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(_) {
+
+var _interopRequireWildcard = __webpack_require__("5Uuq");
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _getIterator2 = _interopRequireDefault(__webpack_require__("XXOK"));
+
+var _immutable = __webpack_require__("nuGg");
+
+var _reduxImmutable = __webpack_require__("RGyf");
+
+var types = _interopRequireWildcard(__webpack_require__("vj2+"));
+
+/* State Shape
+Map({
+  selected: Set([String]), // IDs
+  editModalEmployeeId: String, // null when creating a new employee
+  isEditModalOpen: false,
+})
+*/
+var selectedReducer = function selectedReducer() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : (0, _immutable.Set)([]);
+  var action = arguments.length > 1 ? arguments[1] : undefined;
+
+  switch (action.type) {
+    case types.SET_SELECTED:
+      if (!_.isUndefined(action.employeeId) && !_.isUndefined(action.isSelected)) {
+        // eslint-disable-next-line lodash/prefer-lodash-method
+        if (state.includes(action.employeeId)) return state.delete(action.employeeId);else return state.add(action.employeeId);
+      }
+
+      break;
+
+    case types.SELECT_ALL:
+      if (!_.isUndefined(action.employeeIds)) return (0, _immutable.Set)(action.employeeIds);
+      break;
+
+    case types.DESELECT_ALL:
+      if (_.isUndefined(action.exceptEmployeeIds)) {
+        return (0, _immutable.Set)([]);
+      } else {
+        return state.withMutations(function (set) {
+          var _iteratorNormalCompletion = true;
+          var _didIteratorError = false;
+          var _iteratorError = undefined;
+
+          try {
+            for (var _iterator = (0, _getIterator2.default)(set.values()), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+              var item = _step.value;
+              if (!_.includes(action.exceptEmployeeIds, item)) set.delete(item);
+            }
+          } catch (err) {
+            _didIteratorError = true;
+            _iteratorError = err;
+          } finally {
+            try {
+              if (!_iteratorNormalCompletion && _iterator.return != null) {
+                _iterator.return();
+              }
+            } finally {
+              if (_didIteratorError) {
+                throw _iteratorError;
+              }
+            }
+          }
+        });
+      }
+
+  }
+
+  return state;
+};
+
+var editModalEmployeeIdReducer = function editModalEmployeeIdReducer() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+  var action = arguments.length > 1 ? arguments[1] : undefined;
+
+  switch (action.type) {
+    case types.SHOW_EDIT_MODAL:
+      return action.employeeId || null;
+  }
+
+  return state;
+};
+
+var isEditModalOpenReducer = function isEditModalOpenReducer() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+  var action = arguments.length > 1 ? arguments[1] : undefined;
+
+  switch (action.type) {
+    case types.SHOW_EDIT_MODAL:
+      return true;
+
+    case types.HIDE_EDIT_MODAL:
+      return false;
+  }
+
+  return state;
+};
+
+var reducer = (0, _reduxImmutable.combineReducers)({
+  selected: selectedReducer,
+  editModalEmployeeId: editModalEmployeeIdReducer,
+  isEditModalOpen: isEditModalOpenReducer
+});
+var _default = reducer;
+exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("YLtl")))
+
+/***/ }),
+
+/***/ "jOOh":
+/***/ (function(module, exports) {
+
+module.exports = require("@material-ui/core/TableSortLabel");
 
 /***/ }),
 
@@ -6225,6 +8440,74 @@ module.exports = function isRouteAllowed(path) {
 
 /***/ }),
 
+/***/ "jxgt":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _regenerator = _interopRequireDefault(__webpack_require__("ln6h"));
+
+var _promise = _interopRequireDefault(__webpack_require__("eVuF"));
+
+var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__("+oT+"));
+
+var _reactRelay = __webpack_require__("iuEU");
+
+var mutation = function mutation() {
+  return __webpack_require__("1S23");
+};
+
+var _default =
+/*#__PURE__*/
+function () {
+  var _ref = (0, _asyncToGenerator2.default)(
+  /*#__PURE__*/
+  _regenerator.default.mark(function _callee(di, input) {
+    return _regenerator.default.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            return _context.abrupt("return", new _promise.default(function (resolve, reject) {
+              (0, _reactRelay.commitMutation)(di.get("env"), {
+                mutation: mutation,
+                variables: {
+                  input: input || {}
+                },
+                onCompleted: function onCompleted(data, errors) {
+                  return resolve({
+                    data: data,
+                    errors: errors
+                  });
+                },
+                onError: reject
+              });
+            }));
+
+          case 1:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee, this);
+  }));
+
+  return function (_x, _x2) {
+    return _ref.apply(this, arguments);
+  };
+}();
+
+exports.default = _default;
+
+/***/ }),
+
 /***/ "k004":
 /***/ (function(module, exports) {
 
@@ -6236,6 +8519,74 @@ module.exports = require("react-intl");
 /***/ (function(module, exports) {
 
 module.exports = require("core-js/library/fn/object/get-own-property-symbols");
+
+/***/ }),
+
+/***/ "kUfH":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireWildcard = __webpack_require__("5Uuq");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+Object.defineProperty(exports, "pageSize", {
+  enumerable: true,
+  get: function get() {
+    return _DemoList.pageSize;
+  }
+});
+Object.defineProperty(exports, "sortBy", {
+  enumerable: true,
+  get: function get() {
+    return _DemoList.sortBy;
+  }
+});
+Object.defineProperty(exports, "sortDir", {
+  enumerable: true,
+  get: function get() {
+    return _DemoList.sortDir;
+  }
+});
+exports.default = void 0;
+
+var _reactRedux = __webpack_require__("h74D");
+
+var _reactRelay = __webpack_require__("iuEU");
+
+var _styles = __webpack_require__("9Pu4");
+
+var _state = __webpack_require__("E4eY");
+
+var _DemoList = _interopRequireWildcard(__webpack_require__("hN1G"));
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+  return {
+    getToken: function getToken() {
+      return dispatch(_state.appOperations.getToken());
+    }
+  };
+};
+
+var DemoList = (0, _reactRelay.createRefetchContainer)((0, _styles.withStyles)(_DemoList.styles)((0, _reactRedux.connect)(null, mapDispatchToProps)(_DemoList.default)), {
+  viewer: function viewer() {
+    return __webpack_require__("0bJo");
+  }
+}, function () {
+  return __webpack_require__("oNLe");
+});
+var _default = DemoList;
+exports.default = _default;
+
+/***/ }),
+
+/***/ "lOiU":
+/***/ (function(module, exports) {
+
+module.exports = require("@material-ui/core/Switch");
 
 /***/ }),
 
@@ -6748,6 +9099,381 @@ module.exports = require("core-js/library/fn/object/create");
 
 /***/ }),
 
+/***/ "oNLe":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @flow
+ * @relayHash 8c9612e4a672ff46e40e1ab06832e637
+ */
+
+/* eslint-disable */
+
+/*::
+import type { ConcreteRequest } from 'relay-runtime';
+type DemoListContainer_viewer$ref = any;
+export type EmployeeDept = "ACCOUNTING" | "HR" | "MARKETING" | "PRODUCTION" | "PURCHASING" | "RD" | "%future added value";
+export type EmployeeSortBy = "checked" | "country" | "dept" | "name" | "salary" | "title" | "uid" | "%future added value";
+export type EmployeeSortDir = "asc" | "desc" | "%future added value";
+export type DemoListContainerQueryVariables = {|
+  dept?: ?EmployeeDept,
+  sortBy?: ?EmployeeSortBy,
+  sortDir?: ?EmployeeSortDir,
+  first?: ?number,
+  after?: ?string,
+  last?: ?number,
+  before?: ?string,
+|};
+export type DemoListContainerQueryResponse = {|
+  +viewer: ?{|
+    +$fragmentRefs: DemoListContainer_viewer$ref
+  |}
+|};
+export type DemoListContainerQuery = {|
+  variables: DemoListContainerQueryVariables,
+  response: DemoListContainerQueryResponse,
+|};
+*/
+
+/*
+query DemoListContainerQuery(
+  $dept: EmployeeDept
+  $sortBy: EmployeeSortBy
+  $sortDir: EmployeeSortDir
+  $first: Int
+  $after: String
+  $last: Int
+  $before: String
+) {
+  viewer {
+    ...DemoListContainer_viewer_4Eqn1
+  }
+}
+
+fragment DemoListContainer_viewer_4Eqn1 on Viewer {
+  employees(dept: $dept, sortBy: $sortBy, sortDir: $sortDir, first: $first, after: $after, last: $last, before: $before) {
+    edges {
+      cursor
+      node {
+        id
+        ...DemoItemContainer_node
+      }
+    }
+    pageInfo {
+      startCursor
+      endCursor
+    }
+    totalCount
+  }
+}
+
+fragment DemoItemContainer_node on Employee {
+  id
+  uid
+  checked
+  name
+  title
+  country {
+    id
+    name
+  }
+  salary
+}
+*/
+
+var node
+/*: ConcreteRequest*/
+= function () {
+  var v0 = [{
+    "kind": "LocalArgument",
+    "name": "dept",
+    "type": "EmployeeDept",
+    "defaultValue": null
+  }, {
+    "kind": "LocalArgument",
+    "name": "sortBy",
+    "type": "EmployeeSortBy",
+    "defaultValue": null
+  }, {
+    "kind": "LocalArgument",
+    "name": "sortDir",
+    "type": "EmployeeSortDir",
+    "defaultValue": null
+  }, {
+    "kind": "LocalArgument",
+    "name": "first",
+    "type": "Int",
+    "defaultValue": null
+  }, {
+    "kind": "LocalArgument",
+    "name": "after",
+    "type": "String",
+    "defaultValue": null
+  }, {
+    "kind": "LocalArgument",
+    "name": "last",
+    "type": "Int",
+    "defaultValue": null
+  }, {
+    "kind": "LocalArgument",
+    "name": "before",
+    "type": "String",
+    "defaultValue": null
+  }],
+      v1 = {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "id",
+    "args": null,
+    "storageKey": null
+  },
+      v2 = {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "name",
+    "args": null,
+    "storageKey": null
+  };
+  return {
+    "kind": "Request",
+    "fragment": {
+      "kind": "Fragment",
+      "name": "DemoListContainerQuery",
+      "type": "Query",
+      "metadata": null,
+      "argumentDefinitions": v0
+      /*: any*/
+      ,
+      "selections": [{
+        "kind": "LinkedField",
+        "alias": "viewer",
+        "name": "__viewer_viewer",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "Viewer",
+        "plural": false,
+        "selections": [{
+          "kind": "FragmentSpread",
+          "name": "DemoListContainer_viewer",
+          "args": [{
+            "kind": "Variable",
+            "name": "after",
+            "variableName": "after",
+            "type": null
+          }, {
+            "kind": "Variable",
+            "name": "before",
+            "variableName": "before",
+            "type": null
+          }, {
+            "kind": "Variable",
+            "name": "dept",
+            "variableName": "dept",
+            "type": null
+          }, {
+            "kind": "Variable",
+            "name": "first",
+            "variableName": "first",
+            "type": null
+          }, {
+            "kind": "Variable",
+            "name": "last",
+            "variableName": "last",
+            "type": null
+          }, {
+            "kind": "Variable",
+            "name": "sortBy",
+            "variableName": "sortBy",
+            "type": null
+          }, {
+            "kind": "Variable",
+            "name": "sortDir",
+            "variableName": "sortDir",
+            "type": null
+          }]
+        }]
+      }]
+    },
+    "operation": {
+      "kind": "Operation",
+      "name": "DemoListContainerQuery",
+      "argumentDefinitions": v0
+      /*: any*/
+      ,
+      "selections": [{
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "viewer",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "Viewer",
+        "plural": false,
+        "selections": [{
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "employees",
+          "storageKey": null,
+          "args": [{
+            "kind": "Variable",
+            "name": "after",
+            "variableName": "after",
+            "type": "String"
+          }, {
+            "kind": "Variable",
+            "name": "before",
+            "variableName": "before",
+            "type": "String"
+          }, {
+            "kind": "Variable",
+            "name": "dept",
+            "variableName": "dept",
+            "type": "EmployeeDept"
+          }, {
+            "kind": "Variable",
+            "name": "first",
+            "variableName": "first",
+            "type": "Int"
+          }, {
+            "kind": "Variable",
+            "name": "last",
+            "variableName": "last",
+            "type": "Int"
+          }, {
+            "kind": "Variable",
+            "name": "sortBy",
+            "variableName": "sortBy",
+            "type": "EmployeeSortBy"
+          }, {
+            "kind": "Variable",
+            "name": "sortDir",
+            "variableName": "sortDir",
+            "type": "EmployeeSortDir"
+          }],
+          "concreteType": "EmployeeConnection",
+          "plural": false,
+          "selections": [{
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "edges",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "EmployeeEdge",
+            "plural": true,
+            "selections": [{
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "cursor",
+              "args": null,
+              "storageKey": null
+            }, {
+              "kind": "LinkedField",
+              "alias": null,
+              "name": "node",
+              "storageKey": null,
+              "args": null,
+              "concreteType": "Employee",
+              "plural": false,
+              "selections": [v1
+              /*: any*/
+              , {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "uid",
+                "args": null,
+                "storageKey": null
+              }, {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "checked",
+                "args": null,
+                "storageKey": null
+              }, v2
+              /*: any*/
+              , {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "title",
+                "args": null,
+                "storageKey": null
+              }, {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "country",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "Country",
+                "plural": false,
+                "selections": [v1
+                /*: any*/
+                , v2
+                /*: any*/
+                ]
+              }, {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "salary",
+                "args": null,
+                "storageKey": null
+              }]
+            }]
+          }, {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "pageInfo",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "PageInfo",
+            "plural": false,
+            "selections": [{
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "startCursor",
+              "args": null,
+              "storageKey": null
+            }, {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "endCursor",
+              "args": null,
+              "storageKey": null
+            }]
+          }, {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "totalCount",
+            "args": null,
+            "storageKey": null
+          }]
+        }]
+      }, {
+        "kind": "LinkedHandle",
+        "alias": null,
+        "name": "viewer",
+        "args": null,
+        "handle": "viewer",
+        "key": "",
+        "filters": null
+      }]
+    },
+    "params": {
+      "operationKind": "query",
+      "name": "DemoListContainerQuery",
+      "id": null,
+      "text": "query DemoListContainerQuery(\n  $dept: EmployeeDept\n  $sortBy: EmployeeSortBy\n  $sortDir: EmployeeSortDir\n  $first: Int\n  $after: String\n  $last: Int\n  $before: String\n) {\n  viewer {\n    ...DemoListContainer_viewer_4Eqn1\n  }\n}\n\nfragment DemoListContainer_viewer_4Eqn1 on Viewer {\n  employees(dept: $dept, sortBy: $sortBy, sortDir: $sortDir, first: $first, after: $after, last: $last, before: $before) {\n    edges {\n      cursor\n      node {\n        id\n        ...DemoItemContainer_node\n      }\n    }\n    pageInfo {\n      startCursor\n      endCursor\n    }\n    totalCount\n  }\n}\n\nfragment DemoItemContainer_node on Employee {\n  id\n  uid\n  checked\n  name\n  title\n  country {\n    id\n    name\n  }\n  salary\n}\n",
+      "metadata": {}
+    }
+  };
+}(); // prettier-ignore
+
+
+node
+/*: any*/
+.hash = '86c85f72c0b3b154a26219a75cbbfa26';
+module.exports = node;
+
+/***/ }),
+
 /***/ "oOPP":
 /***/ (function(module, exports) {
 
@@ -6925,6 +9651,115 @@ module.exports = require("@material-ui/core/colors/blue");
 
 /***/ }),
 
+/***/ "ty8e":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @flow
+ * @relayHash 7248286b0049958dc9010fe6da95d4c8
+ */
+
+/* eslint-disable */
+
+/*::
+import type { ConcreteRequest } from 'relay-runtime';
+export type DemoListSubscriptionVariables = {|
+  token?: ?string
+|};
+export type DemoListSubscriptionResponse = {|
+  +employeeEvent: ?{|
+    +id: string
+  |}
+|};
+export type DemoListSubscription = {|
+  variables: DemoListSubscriptionVariables,
+  response: DemoListSubscriptionResponse,
+|};
+*/
+
+/*
+subscription DemoListSubscription(
+  $token: String
+) {
+  employeeEvent(token: $token) {
+    id
+  }
+}
+*/
+
+var node
+/*: ConcreteRequest*/
+= function () {
+  var v0 = [{
+    "kind": "LocalArgument",
+    "name": "token",
+    "type": "String",
+    "defaultValue": null
+  }],
+      v1 = [{
+    "kind": "LinkedField",
+    "alias": null,
+    "name": "employeeEvent",
+    "storageKey": null,
+    "args": [{
+      "kind": "Variable",
+      "name": "token",
+      "variableName": "token",
+      "type": "String"
+    }],
+    "concreteType": "Employee",
+    "plural": false,
+    "selections": [{
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "id",
+      "args": null,
+      "storageKey": null
+    }]
+  }];
+  return {
+    "kind": "Request",
+    "fragment": {
+      "kind": "Fragment",
+      "name": "DemoListSubscription",
+      "type": "Subscription",
+      "metadata": null,
+      "argumentDefinitions": v0
+      /*: any*/
+      ,
+      "selections": v1
+      /*: any*/
+
+    },
+    "operation": {
+      "kind": "Operation",
+      "name": "DemoListSubscription",
+      "argumentDefinitions": v0
+      /*: any*/
+      ,
+      "selections": v1
+      /*: any*/
+
+    },
+    "params": {
+      "operationKind": "subscription",
+      "name": "DemoListSubscription",
+      "id": null,
+      "text": "subscription DemoListSubscription(\n  $token: String\n) {\n  employeeEvent(token: $token) {\n    id\n  }\n}\n",
+      "metadata": {}
+    }
+  };
+}(); // prettier-ignore
+
+
+node
+/*: any*/
+.hash = '654c2c2f233454bcefcc17e998eb44c7';
+module.exports = node;
+
+/***/ }),
+
 /***/ "u9iw":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -6951,6 +9786,29 @@ var _DashboardPageContainer = _interopRequireDefault(__webpack_require__("Z8XH")
 /***/ (function(module, exports) {
 
 module.exports = require("react-intl/locale-data/ru.js");
+
+/***/ }),
+
+/***/ "vj2+":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.HIDE_EDIT_MODAL = exports.SHOW_EDIT_MODAL = exports.DESELECT_ALL = exports.SELECT_ALL = exports.SET_SELECTED = void 0;
+var SET_SELECTED = "app/employees/SET_SELECTED";
+exports.SET_SELECTED = SET_SELECTED;
+var SELECT_ALL = "app/employees/SELECT_ALL";
+exports.SELECT_ALL = SELECT_ALL;
+var DESELECT_ALL = "app/employees/DESELECT_ALL";
+exports.DESELECT_ALL = DESELECT_ALL;
+var SHOW_EDIT_MODAL = "app/employees/SHOW_EDIT_MODAL";
+exports.SHOW_EDIT_MODAL = SHOW_EDIT_MODAL;
+var HIDE_EDIT_MODAL = "app/employees/HIDE_EDIT_MODAL";
+exports.HIDE_EDIT_MODAL = HIDE_EDIT_MODAL;
 
 /***/ }),
 
@@ -6992,7 +9850,7 @@ module.exports = require("core-js/library/fn/symbol");
 "use strict";
 /**
  * @flow
- * @relayHash 108bde8143f4ba6d9c116c7b378a576b
+ * @relayHash 07a327b78c17dd75426e79d0fa2dcefa
  */
 
 /* eslint-disable */
@@ -7001,11 +9859,22 @@ module.exports = require("core-js/library/fn/symbol");
 import type { ConcreteRequest } from 'relay-runtime';
 type AvgTimeStatContainer_data$ref = any;
 type ClientsStatContainer_data$ref = any;
+type DemoListContainer_viewer$ref = any;
 type MarketShareContainer_viewer$ref = any;
 type ProfitStatContainer_data$ref = any;
 type SalesStatContainer_data$ref = any;
+export type EmployeeDept = "ACCOUNTING" | "HR" | "MARKETING" | "PRODUCTION" | "PURCHASING" | "RD" | "%future added value";
+export type EmployeeSortBy = "checked" | "country" | "dept" | "name" | "salary" | "title" | "uid" | "%future added value";
+export type EmployeeSortDir = "asc" | "desc" | "%future added value";
 export type DashboardPageQueryVariables = {|
-  country?: ?string
+  country?: ?string,
+  dept?: ?EmployeeDept,
+  sortBy?: ?EmployeeSortBy,
+  sortDir?: ?EmployeeSortDir,
+  first?: ?number,
+  after?: ?string,
+  last?: ?number,
+  before?: ?string,
 |};
 export type DashboardPageQueryResponse = {|
   +viewer: ?{|
@@ -7021,7 +9890,7 @@ export type DashboardPageQueryResponse = {|
     +avgTimeValues: ?{|
       +$fragmentRefs: AvgTimeStatContainer_data$ref
     |},
-    +$fragmentRefs: MarketShareContainer_viewer$ref,
+    +$fragmentRefs: MarketShareContainer_viewer$ref & DemoListContainer_viewer$ref,
   |}
 |};
 export type DashboardPageQuery = {|
@@ -7033,6 +9902,13 @@ export type DashboardPageQuery = {|
 /*
 query DashboardPageQuery(
   $country: ID
+  $dept: EmployeeDept
+  $sortBy: EmployeeSortBy
+  $sortDir: EmployeeSortDir
+  $first: Int
+  $after: String
+  $last: Int
+  $before: String
 ) {
   viewer {
     profitValues {
@@ -7048,6 +9924,7 @@ query DashboardPageQuery(
       ...AvgTimeStatContainer_data
     }
     ...MarketShareContainer_viewer_1vRKRZ
+    ...DemoListContainer_viewer_4Eqn1
   }
 }
 
@@ -7106,6 +9983,36 @@ fragment MarketShareContainer_viewer_1vRKRZ on Viewer {
     }
   }
 }
+
+fragment DemoListContainer_viewer_4Eqn1 on Viewer {
+  employees(dept: $dept, sortBy: $sortBy, sortDir: $sortDir, first: $first, after: $after, last: $last, before: $before) {
+    edges {
+      cursor
+      node {
+        id
+        ...DemoItemContainer_node
+      }
+    }
+    pageInfo {
+      startCursor
+      endCursor
+    }
+    totalCount
+  }
+}
+
+fragment DemoItemContainer_node on Employee {
+  id
+  uid
+  checked
+  name
+  title
+  country {
+    id
+    name
+  }
+  salary
+}
 */
 
 var node
@@ -7115,6 +10022,41 @@ var node
     "kind": "LocalArgument",
     "name": "country",
     "type": "ID",
+    "defaultValue": null
+  }, {
+    "kind": "LocalArgument",
+    "name": "dept",
+    "type": "EmployeeDept",
+    "defaultValue": null
+  }, {
+    "kind": "LocalArgument",
+    "name": "sortBy",
+    "type": "EmployeeSortBy",
+    "defaultValue": null
+  }, {
+    "kind": "LocalArgument",
+    "name": "sortDir",
+    "type": "EmployeeSortDir",
+    "defaultValue": null
+  }, {
+    "kind": "LocalArgument",
+    "name": "first",
+    "type": "Int",
+    "defaultValue": null
+  }, {
+    "kind": "LocalArgument",
+    "name": "after",
+    "type": "String",
+    "defaultValue": null
+  }, {
+    "kind": "LocalArgument",
+    "name": "last",
+    "type": "Int",
+    "defaultValue": null
+  }, {
+    "kind": "LocalArgument",
+    "name": "before",
+    "type": "String",
     "defaultValue": null
   }],
       v1 = {
@@ -7215,6 +10157,45 @@ var node
             "kind": "Variable",
             "name": "country",
             "variableName": "country",
+            "type": null
+          }]
+        }, {
+          "kind": "FragmentSpread",
+          "name": "DemoListContainer_viewer",
+          "args": [{
+            "kind": "Variable",
+            "name": "after",
+            "variableName": "after",
+            "type": null
+          }, {
+            "kind": "Variable",
+            "name": "before",
+            "variableName": "before",
+            "type": null
+          }, {
+            "kind": "Variable",
+            "name": "dept",
+            "variableName": "dept",
+            "type": null
+          }, {
+            "kind": "Variable",
+            "name": "first",
+            "variableName": "first",
+            "type": null
+          }, {
+            "kind": "Variable",
+            "name": "last",
+            "variableName": "last",
+            "type": null
+          }, {
+            "kind": "Variable",
+            "name": "sortBy",
+            "variableName": "sortBy",
+            "type": null
+          }, {
+            "kind": "Variable",
+            "name": "sortDir",
+            "variableName": "sortDir",
             "type": null
           }]
         }]
@@ -7436,6 +10417,142 @@ var node
             /*: any*/
             ]
           }]
+        }, {
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "employees",
+          "storageKey": null,
+          "args": [{
+            "kind": "Variable",
+            "name": "after",
+            "variableName": "after",
+            "type": "String"
+          }, {
+            "kind": "Variable",
+            "name": "before",
+            "variableName": "before",
+            "type": "String"
+          }, {
+            "kind": "Variable",
+            "name": "dept",
+            "variableName": "dept",
+            "type": "EmployeeDept"
+          }, {
+            "kind": "Variable",
+            "name": "first",
+            "variableName": "first",
+            "type": "Int"
+          }, {
+            "kind": "Variable",
+            "name": "last",
+            "variableName": "last",
+            "type": "Int"
+          }, {
+            "kind": "Variable",
+            "name": "sortBy",
+            "variableName": "sortBy",
+            "type": "EmployeeSortBy"
+          }, {
+            "kind": "Variable",
+            "name": "sortDir",
+            "variableName": "sortDir",
+            "type": "EmployeeSortDir"
+          }],
+          "concreteType": "EmployeeConnection",
+          "plural": false,
+          "selections": [{
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "edges",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "EmployeeEdge",
+            "plural": true,
+            "selections": [{
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "cursor",
+              "args": null,
+              "storageKey": null
+            }, {
+              "kind": "LinkedField",
+              "alias": null,
+              "name": "node",
+              "storageKey": null,
+              "args": null,
+              "concreteType": "Employee",
+              "plural": false,
+              "selections": [v2
+              /*: any*/
+              , {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "uid",
+                "args": null,
+                "storageKey": null
+              }, {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "checked",
+                "args": null,
+                "storageKey": null
+              }, v3
+              /*: any*/
+              , {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "title",
+                "args": null,
+                "storageKey": null
+              }, {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "country",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "Country",
+                "plural": false,
+                "selections": [v2
+                /*: any*/
+                , v3
+                /*: any*/
+                ]
+              }, {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "salary",
+                "args": null,
+                "storageKey": null
+              }]
+            }]
+          }, {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "pageInfo",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "PageInfo",
+            "plural": false,
+            "selections": [{
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "startCursor",
+              "args": null,
+              "storageKey": null
+            }, {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "endCursor",
+              "args": null,
+              "storageKey": null
+            }]
+          }, {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "totalCount",
+            "args": null,
+            "storageKey": null
+          }]
         }]
       }, {
         "kind": "LinkedHandle",
@@ -7451,7 +10568,7 @@ var node
       "operationKind": "query",
       "name": "DashboardPageQuery",
       "id": null,
-      "text": "query DashboardPageQuery(\n  $country: ID\n) {\n  viewer {\n    profitValues {\n      ...ProfitStatContainer_data\n    }\n    salesValues {\n      ...SalesStatContainer_data\n    }\n    clientsValues {\n      ...ClientsStatContainer_data\n    }\n    avgTimeValues {\n      ...AvgTimeStatContainer_data\n    }\n    ...MarketShareContainer_viewer_1vRKRZ\n  }\n}\n\nfragment ProfitStatContainer_data on ProfitValueConnection {\n  edges {\n    node {\n      date\n      value: profit\n      id\n    }\n  }\n}\n\nfragment SalesStatContainer_data on SalesValueConnection {\n  edges {\n    node {\n      date\n      value: sales\n      id\n    }\n  }\n}\n\nfragment ClientsStatContainer_data on ClientsValueConnection {\n  edges {\n    node {\n      date\n      value: clients\n      id\n    }\n  }\n}\n\nfragment AvgTimeStatContainer_data on AvgTimeValueConnection {\n  edges {\n    node {\n      date\n      value: avgTime\n      id\n    }\n  }\n}\n\nfragment MarketShareContainer_viewer_1vRKRZ on Viewer {\n  marketSharesByCountry(country: $country) {\n    id\n    country {\n      name\n      id\n    }\n    shares {\n      vendor\n      name\n      values\n      id\n    }\n  }\n}\n",
+      "text": "query DashboardPageQuery(\n  $country: ID\n  $dept: EmployeeDept\n  $sortBy: EmployeeSortBy\n  $sortDir: EmployeeSortDir\n  $first: Int\n  $after: String\n  $last: Int\n  $before: String\n) {\n  viewer {\n    profitValues {\n      ...ProfitStatContainer_data\n    }\n    salesValues {\n      ...SalesStatContainer_data\n    }\n    clientsValues {\n      ...ClientsStatContainer_data\n    }\n    avgTimeValues {\n      ...AvgTimeStatContainer_data\n    }\n    ...MarketShareContainer_viewer_1vRKRZ\n    ...DemoListContainer_viewer_4Eqn1\n  }\n}\n\nfragment ProfitStatContainer_data on ProfitValueConnection {\n  edges {\n    node {\n      date\n      value: profit\n      id\n    }\n  }\n}\n\nfragment SalesStatContainer_data on SalesValueConnection {\n  edges {\n    node {\n      date\n      value: sales\n      id\n    }\n  }\n}\n\nfragment ClientsStatContainer_data on ClientsValueConnection {\n  edges {\n    node {\n      date\n      value: clients\n      id\n    }\n  }\n}\n\nfragment AvgTimeStatContainer_data on AvgTimeValueConnection {\n  edges {\n    node {\n      date\n      value: avgTime\n      id\n    }\n  }\n}\n\nfragment MarketShareContainer_viewer_1vRKRZ on Viewer {\n  marketSharesByCountry(country: $country) {\n    id\n    country {\n      name\n      id\n    }\n    shares {\n      vendor\n      name\n      values\n      id\n    }\n  }\n}\n\nfragment DemoListContainer_viewer_4Eqn1 on Viewer {\n  employees(dept: $dept, sortBy: $sortBy, sortDir: $sortDir, first: $first, after: $after, last: $last, before: $before) {\n    edges {\n      cursor\n      node {\n        id\n        ...DemoItemContainer_node\n      }\n    }\n    pageInfo {\n      startCursor\n      endCursor\n    }\n    totalCount\n  }\n}\n\nfragment DemoItemContainer_node on Employee {\n  id\n  uid\n  checked\n  name\n  title\n  country {\n    id\n    name\n  }\n  salary\n}\n",
       "metadata": {}
     }
   };
@@ -7460,7 +10577,7 @@ var node
 
 node
 /*: any*/
-.hash = 'fffcff7da4c5d6f6ca5fc0ba80797ae9';
+.hash = '8e4ea0a4fb49bc6ab5c4e91d9ee6835b';
 module.exports = node;
 
 /***/ }),

@@ -337,7 +337,7 @@
       "publicPath": "/_next/static/chunks/commons.4e10d812dfa90288de31.js"
     }
   ],
-  "./pink": [
+  "../colors/pink": [
     {
       "id": "8rdq",
       "name": "./node_modules/@material-ui/core/colors/pink.js",
@@ -1169,7 +1169,7 @@
       "publicPath": "/_next/static/chunks/commons.4e10d812dfa90288de31.js"
     }
   ],
-  "../styles/createBreakpoints": [
+  "./createBreakpoints": [
     {
       "id": "Th4q",
       "name": "./node_modules/@material-ui/core/styles/createBreakpoints.js",
@@ -1663,7 +1663,7 @@
       "publicPath": "/_next/static/chunks/commons.4e10d812dfa90288de31.js"
     }
   ],
-  "@material-ui/core/colors/red": [
+  "../colors/red": [
     {
       "id": "fWIC",
       "name": "./node_modules/@material-ui/core/colors/red.js",
@@ -2119,7 +2119,7 @@
       "publicPath": "/_next/static/chunks/commons.4e10d812dfa90288de31.js"
     }
   ],
-  "./common": [
+  "../colors/common": [
     {
       "id": "sAgZ",
       "name": "./node_modules/@material-ui/core/colors/common.js",
@@ -2127,7 +2127,7 @@
       "publicPath": "/_next/static/chunks/commons.4e10d812dfa90288de31.js"
     }
   ],
-  "./grey": [
+  "../colors/grey": [
     {
       "id": "sFvP",
       "name": "./node_modules/@material-ui/core/colors/grey.js",
@@ -2311,7 +2311,7 @@
       "publicPath": "/_next/static/chunks/commons.4e10d812dfa90288de31.js"
     }
   ],
-  "./indigo": [
+  "../colors/indigo": [
     {
       "id": "xJ30",
       "name": "./node_modules/@material-ui/core/colors/indigo.js",
@@ -2327,7 +2327,7 @@
       "publicPath": "/_next/static/chunks/commons.4e10d812dfa90288de31.js"
     }
   ],
-  "../styles/transitions": [
+  "./transitions": [
     {
       "id": "yAQS",
       "name": "./node_modules/@material-ui/core/styles/transitions.js",
