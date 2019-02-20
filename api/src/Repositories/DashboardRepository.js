@@ -130,6 +130,15 @@ class DashboardRepository extends EventEmitter {
       "Fujitsu"
     ];
 
+    const getValues = value => {
+      let sub1 = this.fake.getFloat(value / 5, value / 3);
+      let sub2 = this.fake.getFloat(value / 5, value / 3);
+      let sub3 = this.fake.getFloat(value / 5, value / 3);
+      let sub4 = value - sub1 - sub2 - sub3;
+      if (sub4 < 0) sub4 = 0;
+      return [sub1, sub2, sub3, sub4];
+    };
+
     const getRandomData = country => {
       country = _.toUpper(country);
 
@@ -141,27 +150,18 @@ class DashboardRepository extends EventEmitter {
       for (let i = 0; i < max; i++) {
         let vendor = variants.shift();
 
-        let value = this.fake.getInt(10, 100 / max);
+        let value = this.fake.getInt(50 / max, 100 / max);
         sum += value;
-
-        let sub1 = this.fake.getInt(1, value / 4);
-        let sub2 = this.fake.getInt(1, value / 4);
-        let sub3 = this.fake.getInt(1, value / 4);
 
         shares.push(
           new this.dashboard.MarketShareValueModel({
             id: `${country}:${_.toUpper(vendor)}`,
             vendor: _.toUpper(vendor),
             name: vendor,
-            values: [sub1, sub2, sub3, value - sub1 - sub2 - sub3]
+            values: getValues(value)
           })
         );
       }
-
-      let value = 100 - sum;
-      let sub1 = this.fake.getInt(1, value / 4);
-      let sub2 = this.fake.getInt(1, value / 4);
-      let sub3 = this.fake.getInt(1, value / 4);
 
       let vendor = variants.shift();
       shares.push(
@@ -169,7 +169,7 @@ class DashboardRepository extends EventEmitter {
           id: `${country}:${_.toUpper(vendor)}`,
           vendor: _.toUpper(vendor),
           name: vendor,
-          values: [sub1, sub2, sub3, value - sub1 - sub2 - sub3]
+          values: getValues(100 - sum)
         })
       );
 

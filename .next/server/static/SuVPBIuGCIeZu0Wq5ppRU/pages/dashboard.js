@@ -4392,6 +4392,8 @@ var _assertThisInitialized2 = _interopRequireDefault(__webpack_require__("K47E")
 
 var _react = _interopRequireDefault(__webpack_require__("cDcd"));
 
+var _propTypes = _interopRequireDefault(__webpack_require__("rf6O"));
+
 var _reactIntl = __webpack_require__("k004");
 
 var _AppBar = _interopRequireDefault(__webpack_require__("4151"));
@@ -4989,7 +4991,7 @@ var styles = function styles(theme) {
     root: {
       boxShadow: "inset 0 0 6px rgba(0, 0, 0, 0.85)",
       borderRadius: theme.shape.borderRadius,
-      background: "linear-gradient(to bottom, #484e5e 0, #363940 100%)",
+      background: "linear-gradient(to bottom, ".concat(theme.palette.background.paper, " 0, ").concat((0, _colorManipulator.darken)(theme.palette.background.paper, 0.3), " 100%)"),
       color: _amber.default[500],
       display: "flex",
       flexDirection: "column",
@@ -5101,7 +5103,7 @@ function (_React$Component) {
         y2: "0%"
       }, _react.default.createElement("stop", {
         offset: "0%",
-        stopColor: (0, _colorManipulator.fade)(_blue.default[500], 0.2)
+        stopColor: (0, _colorManipulator.fade)(_blue.default[500], 0.25)
       }), _react.default.createElement("stop", {
         offset: "100%",
         stopColor: _blue.default[400]
@@ -5158,11 +5160,11 @@ function (_React$Component) {
           }) + ": " + d.value + "\n" + _this.props.intl.formatDate(d.date);
         },
         labelComponent: _react.default.createElement(_victory.VictoryTooltip, null),
-        size: 1,
+        symbol: "diamond",
+        size: 3,
         style: {
           data: {
-            stroke: _blue.default[300],
-            strokeWidth: 2
+            fill: "#ffffff"
           }
         }
       })));

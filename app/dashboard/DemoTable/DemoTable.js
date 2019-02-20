@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { intlShape } from "react-intl";
 import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";

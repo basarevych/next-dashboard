@@ -48,6 +48,13 @@ class Fake extends EventEmitter {
     });
   }
 
+  getFloat(min, max) {
+    return this.chance.floating({
+      min: Math.min(min, max),
+      max: Math.max(min, max)
+    });
+  }
+
   getName() {
     return this.chance.name();
   }

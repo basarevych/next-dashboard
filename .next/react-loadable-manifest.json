@@ -739,6 +739,12 @@
       "name": "./node_modules/@babel/runtime-corejs2/helpers/assertThisInitialized.js",
       "file": "static/chunks/commons.4e10d812dfa90288de31.js",
       "publicPath": "/_next/static/chunks/commons.4e10d812dfa90288de31.js"
+    },
+    {
+      "id": "PJYZ",
+      "name": "./node_modules/@babel/runtime/helpers/assertThisInitialized.js",
+      "file": "static/chunks/commons.4e10d812dfa90288de31.js",
+      "publicPath": "/_next/static/chunks/commons.4e10d812dfa90288de31.js"
     }
   ],
   "@babel/runtime-corejs2/helpers/interopRequireDefault": [
@@ -967,14 +973,6 @@
     {
       "id": "PBE1",
       "name": "./node_modules/core-js/library/modules/es7.promise.finally.js",
-      "file": "static/chunks/commons.4e10d812dfa90288de31.js",
-      "publicPath": "/_next/static/chunks/commons.4e10d812dfa90288de31.js"
-    }
-  ],
-  "@babel/runtime/helpers/assertThisInitialized": [
-    {
-      "id": "PJYZ",
-      "name": "./node_modules/@babel/runtime/helpers/assertThisInitialized.js",
       "file": "static/chunks/commons.4e10d812dfa90288de31.js",
       "publicPath": "/_next/static/chunks/commons.4e10d812dfa90288de31.js"
     }

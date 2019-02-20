@@ -12,7 +12,7 @@ import {
   VictoryTooltip
 } from "victory";
 import Typography from "@material-ui/core/Typography";
-import { fade } from "@material-ui/core/styles/colorManipulator";
+import { fade, darken } from "@material-ui/core/styles/colorManipulator";
 import blue from "@material-ui/core/colors/blue";
 import amber from "@material-ui/core/colors/amber";
 import green from "@material-ui/core/colors/green";
@@ -22,7 +22,9 @@ export const styles = theme => ({
   root: {
     boxShadow: "inset 0 0 6px rgba(0, 0, 0, 0.85)",
     borderRadius: theme.shape.borderRadius,
-    background: "linear-gradient(to bottom, #484e5e 0, #363940 100%)",
+    background: `linear-gradient(to bottom, ${
+      theme.palette.background.paper
+    } 0, ${darken(theme.palette.background.paper, 0.3)} 100%)`,
     color: amber[500],
     display: "flex",
     flexDirection: "column",
@@ -127,7 +129,7 @@ class Stat extends React.Component {
         <svg width={0} height={0}>
           <defs>
             <linearGradient id="statGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor={fade(blue[500], 0.2)} />
+              <stop offset="0%" stopColor={fade(blue[500], 0.25)} />
               <stop offset="100%" stopColor={blue[400]} />
             </linearGradient>
           </defs>
@@ -177,11 +179,11 @@ class Stat extends React.Component {
               this.props.intl.formatDate(d.date)
             }
             labelComponent={<VictoryTooltip />}
-            size={1}
+            symbol="diamond"
+            size={3}
             style={{
               data: {
-                stroke: blue[300],
-                strokeWidth: 2
+                fill: "#ffffff"
               }
             }}
           />
