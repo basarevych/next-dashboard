@@ -89,7 +89,7 @@ class UsersRepository extends EventEmitter {
     let requester = await context.getUser();
     if (!this.isAllowed(requester)) throw this.di.get("error.access");
 
-    return fetchConnectionFromArray({
+    const connection = await fetchConnectionFromArray({
       dataPromiseFunc: this.user.model.find.bind(this.user.model),
       after,
       first,
@@ -98,6 +98,8 @@ class UsersRepository extends EventEmitter {
       orderFieldName: sortBy || "_id",
       sortType: sortDir === "desc" ? -1 : 1
     });
+    connection.totalCount = await this.countUsers(context);
+    return connection;
   }
 
   async createUser(context, { email, name, password, roles }) {

@@ -108,7 +108,7 @@ class EmployeesRepository extends EventEmitter {
 
     if (sortBy === "country") sortBy = "country.name";
 
-    return fetchConnectionFromArray({
+    const connection = await fetchConnectionFromArray({
       dataPromiseFunc: this.employee.model.find.bind(this.employee.model),
       filter,
       after,
@@ -118,6 +118,8 @@ class EmployeesRepository extends EventEmitter {
       orderFieldName: sortBy || "_id",
       sortType: sortDir === "desc" ? -1 : 1
     });
+    connection.totalCount = await this.countEmployees(context, { dept });
+    return connection;
   }
 
   async createEmployee(

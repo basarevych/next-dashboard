@@ -24,7 +24,7 @@ export const styles = theme => ({
     borderRadius: theme.shape.borderRadius,
     background: `linear-gradient(to bottom, ${
       theme.palette.background.paper
-    } 0, ${darken(theme.palette.background.paper, 0.3)} 100%)`,
+    } 0, ${darken(theme.palette.background.paper, 0.5)} 100%)`,
     color: amber[500],
     display: "flex",
     flexDirection: "column",
@@ -143,7 +143,7 @@ class Stat extends React.Component {
         >
           <VictoryAxis
             dependentAxis
-            domain={{ y: [0, max] }}
+            domain={{ y: [0, 1.1 * max] }}
             orientation="left"
             style={{
               axis: { display: "none" },
@@ -151,7 +151,7 @@ class Stat extends React.Component {
               tickLabels: { display: "none" },
               grid: {
                 stroke: fade(amber[300], 0.3),
-                strokeWidth: 1
+                strokeWidth: 0.75
               }
             }}
           />

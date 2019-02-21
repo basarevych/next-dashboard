@@ -137,7 +137,6 @@ class DashboardRepository extends EventEmitter {
       let variants = _.shuffle(vendors);
       let maxVendors = this.fake.getInt(5, vendors.length - 1);
 
-      let sum = 0;
       for (let i = 0; i < maxVendors; i++) {
         let name = variants.shift();
         let vendor = _.toUpper(name);

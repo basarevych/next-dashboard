@@ -97,9 +97,7 @@ class Users extends EventEmitter {
       nodeType: this.User,
       connectionFields: () => ({
         totalCount: {
-          type: GraphQLInt,
-          resolve: async (source, args, context) =>
-            this.usersRepo.countUsers(context, args)
+          type: GraphQLInt
         }
       })
     });

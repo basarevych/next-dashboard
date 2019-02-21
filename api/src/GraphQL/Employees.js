@@ -107,18 +107,7 @@ class Employees extends EventEmitter {
       nodeType: this.Employee,
       connectionFields: () => ({
         totalCount: {
-          type: GraphQLInt,
-          args: {
-            dept: { type: this.EmployeeDept }
-          },
-          resolve: async (source, args, context) =>
-            this.employeesRepo.countEmployees(
-              context,
-              _.assign({}, args, {
-                dept:
-                  _.isNumber(args.dept) && this.employeeModel.depts[args.dept]
-              })
-            )
+          type: GraphQLInt
         }
       })
     });

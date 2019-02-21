@@ -4991,7 +4991,7 @@ var styles = function styles(theme) {
     root: {
       boxShadow: "inset 0 0 6px rgba(0, 0, 0, 0.85)",
       borderRadius: theme.shape.borderRadius,
-      background: "linear-gradient(to bottom, ".concat(theme.palette.background.paper, " 0, ").concat((0, _colorManipulator.darken)(theme.palette.background.paper, 0.3), " 100%)"),
+      background: "linear-gradient(to bottom, ".concat(theme.palette.background.paper, " 0, ").concat((0, _colorManipulator.darken)(theme.palette.background.paper, 0.5), " 100%)"),
       color: _amber.default[500],
       display: "flex",
       flexDirection: "column",
@@ -5121,7 +5121,7 @@ function (_React$Component) {
       }, _react.default.createElement(_victory.VictoryAxis, {
         dependentAxis: true,
         domain: {
-          y: [0, max]
+          y: [0, 1.1 * max]
         },
         orientation: "left",
         style: {
@@ -5136,7 +5136,7 @@ function (_React$Component) {
           },
           grid: {
             stroke: (0, _colorManipulator.fade)(_amber.default[300], 0.3),
-            strokeWidth: 1
+            strokeWidth: 0.75
           }
         }
       }), _react.default.createElement(_victory.VictoryLine, {
