@@ -4386,9 +4386,9 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZD
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
 
-var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
-
 var _assertThisInitialized2 = _interopRequireDefault(__webpack_require__("K47E"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
 
 var _react = _interopRequireDefault(__webpack_require__("cDcd"));
 
@@ -4424,7 +4424,7 @@ function (_React$Component) {
     _this.state = {
       index: _.indexOf(_this.depts, defaultDept)
     };
-    _this.handleChange = _this.handleChange.bind((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)));
+    _this.handleChange = _this.handleChange.bind((0, _assertThisInitialized2.default)(_this));
     return _this;
   }
 
@@ -7547,9 +7547,9 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZD
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
 
-var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
-
 var _assertThisInitialized2 = _interopRequireDefault(__webpack_require__("K47E"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
 
 var _defineProperty2 = _interopRequireDefault(__webpack_require__("xHqa"));
 
@@ -7668,9 +7668,9 @@ function (_React$Component) {
       },
       isConfirmOpen: false
     };
-    _this.handleRefreshAction = _this.handleRefreshAction.bind((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)));
-    _this.handleChangePage = _this.handleChangePage.bind((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)));
-    _this.handleChangeRowsPerPage = _this.handleChangeRowsPerPage.bind((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)));
+    _this.handleRefreshAction = _this.handleRefreshAction.bind((0, _assertThisInitialized2.default)(_this));
+    _this.handleChangePage = _this.handleChangePage.bind((0, _assertThisInitialized2.default)(_this));
+    _this.handleChangeRowsPerPage = _this.handleChangeRowsPerPage.bind((0, _assertThisInitialized2.default)(_this));
     return _this;
   }
 
@@ -8086,9 +8086,9 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZD
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
 
-var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
-
 var _assertThisInitialized2 = _interopRequireDefault(__webpack_require__("K47E"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
 
 var _react = _interopRequireDefault(__webpack_require__("cDcd"));
 
@@ -8155,8 +8155,8 @@ function (_React$Component) {
     };
     _this.isTransitioning = false;
     _this.isDestroyed = false;
-    _this.handleCountrySelected = _this.handleCountrySelected.bind((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)));
-    _this.handleLoaded = _this.handleLoaded.bind((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)));
+    _this.handleCountrySelected = _this.handleCountrySelected.bind((0, _assertThisInitialized2.default)(_this));
+    _this.handleLoaded = _this.handleLoaded.bind((0, _assertThisInitialized2.default)(_this));
     return _this;
   }
 

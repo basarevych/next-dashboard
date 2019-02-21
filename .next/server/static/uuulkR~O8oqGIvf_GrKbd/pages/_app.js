@@ -2750,9 +2750,9 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZD
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
 
-var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
-
 var _assertThisInitialized2 = _interopRequireDefault(__webpack_require__("K47E"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
 
 var _defineProperty2 = _interopRequireDefault(__webpack_require__("xHqa"));
 
@@ -2877,8 +2877,8 @@ function (_React$Component) {
     _this.state = {
       isSidebarOpen: false
     };
-    _this.handleSidebarToggle = _this.handleSidebarToggle.bind((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)));
-    _this.handleSidebarClose = _this.handleSidebarClose.bind((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)));
+    _this.handleSidebarToggle = _this.handleSidebarToggle.bind((0, _assertThisInitialized2.default)(_this));
+    _this.handleSidebarClose = _this.handleSidebarClose.bind((0, _assertThisInitialized2.default)(_this));
     return _this;
   }
 
@@ -5454,9 +5454,9 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZD
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
 
-var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
-
 var _assertThisInitialized2 = _interopRequireDefault(__webpack_require__("K47E"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
 
 var _react = _interopRequireDefault(__webpack_require__("cDcd"));
 
@@ -5489,9 +5489,9 @@ function (_React$PureComponent) {
     _this.input = _react.default.createRef();
     _this.cachedValue = props.input.value;
     _this.cachedPosition = 0;
-    _this.handleChange = _this.handleChange.bind((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)));
-    _this.handleFocus = _this.handleFocus.bind((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)));
-    _this.handleBlur = _this.handleBlur.bind((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)));
+    _this.handleChange = _this.handleChange.bind((0, _assertThisInitialized2.default)(_this));
+    _this.handleFocus = _this.handleFocus.bind((0, _assertThisInitialized2.default)(_this));
+    _this.handleBlur = _this.handleBlur.bind((0, _assertThisInitialized2.default)(_this));
     return _this;
   }
 
@@ -7914,9 +7914,9 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZD
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
 
-var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
-
 var _assertThisInitialized2 = _interopRequireDefault(__webpack_require__("K47E"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
 
 var _defineProperty2 = _interopRequireDefault(__webpack_require__("xHqa"));
 
@@ -8096,17 +8096,17 @@ function (_React$Component) {
     };
     _this.isDestroyed = false;
     _this.bar = _react.default.createRef();
-    _this.onResize = _this.onResize.bind((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)));
-    _this.handleWrapperMouseEnter = _this.handleWrapperMouseEnter.bind((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)));
-    _this.handleWrapperMouseLeave = _this.handleWrapperMouseLeave.bind((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)));
-    _this.handleWrapperClick = _this.handleWrapperClick.bind((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)));
-    _this.handleBarMouseEnter = _this.handleBarMouseEnter.bind((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)));
-    _this.handleBarMouseLeave = _this.handleBarMouseLeave.bind((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)));
-    _this.handleInboxOpen = _this.handleInboxOpen.bind((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)));
-    _this.handleLocalesOpen = _this.handleLocalesOpen.bind((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)));
-    _this.handleThemesOpen = _this.handleThemesOpen.bind((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)));
-    _this.handleMenuClose = _this.handleMenuClose.bind((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)));
-    _this.handleSignOut = _this.handleSignOut.bind((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)));
+    _this.onResize = _this.onResize.bind((0, _assertThisInitialized2.default)(_this));
+    _this.handleWrapperMouseEnter = _this.handleWrapperMouseEnter.bind((0, _assertThisInitialized2.default)(_this));
+    _this.handleWrapperMouseLeave = _this.handleWrapperMouseLeave.bind((0, _assertThisInitialized2.default)(_this));
+    _this.handleWrapperClick = _this.handleWrapperClick.bind((0, _assertThisInitialized2.default)(_this));
+    _this.handleBarMouseEnter = _this.handleBarMouseEnter.bind((0, _assertThisInitialized2.default)(_this));
+    _this.handleBarMouseLeave = _this.handleBarMouseLeave.bind((0, _assertThisInitialized2.default)(_this));
+    _this.handleInboxOpen = _this.handleInboxOpen.bind((0, _assertThisInitialized2.default)(_this));
+    _this.handleLocalesOpen = _this.handleLocalesOpen.bind((0, _assertThisInitialized2.default)(_this));
+    _this.handleThemesOpen = _this.handleThemesOpen.bind((0, _assertThisInitialized2.default)(_this));
+    _this.handleMenuClose = _this.handleMenuClose.bind((0, _assertThisInitialized2.default)(_this));
+    _this.handleSignOut = _this.handleSignOut.bind((0, _assertThisInitialized2.default)(_this));
     return _this;
   }
 
@@ -8756,11 +8756,11 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZD
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
 
+var _assertThisInitialized2 = _interopRequireDefault(__webpack_require__("K47E"));
+
 var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
 
 var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
-
-var _assertThisInitialized2 = _interopRequireDefault(__webpack_require__("K47E"));
 
 var _defineProperty2 = _interopRequireDefault(__webpack_require__("xHqa"));
 
@@ -8949,8 +8949,8 @@ function (_Form) {
     (0, _classCallCheck2.default)(this, AppAuthModal);
     _this = (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(AppAuthModal).call(this, props));
     _this.state = {};
-    _this.handleAnonymous = _this.handleAnonymous.bind((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)));
-    _this.handleProvider = _this.handleProvider.bind((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)));
+    _this.handleAnonymous = _this.handleAnonymous.bind((0, _assertThisInitialized2.default)(_this));
+    _this.handleProvider = _this.handleProvider.bind((0, _assertThisInitialized2.default)(_this));
     return _this;
   }
 
@@ -9148,9 +9148,9 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZD
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
 
-var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
-
 var _assertThisInitialized2 = _interopRequireDefault(__webpack_require__("K47E"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
 
 var _react = _interopRequireDefault(__webpack_require__("cDcd"));
 
@@ -9189,9 +9189,9 @@ function (_React$PureComponent) {
 
     (0, _classCallCheck2.default)(this, MyCheckbox);
     _this = (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(MyCheckbox).call(this, props));
-    _this.handleChange = _this.handleChange.bind((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)));
-    _this.handleFocus = _this.handleFocus.bind((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)));
-    _this.handleBlur = _this.handleBlur.bind((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)));
+    _this.handleChange = _this.handleChange.bind((0, _assertThisInitialized2.default)(_this));
+    _this.handleFocus = _this.handleFocus.bind((0, _assertThisInitialized2.default)(_this));
+    _this.handleBlur = _this.handleBlur.bind((0, _assertThisInitialized2.default)(_this));
     return _this;
   }
 
@@ -10827,9 +10827,9 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZD
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
 
-var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
-
 var _assertThisInitialized2 = _interopRequireDefault(__webpack_require__("K47E"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
 
 var _react = _interopRequireDefault(__webpack_require__("cDcd"));
 
@@ -10868,9 +10868,9 @@ function (_React$PureComponent) {
 
     (0, _classCallCheck2.default)(this, MyRadio);
     _this = (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(MyRadio).call(this, props));
-    _this.handleChange = _this.handleChange.bind((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)));
-    _this.handleFocus = _this.handleFocus.bind((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)));
-    _this.handleBlur = _this.handleBlur.bind((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)));
+    _this.handleChange = _this.handleChange.bind((0, _assertThisInitialized2.default)(_this));
+    _this.handleFocus = _this.handleFocus.bind((0, _assertThisInitialized2.default)(_this));
+    _this.handleBlur = _this.handleBlur.bind((0, _assertThisInitialized2.default)(_this));
     return _this;
   }
 
@@ -11668,7 +11668,7 @@ exports.default = _default;
 /***/ "kiQV":
 /***/ (function(module) {
 
-module.exports = {"name":"next-dashboard","version":"0.1.1","private":true,"dependencies":{"@babel/polyfill":"~7.2.5","@date-io/moment":"~1.1.0","@material-ui/core":"~3.9.2","@material-ui/icons":"~3.0.2","@zeit/next-bundle-analyzer":"~0.1.2","@zeit/next-css":"~1.0.1","base64util":"~2.0.0-f","bcrypt":"~3.0.4","body-parser":"~1.18.3","chance":"~1.0.18","classnames":"~2.2.6","compression":"~1.7.3","connect-mongo":"~2.0.3","cookie-parser":"~1.4.4","cors":"~2.8.5","country-iso-3-to-2":"^1.0.1","country-telephone-data":"~0.6.0","csurf":"~1.9.0","debug":"~4.1.1","dotenv":"~6.2.0","express":"~4.16.4","express-graphql":"~0.7.1","express-session":"~1.15.6","fast-relay-pagination":"~2.0.2","fs-extra":"~7.0.1","graphql":"~14.1.1","graphql-relay":"~0.6.0","graphql-subscriptions":"~1.0.0","http-status-codes":"~1.3.0","immutable":"~4.0.0-rc.12","injectt":"~0.1.6","intl":"~1.2.5","intl-locales-supported":"~1.0.0","intl-messageformat":"~2.2.0","isomorphic-unfetch":"~3.0.0","json-immutable":"~0.4.0","jsonwebtoken":"~8.4.0","jss":"~9.8.7","jss-extend":"~6.2.0","lodash":"~4.17.11","lru-cache":"~5.1.1","material-ui-pickers":"~2.2.1","moment":"~2.24.0","moment-timezone":"~0.5.23","mongoose":"~5.4.12","morgan":"~1.9.1","next":"~8.0.1","next-compose-plugins":"~2.1.1","nodemailer":"~5.1.1","null-loader":"~0.1.1","pako":"~1.0.8","passport":"~0.4.0","passport-facebook":"~3.0.0","passport-google-oauth":"~1.0.0","passport-twitter":"~1.0.4","raf":"~3.4.1","react":"~16.8.1","react-dom":"~16.8.1","react-flags":"~0.1.17","react-intl":"~2.8.0","react-jss":"~8.6.1","react-redux":"~6.0.0","react-relay":"~2.0.0","react-simple-maps":"~0.12.1","react-swipeable-views":"~0.13.1","react-toastify":"~4.5.2","react-virtualized":"~9.21.0","redux":"~4.0.1","redux-devtools-extension":"~2.13.8","redux-form":"~8.1.0","redux-immutable":"~4.0.0","redux-thunk":"~2.3.0","relay-compiler":"~2.0.0","relay-compiler-webpack-plugin":"~2.0.1","relay-query-lookup-renderer":"~4.0.0","relay-runtime":"~2.0.0","reselect":"~4.0.0","serviceworker-webpack-plugin":"~1.0.1","sharp":"~0.21.3","socket.io":"~2.2.0","subscriptions-transport-ws":"~0.9.15","svg-inline-loader":"~0.8.0","terser-webpack-plugin":"~1.2.2","utf8":"~3.0.0","validator":"~10.11.0","victory":"~31.2.0","webpack":"~4.29.3"},"devDependencies":{"@babel/core":"~7.2.2","babel-core":"7.0.0-bridge.0","babel-eslint":"~10.0.1","babel-jest":"~24.1.0","babel-plugin-lodash":"~3.3.4","babel-plugin-relay":"~2.0.0","css-mqpacker":"~7.0.0","enzyme":"~3.8.0","enzyme-adapter-react-16":"~1.9.1","eslint":"~5.13.0","eslint-plugin-lodash":"~5.1.0","eslint-plugin-react":"~7.12.4","graphql-compiler":"^2.0.0-rc.1","jest":"~24.1.0","jsdom":"~13.2.0","jsdom-global":"~3.0.2","postcss-clean":"~1.1.0","postcss-loader":"~3.0.0","postcss-preset-env":"~6.5.0","postcss-url":"~8.0.0","prop-types":"~15.7.2","supertest":"~3.4.2","webfontloader":"~1.6.28"},"resolutions":{"graphql":"~14.1.1","**/graphql":"~14.1.1"},"scripts":{"lint":"eslint . --max-warnings=0","test":"jest . --no-cache --forceExit","schema":"node ./bin/update-schema","relay":"node ./bin/update-schema && relay-compiler --src ./app --schema ./api/schema.graphql --verbose","build":"node ./bin/prepare-build && env NODE_ENV=production TMPDIR=$PWD/.tmp next build","export":"env NODE_ENV=production TMPDIR=$PWD/.tmp next export","dev":"node ./bin/prepare-build && env NODE_ENV=development node ./bin/www","start":"env NODE_ENV=production node ./bin/www"}};
+module.exports = {"name":"next-dashboard","version":"0.1.1","private":true,"dependencies":{"@babel/polyfill":"~7.2.5","@date-io/moment":"~1.1.0","@material-ui/core":"~3.9.2","@material-ui/icons":"~3.0.2","@zeit/next-bundle-analyzer":"~0.1.2","@zeit/next-css":"~1.0.1","base64util":"~2.0.0-f","bcrypt":"~3.0.4","body-parser":"~1.18.3","chance":"~1.0.18","classnames":"~2.2.6","compression":"~1.7.3","connect-mongo":"~2.0.3","cookie-parser":"~1.4.4","cors":"~2.8.5","country-iso-3-to-2":"^1.0.1","country-telephone-data":"~0.6.0","csurf":"~1.9.0","debug":"~4.1.1","dotenv":"~6.2.0","express":"~4.16.4","express-graphql":"~0.7.1","express-session":"~1.15.6","fast-relay-pagination":"~2.0.2","fs-extra":"~7.0.1","graphql":"~14.1.1","graphql-relay":"~0.6.0","graphql-subscriptions":"~1.0.0","http-status-codes":"~1.3.0","immutable":"~4.0.0-rc.12","injectt":"~0.1.6","intl":"~1.2.5","intl-locales-supported":"~1.0.0","intl-messageformat":"~2.2.0","isomorphic-unfetch":"~3.0.0","json-immutable":"~0.4.0","jsonwebtoken":"~8.5.0","jss":"~9.8.7","jss-extend":"~6.2.0","lodash":"~4.17.11","lru-cache":"~5.1.1","material-ui-pickers":"~2.2.1","moment":"~2.24.0","moment-timezone":"~0.5.23","mongoose":"~5.4.14","morgan":"~1.9.1","next":"~8.0.1","next-compose-plugins":"~2.1.1","nodemailer":"~5.1.1","null-loader":"~0.1.1","pako":"~1.0.8","passport":"~0.4.0","passport-facebook":"~3.0.0","passport-google-oauth":"~1.0.0","passport-twitter":"~1.0.4","raf":"~3.4.1","react":"~16.8.2","react-dom":"~16.8.2","react-flags":"~0.1.17","react-intl":"~2.8.0","react-jss":"~8.6.1","react-redux":"~6.0.1","react-relay":"~2.0.0","react-simple-maps":"~0.12.1","react-swipeable-views":"~0.13.1","react-toastify":"~4.5.2","react-virtualized":"~9.21.0","redux":"~4.0.1","redux-devtools-extension":"~2.13.8","redux-form":"~8.1.0","redux-immutable":"~4.0.0","redux-thunk":"~2.3.0","relay-compiler":"~2.0.0","relay-compiler-webpack-plugin":"~2.0.1","relay-query-lookup-renderer":"~4.0.0","relay-runtime":"~2.0.0","reselect":"~4.0.0","serviceworker-webpack-plugin":"~1.0.1","sharp":"~0.21.3","socket.io":"~2.2.0","subscriptions-transport-ws":"~0.9.15","svg-inline-loader":"~0.8.0","terser-webpack-plugin":"~1.2.2","utf8":"~3.0.0","validator":"~10.11.0","victory":"~31.2.0","webpack":"~4.29.5"},"devDependencies":{"@babel/core":"~7.3.3","babel-core":"7.0.0-bridge.0","babel-eslint":"~10.0.1","babel-jest":"~24.1.0","babel-plugin-lodash":"~3.3.4","babel-plugin-relay":"~2.0.0","css-mqpacker":"~7.0.0","enzyme":"~3.9.0","enzyme-adapter-react-16":"~1.9.1","eslint":"~5.14.1","eslint-plugin-lodash":"~5.1.0","eslint-plugin-react":"~7.12.4","graphql-compiler":"^2.0.0-rc.1","jest":"~24.1.0","jsdom":"~13.2.0","jsdom-global":"~3.0.2","postcss-clean":"~1.1.0","postcss-loader":"~3.0.0","postcss-preset-env":"~6.5.0","postcss-url":"~8.0.0","prop-types":"~15.7.2","supertest":"~3.4.2","webfontloader":"~1.6.28"},"resolutions":{"graphql":"~14.1.1","**/graphql":"~14.1.1"},"scripts":{"lint":"eslint . --max-warnings=0","test":"jest . --no-cache --forceExit","schema":"node ./bin/update-schema","relay":"node ./bin/update-schema && relay-compiler --src ./app --schema ./api/schema.graphql --verbose","build":"node ./bin/prepare-build && env NODE_ENV=production TMPDIR=$PWD/.tmp next build","export":"env NODE_ENV=production TMPDIR=$PWD/.tmp next export","dev":"node ./bin/prepare-build && env NODE_ENV=development node ./bin/www","start":"env NODE_ENV=production node ./bin/www"}};
 
 /***/ }),
 
@@ -12279,11 +12279,11 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZD
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
 
+var _assertThisInitialized2 = _interopRequireDefault(__webpack_require__("K47E"));
+
 var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
 
 var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
-
-var _assertThisInitialized2 = _interopRequireDefault(__webpack_require__("K47E"));
 
 var _defineProperty2 = _interopRequireDefault(__webpack_require__("xHqa"));
 
@@ -12542,7 +12542,7 @@ function (_React$Component) {
 
     (0, _classCallCheck2.default)(this, FormComponent);
     _this = (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(FormComponent).call(this, props));
-    _this.submit = _this.submit.bind((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)));
+    _this.submit = _this.submit.bind((0, _assertThisInitialized2.default)(_this));
     return _this;
   }
 
@@ -13137,9 +13137,9 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZD
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
 
-var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
-
 var _assertThisInitialized2 = _interopRequireDefault(__webpack_require__("K47E"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
 
 var _react = _interopRequireDefault(__webpack_require__("cDcd"));
 
@@ -13183,9 +13183,9 @@ function (_React$PureComponent) {
 
     (0, _classCallCheck2.default)(this, MySelect);
     _this = (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(MySelect).call(this, props));
-    _this.handleChange = _this.handleChange.bind((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)));
-    _this.handleFocus = _this.handleFocus.bind((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)));
-    _this.handleBlur = _this.handleBlur.bind((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)));
+    _this.handleChange = _this.handleChange.bind((0, _assertThisInitialized2.default)(_this));
+    _this.handleFocus = _this.handleFocus.bind((0, _assertThisInitialized2.default)(_this));
+    _this.handleBlur = _this.handleBlur.bind((0, _assertThisInitialized2.default)(_this));
     return _this;
   }
 
