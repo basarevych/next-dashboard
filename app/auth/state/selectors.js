@@ -15,6 +15,8 @@ export const getName = state => state.getIn(["auth", "name"]);
 
 export const getEmail = state => state.getIn(["auth", "email"]);
 
+export const getGoogleMapsKey = state => state.getIn(["auth", "googleMapsKey"]);
+
 export const getRoles = createSelector(
   state => state.getIn(["auth", "roles"]),
   roles => roles.toJS()

@@ -9,7 +9,8 @@ import Switch from "@material-ui/core/Switch";
 
 export const styles = () => ({
   checkboxField: {
-    width: 1
+    width: 1,
+    whiteSpace: "pre"
   },
   checkbox: {
     padding: 0
@@ -39,12 +40,6 @@ class EmployeeItem extends React.Component {
             onChange={() => this.props.onToggle(this.props.node.id)}
             value="on"
           />
-        </TableCell>
-        <TableCell
-          padding="checkbox"
-          className={classNames(this.props.isSelected && "selected")}
-          classes={{ root: this.props.classes.checkboxField }}
-        >
           <Switch
             checked={this.props.node.checked}
             onChange={(evt, checked) =>

@@ -4,7 +4,7 @@ import DashboardPageComponent from "./DashboardPage";
 
 const mapStateToProps = state => {
   return {
-    isAuthenticated: authSelectors.isAuthenticated(state)
+    userRoles: authSelectors.getRoles(state)
   };
 };
 

@@ -1,32 +1,38 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Grid from "@material-ui/core/Grid";
+import { AutoSizer } from "react-virtualized";
+import isRouteAllowed from "../../common/isRouteAllowed";
+import Map from "./MapContainer";
 
-export const styles = theme => ({
+export const styles = () => ({
   layout: {
     width: "100%",
     flex: 1,
-    padding: theme.main.spacing
+    marginTop: "-2rem"
   }
 });
 
 class MapsPage extends React.Component {
   static propTypes = {
-    theme: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired,
-    isAuthenticated: PropTypes.bool.isRequired
+    userRoles: PropTypes.array.isRequired
   };
 
   render() {
-    if (!this.props.isAuthenticated) return null;
+    if (!isRouteAllowed("/maps", this.props.userRoles)) return null;
 
     return (
       <div className={this.props.classes.layout}>
-        <Grid container spacing={this.props.theme.main.spacing}>
-          <Grid item xs={12}>
-            <div />
-          </Grid>
-        </Grid>
+        <AutoSizer>
+          {({ width, height }) => (
+            <Map
+              width={width}
+              height={height}
+              center={{ lat: 53.342686, lng: -6.267118 }}
+              marker={{ lat: 53.341874, lng: -6.286709 }}
+            />
+          )}
+        </AutoSizer>
       </div>
     );
   }

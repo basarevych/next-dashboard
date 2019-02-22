@@ -5,7 +5,7 @@ import FormsPageComponent, { styles } from "./FormsPage";
 
 const mapStateToProps = state => {
   return {
-    isAuthenticated: authSelectors.isAuthenticated(state)
+    userRoles: authSelectors.getRoles(state)
   };
 };
 

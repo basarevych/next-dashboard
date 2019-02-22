@@ -4,7 +4,6 @@ import { FormattedMessage } from "react-intl";
 import { graphql } from "react-relay";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
-import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -53,8 +52,12 @@ export const styles = theme => ({
     flex: 1,
     padding: theme.main.spacing
   },
-  buttons: {
+  header: {
     marginTop: "3rem",
+    display: "flex",
+    justifyContent: "space-between"
+  },
+  buttons: {
     width: "100%",
     display: "flex",
     flexDirection: "row",
@@ -292,15 +295,6 @@ class EmployeeList extends React.Component {
   renderTable() {
     return (
       <Paper className={this.props.classes.paper}>
-        <Toolbar>
-          <Typography variant="h6">
-            <FormattedMessage id="TITLE_TABLES" />
-          </Typography>
-          <div className={this.props.classes.grow} />
-          <IconButton color="inherit" onClick={this.handleRefreshAction}>
-            <RefreshIcon />
-          </IconButton>
-        </Toolbar>
         <Table padding="dense" className={this.props.classes.table}>
           <TableHead>
             <TableRow>
@@ -318,7 +312,6 @@ class EmployeeList extends React.Component {
                   value="on"
                 />
               </TableCell>
-              <TableCell padding="checkbox" />
               <TableCell
                 sortDirection={
                   this.state.variables.sortBy === "uid"
@@ -451,6 +444,14 @@ class EmployeeList extends React.Component {
         </div>
 
         <div className={this.props.classes.layout}>
+          <div className={this.props.classes.header}>
+            <Typography variant="h3">
+              <FormattedMessage id="TITLE_TABLES" />
+            </Typography>
+            <IconButton color="inherit" onClick={this.handleRefreshAction}>
+              <RefreshIcon />
+            </IconButton>
+          </div>
           <div className={this.props.classes.buttons}>
             <Button
               variant="contained"

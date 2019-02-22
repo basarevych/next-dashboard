@@ -1,5 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { FormattedMessage } from "react-intl";
+import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import Chart1 from "./Charts/Chart1";
 import Chart2 from "./Charts/Chart2";
@@ -16,6 +18,9 @@ export const styles = theme => ({
   },
   paper: {
     background: theme.main.paper
+  },
+  title: {
+    marginTop: "3rem"
   }
 });
 
@@ -31,6 +36,9 @@ class ChartsPage extends React.Component {
 
     return (
       <div className={this.props.classes.layout}>
+        <Typography variant="h3" className={this.props.classes.title}>
+          <FormattedMessage id="TITLE_CHARTS" />
+        </Typography>
         <Grid container spacing={this.props.theme.main.spacing}>
           <Grid item xs={12} md={6} lg={4}>
             <Chart1 className={this.props.classes.paper} />

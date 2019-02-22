@@ -4,6 +4,7 @@ import { FormattedMessage } from "react-intl";
 import Typography from "@material-ui/core/Typography";
 import { lighten } from "@material-ui/core/styles/colorManipulator";
 import Forms from "./FormsContainer";
+import isRouteAllowed from "../../common/isRouteAllowed";
 
 export const styles = theme => ({
   message: {
@@ -37,11 +38,11 @@ class FormsPage extends React.Component {
   static propTypes = {
     theme: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired,
-    isAuthenticated: PropTypes.bool.isRequired
+    userRoles: PropTypes.array.isRequired
   };
 
   render() {
-    if (!this.props.isAuthenticated) return null;
+    if (!isRouteAllowed("/forms", this.props.userRoles)) return null;
 
     return (
       <React.Fragment>

@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { intlShape } from "react-intl";
+import { AutoSizer } from "react-virtualized";
 import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
@@ -33,22 +34,33 @@ class DemoTable extends React.Component {
 
   render() {
     return (
-      <React.Fragment>
-        <AppBar position="static">
-          <Tabs value={this.state.index} onChange={this.handleChange}>
-            {_.map(this.depts, dept => (
-              <Tab
-                key={`tab-${dept}`}
-                label={this.props.intl.formatMessage({ id: `DEPT_${dept}` })}
-              />
-            ))}
-          </Tabs>
-        </AppBar>
-        <DemoList
-          dept={this.depts[this.state.index]}
-          viewer={this.props.viewer}
-        />
-      </React.Fragment>
+      <AutoSizer disableHeight>
+        {({ width }) => (
+          <div style={{ width }}>
+            <AppBar position="static">
+              <Tabs
+                variant="scrollable"
+                scrollButtons="auto"
+                value={this.state.index}
+                onChange={this.handleChange}
+              >
+                {_.map(this.depts, dept => (
+                  <Tab
+                    key={`tab-${dept}`}
+                    label={this.props.intl.formatMessage({
+                      id: `DEPT_${dept}`
+                    })}
+                  />
+                ))}
+              </Tabs>
+            </AppBar>
+            <DemoList
+              dept={this.depts[this.state.index]}
+              viewer={this.props.viewer}
+            />
+          </div>
+        )}
+      </AutoSizer>
     );
   }
 }

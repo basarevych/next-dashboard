@@ -7,7 +7,8 @@ import Switch from "@material-ui/core/Switch";
 
 export const styles = () => ({
   checkboxField: {
-    width: 1
+    width: 1,
+    whiteSpace: "pre"
   }
 });
 
@@ -21,13 +22,13 @@ class DemoItem extends React.Component {
   render() {
     return (
       <TableRow>
-        <TableCell component="th" scope="row">
-          {this.props.node.uid}
-        </TableCell>
         <TableCell
           padding="checkbox"
+          component="th"
+          scope="row"
           classes={{ root: this.props.classes.checkboxField }}
         >
+          {this.props.node.uid}
           <Switch
             checked={this.props.node.checked}
             onChange={(evt, checked) =>

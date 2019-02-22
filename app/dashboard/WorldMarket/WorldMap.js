@@ -28,10 +28,15 @@ class WorldMap extends React.Component {
     onSelect: PropTypes.func.isRequired
   };
 
-  renderMap(width, height) {
+  renderMap() {
     return (
-      <React.Fragment>
-        <svg width={0} height={0}>
+      <ComposableMap
+        rojectionConfig={{
+          scale: 200,
+          rotation: [-10, 0, 0]
+        }}
+        style={{ width: "100%", height: "auto" }}
+        defs={
           <defs>
             <filter
               id="worldMapShadow"
@@ -54,67 +59,57 @@ class WorldMap extends React.Component {
               </feMerge>
             </filter>
           </defs>
-        </svg>
-        <ComposableMap
-          projectionConfig={{
-            scale: 205,
-            rotation: [-11, 0, 0]
-          }}
-          width={width}
-          height={height}
-        >
-          <ZoomableGroup center={[0, 20]} disablePanning>
-            <Geographies geography="/static/map/world-50m.json">
-              {(geographies, projection) =>
-                _.map(
-                  geographies,
-                  (geography, i) =>
-                    geography.id !== "ATA" && (
-                      <Geography
-                        key={i}
-                        onClick={() => {
-                          this.props.onSelect(getCountryISO2(geography.id));
-                        }}
-                        geography={geography}
-                        projection={projection}
-                        style={{
-                          default: {
-                            fill: "#363940",
-                            stroke: lighten("#363940", 0.85),
-                            strokeWidth: 0.75,
-                            outline: "none",
-                            filter: "url(#worldMapShadow)"
-                          },
-                          hover: {
-                            fill: amber[500],
-                            stroke: lighten(amber[500], 0.3),
-                            strokeWidth: 0.75,
-                            outline: "none"
-                          },
-                          pressed: {
-                            fill: amber[200],
-                            stroke: lighten(amber[200], 0.3),
-                            strokeWidth: 0.75,
-                            outline: "none"
-                          }
-                        }}
-                      />
-                    )
-                )
-              }
-            </Geographies>
-          </ZoomableGroup>
-        </ComposableMap>
-      </React.Fragment>
+        }
+      >
+        <ZoomableGroup center={[0, 20]} disablePanning>
+          <Geographies geography="/static/map/world-50m.json">
+            {(geographies, projection) =>
+              _.map(
+                geographies,
+                (geography, i) =>
+                  geography.id !== "ATA" && (
+                    <Geography
+                      key={i}
+                      onClick={() => {
+                        this.props.onSelect(getCountryISO2(geography.id));
+                      }}
+                      geography={geography}
+                      projection={projection}
+                      style={{
+                        default: {
+                          fill: "#363940",
+                          stroke: lighten("#363940", 0.85),
+                          strokeWidth: 0.75,
+                          outline: "none",
+                          filter: "url(#worldMapShadow)"
+                        },
+                        hover: {
+                          fill: amber[500],
+                          stroke: lighten(amber[500], 0.3),
+                          strokeWidth: 0.75,
+                          outline: "none"
+                        },
+                        pressed: {
+                          fill: amber[200],
+                          stroke: lighten(amber[200], 0.3),
+                          strokeWidth: 0.75,
+                          outline: "none"
+                        }
+                      }}
+                    />
+                  )
+              )
+            }
+          </Geographies>
+        </ZoomableGroup>
+      </ComposableMap>
     );
   }
 
   render() {
     return (
       <Paper className={this.props.classes.root} elevation={4}>
-        <AutoSizer disableHeight>
-          {({ width }) => !!width && this.renderMap(width, 0.6 * width)}
-        </AutoSizer>
+        {this.renderMap()}
         <Typography variant="body2">
           <FormattedMessage id="DASHBOARD_CLICK_MAP_LABEL" />
         </Typography>

@@ -150,6 +150,10 @@ module.exports = {
       },
       caption: {
         fontSize: "0.9rem"
+      },
+      toolbar: {
+        height: [48, "!important"],
+        minHeight: [48, "!important"]
       }
     },
     MuiButton: {

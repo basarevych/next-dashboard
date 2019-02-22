@@ -11,7 +11,7 @@ export const selectAll = ({ employeeIds }) => ({
   employeeIds
 });
 
-export const deselectAll = ({ exceptEmployeeIds }) => ({
+export const deselectAll = ({ exceptEmployeeIds } = {}) => ({
   type: types.DESELECT_ALL,
   exceptEmployeeIds
 });

@@ -232,6 +232,7 @@ class DemoList extends React.Component {
           <TableHead>
             <TableRow>
               <TableCell
+                padding="checkbox"
                 sortDirection={
                   this.state.variables.sortBy === "uid"
                     ? this.state.variables.sortDir
@@ -246,7 +247,6 @@ class DemoList extends React.Component {
                   <FormattedMessage id="EMPLOYEES_UID_COLUMN" />
                 </TableSortLabel>
               </TableCell>
-              <TableCell padding="checkbox" />
               <TableCell
                 sortDirection={
                   this.state.variables.sortBy === "name"

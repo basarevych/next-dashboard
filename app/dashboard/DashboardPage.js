@@ -9,6 +9,7 @@ import Dashboard, {
   sortBy,
   sortDir
 } from "./DashboardContainer";
+import isRouteAllowed from "../../common/isRouteAllowed";
 
 const defaultVariables = {
   country: defaultCountry,
@@ -59,7 +60,7 @@ export const query = graphql`
 
 class DashboardPage extends React.Component {
   static propTypes = {
-    isAuthenticated: PropTypes.bool.isRequired
+    userRoles: PropTypes.array.isRequired
   };
 
   static async getInitialProps({ statusCode, fetchQuery }) {
@@ -68,7 +69,7 @@ class DashboardPage extends React.Component {
   }
 
   render() {
-    if (!this.props.isAuthenticated) return null;
+    if (!isRouteAllowed("/dashboard", this.props.userRoles)) return null;
 
     return (
       <NextQueryRenderer

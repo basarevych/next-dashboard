@@ -1,5 +1,6 @@
 "use strict";
 
+require("@babel/polyfill");
 require("core-js/es6");
 require("isomorphic-unfetch");
 
