@@ -31,17 +31,35 @@
       }
     }
   ],
+  "mini-css-extract-plugin node_modules/css-loader/index.js??ref--5-1!node_modules/postcss-loader/src/index.js??ref--5-2!node_modules/react-toastify/dist/ReactToastify.css": [
+    {
+      "modules": {
+        "byIdentifier": {},
+        "usedIds": {}
+      },
+      "chunks": {
+        "byName": {
+          "mini-css-extract-plugin": 0
+        },
+        "bySource": {},
+        "usedIds": [
+          0
+        ]
+      }
+    }
+  ],
   "modules": {
     "byIdentifier": {
       "ignored node_modules/react-intl/lib ../locale-data/index.js": 0,
-      "ignored node_modules/intl-messageformat ./lib/locales": 1,
-      "ignored node_modules/intl-relativeformat ./lib/locales": 2,
-      "multi app/app/lib/initApp.js node_modules/next/dist/client/next": 3,
-      "ignored node_modules/readable-stream/lib util": 4,
-      "ignored node_modules/readable-stream/lib/internal/streams util": 5,
-      "ignored node_modules/engine.io-client/lib/transports ws": 6,
+      "multi app/app/lib/initApp.js node_modules/next/dist/client/next": 1,
+      "ignored node_modules/readable-stream/lib util": 2,
+      "ignored node_modules/readable-stream/lib/internal/streams util": 3,
+      "ignored node_modules/engine.io-client/lib/transports ws": 4,
+      "ignored node_modules/intl-messageformat ./lib/locales": 5,
+      "ignored node_modules/intl-relativeformat ./lib/locales": 6,
       "css node_modules/css-loader/index.js??ref--5-1!node_modules/postcss-loader/src/index.js??ref--5-2!node_modules/react-virtualized/styles.css 0": 7,
-      "ignored node_modules/intl ./locale-data/complete.js": 8
+      "css node_modules/css-loader/index.js??ref--5-1!node_modules/postcss-loader/src/index.js??ref--5-2!node_modules/react-toastify/dist/ReactToastify.css 0": 8,
+      "ignored node_modules/intl ./locale-data/complete.js": 9
     },
     "usedIds": {
       "0": 0,
@@ -52,7 +70,8 @@
       "5": 5,
       "6": 6,
       "7": 7,
-      "8": 8
+      "8": 8,
+      "9": 9
     }
   },
   "chunks": {
@@ -60,22 +79,22 @@
       "commons": 0,
       "static/runtime/webpack.js": 1,
       "polyfills": 2,
-      "static/runtime/main.js": 3,
-      "static/vO~VxyaLVPdfcl5u6tmnY/pages/_app.js": 4,
-      "static/vO~VxyaLVPdfcl5u6tmnY/pages/_error.js": 5,
-      "static/vO~VxyaLVPdfcl5u6tmnY/pages/auth/error.js": 6,
-      "static/vO~VxyaLVPdfcl5u6tmnY/pages/auth/profile.js": 7,
-      "static/vO~VxyaLVPdfcl5u6tmnY/pages/auth/verify.js": 8,
-      "static/vO~VxyaLVPdfcl5u6tmnY/pages/charts.js": 9,
-      "static/vO~VxyaLVPdfcl5u6tmnY/pages/dashboard.js": 10,
-      "static/vO~VxyaLVPdfcl5u6tmnY/pages/forms.js": 11,
-      "static/vO~VxyaLVPdfcl5u6tmnY/pages/icons.js": 12,
-      "static/vO~VxyaLVPdfcl5u6tmnY/pages/index.js": 13,
-      "static/vO~VxyaLVPdfcl5u6tmnY/pages/maps.js": 14,
-      "static/vO~VxyaLVPdfcl5u6tmnY/pages/notifications.js": 15,
-      "static/vO~VxyaLVPdfcl5u6tmnY/pages/tables.js": 16,
-      "static/vO~VxyaLVPdfcl5u6tmnY/pages/typography.js": 17,
-      "static/vO~VxyaLVPdfcl5u6tmnY/pages/users.js": 18,
+      "static/QztzUnzGjWBg11FGeloXj/pages/_app.js": 3,
+      "static/QztzUnzGjWBg11FGeloXj/pages/_error.js": 4,
+      "static/QztzUnzGjWBg11FGeloXj/pages/auth/error.js": 5,
+      "static/QztzUnzGjWBg11FGeloXj/pages/auth/profile.js": 6,
+      "static/QztzUnzGjWBg11FGeloXj/pages/auth/verify.js": 7,
+      "static/QztzUnzGjWBg11FGeloXj/pages/charts.js": 8,
+      "static/QztzUnzGjWBg11FGeloXj/pages/dashboard.js": 9,
+      "static/QztzUnzGjWBg11FGeloXj/pages/forms.js": 10,
+      "static/QztzUnzGjWBg11FGeloXj/pages/icons.js": 11,
+      "static/QztzUnzGjWBg11FGeloXj/pages/index.js": 12,
+      "static/QztzUnzGjWBg11FGeloXj/pages/maps.js": 13,
+      "static/QztzUnzGjWBg11FGeloXj/pages/notifications.js": 14,
+      "static/QztzUnzGjWBg11FGeloXj/pages/tables.js": 15,
+      "static/QztzUnzGjWBg11FGeloXj/pages/typography.js": 16,
+      "static/QztzUnzGjWBg11FGeloXj/pages/users.js": 17,
+      "static/runtime/main.js": 18,
       "styles": 19
     },
     "bySource": {

@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import Head from "next/head";
 import { intlShape } from "react-intl";
+import { ToastContainer } from "react-toastify";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Hidden from "@material-ui/core/Hidden";
 import Drawer from "@material-ui/core/Drawer";
@@ -195,6 +196,7 @@ class Layout extends React.Component {
         )}
 
         <AppAuthModal />
+        <ToastContainer />
       </div>
     );
   }

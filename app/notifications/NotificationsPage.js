@@ -1,32 +1,127 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Grid from "@material-ui/core/Grid";
+import { FormattedMessage } from "react-intl";
+import { toast } from "react-toastify";
+import Paper from "@material-ui/core/Paper";
+import Button from "@material-ui/core/Button";
+import Typography from "@material-ui/core/Typography";
+import isRouteAllowed from "../../common/isRouteAllowed";
 
 export const styles = theme => ({
   layout: {
     width: "100%",
     flex: 1,
-    padding: theme.main.spacing
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  paper: {
+    width: 300,
+    background: theme.main.paper
+  },
+  row: {
+    display: "flex",
+    justifyContent: "center"
+  },
+  item: {
+    width: "33%",
+    fontSize: "200%"
+  },
+  label: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  toast: {
+    background: theme.palette.primary.main,
+    color: theme.palette.primary.contrastText,
+    "& button": {
+      color: theme.palette.primary.contrastText
+    }
+  },
+  progress: {
+    background: theme.palette.secondary.main,
+    color: theme.palette.primary.contrastText
   }
 });
 
 class NotificationsPage extends React.Component {
   static propTypes = {
-    theme: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired,
-    isAuthenticated: PropTypes.bool.isRequired
+    userRoles: PropTypes.array.isRequired
   };
 
+  toast(position) {
+    toast(
+      <div>
+        <h3>
+          <FormattedMessage id="NOTIFICATIONS_TITLE" />
+        </h3>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent
+          ornare viverra sapien in cursus.
+        </p>
+      </div>,
+      {
+        position,
+        className: this.props.classes.toast,
+        progressClassName: this.props.classes.progress
+      }
+    );
+  }
+
   render() {
-    if (!this.props.isAuthenticated) return null;
+    if (!isRouteAllowed("/notifications", this.props.userRoles)) return null;
 
     return (
       <div className={this.props.classes.layout}>
-        <Grid container spacing={this.props.theme.main.spacing}>
-          <Grid item xs={12}>
-            <div />
-          </Grid>
-        </Grid>
+        <Paper className={this.props.classes.paper}>
+          <div className={this.props.classes.row}>
+            <Button
+              className={this.props.classes.item}
+              onClick={() => this.toast(toast.POSITION.TOP_LEFT)}
+            >
+              ⬁
+            </Button>
+            <Button
+              className={this.props.classes.item}
+              onClick={() => this.toast(toast.POSITION.TOP_CENTER)}
+            >
+              ⇧
+            </Button>
+            <Button
+              className={this.props.classes.item}
+              onClick={() => this.toast(toast.POSITION.TOP_RIGHT)}
+            >
+              ⬀
+            </Button>
+          </div>
+          <div className={this.props.classes.label}>
+            <Typography variant="overline">
+              <FormattedMessage id="NOTIFICATIONS_LABEL" />
+            </Typography>
+          </div>
+          <div className={this.props.classes.row}>
+            <Button
+              className={this.props.classes.item}
+              onClick={() => this.toast(toast.POSITION.BOTTOM_LEFT)}
+            >
+              ⬃
+            </Button>
+            <Button
+              className={this.props.classes.item}
+              onClick={() => this.toast(toast.POSITION.BOTTOM_CENTER)}
+            >
+              ⇩
+            </Button>
+            <Button
+              className={this.props.classes.item}
+              onClick={() => this.toast(toast.POSITION.BOTTOM_RIGHT)}
+            >
+              ⬂
+            </Button>
+          </div>
+        </Paper>
       </div>
     );
   }

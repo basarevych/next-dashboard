@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import getCountryISO2 from "country-iso-3-to-2";
 import { FormattedMessage } from "react-intl";
-import { AutoSizer } from "react-virtualized";
 import {
   ComposableMap,
   ZoomableGroup,
