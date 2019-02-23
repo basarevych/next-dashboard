@@ -94,7 +94,7 @@ class Auth extends EventEmitter {
     this.VerifyEmailMutation = mutationWithClientMutationId({
       name: "VerifyEmail",
       inputFields: {
-        emailToken: { type: GraphQLString }
+        token: { type: GraphQLString }
       },
       outputFields: {
         success: {

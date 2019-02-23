@@ -71,6 +71,7 @@ class Database extends EventEmitter {
         }); // eslint-disable-line lodash/prefer-lodash-method
         if (!user) {
           user = new this.UserModel({
+            name: "Charlie Root",
             email: this.config.rootLogin,
             password: await this.di
               .get("auth")
@@ -89,6 +90,7 @@ class Database extends EventEmitter {
       if (!this.anonymous) {
         this.anonymous = new this.UserModel({
           email: "anonymous@example.com",
+          password: this.fake.getString(64),
           roles: [constants.roles.ANONYMOUS]
         });
         await this.anonymous.validate();

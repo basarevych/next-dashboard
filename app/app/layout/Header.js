@@ -1,7 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
+import Router from "next/router";
 import { intlShape, FormattedMessage } from "react-intl";
 import { fade, lighten } from "@material-ui/core/styles/colorManipulator";
+import Tooltip from "@material-ui/core/Tooltip";
 import Hidden from "@material-ui/core/Hidden";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -123,6 +125,9 @@ export const styles = theme => ({
   inboxPreview: {
     display: "inline",
     whiteSpace: "normal"
+  },
+  tooltip: {
+    fontSize: ["1em", "!important"]
   }
 });
 
@@ -132,6 +137,7 @@ class Header extends React.Component {
     theme: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired,
     locale: PropTypes.string.isRequired,
+    isAnonymous: PropTypes.bool.isRequired,
     onSetCookie: PropTypes.func.isRequired,
     onSetLocale: PropTypes.func.isRequired,
     onSignOut: PropTypes.func.isRequired
@@ -614,11 +620,34 @@ class Header extends React.Component {
                   &nbsp;&nbsp;
                   <FormattedMessage id="HEADER_INBOX_LABEL" />
                 </Button>
-                <Button color="inherit" className={this.props.classes.barItem}>
-                  <ProfileIcon />
-                  &nbsp;&nbsp;
-                  <FormattedMessage id="HEADER_PROFILE_LABEL" />
-                </Button>
+                {this.props.isAnonymous && (
+                  <Tooltip
+                    title={this.props.intl.formatMessage({
+                      id: "HEADER_PROFILE_TOOLTIP"
+                    })}
+                    classes={{ tooltip: this.props.classes.tooltip }}
+                  >
+                    <Button
+                      color="inherit"
+                      className={this.props.classes.barItem}
+                    >
+                      <ProfileIcon />
+                      &nbsp;&nbsp;
+                      <FormattedMessage id="HEADER_PROFILE_LABEL" />
+                    </Button>
+                  </Tooltip>
+                )}
+                {!this.props.isAnonymous && (
+                  <Button
+                    color="inherit"
+                    className={this.props.classes.barItem}
+                    onClick={() => Router.push("/auth/profile")}
+                  >
+                    <ProfileIcon />
+                    &nbsp;&nbsp;
+                    <FormattedMessage id="HEADER_PROFILE_LABEL" />
+                  </Button>
+                )}
                 <Button
                   color="inherit"
                   className={this.props.classes.barItem}

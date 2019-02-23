@@ -56,6 +56,15 @@ export const setStatus = status => async (dispatch, getState, di) => {
   }
 };
 
+export const getStatus = () => async (dispatch, getState) => {
+  await dispatch(setStatus());
+  return {
+    name: selectors.getName(getState()),
+    email: selectors.getEmail(getState()),
+    isEmailVerified: selectors.getIsEmailVerified(getState())
+  };
+};
+
 export const signIn = ({ email, password }) => async (
   dispatch,
   getState,

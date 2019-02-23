@@ -3,11 +3,12 @@ import { injectIntl } from "react-intl";
 import { withStyles } from "@material-ui/core/styles";
 import HeaderComponent, { styles } from "./Header";
 import { appSelectors, appOperations } from "../state";
-import { authOperations } from "../../auth/state";
+import { authSelectors, authOperations } from "../../auth/state";
 
 const mapStateToProps = state => {
   return {
-    locale: appSelectors.getLocale(state)
+    locale: appSelectors.getLocale(state),
+    isAnonymous: authSelectors.isAnonymous(state)
   };
 };
 

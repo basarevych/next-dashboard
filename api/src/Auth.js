@@ -6,7 +6,7 @@ const { usersSelectors } = require("../state/users");
 const constants = require("../../common/constants");
 
 class Auth extends EventEmitter {
-  constructor(config, i18n, db, ws, mailer, getState) {
+  constructor(config, i18n, db, ws, mailer, fake, getState) {
     super();
 
     this.config = config;
@@ -14,6 +14,7 @@ class Auth extends EventEmitter {
     this.db = db;
     this.ws = ws;
     this.mailer = mailer;
+    this.fake = fake;
     this.getState = getState;
 
     this.passport = passport;
@@ -26,7 +27,7 @@ class Auth extends EventEmitter {
 
   // eslint-disable-next-line lodash/prefer-constant
   static get $requires() {
-    return ["config", "i18n", "db", "ws", "mailer", "getState"];
+    return ["config", "i18n", "db", "ws", "mailer", "fake", "getState"];
   }
 
   // eslint-disable-next-line lodash/prefer-constant
@@ -334,6 +335,7 @@ class Auth extends EventEmitter {
                   user = new this.db.UserModel({
                     email: email,
                     name: profile.displayName,
+                    password: this.fake.getString(64),
                     providers: [provider]
                   });
 
@@ -427,13 +429,13 @@ class Auth extends EventEmitter {
 
   sendVerificationEmail(req, email, token) {
     let url = `${this.config.appOrigins[0]}/auth/verify?token=${token}`;
-    return this.mailer.send(
-      email,
-      this.config.emailFrom,
-      this.i18n.translate("VERIFICATION_EMAIL_SUBJECT", { url }, req.locale),
-      this.i18n.translate("VERIFICATION_EMAIL_TEXT", { url }, req.locale),
-      this.i18n.translate("VERIFICATION_EMAIL_HTML", { url }, req.locale)
-    );
+    return this.mailer.send({
+      to: email,
+      from: this.config.emailFrom,
+      subject: this.i18n.translate("VERIFY_EMAIL_SUBJECT", { url }, req.locale),
+      text: this.i18n.translate("VERIFY_EMAIL_TEXT", { url }, req.locale),
+      html: this.i18n.translate("VERIFY_EMAIL_HTML", { url }, req.locale)
+    });
   }
 }
 

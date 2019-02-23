@@ -72,7 +72,7 @@ class Mailer extends EventEmitter {
   /**
    * Send mail
    */
-  async send(to, from, subject, text, html) {
+  async send({ to, from, subject, text, html }) {
     return new Promise((resolve, reject) => {
       this.transport.sendMail({ to, from, subject, text, html }, error => {
         if (error) return reject(error);

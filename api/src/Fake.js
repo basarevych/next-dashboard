@@ -41,6 +41,13 @@ class Fake extends EventEmitter {
     };
   }
 
+  getString(length = 32) {
+    return this.chance.string({
+      length,
+      pool: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+    });
+  }
+
   getInt(min, max) {
     return this.chance.integer({
       min: Math.min(min, max),

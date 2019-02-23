@@ -5,7 +5,7 @@ import ChartsPageComponent, { styles } from "./ChartsPage";
 
 const mapStateToProps = state => {
   return {
-    isAuthenticated: authSelectors.isAuthenticated(state)
+    userRoles: authSelectors.getRoles(state)
   };
 };
 

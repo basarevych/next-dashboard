@@ -24,57 +24,49 @@ module.exports = {
       page: "/dashboard",
       icon: "dashboard",
       menu: "MENU_DASHBOARD",
-      title: "TITLE_DASHBOARD",
-      roles: [roles.AUTHENTICATED]
+      title: "TITLE_DASHBOARD"
     },
     "/forms": {
       page: "/forms",
       icon: "forms",
       menu: "MENU_FORMS",
-      title: "TITLE_FORMS",
-      roles: [roles.AUTHENTICATED]
+      title: "TITLE_FORMS"
     },
     "/charts": {
       page: "/charts",
       icon: "charts",
       menu: "MENU_CHARTS",
-      title: "TITLE_CHARTS",
-      roles: [roles.AUTHENTICATED]
+      title: "TITLE_CHARTS"
     },
     "/tables": {
       page: "/tables",
       icon: "tables",
       menu: "MENU_TABLES",
-      title: "TITLE_TABLES",
-      roles: [roles.AUTHENTICATED]
+      title: "TITLE_TABLES"
     },
     "/maps": {
       page: "/maps",
       icon: "maps",
       menu: "MENU_MAPS",
-      title: "TITLE_MAPS",
-      roles: [roles.AUTHENTICATED]
+      title: "TITLE_MAPS"
     },
     "/notifications": {
       page: "/notifications",
       icon: "notifications",
       menu: "MENU_NOTIFICATIONS",
-      title: "TITLE_NOTIFICATIONS",
-      roles: [roles.AUTHENTICATED]
+      title: "TITLE_NOTIFICATIONS"
     },
     "/typography": {
       page: "/typography",
       icon: "typography",
       menu: "MENU_TYPOGRAPHY",
-      title: "TITLE_TYPOGRAPHY",
-      roles: [roles.AUTHENTICATED]
+      title: "TITLE_TYPOGRAPHY"
     },
     "/icons": {
       page: "/icons",
       icon: "icons",
       menu: "MENU_ICONS",
-      title: "TITLE_ICONS",
-      roles: [roles.AUTHENTICATED]
+      title: "TITLE_ICONS"
     },
     "/auth/profile": {
       page: "/auth/profile",
@@ -83,7 +75,7 @@ module.exports = {
     },
     "/auth/verify": {
       page: "/auth/verify",
-      title: "TITLE_VERIFY_EMAIL"
+      title: "TITLE_VERIFY"
     },
     "/auth/error": {
       page: "/auth/error",

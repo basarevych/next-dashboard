@@ -35,7 +35,7 @@ const isAuthenticatedReducer = (state = false, action) => {
   return state;
 };
 
-const nameReducer = (state = "Anonymous", action) => {
+const nameReducer = (state = null, action) => {
   switch (action.type) {
     case types.SET_STATUS:
       if (!_.isUndefined(action.name)) return action.name;

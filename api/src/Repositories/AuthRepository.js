@@ -30,7 +30,7 @@ class AuthRepository extends EventEmitter {
     });
   }
 
-  async signIn(context, args) {
+  async signIn(context, { email, password }) {
     debug("signIn");
 
     let success = false;
@@ -38,11 +38,11 @@ class AuthRepository extends EventEmitter {
     let cur = await context.getUser();
     if (cur) {
       // already signed in, kick the previous user if different
-      if (args.email) {
+      if (email) {
         // normal sign-in
         if (
           _.includes(cur.roles, constants.roles.ANONYMOUS) ||
-          cur.email !== args.email
+          cur.email !== email
         ) {
           await this.auth.signOut(context);
         } else {
@@ -58,15 +58,11 @@ class AuthRepository extends EventEmitter {
     if (!success) {
       // new sign-in
       let user;
-      if (args.email && args.password) {
+      if (email && password) {
         // normal sign-in
-        user = await this.db.UserModel.findOne({ email: args.email });
-        if (
-          user &&
-          !(await this.auth.checkPassword(args.password, user.password))
-        ) {
+        user = await this.db.UserModel.findOne({ email });
+        if (user && !(await this.auth.checkPassword(password, user.password)))
           user = null;
-        }
       } else {
         // anonymous sign-in
         user = await this.db.UserModel.findOne({
@@ -84,22 +80,20 @@ class AuthRepository extends EventEmitter {
     return { success };
   }
 
-  async signUp(context, args) {
+  async signUp(context, { email, password }) {
     debug("signUp");
 
-    if (await this.db.UserModel.findOne({ email: args.email }))
-      return { success: false };
+    if (await this.db.UserModel.findOne({ email })) return { success: false };
 
     if (await context.getUser()) await this.auth.signOut(context);
 
     let user = new this.db.UserModel({
-      email: args.email,
+      email: email,
       emailToken: this.generateToken(),
-      password:
-        args.password && (await this.auth.encryptPassword(args.password))
+      password: password && (await this.auth.encryptPassword(password))
     });
 
-    await user.validateField({ field: "password", value: args.password }); // before it is encrypted
+    await user.validateField({ field: "password", value: password }); // before it is encrypted
     await user.validate();
     await user.save();
 
@@ -137,10 +131,9 @@ class AuthRepository extends EventEmitter {
     let user = await context.getUser();
     if (!user || _.includes(user.roles, constants.roles.ANONYMOUS))
       return { success: false };
-    if (user.emailVerified) return { success: false };
+    if (user.isEmailVerified) return { success: false };
 
     user.emailToken = this.generateToken();
-    user.isEmailVerified = false;
 
     await user.validate();
     await user.save();
@@ -164,6 +157,14 @@ class AuthRepository extends EventEmitter {
     await user.validate();
     await user.save();
     context.preCachePages({ user, path: "/auth/profile" }).catch(console.error);
+
+    let cur = await context.getUser();
+    if (cur && cur.email !== user.email) {
+      await this.auth.signOut(context);
+      cur = null;
+    }
+
+    if (!cur) await this.auth.signIn(user, context);
     return { success: true };
   }
 
