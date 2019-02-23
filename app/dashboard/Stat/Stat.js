@@ -40,8 +40,8 @@ export const styles = theme => ({
     padding: "0.25rem 0.5rem"
   },
   stat: {
-    paddingTop: "2rem",
-    width: "70%",
+    paddingTop: "1rem",
+    width: "60%",
     display: "flex",
     flexDirection: "column",
     alignItems: "center"
@@ -199,7 +199,7 @@ class Stat extends React.Component {
         {this.renderStat()}
         <div className={this.props.classes.chart}>
           <AutoSizer disableHeight>
-            {({ width }) => !!width && this.renderChart(width, 0.5 * width)}
+            {({ width }) => !!width && this.renderChart(width, 0.3 * width)}
           </AutoSizer>
         </div>
       </div>

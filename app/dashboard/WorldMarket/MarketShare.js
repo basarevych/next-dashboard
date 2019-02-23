@@ -105,7 +105,7 @@ class MarketShare extends React.Component {
         <VictoryChart
           width={width}
           height={height}
-          padding={20}
+          padding={{ top: 20, right: 20, bottom: 20, left: 35 }}
           polar
           events={[
             {

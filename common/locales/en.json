@@ -139,6 +139,7 @@
   "CONFIRM_CARD_DATE_LABEL": "Credit card expires:",
   "NOTIFICATIONS_LABEL": "Notifications",
   "NOTIFICATIONS_TITLE": "Styled Popup!",
+  "ICONS_FILTER_LABEL": "Filter",
   "APP_AUTH_TITLE": "Authentication",
   "APP_AUTH_ANONYMOUS_BUTTON": "Anonymous",
   "APP_AUTH_CREDENTIALS_LABEL": "Sign In using Credentials",
