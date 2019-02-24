@@ -7,7 +7,6 @@ import { lighten, darken } from "@material-ui/core/styles/colorManipulator";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
-import isRouteAllowed from "../../common/isRouteAllowed";
 import * as source from "@material-ui/icons";
 import styledScroll from "../app/styles/styledScroll";
 
@@ -96,8 +95,7 @@ class IconsPage extends React.Component {
   static propTypes = {
     intl: intlShape.isRequired,
     theme: PropTypes.object.isRequired,
-    classes: PropTypes.object.isRequired,
-    userRoles: PropTypes.array.isRequired
+    classes: PropTypes.object.isRequired
   };
 
   constructor(props) {
@@ -163,8 +161,6 @@ class IconsPage extends React.Component {
   }
 
   render() {
-    if (!isRouteAllowed("/icons", this.props.userRoles)) return null;
-
     return (
       <div className={this.props.classes.layout}>
         <div className={this.props.classes.header}>

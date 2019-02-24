@@ -5,7 +5,6 @@ import { toast } from "react-toastify";
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import isRouteAllowed from "../../common/isRouteAllowed";
 
 export const styles = theme => ({
   layout: {
@@ -47,8 +46,7 @@ export const styles = theme => ({
 
 class NotificationsPage extends React.Component {
   static propTypes = {
-    classes: PropTypes.object.isRequired,
-    userRoles: PropTypes.array.isRequired
+    classes: PropTypes.object.isRequired
   };
 
   toast(position) {
@@ -71,8 +69,6 @@ class NotificationsPage extends React.Component {
   }
 
   render() {
-    if (!isRouteAllowed("/notifications", this.props.userRoles)) return null;
-
     return (
       <div className={this.props.classes.layout}>
         <Paper className={this.props.classes.paper}>

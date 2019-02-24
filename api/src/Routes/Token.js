@@ -42,6 +42,7 @@ class TokenRoute extends EventEmitter {
 
     try {
       const user = await req.getUser();
+      if (!user) return res.json({ token: null });
       jwt.sign(
         { userId: user.id },
         this.config.sessionSecret,

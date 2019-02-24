@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { graphql } from "react-relay";
 import { NextQueryRenderer } from "../app/providers/Relay";
 import Dashboard, {
@@ -9,7 +8,6 @@ import Dashboard, {
   sortBy,
   sortDir
 } from "./DashboardContainer";
-import isRouteAllowed from "../../common/isRouteAllowed";
 
 const defaultVariables = {
   country: defaultCountry,
@@ -59,18 +57,11 @@ export const query = graphql`
 `;
 
 class DashboardPage extends React.Component {
-  static propTypes = {
-    userRoles: PropTypes.array.isRequired
-  };
-
   static async getInitialProps({ statusCode, fetchQuery }) {
-    if (statusCode !== 200) return;
-    await fetchQuery(query, defaultVariables);
+    if (statusCode === 200) await fetchQuery(query, defaultVariables);
   }
 
   render() {
-    if (!isRouteAllowed("/dashboard", this.props.userRoles)) return null;
-
     return (
       <NextQueryRenderer
         query={query}

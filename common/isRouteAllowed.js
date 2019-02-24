@@ -7,7 +7,12 @@ module.exports = function isRouteAllowed(path, userRoles = []) {
   if (!pageRoles || pageRoles.length === 0) return true;
 
   for (let role of pageRoles) {
-    if (!_.includes(userRoles, role)) return false;
+    if (role[0] === "!") {
+      role = role.slice(1);
+      if (_.includes(userRoles, role)) return false;
+    } else {
+      if (!_.includes(userRoles, role)) return false;
+    }
   }
 
   return true;

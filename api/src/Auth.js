@@ -375,15 +375,11 @@ class Auth extends EventEmitter {
 
     return {
       isAuthenticated,
-      name: isAuthenticated ? (isAnonymous ? "Anonymous" : user.name) : null,
+      name: isAuthenticated ? user.name : null,
       email: isAuthenticated && !isAnonymous ? user.email : null,
       isEmailVerified:
         isAuthenticated && !isAnonymous ? user.isEmailVerified : null,
-      roles: isAuthenticated
-        ? isAnonymous
-          ? [constants.roles.ANONYMOUS]
-          : user.roles
-        : [],
+      roles: isAuthenticated ? user.roles : [],
       providers
     };
   }

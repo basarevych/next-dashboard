@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { AutoSizer } from "react-virtualized";
-import isRouteAllowed from "../../common/isRouteAllowed";
 import Map from "./MapContainer";
 
 export const styles = () => ({
@@ -14,13 +13,10 @@ export const styles = () => ({
 
 class MapsPage extends React.Component {
   static propTypes = {
-    classes: PropTypes.object.isRequired,
-    userRoles: PropTypes.array.isRequired
+    classes: PropTypes.object.isRequired
   };
 
   render() {
-    if (!isRouteAllowed("/maps", this.props.userRoles)) return null;
-
     return (
       <div className={this.props.classes.layout}>
         <AutoSizer>

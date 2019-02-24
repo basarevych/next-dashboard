@@ -34,7 +34,7 @@ class CsrfRoute extends EventEmitter {
     debug("Got request");
 
     try {
-      res.json({ csrf: req.csrfToken ? req.csrfToken() : "undefined" });
+      res.json({ csrf: req.csrfToken ? req.csrfToken() : null });
     } catch (error) {
       return next(error);
     }

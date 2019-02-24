@@ -105,6 +105,7 @@ class Layout extends React.Component {
     classes: PropTypes.object.isRequired,
     isAuthenticated: PropTypes.bool.isRequired,
     isStarted: PropTypes.bool.isRequired,
+    isStopped: PropTypes.bool.isRequired,
     isError: PropTypes.bool.isRequired,
     statusCode: PropTypes.number.isRequired,
     title: PropTypes.string,
@@ -134,6 +135,8 @@ class Layout extends React.Component {
   }
 
   render() {
+    if (this.props.isStopped) return null;
+
     return (
       <div className="app">
         {this.props.title && (
@@ -150,49 +153,53 @@ class Layout extends React.Component {
           </main>
         )}
 
-        {!this.props.isError && this.props.isAuthenticated && (
+        {!this.props.isError && (
           <React.Fragment>
-            <Hidden implementation="css" smUp>
-              <SwipeableDrawer
-                open={this.state.isSidebarOpen}
-                onOpen={this.handleSidebarToggle}
-                onClose={this.handleSidebarClose}
-              >
-                <Sidebar onMenuClick={this.handleSidebarClose} />
-              </SwipeableDrawer>
-            </Hidden>
+            {this.props.isAuthenticated && (
+              <React.Fragment>
+                <Hidden implementation="css" smUp>
+                  <SwipeableDrawer
+                    open={this.state.isSidebarOpen}
+                    onOpen={this.handleSidebarToggle}
+                    onClose={this.handleSidebarClose}
+                  >
+                    <Sidebar onMenuClick={this.handleSidebarClose} />
+                  </SwipeableDrawer>
+                </Hidden>
 
-            <Hidden implementation="css" xsDown>
-              <Drawer
-                variant="permanent"
-                open
-                classes={{ paper: this.props.classes.sidebar }}
-              >
-                <Sidebar onMenuClick={this.handleSidebarClose} />
-              </Drawer>
-            </Hidden>
+                <Hidden implementation="css" xsDown>
+                  <Drawer
+                    variant="permanent"
+                    open
+                    classes={{ paper: this.props.classes.sidebar }}
+                  >
+                    <Sidebar onMenuClick={this.handleSidebarClose} />
+                  </Drawer>
+                </Hidden>
 
-            <div className={this.props.classes.main}>
-              <main className={this.props.classes.content}>
-                {!this.props.isError && <Header />}
+                <div className={this.props.classes.main}>
+                  <main className={this.props.classes.content}>
+                    {!this.props.isError && <Header />}
+                    {this.props.children}
+                  </main>
+                </div>
+              </React.Fragment>
+            )}
+
+            {!this.props.isAuthenticated && (
+              <main className={this.props.classes.anonymous}>
                 {this.props.children}
               </main>
-            </div>
+            )}
+
+            {!this.props.isStarted && (
+              <div className={this.props.classes.backdrop}>
+                <div className={this.props.classes.spinner}>
+                  <CircularProgress color="inherit" size={60} />
+                </div>
+              </div>
+            )}
           </React.Fragment>
-        )}
-
-        {!this.props.isError && !this.props.isAuthenticated && (
-          <main className={this.props.classes.anonymous}>
-            {this.props.children}
-          </main>
-        )}
-
-        {!this.props.isError && !this.props.isStarted && (
-          <div className={this.props.classes.backdrop}>
-            <div className={this.props.classes.spinner}>
-              <CircularProgress color="inherit" size={60} />
-            </div>
-          </div>
         )}
 
         <AppAuthModal />

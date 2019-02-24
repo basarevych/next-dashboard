@@ -33,7 +33,7 @@ class ErrorPage extends React.Component {
     service: PropTypes.string
   };
 
-  static async getInitialProps({ req, query }) {
+  static async getInitialProps({ query }) {
     return {
       action: query.action,
       type: query.type,

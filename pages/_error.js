@@ -1,1 +1,1 @@
-export { default } from "../app/app/error/ErrorPage";
+export { default } from "../app/app/error/ErrorPageContainer";

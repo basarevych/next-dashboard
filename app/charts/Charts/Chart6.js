@@ -24,7 +24,7 @@ class Chart6 extends React.Component {
       { x: new Date(2016, 6, 5), open: 20, close: 35, high: 50, low: 10 },
       { x: new Date(2016, 6, 6), open: 35, close: 30, high: 40, low: 3 },
       { x: new Date(2016, 6, 7), open: 30, close: 90, high: 95, low: 30 },
-      { x: new Date(2016, 6, 8), open: 80, close: 81, high: 83, low: 75 }
+      { x: new Date(2016, 6, 8), open: 50, close: 81, high: 83, low: 45 }
     ];
   }
 

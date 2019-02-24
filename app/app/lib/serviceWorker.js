@@ -15,29 +15,32 @@ const cacheName = `${pkg.name}-v${pkg.version}`;
 function fetchAndCache(request, cache) {
   return fetch(request)
     .then(response => {
-      if (!response || (!response.ok && response.type !== "opaque")) {
-        if (process.env.NODE_ENV === "development")
+      if (!response || !response.ok) {
+        if (process.env.NODE_ENV === "development") {
           console.error(
             `[SW] Fetching URL [${request.url.toString()}] error: ${
               response.status
             }/${response.type}`
           );
+        }
         return response;
       }
 
       return cache
         .put(request, response.clone())
         .then(() => {
-          if (process.env.NODE_ENV === "development")
+          if (process.env.NODE_ENV === "development") {
             console.log(
               `[SW] Fetched and cached asset: ${request.url.toString()}`
             );
+          }
           return response;
         })
         .catch(error => {
-          if (process.env.NODE_ENV === "development")
-            console.log(`[SW] Fetched asset: ${request.url.toString()}`);
-          console.error("[SW] Cache write error", error);
+          console.error(
+            `[SW] Cache write error: ${request.url.toString()}`,
+            error
+          );
           return response;
         });
     })
@@ -50,7 +53,7 @@ function fetchAndCache(request, cache) {
     });
 }
 
-// When the service worker is first added to a computer.
+// First time the service worker is running
 self.addEventListener("install", event => {
   if (process.env.NODE_ENV === "development")
     console.log(`[SW] Install event (${cacheName})`);
@@ -76,7 +79,7 @@ self.addEventListener("install", event => {
                 _.map(info.assets, path => new URL(path, base).toString())
               );
             }
-            if (info && info.buildId && process.env.NODE_ENV === "production") {
+            if (info && info.buildId) {
               cacheAssets = cacheAssets.concat(
                 _.map(
                   _.filter(self.serviceWorkerOption.assets, path =>
@@ -152,7 +155,8 @@ self.addEventListener("message", event => {
   }
 });
 
-// Fetching resources: try network first, updating cache, return cached otherwise
+// Fetching resources: try network first updating cache, return cached on network error
+// do not cache 403, 404, etc.
 self.addEventListener("fetch", event => {
   if (
     event.request.cache === "only-if-cached" &&
@@ -166,29 +170,29 @@ self.addEventListener("fetch", event => {
     event.request.method !== "GET" ||
     _.includes(ignoreHosts, requested.hostname) ||
     _.startsWith(requested.pathname, constants.socketsBase) ||
-    (_.startsWith(requested.pathname, "/_next/") &&
-      (process.env.NODE_ENV !== "production" ||
-        requested.hostname === "localhost"))
+    _.startsWith(requested.pathname, "/_next/")
   ) {
     return;
   }
 
-  let returnCached = (responseNetwork, errorNetwork) => {
-    let onError = () => {
+  const returnCached = (responseNetwork, errorNetwork) => {
+    const onError = () => {
       if (responseNetwork) return responseNetwork;
-
       throw errorNetwork;
     };
 
     return self.caches.match(event.request).then(
       responseCache => {
         if (responseCache) {
-          if (process.env.NODE_ENV === "development")
+          if (process.env.NODE_ENV === "development") {
             console.log(
               `[SW] Using cached asset: ${event.request.url.toString()}`
             );
+          }
           return responseCache;
         }
+        if (process.env.NODE_ENV === "development")
+          console.log(`[SW] Cache mismatch: ${event.request.url.toString()}`);
         return onError();
       },
       error => {
@@ -205,9 +209,8 @@ self.addEventListener("fetch", event => {
         return fetchAndCache(event.request.clone(), cache);
       })
       .then(response => {
-        if (!response || (!response.ok && response.type !== "opaque"))
+        if (response && response.type === "error")
           return returnCached(response, null);
-
         return response;
       })
       .catch(error => {

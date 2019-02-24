@@ -74,7 +74,12 @@ class AvatarsRoute extends EventEmitter {
         let used = [];
         const getRandomAvatar = male => {
           for (let i = 0; i < list.length; i++) {
-            if (list[i].gender !== (male ? "male" : "female")) continue;
+            if (
+              !_.isUndefined(male) &&
+              list[i].gender !== (male ? "male" : "female")
+            ) {
+              continue;
+            }
 
             if (_.includes(used, i)) continue;
 
@@ -94,7 +99,7 @@ class AvatarsRoute extends EventEmitter {
           this.avatars.push(this.anonymous);
         };
 
-        getRandomAvatar(true);
+        getRandomAvatar();
         getRandomAvatar(true);
         getRandomAvatar(false);
         getRandomAvatar(true);
@@ -174,12 +179,13 @@ class AvatarsRoute extends EventEmitter {
         let user = await req.getUser();
         if (user && !_.includes(user.roles, constants.roles.ANONYMOUS)) {
           for (let provider of user.providers) {
-            if (provider.profile.photos && provider.profile.photos.length) {
+            if (provider.profile.photos && provider.profile.photos.length)
               url = provider.profile.photos[0].value;
-            } else if (provider.name === constants.oauthProviders.FACEBOOK) {
-              url = `https://graph.facebook.com/${
-                provider.profile.id
-              }/picture?type=large`;
+            if (!url && provider.name === constants.oauthProviders.FACEBOOK) {
+              url =
+                "https://graph.facebook.com/" +
+                provider.profile.id +
+                "/picture?type=large";
             }
             if (url && !_.startsWith(url, "http")) url = null;
             if (url) break;

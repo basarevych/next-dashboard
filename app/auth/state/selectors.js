@@ -6,13 +6,17 @@ export const getCsrf = state => state.getIn(["auth", "csrf"]);
 export const isAuthenticated = state =>
   state.getIn(["auth", "isAuthenticated"]);
 
-export const isAdmin = state =>
+export const isRegular = state =>
   // eslint-disable-next-line lodash/prefer-lodash-method
-  state.getIn(["auth", "roles"]).includes(constants.roles.ADMIN);
+  state.getIn(["auth", "roles"]).includes(constants.roles.AUTHENTICATED);
 
 export const isAnonymous = state =>
   // eslint-disable-next-line lodash/prefer-lodash-method
   state.getIn(["auth", "roles"]).includes(constants.roles.ANONYMOUS);
+
+export const isAdmin = state =>
+  // eslint-disable-next-line lodash/prefer-lodash-method
+  state.getIn(["auth", "roles"]).includes(constants.roles.ADMIN);
 
 export const getName = state => state.getIn(["auth", "name"]);
 

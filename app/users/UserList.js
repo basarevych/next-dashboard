@@ -350,7 +350,7 @@ class UserList extends React.Component {
         <TablePagination
           rowsPerPageOptions={[10, 20, 30, 50, 100]}
           component="div"
-          count={this.props.viewer.users.totalCount}
+          count={_.get(this.props.viewer, "users.totalCount", 0)}
           rowsPerPage={this.state.pageSize}
           page={this.state.pageNumber}
           onChangeRowsPerPage={this.handleChangeRowsPerPage}

@@ -1,6 +1,5 @@
 import React from "react";
 import App, { Container } from "next/app";
-import Router from "next/router";
 import { Provider as ReduxProvider } from "react-redux";
 import { MuiThemeProvider, jssPreset } from "@material-ui/core/styles";
 import { create as createJss } from "jss";
@@ -27,15 +26,16 @@ const jss = createJss({ plugins: [...jssPreset().plugins, jssExtend()] });
 
 class MyApp extends App {
   static async getInitialProps({ Component, ctx }) {
-    const { req, res, err, query } = ctx;
+    const { req, res, err, pathname, query } = ctx;
+
+    let statusCode =
+      (res && res.statusCode) || (err && (err.statusCode || 500)) || 200;
 
     // Dependency Injection Container
     const di = getDiContainer();
 
     // Redux Store
     const store = getReduxStore(di);
-    const statusCode =
-      (res && res.statusCode) || (err && (err.statusCode || 500)) || 200;
     await store.dispatch(
       appOperations.create({
         statusCode,
@@ -46,14 +46,23 @@ class MyApp extends App {
       })
     );
 
+    if (
+      statusCode === 200 &&
+      !isRouteAllowed(pathname, authSelectors.getRoles(store.getState()))
+    ) {
+      statusCode = 403;
+      store.dispatch(appOperations.setStatusCode({ code: statusCode }));
+    }
+
     // Relay Environment
     const environment = getRelayEnvironment(di);
 
     // when doing SSR we will be making own API requests on behalf of current user
     const cookie = req && req.cookieHeader;
-    if (!process.browser && cookie) di.get("fetcher").setCookie(cookie);
+    if (cookie) di.get("fetcher").setCookie(cookie);
 
     ctx.statusCode = statusCode;
+    ctx.isAuthenticated = authSelectors.isAuthenticated(store.getState());
     ctx.store = store;
     ctx.fetchQuery = fetchQuery(environment);
 
@@ -90,18 +99,6 @@ class MyApp extends App {
       if (jssStyles && jssStyles.parentNode)
         jssStyles.parentNode.removeChild(jssStyles);
 
-      Router.onRouteChangeStart = url => {
-        if (window.location.href === "/") return;
-        if (
-          !isRouteAllowed(
-            url,
-            authSelectors.getRoles(this.reduxStore.getState())
-          )
-        ) {
-          window.location.href = "/";
-        }
-      };
-
       setTimeout(() =>
         this.reduxStore
           .dispatch(appOperations.start())
@@ -114,8 +111,6 @@ class MyApp extends App {
     const { router, Component, pageProps } = this.props;
     const path = router.pathname;
     const title = constants.pages[path] && constants.pages[path].title;
-
-    if (process.browser) global.__NEXT_PAGE_INIT = Component.getInitialProps;
 
     return (
       <Container>

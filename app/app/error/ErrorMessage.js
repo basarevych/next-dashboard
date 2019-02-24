@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { intlShape } from "react-intl";
+import { intlShape, FormattedMessage } from "react-intl";
 import HttpStatus from "http-status-codes";
 
 export const styles = theme => ({
@@ -21,7 +21,7 @@ export const styles = theme => ({
   },
   code: {
     fontSize: "300%",
-    textShadow: "2px 2px 4px #000000",
+    textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)",
     padding: "0.5rem 2rem",
     color: `1px solid ${theme.palette.text.primary}`,
     borderRight: `1px solid ${theme.palette.text.disabled}`,
@@ -31,9 +31,20 @@ export const styles = theme => ({
   },
   text: {
     fontSize: "200%",
-    textShadow: "2px 2px 4px #000000",
+    textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)",
     padding: "0.5rem 2rem",
     color: `1px solid ${theme.palette.text.secondary}`
+  },
+  linkWrapper: {
+    fontSize: "1rem",
+    marginTop: "1rem"
+  },
+  link: {
+    color: theme.palette.text.primary,
+    textDecoration: "none",
+    "&:hover": {
+      color: "#ffffff"
+    }
   }
 });
 
@@ -60,7 +71,15 @@ class ErrorMessage extends React.Component {
     return (
       <div className={this.props.classes.layout}>
         <div className={this.props.classes.code}>{this.getCode()}</div>
-        <div className={this.props.classes.text}>{this.getText()}</div>
+        <div className={this.props.classes.text}>
+          {this.getText()}
+          <div className={this.props.classes.linkWrapper}>
+            &gt;&nbsp;&nbsp;
+            <a href="/" className={this.props.classes.link}>
+              <FormattedMessage id="ERROR_GO_HOME_LINK" />
+            </a>
+          </div>
+        </div>
       </div>
     );
   }

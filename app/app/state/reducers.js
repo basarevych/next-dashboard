@@ -9,6 +9,7 @@ Map({
   statusCode: Number, // current HTTP status code
   subscriptionsServer: String,
   isStarted: Boolean,
+  isStopped: Boolean,
   isConnected: Boolean, // WebSocket
 })
 */
@@ -54,8 +55,14 @@ const isStartedReducer = (state = false, action) => {
   switch (action.type) {
     case types.START:
       return true;
+  }
+  return state;
+};
+
+const isStoppedReducer = (state = false, action) => {
+  switch (action.type) {
     case types.STOP:
-      return false;
+      return true;
   }
   return state;
 };
@@ -75,6 +82,7 @@ const reducer = combineReducers({
   statusCode: statusCodeReducer,
   subscriptionsServer: subscriptionsServerReducer,
   isStarted: isStartedReducer,
+  isStopped: isStoppedReducer,
   isConnected: isConnectedReducer
 });
 

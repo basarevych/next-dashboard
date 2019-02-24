@@ -9,7 +9,6 @@ import Chart3 from "./Charts/Chart3";
 import Chart4 from "./Charts/Chart4";
 import Chart5 from "./Charts/Chart5";
 import Chart6 from "./Charts/Chart6";
-import isRouteAllowed from "../../common/isRouteAllowed";
 
 export const styles = theme => ({
   layout: {
@@ -28,13 +27,10 @@ export const styles = theme => ({
 class ChartsPage extends React.Component {
   static propTypes = {
     theme: PropTypes.object.isRequired,
-    classes: PropTypes.object.isRequired,
-    userRoles: PropTypes.array.isRequired
+    classes: PropTypes.object.isRequired
   };
 
   render() {
-    if (!isRouteAllowed("/charts", this.props.userRoles)) return null;
-
     return (
       <div className={this.props.classes.layout}>
         <Typography variant="h3" className={this.props.classes.title}>

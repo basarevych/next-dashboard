@@ -141,7 +141,11 @@ class UsersRepository extends EventEmitter {
       await user.validateField({ field: "password", value: password }); // before it is encrypted
       user.password = await this.auth.encryptPassword(password);
     }
+
+    let isAnonymous = _.includes(user.roles, constants.roles.ANONYMOUS);
     user.roles = roles;
+    if (isAnonymous && !_.includes(user.roles, constants.roles.ANONYMOUS))
+      user.roles.push(constants.roles.ANONYMOUS);
 
     await user.validate();
     await user.save();

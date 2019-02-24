@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Typography from "@material-ui/core/Typography";
-import isRouteAllowed from "../../common/isRouteAllowed";
 
 export const styles = () => ({
   layout: {
@@ -33,13 +32,10 @@ export const styles = () => ({
 
 class TypographyPage extends React.Component {
   static propTypes = {
-    classes: PropTypes.object.isRequired,
-    userRoles: PropTypes.array.isRequired
+    classes: PropTypes.object.isRequired
   };
 
   render() {
-    if (!isRouteAllowed("/typography", this.props.userRoles)) return null;
-
     return (
       <div className={this.props.classes.layout}>
         <div className={this.props.classes.row}>

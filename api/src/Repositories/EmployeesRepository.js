@@ -3,9 +3,6 @@ const EventEmitter = require("events");
 const { fetchConnectionFromArray } = require("fast-relay-pagination");
 const jwt = require("jsonwebtoken");
 const { withFilter } = require("graphql-subscriptions");
-const constants = require("../../../common/constants");
-
-const accessLevel = constants.roles.AUTHENTICATED;
 
 class EmployeesRepository extends EventEmitter {
   constructor(
@@ -50,7 +47,7 @@ class EmployeesRepository extends EventEmitter {
   }
 
   isAllowed(requester) {
-    return requester && _.includes(requester.roles, accessLevel);
+    return !!requester;
   }
 
   subscribe(topics) {

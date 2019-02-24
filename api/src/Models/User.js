@@ -117,12 +117,8 @@ class User extends EventEmitter {
 
     this.schema.pre("save", function() {
       this.whenUpdated = Date.now();
-      if (
-        !_.includes(this.roles, constants.roles.ANONYMOUS) &&
-        !_.includes(this.roles, constants.roles.AUTHENTICATED)
-      ) {
+      if (!_.includes(this.roles, constants.roles.AUTHENTICATED))
         this.roles.push(constants.roles.AUTHENTICATED);
-      }
     });
 
     this.model = this.db.mongoose.model("User", this.schema);

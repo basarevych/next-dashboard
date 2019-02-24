@@ -89,6 +89,7 @@ class Database extends EventEmitter {
       });
       if (!this.anonymous) {
         this.anonymous = new this.UserModel({
+          name: "Anonymous",
           email: "anonymous@example.com",
           password: this.fake.getString(64),
           roles: [constants.roles.ANONYMOUS]

@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { graphql } from "react-relay";
 import { NextQueryRenderer } from "../app/providers/Relay";
 import EmployeeList, {
@@ -8,7 +7,6 @@ import EmployeeList, {
   sortDir
 } from "./EmployeeListContainer";
 import ErrorMessage from "../app/error/ErrorMessageContainer";
-import isRouteAllowed from "../../common/isRouteAllowed";
 
 const defaultVariables = { first: pageSize, sortBy, sortDir };
 
@@ -36,18 +34,11 @@ export const query = graphql`
 `;
 
 class EmployeesPage extends React.Component {
-  static propTypes = {
-    userRoles: PropTypes.array.isRequired
-  };
-
   static async getInitialProps({ statusCode, fetchQuery }) {
-    if (statusCode !== 200) return;
-    await fetchQuery(query, defaultVariables);
+    if (statusCode === 200) await fetchQuery(query, defaultVariables);
   }
 
   render() {
-    if (!isRouteAllowed("/tables", this.props.userRoles)) return null;
-
     return (
       <NextQueryRenderer
         query={query}

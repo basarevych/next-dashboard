@@ -1,5 +1,3 @@
-import Router from "next/router";
-import isRouteAllowed from "../../../common/isRouteAllowed";
 import * as actions from "./actions";
 import * as selectors from "./selectors";
 import { getFormErrors } from "../../app/forms/connectForm";
@@ -32,19 +30,6 @@ const fetchStatus = () => async (dispatch, getState, di) => {
 export const setStatus = status => async (dispatch, getState, di) => {
   if (process.browser && !status) status = await dispatch(fetchStatus());
 
-  if (
-    process.browser &&
-    window.location.href !== "/" &&
-    status &&
-    status.roles
-  ) {
-    if (!isRouteAllowed(Router.pathname, status.roles)) {
-      await dispatch(appOperations.stop());
-      window.location.href = "/";
-      return;
-    }
-  }
-
   if (!status) return;
 
   await dispatch(actions.setStatus(status));
@@ -76,8 +61,6 @@ export const signIn = ({ email, password }) => async (
   let data = await SignInMutation(di, { email, password });
   if (_.get(data, "data.signIn.success", false)) {
     await dispatch(setStatus());
-    if (process.browser && _.isFunction(window.__NEXT_PAGE_INIT))
-      await window.__NEXT_PAGE_INIT({ store: window.__NEXT_REDUX_STORE__ });
     return true;
   }
   return getFormErrors(data, "APP_AUTH_FAILED");
@@ -100,13 +83,10 @@ export const signUp = ({ email, password }) => async (
 };
 
 export const signOut = () => async (dispatch, getState, di) => {
-  let data = await SignOutMutation(di);
-  if (_.get(data, "data.signOut.success", false)) {
-    await dispatch(setStatus());
-    return true;
-  }
-
-  return false;
+  await dispatch(appOperations.stop());
+  await SignOutMutation(di);
+  window.location.href = "/";
+  return true;
 };
 
 export const requestEmailVerification = () => async (
@@ -175,12 +155,8 @@ export const unlinkProvider = ({ provider }) => async (
 };
 
 export const deleteProfile = () => async (dispatch, getState, di) => {
-  let data = await DeleteProfileMutation(di);
-  if (_.get(data, "data.deleteProfile.success", false)) {
-    await dispatch(appOperations.stop());
-    window.location.href = "/";
-    return true;
-  }
-
-  return false;
+  await dispatch(appOperations.stop());
+  await DeleteProfileMutation(di);
+  window.location.href = "/";
+  return true;
 };
