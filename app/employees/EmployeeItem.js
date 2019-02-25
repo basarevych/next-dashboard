@@ -68,10 +68,7 @@ class EmployeeItem extends React.Component {
         <TableCell className={classNames(this.props.isSelected && "selected")}>
           {this.props.node.country.name}
         </TableCell>
-        <TableCell
-          className={classNames(this.props.isSelected && "selected")}
-          align="right"
-        >
+        <TableCell className={classNames(this.props.isSelected && "selected")}>
           <FormattedNumber value={this.props.node.salary} />
         </TableCell>
       </TableRow>

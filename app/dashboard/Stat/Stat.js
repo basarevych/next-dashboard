@@ -29,7 +29,10 @@ export const styles = theme => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "stretch",
-    position: "relative"
+    position: "relative",
+    "& svg": {
+      overflow: ["visible", "!important"]
+    }
   },
   delta: {
     position: "absolute",
@@ -139,7 +142,23 @@ class Stat extends React.Component {
           height={height}
           padding={0}
           domainPadding={{ x: [10, 10], y: [5, 5] }}
-          containerComponent={<VictoryVoronoiContainer responsive={false} />}
+          containerComponent={
+            <VictoryVoronoiContainer
+              responsive={false}
+              voronoiDimension="x"
+              voronoiBlacklist={["line"]}
+              labels={d =>
+                this.props.intl.formatMessage({ id: this.props.label }) +
+                ": " +
+                d.value +
+                "\n" +
+                this.props.intl.formatDate(d.date)
+              }
+              labelComponent={
+                <VictoryTooltip renderInPortal orientation="left" />
+              }
+            />
+          }
         >
           <VictoryAxis
             dependentAxis
@@ -156,10 +175,12 @@ class Stat extends React.Component {
             }}
           />
           <VictoryLine
+            name="line"
             data={this.getData()}
             x="date"
             y="value"
             interpolation="monotoneX"
+            labels={_.constant("")}
             style={{
               data: {
                 stroke: "url(#statGradient)",
@@ -171,14 +192,6 @@ class Stat extends React.Component {
             data={this.getData()}
             x="date"
             y="value"
-            labels={d =>
-              this.props.intl.formatMessage({ id: this.props.label }) +
-              ": " +
-              d.value +
-              "\n" +
-              this.props.intl.formatDate(d.date)
-            }
-            labelComponent={<VictoryTooltip />}
             symbol="diamond"
             size={3}
             style={{

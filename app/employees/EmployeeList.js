@@ -71,7 +71,7 @@ export const styles = theme => ({
     background: theme.main.paper
   },
   table: {
-    [theme.breakpoints.down("sm")]: responsiveTable(theme)
+    [theme.breakpoints.down("md")]: responsiveTable(theme)
   },
   grow: {
     flex: 1
@@ -388,7 +388,6 @@ class EmployeeList extends React.Component {
                 </TableSortLabel>
               </TableCell>
               <TableCell
-                align="right"
                 sortDirection={
                   this.state.variables.sortBy === "salary"
                     ? this.state.variables.sortDir
@@ -420,6 +419,7 @@ class EmployeeList extends React.Component {
           component="div"
           count={_.get(this.props.viewer, "employees.totalCount", 0)}
           rowsPerPage={this.state.pageSize}
+          labelRowsPerPage={null}
           page={this.state.pageNumber}
           onChangeRowsPerPage={this.handleChangeRowsPerPage}
           onChangePage={this.handleChangePage}

@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import Typography from "@material-ui/core/Typography";
 
-export const styles = () => ({
+export const styles = theme => ({
   layout: {
     width: "100%",
     flex: 1,
@@ -16,16 +16,23 @@ export const styles = () => ({
     justifyContent: "stretch",
     alignItems: "center",
     marginTop: "2rem",
-    marginBottom: "2rem"
+    marginBottom: "2rem",
+    [theme.breakpoints.down("sm")]: {
+      flexDirection: "column"
+    }
   },
   label: {
     width: 350,
     padding: "0 2rem",
     textAlign: "right",
     fontFamily: "Roboto Mono",
-    fontWeight: "bold"
+    fontWeight: "bold",
+    [theme.breakpoints.down("sm")]: {
+      textAlign: "center"
+    }
   },
   item: {
+    padding: "0 2rem",
     flex: 1
   }
 });

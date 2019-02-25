@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Grid from "@material-ui/core/Grid";
-import Fade from "@material-ui/core/Fade";
+import Grow from "@material-ui/core/Grow";
 import ProfitStat from "./Stat/ProfitStatContainer";
 import SalesStat from "./Stat/SalesStatContainer";
 import ClientsStat from "./Stat/ClientsStatContainer";
@@ -89,25 +89,25 @@ class Dashboard extends React.Component {
           spacing={this.props.theme.main.spacing}
           alignItems="center"
         >
-          <Grid item xs={12} md={3}>
+          <Grid item xs={12} sm={6} md={3}>
             <ProfitStat
               label="DASHBOARD_PROFIT_LABEL"
               data={this.props.viewer.profitValues}
             />
           </Grid>
-          <Grid item xs={12} md={3}>
+          <Grid item xs={12} sm={6} md={3}>
             <SalesStat
               label="DASHBOARD_SALES_LABEL"
               data={this.props.viewer.salesValues}
             />
           </Grid>
-          <Grid item xs={12} md={3}>
+          <Grid item xs={12} sm={6} md={3}>
             <ClientsStat
               label="DASHBOARD_CLIENTS_LABEL"
               data={this.props.viewer.clientsValues}
             />
           </Grid>
-          <Grid item xs={12} md={3}>
+          <Grid item xs={12} sm={6} md={3}>
             <AvgTimeStat
               label="DASHBOARD_AVG_TIME_LABEL"
               precision={2}
@@ -122,14 +122,14 @@ class Dashboard extends React.Component {
           </Grid>
           <Grid item xs={12} md={4}>
             <MarketSpinner isActive={!this.state.isLoaded} />
-            <Fade in={this.state.isLoaded}>
+            <Grow in={this.state.isLoaded}>
               <MarketShare
                 selected={this.state.countryId}
                 viewer={this.props.viewer}
                 onLoaded={this.handleLoaded}
                 onSelect={this.handleCountrySelected}
               />
-            </Fade>
+            </Grow>
           </Grid>
           <Grid item xs={12}>
             <DemoTable viewer={this.props.viewer} />

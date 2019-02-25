@@ -76,7 +76,11 @@ export const styles = theme => ({
   row: {
     display: "flex",
     justifyContent: "space-around",
-    alignItems: "center"
+    alignItems: "center",
+    overflowX: "auto",
+    [theme.breakpoints.down("sm")]: {
+      justifyContent: "unset"
+    }
   },
   odd: {
     background: lighten(theme.palette.background.paper, 0.1)
@@ -85,9 +89,14 @@ export const styles = theme => ({
     background: darken(theme.palette.background.paper, 0.1)
   },
   item: {
+    minWidth: 100,
     display: "flex",
     flexDirection: "column",
     alignItems: "center"
+  },
+  text: {
+    lineHeight: "1rem",
+    textAlign: "center"
   }
 });
 
@@ -117,7 +126,9 @@ class IconsPage extends React.Component {
       <div className={this.props.classes.item}>
         <Icon fontSize="large" />
         <div>
-          <Typography variant="overline">{name}</Typography>
+          <Typography variant="overline" className={this.props.classes.text}>
+            {name}
+          </Typography>
         </div>
       </div>
     );
@@ -195,16 +206,19 @@ class IconsPage extends React.Component {
         </div>
         <div className={this.props.classes.wrapper}>
           <AutoSizer>
-            {({ width, height }) => (
-              <List
-                className={this.props.classes.list}
-                width={width}
-                height={height}
-                rowCount={this.state.list.length}
-                rowHeight={100}
-                rowRenderer={this.renderRow}
-              />
-            )}
+            {({ width, height }) => {
+              if (height < 300) height = 300;
+              return (
+                <List
+                  className={this.props.classes.list}
+                  width={width}
+                  height={height}
+                  rowCount={this.state.list.length}
+                  rowHeight={100}
+                  rowRenderer={this.renderRow}
+                />
+              );
+            }}
           </AutoSizer>
         </div>
       </div>
