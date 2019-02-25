@@ -132,12 +132,13 @@ module.exports = {
         borderBottom: `1px solid ${textDisabled}`
       },
       head: {
-        fontSize: fontSize,
+        fontSize: "0.9rem",
         fontWeight: "bold",
+        textTransform: "uppercase",
         color: textContrast
       },
       body: {
-        fontSize: fontSize,
+        fontSize: "1rem",
         "&.selected": {
           background: primary
         }

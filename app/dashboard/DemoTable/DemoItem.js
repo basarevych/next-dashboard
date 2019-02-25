@@ -41,7 +41,7 @@ class DemoItem extends React.Component {
         <TableCell>{this.props.node.name}</TableCell>
         <TableCell>{this.props.node.title}</TableCell>
         <TableCell>{this.props.node.country.name}</TableCell>
-        <TableCell align="right">
+        <TableCell>
           <FormattedNumber value={this.props.node.salary} />
         </TableCell>
       </TableRow>

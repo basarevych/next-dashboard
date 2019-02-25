@@ -419,7 +419,7 @@ class EmployeeList extends React.Component {
           component="div"
           count={_.get(this.props.viewer, "employees.totalCount", 0)}
           rowsPerPage={this.state.pageSize}
-          labelRowsPerPage={null}
+          labelRowsPerPage=""
           page={this.state.pageNumber}
           onChangeRowsPerPage={this.handleChangeRowsPerPage}
           onChangePage={this.handleChangePage}

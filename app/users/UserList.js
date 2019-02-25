@@ -352,7 +352,7 @@ class UserList extends React.Component {
           component="div"
           count={_.get(this.props.viewer, "users.totalCount", 0)}
           rowsPerPage={this.state.pageSize}
-          labelRowsPerPage={null}
+          labelRowsPerPage=""
           page={this.state.pageNumber}
           onChangeRowsPerPage={this.handleChangeRowsPerPage}
           onChangePage={this.handleChangePage}

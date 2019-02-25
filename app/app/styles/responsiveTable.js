@@ -1,10 +1,9 @@
-export default theme => ({
+export default (/* theme */) => ({
   "& table": {
     display: ["block", "!important"]
   },
   "& thead": {
-    display: ["none", "!important"],
-    background: [theme.palette.background.paper, "!important"]
+    display: ["block", "!important"]
   },
   "& tbody": {
     display: ["block", "!important"]
@@ -30,7 +29,7 @@ export default theme => ({
   "& tr": {
     height: ["100%", "!important"],
     display: ["block", "!important"],
-    paddingTop: ["0.25rem", "!important"],
+    marginTop: ["0.25rem", "!important"],
     marginBottom: ["0.25rem", "!important"]
   }
 });
