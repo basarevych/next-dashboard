@@ -50,7 +50,10 @@ class AvatarsRoute extends EventEmitter {
 
   async randomize() {
     if (this.fetchPromise) return this.fetchPromise;
+    this.fetchTime = Date.now();
+
     if (process.env.NODE_ENV !== "test") console.log("> Updating avatar list");
+
     this.fetchPromise = new Promise(async (resolve, reject) => {
       this.avatars = [];
       let list;
@@ -110,11 +113,9 @@ class AvatarsRoute extends EventEmitter {
       resolve();
     }).then(
       () => {
-        this.fetchTime = Date.now();
         this.fetchPromise = null;
       },
       error => {
-        this.fetchTime = Date.now();
         this.fetchPromise = null;
         throw error;
       }
@@ -174,6 +175,9 @@ class AvatarsRoute extends EventEmitter {
       let image;
       let url;
 
+      if (Date.now() - this.fetchTime > this.fetchInterval * 60 * 1000)
+        await this.randomize();
+
       if (req.params.id === "0") {
         // own avatar
         let user = await req.getUser();
@@ -195,8 +199,6 @@ class AvatarsRoute extends EventEmitter {
         }
       } else {
         // random avatar
-        if (Date.now() - this.fetchTime > this.fetchInterval * 60 * 1000)
-          await this.randomize();
         url = this.avatars[parseInt(req.params.id)];
       }
 

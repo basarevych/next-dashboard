@@ -517,7 +517,7 @@
       "publicPath": "/_next/static/chunks/commons.1a3d34c2361ac10880eb.js"
     }
   ],
-  "./selectors/isValid": [
+  "../selectors/isValid": [
     {
       "id": "3ICH",
       "name": "./node_modules/redux-form/lib/selectors/isValid.js",
@@ -951,16 +951,10 @@
       "publicPath": "/_next/static/chunks/commons.1a3d34c2361ac10880eb.js"
     }
   ],
-  "./objectWithoutPropertiesLoose": [
+  "@babel/runtime/helpers/objectWithoutPropertiesLoose": [
     {
       "id": "8OQS",
       "name": "./node_modules/@babel/runtime/helpers/objectWithoutPropertiesLoose.js",
-      "file": "static/chunks/commons.1a3d34c2361ac10880eb.js",
-      "publicPath": "/_next/static/chunks/commons.1a3d34c2361ac10880eb.js"
-    },
-    {
-      "id": "L2E4",
-      "name": "./node_modules/@babel/runtime-corejs2/helpers/objectWithoutPropertiesLoose.js",
       "file": "static/chunks/commons.1a3d34c2361ac10880eb.js",
       "publicPath": "/_next/static/chunks/commons.1a3d34c2361ac10880eb.js"
     }
@@ -1011,7 +1005,7 @@
       "publicPath": "/_next/static/chunks/commons.1a3d34c2361ac10880eb.js"
     }
   ],
-  "../colors/pink": [
+  "./pink": [
     {
       "id": "8rdq",
       "name": "./node_modules/@material-ui/core/colors/pink.js",
@@ -1075,7 +1069,7 @@
       "publicPath": "/_next/static/chunks/commons.1a3d34c2361ac10880eb.js"
     }
   ],
-  "../styles/withTheme": [
+  "./withTheme": [
     {
       "id": "A3JV",
       "name": "./node_modules/@material-ui/core/styles/withTheme.js",
@@ -1147,7 +1141,7 @@
       "publicPath": "/_next/static/chunks/commons.1a3d34c2361ac10880eb.js"
     }
   ],
-  "./mergeClasses": [
+  "../styles/mergeClasses": [
     {
       "id": "Ap+j",
       "name": "./node_modules/@material-ui/core/styles/mergeClasses.js",
@@ -1593,7 +1587,7 @@
       "publicPath": "/_next/static/chunks/commons.1a3d34c2361ac10880eb.js"
     }
   ],
-  "../../modules/es6.string.iterator": [
+  "../modules/es6.string.iterator": [
     {
       "id": "FlQf",
       "name": "./node_modules/core-js/library/modules/es6.string.iterator.js",
@@ -1649,7 +1643,7 @@
       "publicPath": "/_next/static/chunks/commons.1a3d34c2361ac10880eb.js"
     }
   ],
-  "./isObject": [
+  "lodash/isObject": [
     {
       "id": "GoyQ",
       "name": "./node_modules/lodash/isObject.js",
@@ -1743,7 +1737,7 @@
       "publicPath": "/_next/static/chunks/commons.1a3d34c2361ac10880eb.js"
     }
   ],
-  "../styles/withStyles": [
+  "./withStyles": [
     {
       "id": "Hk+Y",
       "name": "./node_modules/@material-ui/core/styles/withStyles.js",
@@ -2087,6 +2081,14 @@
     {
       "id": "Kz5y",
       "name": "./node_modules/lodash/_root.js",
+      "file": "static/chunks/commons.1a3d34c2361ac10880eb.js",
+      "publicPath": "/_next/static/chunks/commons.1a3d34c2361ac10880eb.js"
+    }
+  ],
+  "./objectWithoutPropertiesLoose": [
+    {
+      "id": "L2E4",
+      "name": "./node_modules/@babel/runtime-corejs2/helpers/objectWithoutPropertiesLoose.js",
       "file": "static/chunks/commons.1a3d34c2361ac10880eb.js",
       "publicPath": "/_next/static/chunks/commons.1a3d34c2361ac10880eb.js"
     }
@@ -2871,7 +2873,7 @@
       "publicPath": "/_next/static/chunks/commons.1a3d34c2361ac10880eb.js"
     }
   ],
-  "./createBreakpoints": [
+  "../styles/createBreakpoints": [
     {
       "id": "Th4q",
       "name": "./node_modules/@material-ui/core/styles/createBreakpoints.js",
@@ -2927,7 +2929,7 @@
       "publicPath": "/_next/static/chunks/commons.1a3d34c2361ac10880eb.js"
     }
   ],
-  "../utils/isObservable": [
+  "./isObservable": [
     {
       "id": "UCXN",
       "name": "./node_modules/jss/lib/utils/isObservable.js",
@@ -3023,7 +3025,7 @@
       "publicPath": "/_next/static/chunks/commons.1a3d34c2361ac10880eb.js"
     }
   ],
-  "./getIn": [
+  "../plain/getIn": [
     {
       "id": "Ujbc",
       "name": "./node_modules/redux-form/lib/structure/plain/getIn.js",
@@ -3403,7 +3405,7 @@
       "publicPath": "/_next/static/chunks/commons.1a3d34c2361ac10880eb.js"
     }
   ],
-  "./isPlainObject": [
+  "lodash/isPlainObject": [
     {
       "id": "YO3V",
       "name": "./node_modules/lodash/isPlainObject.js",
@@ -3795,7 +3797,7 @@
       "publicPath": "/_next/static/chunks/commons.1a3d34c2361ac10880eb.js"
     }
   ],
-  "../../app/forms/connectForm": [
+  "../app/forms/connectForm": [
     {
       "id": "ciYs",
       "name": "./app/app/forms/connectForm.js",
@@ -4573,7 +4575,7 @@
       "publicPath": "/_next/static/chunks/commons.1a3d34c2361ac10880eb.js"
     }
   ],
-  "./runtime": [
+  "regenerator-runtime/runtime": [
     {
       "id": "ls82",
       "name": "./node_modules/regenerator-runtime/runtime.js",
@@ -4715,7 +4717,7 @@
       "publicPath": "/_next/static/chunks/commons.1a3d34c2361ac10880eb.js"
     }
   ],
-  "lodash/get": [
+  "./get": [
     {
       "id": "mwIZ",
       "name": "./node_modules/lodash/get.js",
@@ -4803,7 +4805,7 @@
       "publicPath": "/_next/static/chunks/commons.1a3d34c2361ac10880eb.js"
     }
   ],
-  "../../../common/constants": [
+  "../common/constants": [
     {
       "id": "o4p3",
       "name": "./common/constants.js",
@@ -5075,7 +5077,7 @@
       "publicPath": "/_next/static/chunks/commons.1a3d34c2361ac10880eb.js"
     }
   ],
-  "../colors/common": [
+  "./common": [
     {
       "id": "sAgZ",
       "name": "./node_modules/@material-ui/core/colors/common.js",
@@ -5251,7 +5253,7 @@
       "publicPath": "/_next/static/chunks/commons.1a3d34c2361ac10880eb.js"
     }
   ],
-  "./utils/toCssValue": [
+  "../utils/toCssValue": [
     {
       "id": "uIix",
       "name": "./node_modules/jss/lib/utils/toCssValue.js",
@@ -5515,7 +5517,7 @@
       "publicPath": "/_next/static/chunks/commons.1a3d34c2361ac10880eb.js"
     }
   ],
-  "../colors/indigo": [
+  "./indigo": [
     {
       "id": "xJ30",
       "name": "./node_modules/@material-ui/core/colors/indigo.js",
@@ -5555,7 +5557,7 @@
       "publicPath": "/_next/static/chunks/commons.1a3d34c2361ac10880eb.js"
     }
   ],
-  "./transitions": [
+  "../styles/transitions": [
     {
       "id": "yAQS",
       "name": "./node_modules/@material-ui/core/styles/transitions.js",
@@ -5683,7 +5685,7 @@
       "publicPath": "/_next/static/chunks/commons.1a3d34c2361ac10880eb.js"
     }
   ],
-  "./_wks-ext": [
+  "../../modules/_wks-ext": [
     {
       "id": "zLkG",
       "name": "./node_modules/core-js/library/modules/_wks-ext.js",

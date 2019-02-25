@@ -112,7 +112,7 @@ class Sidebar extends React.Component {
   renderHeader() {
     return (
       <div className={this.props.classes.avatar}>
-        <img src={`${constants.apiBase}/avatars/0`} />
+        <img src={`${constants.apiBase}/avatars/0?t=${Date.now()}`} />
         <Typography variant="subtitle1">{this.props.name}</Typography>
       </div>
     );
