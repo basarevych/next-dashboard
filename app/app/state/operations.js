@@ -1,5 +1,5 @@
 import * as actions from "./actions";
-import { authOperations } from "../../auth/state";
+import { authOperations, authSelectors } from "../../auth/state";
 import constants from "../../../common/constants";
 
 export const setStatusCode = actions.setStatusCode;
@@ -32,7 +32,7 @@ export const init = () => async dispatch => {
 
 let fontsLoaded;
 // called in App.componentDidMount()
-export const start = async (dispatch, getState, di) => {
+export const start = () => {
   if (!fontsLoaded) {
     fontsLoaded = new Promise(resolve => {
       if (window.__fontsLoaded) return resolve();
@@ -43,12 +43,15 @@ export const start = async (dispatch, getState, di) => {
     });
   }
 
-  return async dispatch => {
+  return async (dispatch, getState, di) => {
     await Promise.all([dispatch(authOperations.setStatus()), fontsLoaded]);
 
-    const storage = di.get("storage");
-    if (!storage.get("notAnonymous"))
+    if (
+      !authSelectors.isAuthenticated(getState()) &&
+      !di.get("storage").get("notAnonymous")
+    ) {
       await dispatch(authOperations.signIn({ email: null, password: null }));
+    }
 
     return dispatch(actions.start());
   };
