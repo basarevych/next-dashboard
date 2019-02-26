@@ -14,10 +14,12 @@ class Provider extends EventEmitter {
       },
       whenCreated: {
         type: Date,
+        default: Date.now,
         required: [true, "ERROR_FIELD_REQUIRED"]
       },
       whenUpdated: {
         type: Date,
+        default: Date.now,
         required: [true, "ERROR_FIELD_REQUIRED"]
       },
       name: {
