@@ -18,7 +18,7 @@ import red from "@material-ui/core/colors/red";
 
 export const styles = theme => ({
   root: {
-    boxShadow: "inset 0 0 6px #000000",
+    boxShadow: "inset 0 0 6px rgba(0, 0, 0, 0.5)",
     borderRadius: theme.shape.borderRadius,
     background: theme.window.background,
     color: theme.window.color,

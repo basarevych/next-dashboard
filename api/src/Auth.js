@@ -249,15 +249,15 @@ class Auth extends EventEmitter {
 
                   // Save Profile ID, Access Token and Refresh Token values
                   // to the users local account, which links the accounts.
-                  let provider = new this.db.ProviderModel({
+                  let prov = new this.db.ProviderModel({
                     name: provider.providerName,
                     profile: profile,
                     accessToken: accessToken,
                     refreshToken: refreshToken
                   });
-                  await provider.validate();
+                  await prov.validate();
 
-                  req.user.providers.push(provider);
+                  req.user.providers.push(prov);
 
                   await req.user.validate();
                   await req.user.save();
@@ -324,19 +324,19 @@ class Auth extends EventEmitter {
 
                   // If an account does not exist, create one for them and return
                   // a user object to passport, which will sign them in.
-                  let provider = new this.db.ProviderModel({
+                  let prov = new this.db.ProviderModel({
                     name: provider.providerName,
                     profile: profile,
                     accessToken: accessToken,
                     refreshToken: refreshToken
                   });
-                  await provider.validate();
+                  await prov.validate();
 
                   user = new this.db.UserModel({
                     email: email,
                     name: profile.displayName,
                     password: this.fake.getString(64),
-                    providers: [provider]
+                    providers: [prov]
                   });
 
                   await user.validate();
