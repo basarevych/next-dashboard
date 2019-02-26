@@ -5,7 +5,7 @@ const {
   lighten,
   fade
 } = require("@material-ui/core/styles/colorManipulator");
-const { red, blueGrey } = require("@material-ui/core/colors");
+const { red, blueGrey, amber } = require("@material-ui/core/colors");
 
 const primary = "#707484";
 const secondary = "#af441d";
@@ -28,7 +28,6 @@ const fontSize = 14;
 
 module.exports = {
   name: "daemon",
-  wallpaper: "/static/img/bg.jpg?v=3",
   palette: {
     primary: {
       main: primary,
@@ -67,6 +66,7 @@ module.exports = {
     phoneWidth: 20,
     background:
       "linear-gradient(to bottom, #484e5e 0, #161920 80%, #161920 100%)",
+    color: textContrast,
     itemBackground: "transparent",
     itemBorder: `4px solid transparent`,
     itemColor: textDark,
@@ -80,10 +80,29 @@ module.exports = {
     itemSelectedHoverColor: textContrast,
     itemSelectedHoverBorder: `4px solid ${lighten(secondary, 0.05)}`
   },
+  window: {
+    background: lighten(bgNormal, 0.25),
+    color: textNormal,
+    mapColor: textNormal,
+    mapBackground: fade(bgNormal, 0.7),
+    mapHoverBackground: fade(amber[500], 0.85),
+    mapSelectedBackground: amber[400],
+    dotInner: "#ffffff",
+    dotOuter: "#999999"
+  },
+  form: {
+    background: bgNormal,
+    stepperBackground: lighten(bgNormal, 0.15),
+    stepperLine: textDisabled,
+    stepperColor: fade(textDark, 0.4),
+    stepperActive: "#ffffff"
+  },
   main: {
     background:
       "linear-gradient(to right, #484e5e 0, #484e5e 15%, #20252f 100%)",
     paper: bgPaper,
+    backdrop: "rgba(0, 0, 0, 0.85)",
+    spinner: textContrast,
     spacing: 24,
     error: {
       background: fade(textError, 0.65),
@@ -140,7 +159,8 @@ module.exports = {
       body: {
         fontSize: "1rem",
         "&.selected": {
-          background: primary
+          background: primary,
+          color: textContrast
         }
       }
     },

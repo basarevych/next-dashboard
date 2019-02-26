@@ -13,6 +13,7 @@ import theme from "./theme";
 
 class Chart5 extends React.Component {
   static propTypes = {
+    theme: PropTypes.object.isRequired,
     className: PropTypes.string
   };
 
@@ -35,8 +36,8 @@ class Chart5 extends React.Component {
         height={height}
         containerComponent={<VictoryVoronoiContainer responsive={false} />}
         theme={theme({
+          theme: this.props.theme,
           withGrid: true,
-          withDarkGrid: true,
           withAxis: true,
           withArea: true
         })}

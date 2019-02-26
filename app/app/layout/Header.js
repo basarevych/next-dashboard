@@ -38,13 +38,13 @@ export const styles = theme => ({
     left: 0,
     right: 0,
     top: 0,
-    height: 30
+    height: 50
   },
   barContainer: {
     transition: "all 0.25s ease-in-out"
   },
   bar: {
-    background: theme.palette.background.paper,
+    background: theme.palette.primary.main,
     boxShadow: "none"
   },
   barItem: {
@@ -102,7 +102,7 @@ export const styles = theme => ({
     maxWidth: theme.spacing.unit * 45,
     background: lighten(theme.palette.background.paper, 0.1),
     "& svg": {
-      color: [theme.palette.primary.contrastText, "!important"]
+      color: [theme.palette.text.primary, "!important"]
     },
     [theme.breakpoints.down("xs")]: {
       width: "90%",

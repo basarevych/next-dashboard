@@ -12,6 +12,7 @@ import theme from "./theme";
 
 class Chart4 extends React.Component {
   static propTypes = {
+    theme: PropTypes.object.isRequired,
     className: PropTypes.string
   };
 
@@ -26,7 +27,7 @@ class Chart4 extends React.Component {
         width={width}
         height={height}
         containerComponent={<VictoryVoronoiContainer responsive={false} />}
-        theme={theme()}
+        theme={theme({ theme: this.props.theme })}
       >
         <VictoryAxis />
         <VictoryAxis dependentAxis />

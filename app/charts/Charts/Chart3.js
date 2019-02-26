@@ -14,6 +14,7 @@ import theme from "./theme";
 
 class Chart3 extends React.Component {
   static propTypes = {
+    theme: PropTypes.object.isRequired,
     className: PropTypes.string
   };
 
@@ -68,7 +69,10 @@ class Chart3 extends React.Component {
         width={width}
         height={height}
         containerComponent={<VictoryVoronoiContainer responsive={false} />}
-        theme={theme({ withGrid: true })}
+        theme={theme({
+          theme: this.props.theme,
+          withGrid: true
+        })}
       >
         <VictoryGroup
           colorScale={["gold", "orange", "tomato"]}

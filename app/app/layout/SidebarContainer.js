@@ -8,7 +8,8 @@ import { authSelectors } from "../../auth/state";
 const mapStateToProps = state => {
   return {
     roles: authSelectors.getRoles(state),
-    name: authSelectors.getName(state) || authSelectors.getEmail(state) || ""
+    name: authSelectors.getName(state) || authSelectors.getEmail(state) || "",
+    email: authSelectors.getEmail(state) || "none"
   };
 };
 

@@ -37,9 +37,24 @@ class BillingForm extends ShippingForm {
     blurredField,
     transform = true
   ) {
+    let thrown;
+    try {
+      return await super.onValidate(
+        values,
+        dispatch,
+        props,
+        blurredField,
+        transform
+      );
+    } catch (error) {
+      thrown = error;
+    }
+
     if (values.get("isSameAddress")) {
-      for (let field of _.keys(this.addressFields))
+      for (let field of _.keys(this.addressFields)) {
         delete this.cachedErrors[field];
+        delete thrown[field];
+      }
       if (!blurredField) {
         blurredField = _.difference(
           _.keys(this.fields),
@@ -47,7 +62,8 @@ class BillingForm extends ShippingForm {
         );
       }
     }
-    return super.onValidate(values, dispatch, props, blurredField, transform);
+
+    throw thrown;
   }
 
   componentDidMount() {

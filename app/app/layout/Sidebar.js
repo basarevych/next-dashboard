@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { intlShape, FormattedMessage } from "react-intl";
+import md5 from "js-md5";
 import Typography from "@material-ui/core/Typography";
 import MenuList from "@material-ui/core/MenuList";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -32,7 +33,7 @@ export const styles = theme => ({
     display: "block",
     margin: "1rem",
     textAlign: "center",
-    color: theme.palette.text.secondary,
+    color: theme.sidebar.color,
     textDecoration: "none",
     "&:hover": {
       color: theme.palette.secondary.main
@@ -45,7 +46,8 @@ export const styles = theme => ({
     margin: "2rem 0 1rem 0",
     display: "flex",
     flexDirection: "column",
-    alignItems: "center"
+    alignItems: "center",
+    color: theme.sidebar.color
   },
   item: {
     background: [theme.sidebar.itemBackground, "!important"],
@@ -100,6 +102,7 @@ class Sidebar extends React.Component {
     intl: intlShape.isRequired,
     classes: PropTypes.object.isRequired,
     name: PropTypes.string.isRequired,
+    email: PropTypes.string.isRequired,
     roles: PropTypes.array.isRequired,
     onMenuClick: PropTypes.func.isRequired
   };
@@ -112,8 +115,12 @@ class Sidebar extends React.Component {
   renderHeader() {
     return (
       <div className={this.props.classes.avatar}>
-        <img src={`${constants.apiBase}/avatars/0?t=${Date.now()}`} />
-        <Typography variant="subtitle1">{this.props.name}</Typography>
+        <img
+          src={`${constants.apiBase}/avatars/0?h=${md5(this.props.email)}`}
+        />
+        <Typography variant="subtitle1" color="inherit">
+          {this.props.name}
+        </Typography>
       </div>
     );
   }

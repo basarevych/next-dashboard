@@ -12,20 +12,16 @@ import {
   VictoryTooltip
 } from "victory";
 import Typography from "@material-ui/core/Typography";
-import { fade, darken } from "@material-ui/core/styles/colorManipulator";
-import blue from "@material-ui/core/colors/blue";
-import amber from "@material-ui/core/colors/amber";
+import { fade } from "@material-ui/core/styles/colorManipulator";
 import green from "@material-ui/core/colors/green";
 import red from "@material-ui/core/colors/red";
 
 export const styles = theme => ({
   root: {
-    boxShadow: "inset 0 0 6px rgba(0, 0, 0, 0.85)",
+    boxShadow: "inset 0 0 5px rgba(0, 0, 0, 0.85)",
     borderRadius: theme.shape.borderRadius,
-    background: `linear-gradient(to bottom, ${
-      theme.palette.background.paper
-    } 0, ${darken(theme.palette.background.paper, 0.5)} 100%)`,
-    color: amber[500],
+    background: theme.window.background,
+    color: theme.window.color,
     display: "flex",
     flexDirection: "column",
     alignItems: "stretch",
@@ -49,16 +45,13 @@ export const styles = theme => ({
     flexDirection: "column",
     alignItems: "center"
   },
-  chart: {
-    marginTop: "-1rem"
-  },
   increasing: {
     color: "#ffffff",
-    background: fade(green[300], 0.65)
+    background: fade(green[600], 0.85)
   },
   descreasing: {
     color: "#ffffff",
-    background: fade(red[300], 0.65)
+    background: fade(red[600], 0.85)
   }
 });
 
@@ -128,80 +121,72 @@ class Stat extends React.Component {
       0
     );
     return (
-      <React.Fragment>
-        <svg width={0} height={0}>
-          <defs>
-            <linearGradient id="statGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor={fade(blue[500], 0.25)} />
-              <stop offset="100%" stopColor={blue[400]} />
-            </linearGradient>
-          </defs>
-        </svg>
-        <VictoryChart
-          width={width}
-          height={height}
-          padding={0}
-          domainPadding={{ x: [10, 10], y: [5, 5] }}
-          containerComponent={
-            <VictoryVoronoiContainer
-              responsive={false}
-              voronoiDimension="x"
-              voronoiBlacklist={["line"]}
-              labels={d =>
-                this.props.intl.formatMessage({ id: this.props.label }) +
-                ": " +
-                d.value +
-                "\n" +
-                this.props.intl.formatDate(d.date)
-              }
-              labelComponent={
-                <VictoryTooltip renderInPortal orientation="left" />
-              }
-            />
-          }
-        >
-          <VictoryAxis
-            dependentAxis
-            domain={{ y: [0, 1.1 * max] }}
-            orientation="left"
-            style={{
-              axis: { display: "none" },
-              ticks: { display: "none" },
-              tickLabels: { display: "none" },
-              grid: {
-                stroke: fade(amber[300], 0.3),
-                strokeWidth: 0.75
-              }
-            }}
+      <VictoryChart
+        width={width}
+        height={height}
+        padding={0}
+        domainPadding={{ x: [10, 10], y: [5, 5] }}
+        containerComponent={
+          <VictoryVoronoiContainer
+            responsive={false}
+            voronoiDimension="x"
+            voronoiBlacklist={["line"]}
+            labels={d =>
+              this.props.intl.formatMessage({ id: this.props.label }) +
+              ": " +
+              d.value +
+              "\n" +
+              this.props.intl.formatDate(d.date)
+            }
+            labelComponent={
+              <VictoryTooltip renderInPortal orientation="left" />
+            }
           />
-          <VictoryLine
-            name="line"
-            data={this.getData()}
-            x="date"
-            y="value"
-            interpolation="monotoneX"
-            labels={_.constant("")}
-            style={{
-              data: {
-                stroke: "url(#statGradient)",
-                strokeWidth: 2
-              }
-            }}
-          />
-          <VictoryScatter
-            data={this.getData()}
-            x="date"
-            y="value"
-            symbol="diamond"
-            size={3}
-            style={{
-              data: {
-                fill: "#ffffff"
-              }
-            }}
-          />
-        </VictoryChart>
-      </React.Fragment>
+        }
+      >
+        <VictoryAxis
+          dependentAxis
+          domain={{ y: [0, 1.1 * max] }}
+          orientation="left"
+          style={{
+            axis: { display: "none" },
+            ticks: { display: "none" },
+            tickLabels: { display: "none" },
+            grid: {
+              stroke: fade(this.props.theme.window.color, 0.35),
+              strokeWidth: 1
+            }
+          }}
+        />
+        <VictoryLine
+          name="line"
+          data={this.getData()}
+          x="date"
+          y="value"
+          interpolation="monotoneX"
+          labels={_.constant("")}
+          style={{
+            data: {
+              stroke: this.props.theme.window.color,
+              strokeWidth: 2
+            }
+          }}
+        />
+        <VictoryScatter
+          data={this.getData()}
+          x="date"
+          y="value"
+          symbol="diamond"
+          size={3}
+          style={{
+            data: {
+              fill: this.props.theme.window.dotInner,
+              stroke: this.props.theme.window.dotOuter,
+              strokeWidth: 2
+            }
+          }}
+        />
+      </VictoryChart>
     );
   }
 

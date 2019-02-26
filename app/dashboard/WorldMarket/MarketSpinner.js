@@ -15,7 +15,7 @@ export const styles = theme => ({
     top: "50%",
     left: "50%",
     transform: "translate3d(-50%, -50%, 0)",
-    color: theme.palette.primary.contrastText
+    color: theme.palette.text.primary
   }
 });
 

@@ -14,20 +14,23 @@ export const styles = theme => ({
       [theme.breakpoints.down("sm")]: {
         marginLeft: "1rem"
       }
+    },
+    [theme.breakpoints.down("sm")]: {
+      flexDirection: "column"
     }
   },
   paneLeft: {
     flex: 1,
     marginRight: "1rem",
     [theme.breakpoints.down("sm")]: {
-      marginRight: "0.5rem"
+      marginRight: 0
     }
   },
   paneRight: {
     flex: 1,
     marginLeft: "1rem",
     [theme.breakpoints.down("sm")]: {
-      marginLeft: "0.5rem"
+      marginLeft: 0
     }
   },
   term: {

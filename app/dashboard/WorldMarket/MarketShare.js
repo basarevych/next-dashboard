@@ -12,13 +12,12 @@ import {
   VictoryTheme
 } from "victory";
 import Typography from "@material-ui/core/Typography";
-import amber from "@material-ui/core/colors/amber";
 import { getColorStart, getColorEnd } from "../../../common/colors";
 
-export const styles = () => ({
+export const styles = theme => ({
   root: {
     textAlign: "center",
-    color: amber[500]
+    color: theme.window.color
   }
 });
 
@@ -58,7 +57,7 @@ class MarketShare extends React.Component {
             ? this.props.intl.formatMessage({ id: "DASHBOARD_WORLD_LABEL" })
             : _.get(this.props.viewer, "marketSharesByCountry.country.name")}
         </Typography>
-        <Typography variant="body2">
+        <Typography variant="body2" color="inherit">
           <FormattedMessage id="DASHBOARD_NOT_REALLY_LABEL" />
         </Typography>
       </React.Fragment>
@@ -71,12 +70,12 @@ class MarketShare extends React.Component {
 
     return (
       <React.Fragment>
-        <svg width={0} height={0}>
+        <svg style={{ height: 0 }}>
           <defs>
             <filter id="worldPieShadow">
-              <feGaussianBlur in="SourceAlpha" stdDeviation="5" />
-              <feOffset dx="3" dy="3" result="offsetblur" />
-              <feFlood floodColor="rgba(0, 0, 0, 0.85)" />
+              <feGaussianBlur in="SourceAlpha" stdDeviation="2" />
+              <feOffset dx="2" dy="2" result="offsetblur" />
+              <feFlood floodColor="#000000" />
               <feComposite in2="offsetblur" operator="in" />
               <feMerge>
                 <feMergeNode />
@@ -139,7 +138,7 @@ class MarketShare extends React.Component {
               ],
               style: {
                 labels: {
-                  fill: "#ffffff"
+                  fill: this.props.theme.window.mapColor
                 }
               }
             },
@@ -152,7 +151,7 @@ class MarketShare extends React.Component {
               ],
               style: {
                 labels: {
-                  fill: "#ffffff"
+                  fill: this.props.theme.window.mapColor
                 }
               }
             }

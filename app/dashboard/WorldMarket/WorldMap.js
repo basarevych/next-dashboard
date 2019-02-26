@@ -10,8 +10,6 @@ import {
 } from "react-simple-maps";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
-import { lighten } from "@material-ui/core/styles/colorManipulator";
-import amber from "@material-ui/core/colors/amber";
 
 export const styles = theme => ({
   root: {
@@ -22,6 +20,7 @@ export const styles = theme => ({
 
 class WorldMap extends React.Component {
   static propTypes = {
+    theme: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired,
     selected: PropTypes.string,
     onSelect: PropTypes.func.isRequired
@@ -47,9 +46,9 @@ class WorldMap extends React.Component {
               <feComponentTransfer in="SourceAlpha">
                 <feFuncA type="table" tableValues="1 0" />
               </feComponentTransfer>
-              <feGaussianBlur stdDeviation="3" />
-              <feOffset dx="5" dy="5" result="offsetblur" />
-              <feFlood floodColor="rgba(0, 0, 0, 0.5)" result="color" />
+              <feGaussianBlur stdDeviation="2" />
+              <feOffset dx="4" dy="4" result="offsetblur" />
+              <feFlood floodColor="rgba(0, 0, 0, 0.8)" result="color" />
               <feComposite in2="offsetblur" operator="in" />
               <feComposite in2="SourceAlpha" operator="in" />
               <feMerge>
@@ -76,22 +75,22 @@ class WorldMap extends React.Component {
                       projection={projection}
                       style={{
                         default: {
-                          fill: "#363940",
-                          stroke: lighten("#363940", 0.85),
-                          strokeWidth: 0.75,
+                          fill: this.props.theme.window.mapBackground,
+                          stroke: this.props.theme.palette.primary.contrastText,
+                          strokeWidth: 1,
                           outline: "none",
                           filter: "url(#worldMapShadow)"
                         },
                         hover: {
-                          fill: amber[500],
-                          stroke: lighten(amber[500], 0.3),
-                          strokeWidth: 0.75,
+                          fill: this.props.theme.window.mapHoverBackground,
+                          stroke: this.props.theme.palette.primary.contrastText,
+                          strokeWidth: 1,
                           outline: "none"
                         },
                         pressed: {
-                          fill: amber[200],
-                          stroke: lighten(amber[200], 0.3),
-                          strokeWidth: 0.75,
+                          fill: this.props.theme.window.mapSelectedBackground,
+                          stroke: this.props.theme.palette.primary.contrastText,
+                          strokeWidth: 1,
                           outline: "none"
                         }
                       }}

@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import classNames from "classnames";
 import { FormattedMessage } from "react-intl";
 import { AutoSizer } from "react-virtualized";
-import { lighten, fade } from "@material-ui/core/styles/colorManipulator";
 import SwipeableViews from "react-swipeable-views";
 import Typography from "@material-ui/core/Typography";
 import Hidden from "@material-ui/core/Hidden";
@@ -11,6 +10,7 @@ import Button from "@material-ui/core/Button";
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
+import StepConnector from "@material-ui/core/StepConnector";
 import ShippingIcon from "@material-ui/icons/LocalShipping";
 import BillingIcon from "@material-ui/icons/AccountBalanceWallet";
 import ConfirmIcon from "@material-ui/icons/ShoppingCart";
@@ -35,30 +35,33 @@ export const styles = theme => ({
     }
   },
   title: {
-    marginTop: "3rem"
+    marginTop: "3rem",
+    marginBottom: "1rem"
   },
   stepper: {
-    background: fade(theme.palette.primary.main, 0.5),
+    background: theme.form.stepperBackground,
     paddingBottom: 16
+  },
+  line: {
+    borderColor: theme.form.stepperLine
   },
   step: {
     cursor: "pointer"
   },
   stepLabel: {
-    color: [theme.palette.text.secondary, "!important"],
+    color: [theme.form.stepperColor, "!important"],
     fontSize: ["110%", "!important"],
     textAlign: "left",
     marginTop: [-10, "!important"]
   },
   stepLabelAlternative: {
-    color: [theme.palette.text.secondary, "!important"],
+    color: [theme.form.stepperColor, "!important"],
     fontSize: ["110%", "!important"],
     textAlign: "center",
     marginTop: [0, "!important"]
   },
   stepLabelActive: {
-    color: [theme.palette.common.white, "!important"],
-    textShadow: "1px 1px 3px black"
+    color: [theme.form.stepperActive, "!important"]
   },
   stepLabelIcon: {
     fontSize: 46,
@@ -66,7 +69,7 @@ export const styles = theme => ({
   },
   page: {
     boxShadow: theme.shadows[2],
-    background: lighten(theme.palette.background.paper, 0.05),
+    background: theme.form.background,
     flex: 1
   },
   form: {
@@ -94,7 +97,8 @@ export const styles = theme => ({
   status: {
     marginTop: "0.5rem",
     marginBottom: "0.5rem",
-    background: fade(theme.palette.primary.main, 0.5),
+    background: theme.form.stepperBackground,
+    color: theme.form.stepperColor,
     flex: 1,
     display: "flex",
     justifyContent: "center",
@@ -257,12 +261,21 @@ class Forms extends React.Component {
   }
 
   renderStepper(isVertical = false) {
+    const connector = (
+      <StepConnector
+        classes={{
+          line: this.props.classes.line
+        }}
+      />
+    );
+
     return (
       <Stepper
         nonLinear
         alternativeLabel={!isVertical}
         orientation={isVertical ? "vertical" : "horizontal"}
         activeStep={this.state.step}
+        connector={connector}
         className={this.props.classes.stepper}
       >
         {_.map(this.constructor.steps, (step, index) => {
@@ -349,7 +362,7 @@ class Forms extends React.Component {
                   <FormattedMessage id="WIZARD_PREV_BUTTON" />
                 </Button>
                 <div className={this.props.classes.status}>
-                  <Typography variant="body1">
+                  <Typography variant="body1" color="inherit">
                     <FormattedMessage id={this.getStatus()} />
                   </Typography>
                 </div>
@@ -415,9 +428,9 @@ class Forms extends React.Component {
                 )}
               </div>
               <div className={this.props.classes.status}>
-                <div>
+                <Typography variant="body1" color="inherit">
                   <FormattedMessage id={this.getStatus()} />
-                </div>
+                </Typography>
               </div>
             </Hidden>
           </div>

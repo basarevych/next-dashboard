@@ -20,7 +20,8 @@ export const styles = theme => ({
     background: theme.main.paper
   },
   title: {
-    marginTop: "3rem"
+    marginTop: "3rem",
+    marginBottom: "1rem"
   }
 });
 
@@ -38,22 +39,40 @@ class ChartsPage extends React.Component {
         </Typography>
         <Grid container spacing={this.props.theme.main.spacing}>
           <Grid item xs={12} md={6} lg={4}>
-            <Chart1 className={this.props.classes.paper} />
+            <Chart1
+              theme={this.props.theme}
+              className={this.props.classes.paper}
+            />
           </Grid>
           <Grid item xs={12} md={6} lg={4}>
-            <Chart2 className={this.props.classes.paper} />
+            <Chart2
+              theme={this.props.theme}
+              className={this.props.classes.paper}
+            />
           </Grid>
           <Grid item xs={12} md={6} lg={4}>
-            <Chart3 className={this.props.classes.paper} />
+            <Chart3
+              theme={this.props.theme}
+              className={this.props.classes.paper}
+            />
           </Grid>
           <Grid item xs={12} md={6} lg={4}>
-            <Chart4 className={this.props.classes.paper} />
+            <Chart4
+              theme={this.props.theme}
+              className={this.props.classes.paper}
+            />
           </Grid>
           <Grid item xs={12} md={6} lg={4}>
-            <Chart5 className={this.props.classes.paper} />
+            <Chart5
+              theme={this.props.theme}
+              className={this.props.classes.paper}
+            />
           </Grid>
           <Grid item xs={12} md={6} lg={4}>
-            <Chart6 className={this.props.classes.paper} />
+            <Chart6
+              theme={this.props.theme}
+              className={this.props.classes.paper}
+            />
           </Grid>
         </Grid>
       </div>

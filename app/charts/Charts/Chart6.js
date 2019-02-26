@@ -12,6 +12,7 @@ import theme from "./theme";
 
 class Chart6 extends React.Component {
   static propTypes = {
+    theme: PropTypes.object.isRequired,
     className: PropTypes.string
   };
 
@@ -35,7 +36,10 @@ class Chart6 extends React.Component {
         height={height}
         scale={{ x: "time" }}
         containerComponent={<VictoryVoronoiContainer responsive={false} />}
-        theme={theme({ withAxis: true, withGrid: true, withDarkGrid: true })}
+        theme={theme({
+          theme: this.props.theme,
+          withGrid: true
+        })}
       >
         <VictoryAxis tickFormat={t => `${t.getDate()}/${t.getMonth()}`} />
         <VictoryAxis dependentAxis />

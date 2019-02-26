@@ -54,6 +54,7 @@ export const styles = theme => ({
   },
   header: {
     marginTop: "3rem",
+    marginBottom: "1rem",
     display: "flex",
     justifyContent: "space-between"
   },

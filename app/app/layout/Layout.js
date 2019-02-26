@@ -36,7 +36,7 @@ export const styles = theme => ({
     position: "relative"
   },
   backdrop: {
-    background: theme.palette.background.default,
+    background: theme.main.backdrop,
     opacity: 0.8,
     zIndex: 10000,
     position: "fixed",
@@ -51,7 +51,7 @@ export const styles = theme => ({
     top: "50vh",
     left: "50vw",
     transform: "translate3d(-50%, -50%, 0)",
-    color: theme.palette.primary.contrastText
+    color: theme.main.spinner
   },
   sidebar: _.merge(
     {
