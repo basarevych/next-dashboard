@@ -32,7 +32,7 @@ export const init = () => async dispatch => {
 
 let fontsLoaded;
 // called in App.componentDidMount()
-export const start = () => {
+export const start = async (dispatch, getState, di) => {
   if (!fontsLoaded) {
     fontsLoaded = new Promise(resolve => {
       if (window.__fontsLoaded) return resolve();
@@ -45,6 +45,11 @@ export const start = () => {
 
   return async dispatch => {
     await Promise.all([dispatch(authOperations.setStatus()), fontsLoaded]);
+
+    const storage = di.get("storage");
+    if (!storage.get("notAnonymous"))
+      await dispatch(authOperations.signIn({ email: null, password: null }));
+
     return dispatch(actions.start());
   };
 };
