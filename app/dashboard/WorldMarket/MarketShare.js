@@ -69,39 +69,28 @@ class MarketShare extends React.Component {
     if (!shares.length) return null;
 
     return (
-      <React.Fragment>
-        <svg style={{ height: 0 }}>
-          <defs>
-            <filter id="worldPieShadow">
-              <feGaussianBlur in="SourceAlpha" stdDeviation="2" />
-              <feOffset dx="2" dy="2" result="offsetblur" />
-              <feFlood floodColor="#000000" />
-              <feComposite in2="offsetblur" operator="in" />
-              <feMerge>
-                <feMergeNode />
-                <feMergeNode in="SourceGraphic" />
-              </feMerge>
-            </filter>
-            {_.map([0, 1, 2, 3], index => {
-              const [r1, g1, b1] = getColorStart(index, 4);
-              const [r2, g2, b2] = getColorEnd(index, 4);
-              return (
-                <linearGradient
-                  key={`gradient-${index}`}
-                  id={`worldPieGradient${index + 1}`}
-                  x1="0%"
-                  y1="0%"
-                  x2="0%"
-                  y2="100%"
-                >
-                  <stop offset="0%" stopColor={`rgba(${r1}, ${g1}, ${b1})`} />
-                  <stop offset="100%" stopColor={`rgba(${r2}, ${g2}, ${b2})`} />
-                </linearGradient>
-              );
-            })}
-          </defs>
-        </svg>
+      <svg width={width} height={height}>
+        <defs>
+          {_.map([0, 1, 2, 3], index => {
+            const [r1, g1, b1] = getColorStart(index, 4);
+            const [r2, g2, b2] = getColorEnd(index, 4);
+            return (
+              <linearGradient
+                key={`gradient-${index}`}
+                id={`worldPieGradient${index + 1}`}
+                x1="0%"
+                y1="0%"
+                x2="0%"
+                y2="100%"
+              >
+                <stop offset="0%" stopColor={`rgba(${r1}, ${g1}, ${b1})`} />
+                <stop offset="100%" stopColor={`rgba(${r2}, ${g2}, ${b2})`} />
+              </linearGradient>
+            );
+          })}
+        </defs>
         <VictoryChart
+          standalone={false}
           width={width}
           height={height}
           padding={{ top: 20, right: 20, bottom: 20, left: 35 }}
@@ -114,12 +103,6 @@ class MarketShare extends React.Component {
               }
             }
           ]}
-          containerComponent={
-            <VictoryContainer
-              responsive={false}
-              style={{ filter: "url(#worldPieShadow)" }}
-            />
-          }
           theme={_.merge({}, VictoryTheme.material, {
             axis: {
               style: {
@@ -179,7 +162,7 @@ class MarketShare extends React.Component {
             ]}
           />
         </VictoryChart>
-      </React.Fragment>
+      </svg>
     );
   }
 
