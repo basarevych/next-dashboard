@@ -84,8 +84,8 @@ class MarketShare extends React.Component {
                   x2="0%"
                   y2="100%"
                 >
-                  <stop offset="0%" stopColor={`rgba(${r1}, ${g1}, ${b1})`} />
-                  <stop offset="100%" stopColor={`rgba(${r2}, ${g2}, ${b2})`} />
+                  <stop offset="0%" stopColor={`rgb(${r1}, ${g1}, ${b1})`} />
+                  <stop offset="100%" stopColor={`rgb(${r2}, ${g2}, ${b2})`} />
                 </linearGradient>
               );
             })}

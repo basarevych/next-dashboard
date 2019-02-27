@@ -122,24 +122,14 @@ class Dashboard extends React.Component {
           </Grid>
           <Grid item xs={12} md={4}>
             <MarketSpinner isActive={!this.state.isLoaded} />
-            {process.browser && (
-              <Grow in={this.state.isLoaded}>
-                <MarketShare
-                  selected={this.state.countryId}
-                  viewer={this.props.viewer}
-                  onLoaded={this.handleLoaded}
-                  onSelect={this.handleCountrySelected}
-                />
-              </Grow>
-            )}
-            {!process.browser && (
+            <Grow in={this.state.isLoaded}>
               <MarketShare
                 selected={this.state.countryId}
                 viewer={this.props.viewer}
                 onLoaded={this.handleLoaded}
                 onSelect={this.handleCountrySelected}
               />
-            )}
+            </Grow>
           </Grid>
           <Grid item xs={12}>
             <DemoTable viewer={this.props.viewer} />

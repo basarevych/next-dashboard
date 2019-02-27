@@ -1135,7 +1135,7 @@
       "publicPath": "/_next/static/chunks/commons.5bb1f0988d60369545ba.js"
     }
   ],
-  "../styles/mergeClasses": [
+  "./mergeClasses": [
     {
       "id": "Ap+j",
       "name": "./node_modules/@material-ui/core/styles/mergeClasses.js",
@@ -1223,7 +1223,7 @@
       "publicPath": "/_next/static/chunks/commons.5bb1f0988d60369545ba.js"
     }
   ],
-  "./../../next/node_modules/webpack/buildin/harmony-module.js": [
+  "./../../../next/node_modules/webpack/buildin/harmony-module.js": [
     {
       "id": "BKcT",
       "name": "./node_modules/next/node_modules/webpack/buildin/harmony-module.js",
@@ -2867,7 +2867,7 @@
       "publicPath": "/_next/static/chunks/commons.5bb1f0988d60369545ba.js"
     }
   ],
-  "../styles/createBreakpoints": [
+  "./createBreakpoints": [
     {
       "id": "Th4q",
       "name": "./node_modules/@material-ui/core/styles/createBreakpoints.js",
@@ -4015,7 +4015,7 @@
       "publicPath": "/_next/static/chunks/commons.5bb1f0988d60369545ba.js"
     }
   ],
-  "@material-ui/core/colors/red": [
+  "./red": [
     {
       "id": "fWIC",
       "name": "./node_modules/@material-ui/core/colors/red.js",
@@ -4719,7 +4719,7 @@
       "publicPath": "/_next/static/chunks/commons.5bb1f0988d60369545ba.js"
     }
   ],
-  "./get": [
+  "lodash/get": [
     {
       "id": "mwIZ",
       "name": "./node_modules/lodash/get.js",
@@ -5559,7 +5559,7 @@
       "publicPath": "/_next/static/chunks/commons.5bb1f0988d60369545ba.js"
     }
   ],
-  "../styles/transitions": [
+  "./transitions": [
     {
       "id": "yAQS",
       "name": "./node_modules/@material-ui/core/styles/transitions.js",
@@ -5655,7 +5655,7 @@
       "publicPath": "/_next/static/chunks/commons.5bb1f0988d60369545ba.js"
     }
   ],
-  "./isEvent": [
+  "./events/isEvent": [
     {
       "id": "yzTH",
       "name": "./node_modules/redux-form/lib/events/isEvent.js",
