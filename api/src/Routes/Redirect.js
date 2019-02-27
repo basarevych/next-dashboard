@@ -41,7 +41,7 @@ class RedirectRoute extends EventEmitter {
           return res.redirect("https://github.com/basarevych/next-dashboard");
         case "benchmarks":
           return res.redirect(
-            "https://gtmetrix.com/reports/dashboard.daemon-notes.com/psqMg48O"
+            "https://gtmetrix.com/reports/dashboard.daemon-notes.com/NtC6PtTZ"
           );
         case "responsiveness":
           return res.redirect(
