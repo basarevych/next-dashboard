@@ -61,18 +61,9 @@ class App {
    * Constructor
    */
   constructor() {
-    if (!sessionSecret) {
-      console.error("Please define SESSION_SECRET");
-      process.exit(1);
-    }
-
     if (appOrigins) {
       try {
         if (_.isString(appOrigins)) appOrigins = JSON.parse(appOrigins);
-        if (!_.isArray(appOrigins))
-          throw new Error(
-            "APP_ORIGINS env variable should be a JSON string of array of strings"
-          );
       } catch (error) {
         console.error("Could not parse APP_ORIGINS: ", error.message);
         process.exit(1);
@@ -130,6 +121,16 @@ class App {
   }
 
   async init({ mainServer }) {
+    if (!this.config.sessionSecret) {
+      console.error("Please define SESSION_SECRET");
+      process.exit(1);
+    }
+    if (!_.isArray(this.config.appOrigins)) {
+      throw new Error(
+        "APP_ORIGINS env variable should be a JSON string of array of strings"
+      );
+    }
+
     this.server = mainServer;
 
     // Initialize the singletons
