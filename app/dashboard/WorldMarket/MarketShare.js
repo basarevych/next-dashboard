@@ -4,7 +4,7 @@ import { intlShape, FormattedMessage } from "react-intl";
 import { AutoSizer } from "react-virtualized";
 import {
   VictoryChart,
-  VictoryContainer,
+  VictoryVoronoiContainer,
   VictoryStack,
   VictoryBar,
   VictoryAxis,
@@ -69,31 +69,33 @@ class MarketShare extends React.Component {
     if (!shares.length) return null;
 
     return (
-      <svg width={width} height={height}>
-        <defs>
-          {_.map([0, 1, 2, 3], index => {
-            const [r1, g1, b1] = getColorStart(index, 4);
-            const [r2, g2, b2] = getColorEnd(index, 4);
-            return (
-              <linearGradient
-                key={`gradient-${index}`}
-                id={`worldPieGradient${index + 1}`}
-                x1="0%"
-                y1="0%"
-                x2="0%"
-                y2="100%"
-              >
-                <stop offset="0%" stopColor={`rgba(${r1}, ${g1}, ${b1})`} />
-                <stop offset="100%" stopColor={`rgba(${r2}, ${g2}, ${b2})`} />
-              </linearGradient>
-            );
-          })}
-        </defs>
+      <React.Fragment>
+        <svg width={0} height={0}>
+          <defs>
+            {_.map([0, 1, 2, 3], index => {
+              const [r1, g1, b1] = getColorStart(index, 4);
+              const [r2, g2, b2] = getColorEnd(index, 4);
+              return (
+                <linearGradient
+                  key={`gradient-${index}`}
+                  id={`worldPieGradient${index + 1}`}
+                  x1="0%"
+                  y1="0%"
+                  x2="0%"
+                  y2="100%"
+                >
+                  <stop offset="0%" stopColor={`rgba(${r1}, ${g1}, ${b1})`} />
+                  <stop offset="100%" stopColor={`rgba(${r2}, ${g2}, ${b2})`} />
+                </linearGradient>
+              );
+            })}
+          </defs>
+        </svg>
         <VictoryChart
-          standalone={false}
           width={width}
           height={height}
           padding={{ top: 20, right: 20, bottom: 20, left: 35 }}
+          containerComponent={<VictoryVoronoiContainer responsive={false} />}
           polar
           events={[
             {
@@ -113,12 +115,6 @@ class MarketShare extends React.Component {
               }
             },
             legend: {
-              colorScale: [
-                "url(#worldPieGradient1)",
-                "url(#worldPieGradient2)",
-                "url(#worldPieGradient3)",
-                "url(#worldPieGradient4)"
-              ],
               style: {
                 labels: {
                   fill: this.props.theme.window.mapColor
@@ -126,12 +122,6 @@ class MarketShare extends React.Component {
               }
             },
             stack: {
-              colorScale: [
-                "url(#worldPieGradient1)",
-                "url(#worldPieGradient2)",
-                "url(#worldPieGradient3)",
-                "url(#worldPieGradient4)"
-              ],
               style: {
                 labels: {
                   fill: this.props.theme.window.mapColor
@@ -141,7 +131,15 @@ class MarketShare extends React.Component {
           })}
         >
           <VictoryAxis />
-          <VictoryStack labels={d => d.vendor}>
+          <VictoryStack
+            colorScale={[
+              "url(#worldPieGradient1)",
+              "url(#worldPieGradient2)",
+              "url(#worldPieGradient3)",
+              "url(#worldPieGradient4)"
+            ]}
+            labels={d => d.vendor}
+          >
             {_.map([0, 1, 2, 3], index => (
               <VictoryBar
                 key={`bar-${index}`}
@@ -154,6 +152,12 @@ class MarketShare extends React.Component {
           <VictoryLegend
             orientation="vertical"
             gutter={20}
+            colorScale={[
+              "url(#worldPieGradient1)",
+              "url(#worldPieGradient2)",
+              "url(#worldPieGradient3)",
+              "url(#worldPieGradient4)"
+            ]}
             data={[
               { name: "Q1" },
               { name: "Q2" },
@@ -162,7 +166,7 @@ class MarketShare extends React.Component {
             ]}
           />
         </VictoryChart>
-      </svg>
+      </React.Fragment>
     );
   }
 
