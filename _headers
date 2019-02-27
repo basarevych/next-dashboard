@@ -1,9 +1,0 @@
-# Netlify caching
-[[headers]]
-  for = "*.js" 
-  [headers.values]
-    Cache-Control = "public, max-age=864000"
-[[headers]]
-  for = "*.css" 
-  [headers.values]
-    Cache-Control = "public, max-age=864000"
