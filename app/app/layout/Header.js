@@ -141,7 +141,7 @@ class Header extends React.Component {
     classes: PropTypes.object.isRequired,
     locale: PropTypes.string.isRequired,
     isAnonymous: PropTypes.bool.isRequired,
-    onSidebarToggle: PropTypes.bool.isRequired,
+    onSidebarToggle: PropTypes.func.isRequired,
     onSetCookie: PropTypes.func.isRequired,
     onSetLocale: PropTypes.func.isRequired,
     onSignOut: PropTypes.func.isRequired

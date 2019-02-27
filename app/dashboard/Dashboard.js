@@ -49,7 +49,7 @@ class Dashboard extends React.Component {
 
     this.state = {
       countryId: defaultCountry,
-      isLoaded: false
+      isLoaded: true
     };
 
     this.isTransitioning = false;
@@ -77,7 +77,7 @@ class Dashboard extends React.Component {
   }
 
   handleLoaded() {
-    if (this.isDestroyed) return;
+    if (this.isDestroyed || this.state.isLoaded) return;
     this.setState({ isLoaded: true });
   }
 
@@ -122,14 +122,24 @@ class Dashboard extends React.Component {
           </Grid>
           <Grid item xs={12} md={4}>
             <MarketSpinner isActive={!this.state.isLoaded} />
-            <Grow in={this.state.isLoaded}>
+            {process.browser && (
+              <Grow in={this.state.isLoaded}>
+                <MarketShare
+                  selected={this.state.countryId}
+                  viewer={this.props.viewer}
+                  onLoaded={this.handleLoaded}
+                  onSelect={this.handleCountrySelected}
+                />
+              </Grow>
+            )}
+            {!process.browser && (
               <MarketShare
                 selected={this.state.countryId}
                 viewer={this.props.viewer}
                 onLoaded={this.handleLoaded}
                 onSelect={this.handleCountrySelected}
               />
-            </Grow>
+            )}
           </Grid>
           <Grid item xs={12}>
             <DemoTable viewer={this.props.viewer} />

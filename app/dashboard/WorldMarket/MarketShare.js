@@ -115,6 +115,12 @@ class MarketShare extends React.Component {
               }
             },
             legend: {
+              colorScale: [
+                "url(#worldPieGradient1)",
+                "url(#worldPieGradient2)",
+                "url(#worldPieGradient3)",
+                "url(#worldPieGradient4)"
+              ],
               style: {
                 labels: {
                   fill: this.props.theme.window.mapColor
@@ -122,6 +128,12 @@ class MarketShare extends React.Component {
               }
             },
             stack: {
+              colorScale: [
+                "url(#worldPieGradient1)",
+                "url(#worldPieGradient2)",
+                "url(#worldPieGradient3)",
+                "url(#worldPieGradient4)"
+              ],
               style: {
                 labels: {
                   fill: this.props.theme.window.mapColor
@@ -131,15 +143,7 @@ class MarketShare extends React.Component {
           })}
         >
           <VictoryAxis />
-          <VictoryStack
-            colorScale={[
-              "url(#worldPieGradient1)",
-              "url(#worldPieGradient2)",
-              "url(#worldPieGradient3)",
-              "url(#worldPieGradient4)"
-            ]}
-            labels={d => d.vendor}
-          >
+          <VictoryStack labels={d => d.vendor}>
             {_.map([0, 1, 2, 3], index => (
               <VictoryBar
                 key={`bar-${index}`}
@@ -152,12 +156,6 @@ class MarketShare extends React.Component {
           <VictoryLegend
             orientation="vertical"
             gutter={20}
-            colorScale={[
-              "url(#worldPieGradient1)",
-              "url(#worldPieGradient2)",
-              "url(#worldPieGradient3)",
-              "url(#worldPieGradient4)"
-            ]}
             data={[
               { name: "Q1" },
               { name: "Q2" },
