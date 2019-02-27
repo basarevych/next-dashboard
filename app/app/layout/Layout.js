@@ -123,11 +123,16 @@ class Layout extends React.Component {
     };
 
     this.handleSidebarToggle = this.handleSidebarToggle.bind(this);
+    this.handleSidebarOpen = this.handleSidebarOpen.bind(this);
     this.handleSidebarClose = this.handleSidebarClose.bind(this);
   }
 
   handleSidebarToggle() {
     this.setState({ isSidebarOpen: !this.state.isSidebarOpen });
+  }
+
+  handleSidebarOpen() {
+    if (!this.state.isSidebarOpen) this.setState({ isSidebarOpen: true });
   }
 
   handleSidebarClose() {
@@ -160,7 +165,7 @@ class Layout extends React.Component {
                 <Hidden implementation="css" smUp>
                   <SwipeableDrawer
                     open={this.state.isSidebarOpen}
-                    onOpen={this.handleSidebarToggle}
+                    onOpen={this.handleSidebarOpen}
                     onClose={this.handleSidebarClose}
                   >
                     <Sidebar onMenuClick={this.handleSidebarClose} />
@@ -179,7 +184,9 @@ class Layout extends React.Component {
 
                 <div className={this.props.classes.main}>
                   <main className={this.props.classes.content}>
-                    {!this.props.isError && <Header />}
+                    {!this.props.isError && (
+                      <Header onSidebarToggle={this.handleSidebarToggle} />
+                    )}
                     {this.props.children}
                   </main>
                 </div>

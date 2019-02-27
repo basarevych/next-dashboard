@@ -17,6 +17,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
 import Badge from "@material-ui/core/Badge";
+import MenuIcon from "@material-ui/icons/Menu";
 import SearchIcon from "@material-ui/icons/Search";
 import MailIcon from "@material-ui/icons/Mail";
 import ProfileIcon from "@material-ui/icons/AccountBox";
@@ -40,6 +41,11 @@ export const styles = theme => ({
     top: 0,
     height: 50
   },
+  smallWrapper: {
+    zIndex: 1400,
+    flex: 1,
+    alignSelf: "stretch"
+  },
   barContainer: {
     transition: "all 0.25s ease-in-out"
   },
@@ -62,10 +68,7 @@ export const styles = theme => ({
       backgroundColor: fade(theme.palette.common.white, 0.25)
     },
     marginRight: theme.spacing.unit,
-    marginLeft: theme.spacing.unit,
-    [theme.breakpoints.down("md")]: {
-      flexGrow: 1
-    }
+    marginLeft: theme.spacing.unit
   },
   searchIcon: {
     width: theme.spacing.unit * 5,
@@ -138,6 +141,7 @@ class Header extends React.Component {
     classes: PropTypes.object.isRequired,
     locale: PropTypes.string.isRequired,
     isAnonymous: PropTypes.bool.isRequired,
+    onSidebarToggle: PropTypes.bool.isRequired,
     onSetCookie: PropTypes.func.isRequired,
     onSetLocale: PropTypes.func.isRequired,
     onSignOut: PropTypes.func.isRequired
@@ -601,14 +605,14 @@ class Header extends React.Component {
         <div ref={this.bar}>
           <AppBar
             className={this.props.classes.bar}
-            elevation={10}
+            elevation={0}
             position="static"
             color={isVisible ? "primary" : "secondary"}
             onMouseEnter={this.handleBarMouseEnter}
             onMouseLeave={this.handleBarMouseLeave}
           >
             <Toolbar>
-              <Hidden smDown>
+              <Hidden xsDown>
                 <Button
                   color="inherit"
                   className={this.props.classes.barItem}
@@ -671,8 +675,31 @@ class Header extends React.Component {
                   &nbsp;&nbsp;
                   {_.upperFirst(this.props.theme.name)}
                 </Button>
+                <div className={this.props.classes.grow} />
+                <div className={this.props.classes.search}>
+                  <div className={this.props.classes.searchIcon}>
+                    <SearchIcon />
+                  </div>
+                  <InputBase
+                    placeholder="Search…"
+                    classes={{
+                      root: this.props.classes.inputRoot,
+                      input: this.props.classes.inputInput
+                    }}
+                  />
+                </div>
+                <div className={this.props.classes.grow} />
+                <IconButton color="inherit" onClick={this.handleSignOut}>
+                  <LogoutIcon />
+                </IconButton>
               </Hidden>
-              <Hidden mdUp>
+              <Hidden smUp>
+                <IconButton
+                  color="inherit"
+                  onClick={this.props.onSidebarToggle}
+                >
+                  <MenuIcon />
+                </IconButton>
                 <IconButton color="inherit" onClick={this.handleInboxOpen}>
                   <Badge badgeContent={4} color="secondary">
                     <MailIcon />
@@ -692,28 +719,11 @@ class Header extends React.Component {
                 <IconButton color="inherit" onClick={this.handleThemesOpen}>
                   <ThemeIcon />
                 </IconButton>
-              </Hidden>
-              <Hidden smDown>
                 <div className={this.props.classes.grow} />
+                <IconButton color="inherit" onClick={this.handleSignOut}>
+                  <LogoutIcon />
+                </IconButton>
               </Hidden>
-              <div className={this.props.classes.search}>
-                <div className={this.props.classes.searchIcon}>
-                  <SearchIcon />
-                </div>
-                <InputBase
-                  placeholder="Search…"
-                  classes={{
-                    root: this.props.classes.inputRoot,
-                    input: this.props.classes.inputInput
-                  }}
-                />
-              </div>
-              <Hidden smDown>
-                <div className={this.props.classes.grow} />
-              </Hidden>
-              <IconButton color="inherit" onClick={this.handleSignOut}>
-                <LogoutIcon />
-              </IconButton>
             </Toolbar>
             {this.renderInbox()}
             {this.renderLocales()}
@@ -734,7 +744,12 @@ class Header extends React.Component {
     return (
       <React.Fragment>
         <Hidden smUp initialWidth="lg">
-          {this.renderBar(true)}
+          <div
+            className={this.props.classes.smallWrapper}
+            style={{ height: this.state.height }}
+          >
+            {this.renderBar(true)}
+          </div>
         </Hidden>
         <Hidden xsDown initialWidth="lg">
           <div
@@ -745,8 +760,8 @@ class Header extends React.Component {
           >
             {this.renderBar(false)}
           </div>
+          <div className={this.props.classes.spacer} />
         </Hidden>
-        <div className={this.props.classes.spacer} />
       </React.Fragment>
     );
   }

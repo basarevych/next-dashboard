@@ -113,7 +113,7 @@ module.exports = {
   overrides: {
     MuiDialog: {
       paper: {
-        background: [bgNormal, "!important"]
+        background: [bgPage, "!important"]
       }
     },
     MuiAvatar: {

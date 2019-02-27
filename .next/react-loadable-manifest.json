@@ -853,6 +853,12 @@
       "publicPath": "/_next/static/chunks/commons.5bb1f0988d60369545ba.js"
     },
     {
+      "id": "a7BZ",
+      "name": "./node_modules/redux-form/lib/structure/plain/keys.js",
+      "file": "static/chunks/commons.5bb1f0988d60369545ba.js",
+      "publicPath": "/_next/static/chunks/commons.5bb1f0988d60369545ba.js"
+    },
+    {
       "id": "ioWn",
       "name": "./node_modules/redux-form/lib/structure/immutable/keys.js",
       "file": "static/chunks/commons.5bb1f0988d60369545ba.js",
@@ -1229,7 +1235,7 @@
       "publicPath": "/_next/static/chunks/commons.5bb1f0988d60369545ba.js"
     }
   ],
-  "./../../../next/node_modules/webpack/buildin/harmony-module.js": [
+  "./../../next/node_modules/webpack/buildin/harmony-module.js": [
     {
       "id": "BKcT",
       "name": "./node_modules/next/node_modules/webpack/buildin/harmony-module.js",
@@ -2921,7 +2927,7 @@
       "publicPath": "/_next/static/chunks/commons.5bb1f0988d60369545ba.js"
     }
   ],
-  "../utils/isObservable": [
+  "./isObservable": [
     {
       "id": "UCXN",
       "name": "./node_modules/jss/lib/utils/isObservable.js",
@@ -3569,14 +3575,6 @@
     {
       "id": "a1gu",
       "name": "./node_modules/@babel/runtime/helpers/possibleConstructorReturn.js",
-      "file": "static/chunks/commons.5bb1f0988d60369545ba.js",
-      "publicPath": "/_next/static/chunks/commons.5bb1f0988d60369545ba.js"
-    }
-  ],
-  "../plain/keys": [
-    {
-      "id": "a7BZ",
-      "name": "./node_modules/redux-form/lib/structure/plain/keys.js",
       "file": "static/chunks/commons.5bb1f0988d60369545ba.js",
       "publicPath": "/_next/static/chunks/commons.5bb1f0988d60369545ba.js"
     }
@@ -4575,7 +4573,7 @@
       "publicPath": "/_next/static/chunks/commons.5bb1f0988d60369545ba.js"
     }
   ],
-  "regenerator-runtime/runtime": [
+  "./runtime": [
     {
       "id": "ls82",
       "name": "./node_modules/regenerator-runtime/runtime.js",
@@ -4717,7 +4715,7 @@
       "publicPath": "/_next/static/chunks/commons.5bb1f0988d60369545ba.js"
     }
   ],
-  "./get": [
+  "lodash/get": [
     {
       "id": "mwIZ",
       "name": "./node_modules/lodash/get.js",
@@ -4805,7 +4803,7 @@
       "publicPath": "/_next/static/chunks/commons.5bb1f0988d60369545ba.js"
     }
   ],
-  "../common/constants": [
+  "../../../common/constants": [
     {
       "id": "o4p3",
       "name": "./common/constants.js",
@@ -5253,7 +5251,7 @@
       "publicPath": "/_next/static/chunks/commons.5bb1f0988d60369545ba.js"
     }
   ],
-  "./utils/toCssValue": [
+  "../utils/toCssValue": [
     {
       "id": "uIix",
       "name": "./node_modules/jss/lib/utils/toCssValue.js",
