@@ -14,7 +14,7 @@ import Typography from "@material-ui/core/Typography";
 export const styles = theme => ({
   root: {
     padding: "1rem",
-    background: theme.main.paper
+    background: theme.window.background
   }
 });
 
