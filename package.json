@@ -128,7 +128,7 @@
     "schema": "node ./bin/update-schema",
     "relay": "node ./bin/update-schema && relay-compiler --src ./app --schema ./api/schema.graphql --verbose",
     "build": "node ./bin/prepare-build && env NODE_ENV=production TMPDIR=$PWD/.tmp next build",
-    "export": "env NODE_ENV=production TMPDIR=$PWD/.tmp next export && node ./bin/finish-export",
+    "export": "env NODE_ENV=production TMPDIR=$PWD/.tmp next export",
     "dev": "node ./bin/prepare-build && env NODE_ENV=development node ./bin/www",
     "start": "env NODE_ENV=production node ./bin/www"
   }

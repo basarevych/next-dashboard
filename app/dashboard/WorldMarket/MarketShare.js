@@ -34,10 +34,6 @@ class MarketShare extends React.Component {
     onSelect: PropTypes.func.isRequired
   };
 
-  componentDidMount() {
-    setTimeout(() => this.props.onLoaded());
-  }
-
   componentDidUpdate(prevProps) {
     if (prevProps.selected !== this.props.selected) {
       this.props.relay.refetch(
