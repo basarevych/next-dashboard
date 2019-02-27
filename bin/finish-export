@@ -1,0 +1,27 @@
+#!/usr/bin/env node
+
+/**
+ * Additional processing of out/ directory (for static exports)
+ */
+
+"use strict";
+
+const fs = require("fs-extra");
+const path = require("path");
+
+const root = path.join.bind(path, path.resolve(__dirname), "..");
+
+async function finishExport() {
+  // netlify headers
+  await fs.writeFile(
+    root("out/_headers"),
+    `/*
+  Cache-Control: public, max-age=864000 
+`
+  );
+}
+
+finishExport().catch(error => {
+  console.error(error);
+  process.exit(1);
+});
