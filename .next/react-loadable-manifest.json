@@ -945,16 +945,10 @@
       "publicPath": "/_next/static/chunks/commons.5bb1f0988d60369545ba.js"
     }
   ],
-  "./objectWithoutPropertiesLoose": [
+  "@babel/runtime/helpers/objectWithoutPropertiesLoose": [
     {
       "id": "8OQS",
       "name": "./node_modules/@babel/runtime/helpers/objectWithoutPropertiesLoose.js",
-      "file": "static/chunks/commons.5bb1f0988d60369545ba.js",
-      "publicPath": "/_next/static/chunks/commons.5bb1f0988d60369545ba.js"
-    },
-    {
-      "id": "L2E4",
-      "name": "./node_modules/@babel/runtime-corejs2/helpers/objectWithoutPropertiesLoose.js",
       "file": "static/chunks/commons.5bb1f0988d60369545ba.js",
       "publicPath": "/_next/static/chunks/commons.5bb1f0988d60369545ba.js"
     }
@@ -2011,12 +2005,6 @@
       "name": "./node_modules/@babel/runtime-corejs2/helpers/assertThisInitialized.js",
       "file": "static/chunks/commons.5bb1f0988d60369545ba.js",
       "publicPath": "/_next/static/chunks/commons.5bb1f0988d60369545ba.js"
-    },
-    {
-      "id": "PJYZ",
-      "name": "./node_modules/@babel/runtime/helpers/assertThisInitialized.js",
-      "file": "static/chunks/commons.5bb1f0988d60369545ba.js",
-      "publicPath": "/_next/static/chunks/commons.5bb1f0988d60369545ba.js"
     }
   ],
   "@babel/runtime-corejs2/helpers/interopRequireDefault": [
@@ -2087,6 +2075,14 @@
     {
       "id": "Kz5y",
       "name": "./node_modules/lodash/_root.js",
+      "file": "static/chunks/commons.5bb1f0988d60369545ba.js",
+      "publicPath": "/_next/static/chunks/commons.5bb1f0988d60369545ba.js"
+    }
+  ],
+  "./objectWithoutPropertiesLoose": [
+    {
+      "id": "L2E4",
+      "name": "./node_modules/@babel/runtime-corejs2/helpers/objectWithoutPropertiesLoose.js",
       "file": "static/chunks/commons.5bb1f0988d60369545ba.js",
       "publicPath": "/_next/static/chunks/commons.5bb1f0988d60369545ba.js"
     }
@@ -2489,6 +2485,14 @@
       "publicPath": "/_next/static/chunks/commons.5bb1f0988d60369545ba.js"
     }
   ],
+  "@babel/runtime/helpers/assertThisInitialized": [
+    {
+      "id": "PJYZ",
+      "name": "./node_modules/@babel/runtime/helpers/assertThisInitialized.js",
+      "file": "static/chunks/commons.5bb1f0988d60369545ba.js",
+      "publicPath": "/_next/static/chunks/commons.5bb1f0988d60369545ba.js"
+    }
+  ],
   "react-intl/locale-data/en.js": [
     {
       "id": "PTt1",
@@ -2863,7 +2867,7 @@
       "publicPath": "/_next/static/chunks/commons.5bb1f0988d60369545ba.js"
     }
   ],
-  "../styles/createBreakpoints": [
+  "./createBreakpoints": [
     {
       "id": "Th4q",
       "name": "./node_modules/@material-ui/core/styles/createBreakpoints.js",
@@ -4715,7 +4719,7 @@
       "publicPath": "/_next/static/chunks/commons.5bb1f0988d60369545ba.js"
     }
   ],
-  "./get": [
+  "lodash/get": [
     {
       "id": "mwIZ",
       "name": "./node_modules/lodash/get.js",
@@ -5651,7 +5655,7 @@
       "publicPath": "/_next/static/chunks/commons.5bb1f0988d60369545ba.js"
     }
   ],
-  "./isEvent": [
+  "./events/isEvent": [
     {
       "id": "yzTH",
       "name": "./node_modules/redux-form/lib/events/isEvent.js",

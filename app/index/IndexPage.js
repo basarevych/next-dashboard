@@ -4,15 +4,24 @@ import Router from "next/router";
 
 class IndexPage extends React.Component {
   static propTypes = {
-    isAuthenticated: PropTypes.bool.isRequired
+    isAuthenticated: PropTypes.bool.isRequired,
+    redirect: PropTypes.string
   };
 
+  static getInitialProps({ query }) {
+    return {
+      redirect: query && query.redirect
+    };
+  }
+
   componentDidMount() {
-    if (this.props.isAuthenticated) Router.push("/dashboard");
+    if (this.props.isAuthenticated)
+      Router.push(this.props.redirect || "/dashboard");
   }
 
   componentDidUdpate() {
-    if (this.props.isAuthenticated) Router.push("/dashboard");
+    if (this.props.isAuthenticated)
+      Router.push(this.props.redirect || "/dashboard");
   }
 
   render() {

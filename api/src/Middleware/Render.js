@@ -53,7 +53,15 @@ class Render extends EventEmitter {
         if (!page) return this.app.nextHandler(req, res, next);
 
         let user = await req.getUser();
-        if (!isRouteAllowed(req.path, user ? user.roles : [])) res.status(403);
+        if (!isRouteAllowed(req.path, user ? user.roles : [])) {
+          if (req.path === "/" || !!user) {
+            res.status(403);
+          } else {
+            return res.redirect(
+              `/?redirect=${encodeURIComponent(req.originalUrl)}`
+            );
+          }
+        }
 
         if (process.env.NODE_ENV !== "production")
           return this.app.next.render(req, res, page, query);
