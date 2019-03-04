@@ -517,7 +517,7 @@
       "publicPath": "/_next/static/chunks/commons.5bb1f0988d60369545ba.js"
     }
   ],
-  "./selectors/isValid": [
+  "../selectors/isValid": [
     {
       "id": "3ICH",
       "name": "./node_modules/redux-form/lib/selectors/isValid.js",
@@ -1141,7 +1141,7 @@
       "publicPath": "/_next/static/chunks/commons.5bb1f0988d60369545ba.js"
     }
   ],
-  "./mergeClasses": [
+  "../styles/mergeClasses": [
     {
       "id": "Ap+j",
       "name": "./node_modules/@material-ui/core/styles/mergeClasses.js",
@@ -2011,6 +2011,12 @@
       "name": "./node_modules/@babel/runtime-corejs2/helpers/assertThisInitialized.js",
       "file": "static/chunks/commons.5bb1f0988d60369545ba.js",
       "publicPath": "/_next/static/chunks/commons.5bb1f0988d60369545ba.js"
+    },
+    {
+      "id": "PJYZ",
+      "name": "./node_modules/@babel/runtime/helpers/assertThisInitialized.js",
+      "file": "static/chunks/commons.5bb1f0988d60369545ba.js",
+      "publicPath": "/_next/static/chunks/commons.5bb1f0988d60369545ba.js"
     }
   ],
   "@babel/runtime-corejs2/helpers/interopRequireDefault": [
@@ -2483,14 +2489,6 @@
       "publicPath": "/_next/static/chunks/commons.5bb1f0988d60369545ba.js"
     }
   ],
-  "@babel/runtime/helpers/assertThisInitialized": [
-    {
-      "id": "PJYZ",
-      "name": "./node_modules/@babel/runtime/helpers/assertThisInitialized.js",
-      "file": "static/chunks/commons.5bb1f0988d60369545ba.js",
-      "publicPath": "/_next/static/chunks/commons.5bb1f0988d60369545ba.js"
-    }
-  ],
   "react-intl/locale-data/en.js": [
     {
       "id": "PTt1",
@@ -2865,7 +2863,7 @@
       "publicPath": "/_next/static/chunks/commons.5bb1f0988d60369545ba.js"
     }
   ],
-  "./createBreakpoints": [
+  "../styles/createBreakpoints": [
     {
       "id": "Th4q",
       "name": "./node_modules/@material-ui/core/styles/createBreakpoints.js",
@@ -4717,7 +4715,7 @@
       "publicPath": "/_next/static/chunks/commons.5bb1f0988d60369545ba.js"
     }
   ],
-  "lodash/get": [
+  "./get": [
     {
       "id": "mwIZ",
       "name": "./node_modules/lodash/get.js",
@@ -4909,7 +4907,7 @@
       "publicPath": "/_next/static/chunks/commons.5bb1f0988d60369545ba.js"
     }
   ],
-  "@material-ui/core/Paper": [
+  "../Paper": [
     {
       "id": "pPbJ",
       "name": "./node_modules/@material-ui/core/Paper/index.js",
@@ -5253,7 +5251,7 @@
       "publicPath": "/_next/static/chunks/commons.5bb1f0988d60369545ba.js"
     }
   ],
-  "../utils/toCssValue": [
+  "./utils/toCssValue": [
     {
       "id": "uIix",
       "name": "./node_modules/jss/lib/utils/toCssValue.js",
@@ -5557,7 +5555,7 @@
       "publicPath": "/_next/static/chunks/commons.5bb1f0988d60369545ba.js"
     }
   ],
-  "./transitions": [
+  "../styles/transitions": [
     {
       "id": "yAQS",
       "name": "./node_modules/@material-ui/core/styles/transitions.js",

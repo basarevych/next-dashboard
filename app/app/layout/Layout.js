@@ -165,6 +165,7 @@ class Layout extends React.Component {
                 <Hidden implementation="css" smUp>
                   <SwipeableDrawer
                     open={this.state.isSidebarOpen}
+                    classes={{ paper: this.props.classes.sidebar }}
                     onOpen={this.handleSidebarOpen}
                     onClose={this.handleSidebarClose}
                   >
