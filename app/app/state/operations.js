@@ -1,3 +1,4 @@
+import Router from "next/router";
 import * as actions from "./actions";
 import { authOperations, authSelectors } from "../../auth/state";
 import constants from "../../../common/constants";
@@ -48,7 +49,8 @@ export const start = () => {
 
     if (
       !authSelectors.isAuthenticated(getState()) &&
-      !di.get("storage").get("notAnonymous")
+      !di.get("storage").get("notAnonymous") &&
+      !_.get(Router, "query.noautologin")
     ) {
       await dispatch(authOperations.signIn({ email: null, password: null }));
     }

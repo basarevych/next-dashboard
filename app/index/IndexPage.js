@@ -8,6 +8,10 @@ class IndexPage extends React.Component {
     redirect: PropTypes.string
   };
 
+  static defaultProps = {
+    redirect: "/dashboard"
+  };
+
   static getInitialProps({ query }) {
     return {
       redirect: query && query.redirect
@@ -15,13 +19,11 @@ class IndexPage extends React.Component {
   }
 
   componentDidMount() {
-    if (this.props.isAuthenticated)
-      Router.push(this.props.redirect || "/dashboard");
+    if (this.props.isAuthenticated) Router.push(this.props.redirect);
   }
 
   componentDidUdpate() {
-    if (this.props.isAuthenticated)
-      Router.push(this.props.redirect || "/dashboard");
+    if (this.props.isAuthenticated) Router.push(this.props.redirect);
   }
 
   render() {
