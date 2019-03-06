@@ -143,8 +143,10 @@ class App {
 
     // Express and Socket.IO middleware
     const middleware = this.di.get("middleware");
-    middleware.express(this.express);
-    middleware.io(this.di.get("ws").io);
+    return Promise.all([
+      middleware.express(this.express),
+      middleware.io(this.di.get("ws").io)
+    ]);
   }
 
   /**

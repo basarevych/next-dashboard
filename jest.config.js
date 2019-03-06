@@ -10,8 +10,12 @@ const _ = require("lodash");
 
 module.exports = {
   testEnvironment: "node",
-  setupTestFrameworkScriptFile: "<rootDir>/jest.setup.js",
-  testPathIgnorePatterns: ["<rootDir>/node_modules/", "<rootDir>/.next/"],
+  setupFiles: ["<rootDir>/jest.setup.js"],
+  testPathIgnorePatterns: [
+    "<rootDir>/node_modules/",
+    "<rootDir>/.next/",
+    "<rootDir>/out/"
+  ],
   moduleNameMapper: {
     ".*\\.less$": "<rootDir>/package.json",
     ".*\\.scss$": "<rootDir>/package.json",
