@@ -70,6 +70,7 @@ export const styles = theme => ({
   ),
   main: {
     background: theme.main.background,
+    color: theme.main.color,
     minHeight: "100vh",
     display: "flex",
     alignItems: "stretch",

@@ -24,7 +24,10 @@ export const styles = theme => ({
   messageContent: {
     flex: 1,
     maxWidth: "600px",
-    margin: "3rem 1rem 1rem 1rem"
+    margin: "3rem 1rem 1rem 1rem",
+    [theme.breakpoints.down("sm")]: {
+      marginTop: 0
+    }
   },
   layout: {
     width: "100%",

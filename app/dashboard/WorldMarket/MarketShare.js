@@ -14,10 +14,9 @@ import {
 import Typography from "@material-ui/core/Typography";
 import { getColorStart, getColorEnd } from "../../../common/colors";
 
-export const styles = theme => ({
+export const styles = () => ({
   root: {
-    textAlign: "center",
-    color: theme.window.color
+    textAlign: "center"
   }
 });
 
@@ -90,7 +89,7 @@ class MarketShare extends React.Component {
         <VictoryChart
           width={width}
           height={height}
-          padding={{ top: 20, right: 20, bottom: 20, left: 35 }}
+          padding={{ top: 20, right: 20, bottom: 20, left: 50 }}
           containerComponent={<VictoryVoronoiContainer responsive={false} />}
           polar
           events={[
@@ -119,7 +118,7 @@ class MarketShare extends React.Component {
               ],
               style: {
                 labels: {
-                  fill: this.props.theme.window.mapColor
+                  fill: this.props.theme.main.color
                 }
               }
             },
@@ -132,7 +131,7 @@ class MarketShare extends React.Component {
               ],
               style: {
                 labels: {
-                  fill: this.props.theme.window.mapColor
+                  fill: this.props.theme.main.color
                 }
               }
             }

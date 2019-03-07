@@ -11,10 +11,9 @@ import {
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 
-export const styles = theme => ({
+export const styles = () => ({
   root: {
-    padding: "1rem",
-    background: theme.window.background
+    padding: "1rem"
   }
 });
 
@@ -48,7 +47,7 @@ class WorldMap extends React.Component {
               </feComponentTransfer>
               <feGaussianBlur stdDeviation="2" />
               <feOffset dx="4" dy="4" result="offsetblur" />
-              <feFlood floodColor="rgba(0, 0, 0, 0.8)" result="color" />
+              <feFlood floodColor="rgba(0, 0, 0, 0.5)" result="color" />
               <feComposite in2="offsetblur" operator="in" />
               <feComposite in2="SourceAlpha" operator="in" />
               <feMerge>
@@ -75,21 +74,21 @@ class WorldMap extends React.Component {
                       projection={projection}
                       style={{
                         default: {
-                          fill: this.props.theme.window.mapBackground,
-                          stroke: this.props.theme.palette.primary.contrastText,
+                          fill: this.props.theme.chart.mapBackground,
+                          stroke: this.props.theme.chart.mapColor,
                           strokeWidth: 1,
                           outline: "none",
                           filter: "url(#worldMapShadow)"
                         },
                         hover: {
-                          fill: this.props.theme.window.mapHoverBackground,
-                          stroke: this.props.theme.palette.primary.contrastText,
+                          fill: this.props.theme.chart.mapHoverBackground,
+                          stroke: this.props.theme.chart.mapColor,
                           strokeWidth: 1,
                           outline: "none"
                         },
                         pressed: {
-                          fill: this.props.theme.window.mapSelectedBackground,
-                          stroke: this.props.theme.palette.primary.contrastText,
+                          fill: this.props.theme.chart.mapSelectedBackground,
+                          stroke: this.props.theme.chart.mapColor,
                           strokeWidth: 1,
                           outline: "none"
                         }

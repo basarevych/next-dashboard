@@ -3,84 +3,84 @@
   "pages": {
     "/_app": [
       "static/runtime/webpack-3a398baf9c6bff1da826.js",
-      "static/chunks/commons.b65aeabf664115b40353.js",
+      "static/chunks/commons.4ea3dbec3c1857e0f66c.js",
       "static/css/styles.65a36a00.chunk.css",
       "static/chunks/styles.db0e975de18797f4c838.js",
       "static/runtime/main-70ea7647a4626837eb7e.js"
     ],
     "/_error": [
       "static/runtime/webpack-3a398baf9c6bff1da826.js",
-      "static/chunks/commons.b65aeabf664115b40353.js",
+      "static/chunks/commons.4ea3dbec3c1857e0f66c.js",
       "static/runtime/main-70ea7647a4626837eb7e.js"
     ],
     "/auth/error": [
       "static/runtime/webpack-3a398baf9c6bff1da826.js",
-      "static/chunks/commons.b65aeabf664115b40353.js",
+      "static/chunks/commons.4ea3dbec3c1857e0f66c.js",
       "static/runtime/main-70ea7647a4626837eb7e.js"
     ],
     "/auth/profile": [
       "static/runtime/webpack-3a398baf9c6bff1da826.js",
-      "static/chunks/commons.b65aeabf664115b40353.js",
+      "static/chunks/commons.4ea3dbec3c1857e0f66c.js",
       "static/runtime/main-70ea7647a4626837eb7e.js"
     ],
     "/auth/verify": [
       "static/runtime/webpack-3a398baf9c6bff1da826.js",
-      "static/chunks/commons.b65aeabf664115b40353.js",
+      "static/chunks/commons.4ea3dbec3c1857e0f66c.js",
       "static/runtime/main-70ea7647a4626837eb7e.js"
     ],
     "/charts": [
       "static/runtime/webpack-3a398baf9c6bff1da826.js",
-      "static/chunks/commons.b65aeabf664115b40353.js",
+      "static/chunks/commons.4ea3dbec3c1857e0f66c.js",
       "static/runtime/main-70ea7647a4626837eb7e.js"
     ],
     "/dashboard": [
       "static/runtime/webpack-3a398baf9c6bff1da826.js",
-      "static/chunks/commons.b65aeabf664115b40353.js",
+      "static/chunks/commons.4ea3dbec3c1857e0f66c.js",
       "static/runtime/main-70ea7647a4626837eb7e.js"
     ],
     "/forms": [
       "static/runtime/webpack-3a398baf9c6bff1da826.js",
-      "static/chunks/commons.b65aeabf664115b40353.js",
+      "static/chunks/commons.4ea3dbec3c1857e0f66c.js",
       "static/runtime/main-70ea7647a4626837eb7e.js"
     ],
     "/icons": [
       "static/runtime/webpack-3a398baf9c6bff1da826.js",
-      "static/chunks/commons.b65aeabf664115b40353.js",
+      "static/chunks/commons.4ea3dbec3c1857e0f66c.js",
       "static/runtime/main-70ea7647a4626837eb7e.js"
     ],
     "/index": [
       "static/runtime/webpack-3a398baf9c6bff1da826.js",
-      "static/chunks/commons.b65aeabf664115b40353.js",
+      "static/chunks/commons.4ea3dbec3c1857e0f66c.js",
       "static/runtime/main-70ea7647a4626837eb7e.js"
     ],
     "/maps": [
       "static/runtime/webpack-3a398baf9c6bff1da826.js",
-      "static/chunks/commons.b65aeabf664115b40353.js",
+      "static/chunks/commons.4ea3dbec3c1857e0f66c.js",
       "static/runtime/main-70ea7647a4626837eb7e.js"
     ],
     "/notifications": [
       "static/runtime/webpack-3a398baf9c6bff1da826.js",
-      "static/chunks/commons.b65aeabf664115b40353.js",
+      "static/chunks/commons.4ea3dbec3c1857e0f66c.js",
       "static/runtime/main-70ea7647a4626837eb7e.js"
     ],
     "/tables": [
       "static/runtime/webpack-3a398baf9c6bff1da826.js",
-      "static/chunks/commons.b65aeabf664115b40353.js",
+      "static/chunks/commons.4ea3dbec3c1857e0f66c.js",
       "static/runtime/main-70ea7647a4626837eb7e.js"
     ],
     "/typography": [
       "static/runtime/webpack-3a398baf9c6bff1da826.js",
-      "static/chunks/commons.b65aeabf664115b40353.js",
+      "static/chunks/commons.4ea3dbec3c1857e0f66c.js",
       "static/runtime/main-70ea7647a4626837eb7e.js"
     ],
     "/users": [
       "static/runtime/webpack-3a398baf9c6bff1da826.js",
-      "static/chunks/commons.b65aeabf664115b40353.js",
+      "static/chunks/commons.4ea3dbec3c1857e0f66c.js",
       "static/runtime/main-70ea7647a4626837eb7e.js"
     ],
     "/": [
       "static/runtime/webpack-3a398baf9c6bff1da826.js",
-      "static/chunks/commons.b65aeabf664115b40353.js",
+      "static/chunks/commons.4ea3dbec3c1857e0f66c.js",
       "static/runtime/main-70ea7647a4626837eb7e.js"
     ]
   }

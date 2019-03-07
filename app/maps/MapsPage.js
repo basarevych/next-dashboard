@@ -3,11 +3,14 @@ import PropTypes from "prop-types";
 import { AutoSizer } from "react-virtualized";
 import Map from "./MapContainer";
 
-export const styles = () => ({
+export const styles = theme => ({
   layout: {
     width: "100%",
     flex: 1,
-    marginTop: "-2rem"
+    marginTop: "-2rem",
+    [theme.breakpoints.down("xs")]: {
+      marginTop: 0
+    }
   }
 });
 

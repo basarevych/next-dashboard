@@ -43,14 +43,14 @@ export const styles = theme => ({
   },
   smallWrapper: {
     zIndex: 1400,
-    flex: 1,
     alignSelf: "stretch"
   },
   barContainer: {
     transition: "all 0.25s ease-in-out"
   },
   bar: {
-    background: theme.palette.primary.main,
+    color: theme.header.color,
+    background: theme.header.background,
     boxShadow: "none"
   },
   barItem: {
@@ -487,7 +487,7 @@ class Header extends React.Component {
         open={!!this.state.anchorThemes}
         onClose={this.handleMenuClose}
       >
-        {_.map(_.keys(themes.names), theme => (
+        {_.map(themes.names, theme => (
           <MenuItem
             key={`theme-${theme}`}
             onClick={() => this.handleThemeSwitch(theme)}
@@ -495,7 +495,9 @@ class Header extends React.Component {
             <ListItemIcon>
               <ThemeIcon />
             </ListItemIcon>
-            <ListItemText>{themes.names[theme]}</ListItemText>
+            <ListItemText>
+              <FormattedMessage id={"THEME_" + _.upperCase(theme) + "_LABEL"} />
+            </ListItemText>
           </MenuItem>
         ))}
       </Menu>
@@ -607,7 +609,7 @@ class Header extends React.Component {
             className={this.props.classes.bar}
             elevation={0}
             position="static"
-            color={isVisible ? "primary" : "secondary"}
+            color="primary"
             onMouseEnter={this.handleBarMouseEnter}
             onMouseLeave={this.handleBarMouseLeave}
           >
@@ -673,7 +675,9 @@ class Header extends React.Component {
                 >
                   <ThemeIcon />
                   &nbsp;&nbsp;
-                  {_.upperFirst(this.props.theme.name)}
+                  <FormattedMessage
+                    id={"THEME_" + _.upperCase(this.props.theme.name) + "_MENU"}
+                  />
                 </Button>
                 <div className={this.props.classes.grow} />
                 <div className={this.props.classes.search}>

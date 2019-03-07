@@ -56,9 +56,6 @@ export const styles = theme => ({
   button: {
     margin: "0.5rem"
   },
-  paper: {
-    background: theme.main.paper
-  },
   table: {
     [theme.breakpoints.down("sm")]: responsiveTable(theme)
   },

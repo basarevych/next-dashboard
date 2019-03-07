@@ -89,10 +89,12 @@ export const styles = theme => ({
     background: darken(theme.palette.background.paper, 0.1)
   },
   item: {
+    width: "20%",
     minWidth: 100,
     display: "flex",
     flexDirection: "column",
-    alignItems: "center"
+    alignItems: "center",
+    color: theme.palette.text.primary
   },
   text: {
     lineHeight: "1rem",
@@ -124,7 +126,7 @@ class IconsPage extends React.Component {
     if (!Icon) return null;
     return (
       <div className={this.props.classes.item}>
-        <Icon fontSize="large" />
+        <Icon fontSize="large" color="inherit" />
         <div>
           <Typography variant="overline" className={this.props.classes.text}>
             {name}

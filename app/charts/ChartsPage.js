@@ -34,7 +34,11 @@ class ChartsPage extends React.Component {
   render() {
     return (
       <div className={this.props.classes.layout}>
-        <Typography variant="h3" className={this.props.classes.title}>
+        <Typography
+          variant="h3"
+          color="inherit"
+          className={this.props.classes.title}
+        >
           <FormattedMessage id="TITLE_CHARTS" />
         </Typography>
         <Grid container spacing={this.props.theme.main.spacing}>

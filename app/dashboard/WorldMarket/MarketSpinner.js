@@ -12,10 +12,12 @@ export const styles = theme => ({
   },
   spinner: {
     position: "absolute",
+    width: 60,
+    height: 60,
     top: "50%",
     left: "50%",
     transform: "translate3d(-50%, -50%, 0)",
-    color: theme.palette.primary.main
+    color: theme.main.color
   }
 });
 

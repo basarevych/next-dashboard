@@ -87,52 +87,71 @@ class Dashboard extends React.Component {
         <Grid
           container
           spacing={this.props.theme.main.spacing}
-          alignItems="center"
+          justify="center"
         >
-          <Grid item xs={12} sm={6} md={3}>
-            <ProfitStat
-              label="DASHBOARD_PROFIT_LABEL"
-              data={this.props.viewer.profitValues}
-            />
+          <Grid
+            container
+            spacing={this.props.theme.main.spacing}
+            item
+            alignContent="space-between"
+            xs={12}
+            sm={12}
+            md={3}
+          >
+            <Grid item xs={12} sm={6} md={12}>
+              <ProfitStat
+                label="DASHBOARD_PROFIT_LABEL"
+                data={this.props.viewer.profitValues}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={12}>
+              <SalesStat
+                label="DASHBOARD_SALES_LABEL"
+                data={this.props.viewer.salesValues}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={12}>
+              <ClientsStat
+                label="DASHBOARD_CLIENTS_LABEL"
+                data={this.props.viewer.clientsValues}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={12}>
+              <AvgTimeStat
+                label="DASHBOARD_AVG_TIME_LABEL"
+                precision={2}
+                data={this.props.viewer.avgTimeValues}
+              />
+            </Grid>
           </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <SalesStat
-              label="DASHBOARD_SALES_LABEL"
-              data={this.props.viewer.salesValues}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <ClientsStat
-              label="DASHBOARD_CLIENTS_LABEL"
-              data={this.props.viewer.clientsValues}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <AvgTimeStat
-              label="DASHBOARD_AVG_TIME_LABEL"
-              precision={2}
-              data={this.props.viewer.avgTimeValues}
-            />
-          </Grid>
-          <Grid item xs={12} md={8}>
-            <WorldMap
-              selected={this.state.countryId}
-              onSelect={this.handleCountrySelected}
-            />
-          </Grid>
-          <Grid item xs={12} md={4}>
-            <MarketSpinner isActive={!this.state.isLoaded} />
-            <Grow in={this.state.isLoaded}>
-              <MarketShare
+          <Grid
+            container
+            spacing={this.props.theme.main.spacing}
+            item
+            xs={12}
+            sm={12}
+            md
+          >
+            <Grid item xs={12} md={8}>
+              <WorldMap
                 selected={this.state.countryId}
-                viewer={this.props.viewer}
-                onLoaded={this.handleLoaded}
                 onSelect={this.handleCountrySelected}
               />
-            </Grow>
-          </Grid>
-          <Grid item xs={12}>
-            <DemoTable viewer={this.props.viewer} />
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <MarketSpinner isActive={!this.state.isLoaded} />
+              <Grow in={this.state.isLoaded}>
+                <MarketShare
+                  selected={this.state.countryId}
+                  viewer={this.props.viewer}
+                  onLoaded={this.handleLoaded}
+                  onSelect={this.handleCountrySelected}
+                />
+              </Grow>
+            </Grid>
+            <Grid item xs={12}>
+              <DemoTable viewer={this.props.viewer} />
+            </Grid>
           </Grid>
         </Grid>
       </div>

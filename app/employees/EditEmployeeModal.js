@@ -20,10 +20,7 @@ import constants from "../../common/constants";
 import fields from "../../common/forms/employee";
 import { allCountries } from "../../common/countries";
 
-export const styles = theme => ({
-  paper: {
-    background: theme.main.background
-  },
+export const styles = () => ({
   error: {
     color: red[500]
   },
@@ -129,12 +126,7 @@ class EditEmployeeModal extends Form {
 
   renderForm() {
     return (
-      <Dialog
-        maxWidth="xs"
-        classes={{ paper: this.props.classes.paper }}
-        open
-        onClose={this.props.onCancel}
-      >
+      <Dialog maxWidth="xs" open onClose={this.props.onCancel}>
         <DialogTitle>
           <FormattedMessage
             id={

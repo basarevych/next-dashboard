@@ -7,10 +7,11 @@ import {
   VictoryChart,
   VictoryVoronoiContainer,
   VictoryAxis,
-  VictoryLine,
+  VictoryArea,
   VictoryScatter,
   VictoryTooltip
 } from "victory";
+import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import { fade } from "@material-ui/core/styles/colorManipulator";
 import green from "@material-ui/core/colors/green";
@@ -18,10 +19,8 @@ import red from "@material-ui/core/colors/red";
 
 export const styles = theme => ({
   root: {
-    boxShadow: "inset 0 0 6px rgba(0, 0, 0, 0.5)",
+    color: theme.palette.primary.main,
     borderRadius: theme.shape.borderRadius,
-    background: theme.window.background,
-    color: theme.window.color,
     display: "flex",
     flexDirection: "column",
     alignItems: "stretch",
@@ -39,19 +38,22 @@ export const styles = theme => ({
     padding: "0.25rem 0.5rem"
   },
   stat: {
-    paddingTop: "1rem",
-    width: "60%",
+    padding: "1rem",
+    width: "auto",
     display: "flex",
     flexDirection: "column",
     alignItems: "center"
   },
   increasing: {
     color: "#ffffff",
-    background: fade(green[600], 0.85)
+    background: fade(green[800], 0.65)
   },
   descreasing: {
     color: "#ffffff",
-    background: fade(red[600], 0.85)
+    background: fade(red[800], 0.65)
+  },
+  chart: {
+    marginTop: "-1rem"
   }
 });
 
@@ -79,7 +81,7 @@ class Stat extends React.Component {
   renderStat() {
     return (
       <div className={this.props.classes.stat}>
-        <Typography variant="h4" color="inherit">
+        <Typography variant="h3" color="inherit">
           <FormattedNumber
             value={_.last(this.getData()).value}
             maximumFractionDigits={this.props.precision}
@@ -115,17 +117,12 @@ class Stat extends React.Component {
   }
 
   renderChart(width, height) {
-    const max = _.reduce(
-      this.getData(),
-      (acc, cur) => Math.max(acc, cur.value),
-      0
-    );
     return (
       <VictoryChart
         width={width}
         height={height}
         padding={0}
-        domainPadding={{ x: [10, 10], y: [5, 5] }}
+        domainPadding={{ x: 0, y: 5 }}
         containerComponent={
           <VictoryVoronoiContainer
             responsive={false}
@@ -146,19 +143,18 @@ class Stat extends React.Component {
       >
         <VictoryAxis
           dependentAxis
-          domain={{ y: [0, 1.1 * max] }}
           orientation="left"
           style={{
             axis: { display: "none" },
             ticks: { display: "none" },
             tickLabels: { display: "none" },
             grid: {
-              stroke: fade(this.props.theme.window.color, 0.35),
-              strokeWidth: 1
+              stroke: fade(this.props.theme.palette.text.secondary, 0.25),
+              strokeWidth: 0.75
             }
           }}
         />
-        <VictoryLine
+        <VictoryArea
           name="line"
           data={this.getData()}
           x="date"
@@ -167,7 +163,8 @@ class Stat extends React.Component {
           labels={_.constant("")}
           style={{
             data: {
-              stroke: this.props.theme.window.color,
+              fill: this.props.theme.chart.areaColor,
+              stroke: this.props.theme.chart.lineColor,
               strokeWidth: 2
             }
           }}
@@ -176,13 +173,10 @@ class Stat extends React.Component {
           data={this.getData()}
           x="date"
           y="value"
-          symbol="diamond"
           size={3}
           style={{
             data: {
-              fill: this.props.theme.window.dotInner,
-              stroke: this.props.theme.window.dotOuter,
-              strokeWidth: 2
+              fill: this.props.theme.chart.lineColor
             }
           }}
         />
@@ -192,7 +186,7 @@ class Stat extends React.Component {
 
   render() {
     return (
-      <div className={this.props.classes.root}>
+      <Paper className={this.props.classes.root}>
         {this.renderDelta()}
         {this.renderStat()}
         <div className={this.props.classes.chart}>
@@ -200,7 +194,7 @@ class Stat extends React.Component {
             {({ width }) => !!width && this.renderChart(width, 0.3 * width)}
           </AutoSizer>
         </div>
-      </div>
+      </Paper>
     );
   }
 }

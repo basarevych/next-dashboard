@@ -1,10 +1,10 @@
 "use strict";
 
-const material = require("./material");
-const daemon = require("./daemon");
+const dark = require("./dark");
+const light = require("./light");
 
 module.exports = {
-  defaultTheme: "daemon",
-  names: { daemon: "Daemon", material: "Material" },
-  themes: { daemon, material }
+  defaultTheme: "dark",
+  names: ["dark", "light"],
+  themes: { dark, light }
 };

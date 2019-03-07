@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { FormattedMessage } from "react-intl";
 import { toast } from "react-toastify";
+import { lighten } from "@material-ui/core/styles/colorManipulator";
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
@@ -15,8 +16,7 @@ export const styles = theme => ({
     alignItems: "center"
   },
   paper: {
-    width: 300,
-    background: theme.main.paper
+    width: 300
   },
   row: {
     display: "flex",
@@ -32,7 +32,8 @@ export const styles = theme => ({
     alignItems: "center"
   },
   toast: {
-    background: theme.palette.primary.main,
+    borderRadius: theme.shape.borderRadius,
+    background: lighten(theme.palette.primary.main, 0.15),
     color: theme.palette.primary.contrastText,
     "& button": {
       color: theme.palette.primary.contrastText

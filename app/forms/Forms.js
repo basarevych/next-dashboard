@@ -4,6 +4,7 @@ import classNames from "classnames";
 import { FormattedMessage } from "react-intl";
 import { AutoSizer } from "react-virtualized";
 import SwipeableViews from "react-swipeable-views";
+import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import Hidden from "@material-ui/core/Hidden";
 import Button from "@material-ui/core/Button";
@@ -18,6 +19,7 @@ import CompletedIcon from "@material-ui/icons/DoneOutline";
 import PrevIcon from "@material-ui/icons/KeyboardArrowLeft";
 import NextIcon from "@material-ui/icons/KeyboardArrowRight";
 import SubmitIcon from "@material-ui/icons/Check";
+import red from "@material-ui/core/colors/red";
 import ShippingForm from "./ShippingFormContainer";
 import ShippingInfo from "./ShippingInfoContainer";
 import BillingForm from "./BillingFormContainer";
@@ -67,9 +69,11 @@ export const styles = theme => ({
     fontSize: 46,
     marginTop: -10
   },
+  stepLabelError: {
+    fontWeight: "bold",
+    color: red[500]
+  },
   page: {
-    boxShadow: theme.shadows[2],
-    background: theme.form.background,
     flex: 1
   },
   form: {
@@ -98,7 +102,7 @@ export const styles = theme => ({
     marginTop: "0.5rem",
     marginBottom: "0.5rem",
     background: theme.form.stepperBackground,
-    color: theme.form.stepperColor,
+    color: theme.form.stepperActive,
     flex: 1,
     display: "flex",
     justifyContent: "center",
@@ -302,7 +306,10 @@ class Forms extends React.Component {
           if (this.isError(index)) {
             labelProps.error = true;
             labelProps.optional = (
-              <Typography variant="body2" color="error">
+              <Typography
+                variant="button"
+                className={this.props.classes.stepLabelError}
+              >
                 <FormattedMessage id="WIZARD_ERROR_LABEL" />
               </Typography>
             );
@@ -322,12 +329,16 @@ class Forms extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <Typography variant="h3" className={this.props.classes.title}>
+        <Typography
+          variant="h3"
+          color="inherit"
+          className={this.props.classes.title}
+        >
           <FormattedMessage id="TITLE_FORMS" />
         </Typography>
 
         <div className={this.props.classes.root}>
-          <div className={this.props.classes.page}>
+          <Paper className={this.props.classes.page}>
             <Hidden smDown>{this.renderStepper(false)}</Hidden>
             <Hidden mdUp>{this.renderStepper(true)}</Hidden>
 
@@ -433,7 +444,7 @@ class Forms extends React.Component {
                 </Typography>
               </div>
             </Hidden>
-          </div>
+          </Paper>
 
           {_.map(this.constructor.steps, (step, index) => {
             if (index !== this.state.step) return null;

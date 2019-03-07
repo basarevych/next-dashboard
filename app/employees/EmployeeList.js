@@ -45,7 +45,10 @@ export const styles = theme => ({
   messageContent: {
     flex: 1,
     maxWidth: "600px",
-    margin: "3rem 1rem 1rem 1rem"
+    margin: "3rem 1rem 1rem 1rem",
+    [theme.breakpoints.down("sm")]: {
+      marginTop: 0
+    }
   },
   layout: {
     width: "100%",
@@ -446,7 +449,7 @@ class EmployeeList extends React.Component {
 
         <div className={this.props.classes.layout}>
           <div className={this.props.classes.header}>
-            <Typography variant="h3">
+            <Typography variant="h3" color="inherit">
               <FormattedMessage id="TITLE_TABLES" />
             </Typography>
             <IconButton color="inherit" onClick={this.handleRefreshAction}>

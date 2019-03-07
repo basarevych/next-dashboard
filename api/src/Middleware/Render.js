@@ -91,12 +91,7 @@ class Render extends EventEmitter {
     const hash = crypto.createHash("md5");
     hash.update(JSON.stringify(query));
 
-    const key =
-      query.locale +
-      ":" +
-      (req.originalUrl || req.path) +
-      ":" +
-      hash.digest("hex");
+    const key = query.locale + ":" + req.path + ":" + hash.digest("hex");
 
     if (user && (!req.cookieHeader || !req.csrfHeader)) {
       // just invalidate the cached version when not enough data to render

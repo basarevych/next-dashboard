@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { intlShape, FormattedMessage } from "react-intl";
 import { SubmissionError } from "redux-form/immutable";
+import { lighten } from "@material-ui/core/styles/colorManipulator";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -29,6 +30,7 @@ export const styles = theme => ({
     paddingBottom: "1rem"
   },
   credentialsPaper: {
+    background: lighten(theme.palette.background.paper, 0.15),
     height: "100%",
     padding: "1rem 1rem 2rem"
   },
