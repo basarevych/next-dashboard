@@ -19,7 +19,7 @@ import red from "@material-ui/core/colors/red";
 
 export const styles = theme => ({
   root: {
-    color: theme.palette.primary.main,
+    color: theme.chart.statColor,
     borderRadius: theme.shape.borderRadius,
     display: "flex",
     flexDirection: "column",

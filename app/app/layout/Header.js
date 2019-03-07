@@ -195,9 +195,11 @@ class Header extends React.Component {
       (this.state.barHeight !== this.bar.current.offsetHeight ||
         this.state.barWidth !== this.bar.current.offsetWidth)
     ) {
-      this.setState({
-        barHeight: this.bar.current.offsetHeight,
-        barWidth: this.bar.current.offsetWidth
+      setTimeout(() => {
+        this.setState({
+          barHeight: this.bar.current.offsetHeight,
+          barWidth: this.bar.current.offsetWidth
+        });
       });
     }
   }

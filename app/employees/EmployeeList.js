@@ -152,9 +152,11 @@ class EmployeeList extends React.Component {
         sortDir,
         first: this.state.pageSize
       };
-      this.setState({ pageNumber: 0, variables }, () =>
-        this.props.relay.refetch(variables, null, null, { force: true })
-      );
+      setTimeout(() => {
+        this.setState({ pageNumber: 0, variables }, () =>
+          this.props.relay.refetch(variables, null, null, { force: true })
+        );
+      });
     }
     this.props.onDeselectAll(
       _.map(_.get(this.props.viewer, "employees.edges", []), "node.id")

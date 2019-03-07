@@ -121,9 +121,11 @@ class DemoList extends React.Component {
         sortDir,
         first: this.state.pageSize
       };
-      return this.setState({ pageNumber: 0, variables }, () =>
-        this.props.relay.refetch(variables, null, null, { force: true })
-      );
+      return setTimeout(() => {
+        this.setState({ pageNumber: 0, variables }, () =>
+          this.props.relay.refetch(variables, null, null, { force: true })
+        );
+      });
     }
 
     const total = _.get(this.props.viewer, "employees.totalCount", 0);
@@ -135,9 +137,11 @@ class DemoList extends React.Component {
         sortDir,
         first: this.state.pageSize
       };
-      this.setState({ pageNumber: 0, variables }, () =>
-        this.props.relay.refetch(variables, null, null, { force: true })
-      );
+      setTimeout(() => {
+        this.setState({ pageNumber: 0, variables }, () =>
+          this.props.relay.refetch(variables, null, null, { force: true })
+        );
+      });
     }
   }
 

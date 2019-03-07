@@ -84,6 +84,7 @@ module.exports = {
     itemSelectedHoverBorder: `4px solid ${lighten(secondaryBackground, 0.05)}`
   },
   chart: {
+    statColor: textSecondary,
     mapColor: textPrimary,
     mapBackground: lighten(primaryBackground, 0.25),
     mapHoverBackground: darken(secondaryBackground, 0.15),
