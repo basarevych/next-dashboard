@@ -41,9 +41,11 @@ class SitemapRoute extends EventEmitter {
     debug("Got request");
 
     let urls = _.flatMap(this.config.appOrigins, url =>
-      _.map(constants.pages, (info, path) =>
-        info.roles ? false : "<url><loc>" + url + path + "</loc></url>"
-      ).compact()
+      _.compact(
+        _.map(constants.pages, (info, path) =>
+          info.roles ? false : "<url><loc>" + url + path + "</loc></url>"
+        )
+      )
     ).join("\n");
 
     let response = `<?xml version="1.0" encoding="UTF-8"?>

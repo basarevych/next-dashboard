@@ -4,7 +4,7 @@ require("@babel/polyfill");
 require("isomorphic-unfetch");
 if (!global._) global._ = require("lodash");
 
-const Injectt = require("injectt");
+const Injectt = require("injectt/src/injectt.node");
 const nextApp = require("next");
 const path = require("path");
 const express = require("express");

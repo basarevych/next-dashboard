@@ -41,19 +41,9 @@ describe("Application initialization", () => {
   });
 
   test("Middleware installed", () => {
-    let expressCounter = 0;
-    let ioCounter = 0;
     for (let item of _.values(app.di.get("middleware").middleware)) {
-      if (item.express) {
-        expressCounter++;
-        expect(item.express).toHaveBeenCalled();
-      }
-      if (item.io) {
-        ioCounter++;
-        expect(item.io).toHaveBeenCalled();
-      }
+      if (item.express) expect(item.express).toHaveBeenCalled();
+      if (item.io) expect(item.io).toHaveBeenCalled();
     }
-    expect(expressCounter).toBeGreaterThan(0);
-    expect(ioCounter).toBeGreaterThan(0);
   });
 });
