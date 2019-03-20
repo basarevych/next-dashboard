@@ -89,7 +89,8 @@ class MyApp extends App {
     );
     this.materialContext = getMaterialContext(props.theme);
 
-    this.reduxStore.dispatch(appOperations.init());
+    if (process.browser)
+      this.reduxStore.dispatch(appOperations.start()).catch(console.error);
   }
 
   componentDidMount() {
@@ -98,12 +99,6 @@ class MyApp extends App {
       const jssStyles = document.querySelector("#jss-server-side");
       if (jssStyles && jssStyles.parentNode)
         jssStyles.parentNode.removeChild(jssStyles);
-
-      setTimeout(() =>
-        this.reduxStore
-          .dispatch(appOperations.start())
-          .catch(error => console.error(error))
-      );
     }
   }
 

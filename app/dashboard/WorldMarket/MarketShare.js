@@ -4,7 +4,7 @@ import { intlShape, FormattedMessage } from "react-intl";
 import { AutoSizer } from "react-virtualized";
 import {
   VictoryChart,
-  VictoryVoronoiContainer,
+  VictoryContainer,
   VictoryStack,
   VictoryBar,
   VictoryAxis,
@@ -12,10 +12,12 @@ import {
   VictoryTheme
 } from "victory";
 import Typography from "@material-ui/core/Typography";
+import Paper from "@material-ui/core/Paper";
 import { getColorStart, getColorEnd } from "../../../common/colors";
 
 export const styles = () => ({
   root: {
+    padding: "1rem",
     textAlign: "center"
   }
 });
@@ -64,33 +66,32 @@ class MarketShare extends React.Component {
     if (!shares.length) return null;
 
     return (
-      <React.Fragment>
-        <svg width={0} height={0}>
-          <defs>
-            {_.map([0, 1, 2, 3], index => {
-              const [r1, g1, b1] = getColorStart(index, 4);
-              const [r2, g2, b2] = getColorEnd(index, 4);
-              return (
-                <linearGradient
-                  key={`gradient-${index}`}
-                  id={`worldPieGradient${index + 1}`}
-                  x1="0%"
-                  y1="0%"
-                  x2="0%"
-                  y2="100%"
-                >
-                  <stop offset="0%" stopColor={`rgb(${r1}, ${g1}, ${b1})`} />
-                  <stop offset="100%" stopColor={`rgb(${r2}, ${g2}, ${b2})`} />
-                </linearGradient>
-              );
-            })}
-          </defs>
-        </svg>
+      <svg width={width} height={height}>
+        <defs>
+          {_.map([0, 1, 2, 3], index => {
+            const [r1, g1, b1] = getColorStart(index, 4);
+            const [r2, g2, b2] = getColorEnd(index, 4);
+            return (
+              <linearGradient
+                key={`gradient-${index}`}
+                id={`worldPieGradient${index + 1}`}
+                x1="0%"
+                y1="0%"
+                x2="0%"
+                y2="100%"
+              >
+                <stop offset="0%" stopColor={`rgb(${r1}, ${g1}, ${b1})`} />
+                <stop offset="100%" stopColor={`rgb(${r2}, ${g2}, ${b2})`} />
+              </linearGradient>
+            );
+          })}
+        </defs>
         <VictoryChart
           width={width}
           height={height}
           padding={{ top: 20, right: 20, bottom: 20, left: 50 }}
-          containerComponent={<VictoryVoronoiContainer responsive={false} />}
+          standalone={false}
+          containerComponent={<VictoryContainer responsive={false} />}
           polar
           events={[
             {
@@ -159,20 +160,20 @@ class MarketShare extends React.Component {
             ]}
           />
         </VictoryChart>
-      </React.Fragment>
+      </svg>
     );
   }
 
   render() {
     return (
-      <div className={this.props.classes.root} style={this.props.style}>
+      <Paper className={this.props.classes.root} style={this.props.style}>
         {this.renderTitle()}
         <div>
           <AutoSizer disableHeight>
             {({ width }) => !!width && this.renderChart(width, width)}
           </AutoSizer>
         </div>
-      </div>
+      </Paper>
     );
   }
 }

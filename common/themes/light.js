@@ -5,13 +5,18 @@ const {
   lighten,
   fade
 } = require("@material-ui/core/styles/colorManipulator");
-const { red, blueGrey } = require("@material-ui/core/colors");
+const {
+  deepOrange,
+  yellow,
+  red,
+  blueGrey
+} = require("@material-ui/core/colors");
 
 const primaryColor = "rgba(255, 255, 255, 0.9)";
-const primaryBackground = "#3d4466";
+const primaryBackground = "#2b446d";
 
 const secondaryColor = "rgba(0, 0, 0, 0.9)";
-const secondaryBackground = "#f9aa33";
+const secondaryBackground = yellow[800];
 
 const bgPage = "#e0e0f0";
 const bgNormal = "#e0e0f0";
@@ -67,7 +72,7 @@ module.exports = {
     computerWidth: 30,
     tabletWidth: 20,
     phoneWidth: 20,
-    background: "#3d4466",
+    background: darken(primaryBackground, 0.2),
     color: primaryColor,
     itemBackground: "transparent",
     itemBorder: "4px solid transparent",
@@ -88,11 +93,11 @@ module.exports = {
     mapBackground: lighten(primaryBackground, 0.5),
     mapHoverBackground: darken(secondaryBackground, 0.15),
     mapSelectedBackground: secondaryBackground,
-    lineColor: darken(secondaryBackground, 0.15),
+    lineColor: deepOrange[800],
     areaColor: fade(primaryBackground, 0.25)
   },
   form: {
-    stepperBackground: darken(bgPaper, 0.15),
+    stepperBackground: darken(bgPaper, 0.05),
     stepperLine: textDisabled,
     stepperColor: textDisabled,
     stepperActive: textPrimary
@@ -177,6 +182,23 @@ module.exports = {
       },
       selectIcon: {
         color: textSecondary
+      }
+    },
+    MuiTabs: {
+      scroller: {
+        overflowX: ["hidden", "!important"],
+        marginBottom: [0, "!important"]
+      },
+      scrollButtons: {
+        height: 48
+      },
+      scrollButtonsAuto: {
+        height: 48
+      }
+    },
+    MuiTab: {
+      root: {
+        height: [48, "!important"]
       }
     },
     MuiIconButton: {

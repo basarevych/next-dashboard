@@ -25,15 +25,9 @@ export const create = ({
     await dispatch(authOperations.setGoogleMapsKey({ googleMapsKey }));
 };
 
-// called in App.costructor()
-export const init = () => async dispatch => {
-  return dispatch(actions.init());
-};
-
-// called in App.componentDidMount()
+// called in App.costructor() client-side
 export const start = () => {
   return async (dispatch, getState, di) => {
-    await dispatch(actions.start());
     await dispatch(authOperations.setStatus());
 
     if (
@@ -43,6 +37,8 @@ export const start = () => {
     ) {
       await dispatch(authOperations.signIn({ email: null, password: null }));
     }
+
+    await dispatch(actions.start());
   };
 };
 

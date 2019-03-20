@@ -3,8 +3,6 @@ import * as types from "./types";
 
 export const create = data => _.assign({ type: types.CREATE }, data);
 
-export const init = data => _.assign({ type: types.INIT }, data);
-
 export const start = () => ({ type: types.START });
 
 export const stop = () => ({ type: types.STOP });

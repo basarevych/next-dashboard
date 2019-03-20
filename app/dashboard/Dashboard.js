@@ -127,6 +127,7 @@ class Dashboard extends React.Component {
           <Grid
             container
             spacing={this.props.theme.main.spacing}
+            alignItems="stretch"
             item
             xs={12}
             sm={12}
@@ -138,9 +139,14 @@ class Dashboard extends React.Component {
                 onSelect={this.handleCountrySelected}
               />
             </Grid>
-            <Grid item xs={12} md={4}>
-              <MarketSpinner isActive={!this.state.isLoaded} />
-              <Grow in={this.state.isLoaded}>
+            <Grid
+              item
+              xs={12}
+              md={4}
+              style={{ display: "flex", position: "relative" }}
+            >
+              {!this.state.isLoaded && <MarketSpinner isActive />}
+              <Grow in={this.state.isLoaded} style={{ width: "100%" }}>
                 <MarketShare
                   selected={this.state.countryId}
                   viewer={this.props.viewer}

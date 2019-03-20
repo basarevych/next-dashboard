@@ -5,7 +5,8 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 
 export const styles = theme => ({
   root: {
-    position: "relative"
+    width: "100%",
+    position: "absolute"
   },
   spinnerWrapper: {
     position: "absolute"

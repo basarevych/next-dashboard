@@ -1,5 +1,4 @@
 export const CREATE = "app/app/CREATE";
-export const INIT = "app/app/INIT";
 export const START = "app/app/START";
 export const STOP = "app/app/STOP";
 export const SET_STATUS_CODE = "app/app/SET_STATUS_CODE";

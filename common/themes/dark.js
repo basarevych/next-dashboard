@@ -13,8 +13,7 @@ const primaryBackground = "#707484";
 const secondaryColor = "rgba(255, 255, 255, 0.9)";
 const secondaryBackground = "#af441d";
 
-const bgPage = "#000000";
-const bgNormal = "#333946";
+const bgNormal = "#3e4150";
 const bgPaper = "#484e5e";
 
 const textPrimary = "rgba(255, 255, 255, 0.9)";
@@ -37,7 +36,7 @@ module.exports = {
       contrastText: secondaryColor
     },
     background: {
-      default: bgPage,
+      default: bgNormal,
       paper: bgPaper
     },
     text: {
@@ -87,10 +86,10 @@ module.exports = {
     statColor: textSecondary,
     mapColor: textPrimary,
     mapBackground: lighten(primaryBackground, 0.25),
-    mapHoverBackground: darken(secondaryBackground, 0.15),
-    mapSelectedBackground: secondaryBackground,
-    lineColor: lighten(secondaryBackground, 0.25),
-    areaColor: fade(primaryBackground, 0.35)
+    mapHoverBackground: secondaryBackground,
+    mapSelectedBackground: lighten(secondaryBackground, 0.25),
+    lineColor: lighten(secondaryBackground, 0.5),
+    areaColor: fade(primaryBackground, 0.5)
   },
   form: {
     stepperBackground: lighten(bgPaper, 0.15),
@@ -125,7 +124,10 @@ module.exports = {
   overrides: {
     MuiPaper: {
       root: {
-        background: bgPaper,
+        background: `linear-gradient(to bottom right, ${lighten(
+          bgPaper,
+          0.2
+        )} 0, ${darken(bgPaper, 0, 2)} 100%)`,
         color: textPrimary
       }
     },
@@ -160,7 +162,7 @@ module.exports = {
       body: {
         fontSize: "1rem",
         "&.selected": {
-          background: lighten(bgPaper, 0.15)
+          background: lighten(bgNormal, 0.15)
         }
       }
     },
@@ -178,6 +180,23 @@ module.exports = {
       },
       selectIcon: {
         color: textSecondary
+      }
+    },
+    MuiTabs: {
+      scroller: {
+        overflowX: ["hidden", "!important"],
+        marginBottom: [0, "!important"]
+      },
+      scrollButtons: {
+        height: 48
+      },
+      scrollButtonsAuto: {
+        height: 48
+      }
+    },
+    MuiTab: {
+      root: {
+        height: [48, "!important"]
       }
     },
     MuiIconButton: {

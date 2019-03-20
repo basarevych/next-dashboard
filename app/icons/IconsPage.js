@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import classNames from "classnames";
 import { intlShape, FormattedMessage } from "react-intl";
 import { AutoSizer, List } from "react-virtualized";
-import { lighten, darken } from "@material-ui/core/styles/colorManipulator";
+import { lighten } from "@material-ui/core/styles/colorManipulator";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
@@ -86,7 +86,7 @@ export const styles = theme => ({
     background: lighten(theme.palette.background.paper, 0.1)
   },
   even: {
-    background: darken(theme.palette.background.paper, 0.1)
+    background: lighten(theme.palette.background.paper, 0.05)
   },
   item: {
     width: "20%",
