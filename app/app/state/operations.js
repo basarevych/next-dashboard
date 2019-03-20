@@ -1,7 +1,6 @@
 import Router from "next/router";
 import * as actions from "./actions";
 import { authOperations, authSelectors } from "../../auth/state";
-import constants from "../../../common/constants";
 
 export const setStatusCode = actions.setStatusCode;
 export const setConnected = actions.setConnected;
@@ -31,21 +30,11 @@ export const init = () => async dispatch => {
   return dispatch(actions.init());
 };
 
-let fontsLoaded;
 // called in App.componentDidMount()
 export const start = () => {
-  if (!fontsLoaded) {
-    fontsLoaded = new Promise(resolve => {
-      if (window.__fontsLoaded) return resolve();
-      window.addEventListener(constants.events.FONTS_LOADED, resolve, {
-        once: true
-      });
-      setTimeout(resolve, 5000);
-    });
-  }
-
   return async (dispatch, getState, di) => {
-    await Promise.all([dispatch(authOperations.setStatus()), fontsLoaded]);
+    await dispatch(actions.start());
+    await dispatch(authOperations.setStatus());
 
     if (
       !authSelectors.isAuthenticated(getState()) &&
@@ -54,8 +43,6 @@ export const start = () => {
     ) {
       await dispatch(authOperations.signIn({ email: null, password: null }));
     }
-
-    return dispatch(actions.start());
   };
 };
 

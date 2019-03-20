@@ -36,6 +36,7 @@ export const styles = theme => ({
     position: "relative"
   },
   backdrop: {
+    pointerEvents: "none",
     background: theme.main.backdrop,
     opacity: 0.8,
     zIndex: 10000,

@@ -3,84 +3,84 @@
   "pages": {
     "/_app": [
       "static/runtime/webpack-49245e1883bd9093e553.js",
-      "static/chunks/commons.3046513732fe9f8e3642.js",
+      "static/chunks/commons.270a416416d90f66b0ee.js",
       "static/css/styles.65a36a00.chunk.css",
       "static/chunks/styles.86528e070af9e2ddc9d7.js",
       "static/runtime/main-c5d27c2ae207fe02c273.js"
     ],
     "/_error": [
       "static/runtime/webpack-49245e1883bd9093e553.js",
-      "static/chunks/commons.3046513732fe9f8e3642.js",
+      "static/chunks/commons.270a416416d90f66b0ee.js",
       "static/runtime/main-c5d27c2ae207fe02c273.js"
     ],
     "/auth/error": [
       "static/runtime/webpack-49245e1883bd9093e553.js",
-      "static/chunks/commons.3046513732fe9f8e3642.js",
+      "static/chunks/commons.270a416416d90f66b0ee.js",
       "static/runtime/main-c5d27c2ae207fe02c273.js"
     ],
     "/auth/profile": [
       "static/runtime/webpack-49245e1883bd9093e553.js",
-      "static/chunks/commons.3046513732fe9f8e3642.js",
+      "static/chunks/commons.270a416416d90f66b0ee.js",
       "static/runtime/main-c5d27c2ae207fe02c273.js"
     ],
     "/auth/verify": [
       "static/runtime/webpack-49245e1883bd9093e553.js",
-      "static/chunks/commons.3046513732fe9f8e3642.js",
+      "static/chunks/commons.270a416416d90f66b0ee.js",
       "static/runtime/main-c5d27c2ae207fe02c273.js"
     ],
     "/charts": [
       "static/runtime/webpack-49245e1883bd9093e553.js",
-      "static/chunks/commons.3046513732fe9f8e3642.js",
+      "static/chunks/commons.270a416416d90f66b0ee.js",
       "static/runtime/main-c5d27c2ae207fe02c273.js"
     ],
     "/dashboard": [
       "static/runtime/webpack-49245e1883bd9093e553.js",
-      "static/chunks/commons.3046513732fe9f8e3642.js",
+      "static/chunks/commons.270a416416d90f66b0ee.js",
       "static/runtime/main-c5d27c2ae207fe02c273.js"
     ],
     "/forms": [
       "static/runtime/webpack-49245e1883bd9093e553.js",
-      "static/chunks/commons.3046513732fe9f8e3642.js",
+      "static/chunks/commons.270a416416d90f66b0ee.js",
       "static/runtime/main-c5d27c2ae207fe02c273.js"
     ],
     "/icons": [
       "static/runtime/webpack-49245e1883bd9093e553.js",
-      "static/chunks/commons.3046513732fe9f8e3642.js",
+      "static/chunks/commons.270a416416d90f66b0ee.js",
       "static/runtime/main-c5d27c2ae207fe02c273.js"
     ],
     "/index": [
       "static/runtime/webpack-49245e1883bd9093e553.js",
-      "static/chunks/commons.3046513732fe9f8e3642.js",
+      "static/chunks/commons.270a416416d90f66b0ee.js",
       "static/runtime/main-c5d27c2ae207fe02c273.js"
     ],
     "/maps": [
       "static/runtime/webpack-49245e1883bd9093e553.js",
-      "static/chunks/commons.3046513732fe9f8e3642.js",
+      "static/chunks/commons.270a416416d90f66b0ee.js",
       "static/runtime/main-c5d27c2ae207fe02c273.js"
     ],
     "/notifications": [
       "static/runtime/webpack-49245e1883bd9093e553.js",
-      "static/chunks/commons.3046513732fe9f8e3642.js",
+      "static/chunks/commons.270a416416d90f66b0ee.js",
       "static/runtime/main-c5d27c2ae207fe02c273.js"
     ],
     "/tables": [
       "static/runtime/webpack-49245e1883bd9093e553.js",
-      "static/chunks/commons.3046513732fe9f8e3642.js",
+      "static/chunks/commons.270a416416d90f66b0ee.js",
       "static/runtime/main-c5d27c2ae207fe02c273.js"
     ],
     "/typography": [
       "static/runtime/webpack-49245e1883bd9093e553.js",
-      "static/chunks/commons.3046513732fe9f8e3642.js",
+      "static/chunks/commons.270a416416d90f66b0ee.js",
       "static/runtime/main-c5d27c2ae207fe02c273.js"
     ],
     "/users": [
       "static/runtime/webpack-49245e1883bd9093e553.js",
-      "static/chunks/commons.3046513732fe9f8e3642.js",
+      "static/chunks/commons.270a416416d90f66b0ee.js",
       "static/runtime/main-c5d27c2ae207fe02c273.js"
     ],
     "/": [
       "static/runtime/webpack-49245e1883bd9093e553.js",
-      "static/chunks/commons.3046513732fe9f8e3642.js",
+      "static/chunks/commons.270a416416d90f66b0ee.js",
       "static/runtime/main-c5d27c2ae207fe02c273.js"
     ]
   }

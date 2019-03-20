@@ -37,7 +37,7 @@ describe("Token route", () => {
 
     app = express();
     app.use((req, res, next) => {
-      req.getUser = async => user;
+      req.getUser = async () => user;
       next();
     });
     app.use(route.router);

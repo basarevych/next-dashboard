@@ -2,20 +2,12 @@ import React from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import { intlShape, FormattedMessage, FormattedNumber } from "react-intl";
-import { AutoSizer } from "react-virtualized";
-import {
-  VictoryChart,
-  VictoryVoronoiContainer,
-  VictoryAxis,
-  VictoryArea,
-  VictoryScatter,
-  VictoryTooltip
-} from "victory";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import { fade } from "@material-ui/core/styles/colorManipulator";
 import green from "@material-ui/core/colors/green";
 import red from "@material-ui/core/colors/red";
+import Chart from "./Chart";
 
 export const styles = theme => ({
   root: {
@@ -72,10 +64,20 @@ class Stat extends React.Component {
   };
 
   getData() {
-    return _.map(_.get(this.props.data, "edges", []), edge => ({
-      date: new Date(_.get(edge, "node.date")),
-      value: _.get(edge, "node.value")
-    }));
+    return _.map(_.get(this.props.data, "edges", []), edge => {
+      const date = new Date(_.get(edge, "node.date"));
+      const value = _.get(edge, "node.value");
+      return {
+        date,
+        value,
+        tooltip:
+          this.props.intl.formatMessage({ id: this.props.label }) +
+          ": " +
+          value +
+          "\n" +
+          this.props.intl.formatDate(date)
+      };
+    });
   }
 
   renderStat() {
@@ -116,84 +118,20 @@ class Stat extends React.Component {
     );
   }
 
-  renderChart(width, height) {
-    return (
-      <VictoryChart
-        width={width}
-        height={height}
-        padding={0}
-        domainPadding={{ x: 0, y: 5 }}
-        containerComponent={
-          <VictoryVoronoiContainer
-            responsive={false}
-            voronoiDimension="x"
-            voronoiBlacklist={["line"]}
-            labels={d =>
-              this.props.intl.formatMessage({ id: this.props.label }) +
-              ": " +
-              d.value +
-              "\n" +
-              this.props.intl.formatDate(d.date)
-            }
-            labelComponent={
-              <VictoryTooltip renderInPortal orientation="left" />
-            }
-          />
-        }
-      >
-        <VictoryAxis
-          dependentAxis
-          orientation="left"
-          style={{
-            axis: { display: "none" },
-            ticks: { display: "none" },
-            tickLabels: { display: "none" },
-            grid: {
-              stroke: fade(this.props.theme.palette.text.secondary, 0.25),
-              strokeWidth: 0.75
-            }
-          }}
-        />
-        <VictoryArea
-          name="line"
-          data={this.getData()}
-          x="date"
-          y="value"
-          interpolation="monotoneX"
-          labels={_.constant("")}
-          style={{
-            data: {
-              fill: this.props.theme.chart.areaColor,
-              stroke: this.props.theme.chart.lineColor,
-              strokeWidth: 2
-            }
-          }}
-        />
-        <VictoryScatter
-          data={this.getData()}
-          x="date"
-          y="value"
-          size={3}
-          style={{
-            data: {
-              fill: this.props.theme.chart.lineColor
-            }
-          }}
-        />
-      </VictoryChart>
-    );
-  }
-
   render() {
     return (
       <Paper className={this.props.classes.root}>
         {this.renderDelta()}
         {this.renderStat()}
-        <div className={this.props.classes.chart}>
-          <AutoSizer disableHeight>
-            {({ width }) => !!width && this.renderChart(width, 0.3 * width)}
-          </AutoSizer>
-        </div>
+        <Chart
+          className={this.props.classes.chart}
+          data={this.getData()}
+          colors={{
+            grid: fade(this.props.theme.palette.text.secondary, 0.25),
+            area: this.props.theme.chart.areaColor,
+            line: this.props.theme.chart.lineColor
+          }}
+        />
       </Paper>
     );
   }
