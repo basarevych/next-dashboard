@@ -111,7 +111,7 @@ class App {
 
     // Dependency injection container
     this.di = new Injectt();
-    this.di.load(path.resolve(__dirname, "src"));
+    this.di.load(path.resolve(__dirname, "src")); // auto load all the services
     this.di.registerInstance(this, "app");
     this.di.registerInstance(this.config, "config");
     this.di.registerInstance(new PubSub(), "pubsub");
@@ -133,7 +133,8 @@ class App {
 
     this.server = mainServer;
 
-    // Initialize the singletons
+    // Retrieve all the singletons and run their .init() method
+    // (this will also instantiate these singletons)
     await Promise.all(_.invokeMap(this.di.singletons(), "init"));
 
     // Initialize Next
