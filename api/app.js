@@ -16,6 +16,7 @@ const l10n = require("../common/locales");
 
 require("dotenv").config({ path: path.join(__dirname, "..", "/.env") });
 
+// These variables are set in .env file or by environment
 let appHost = process.env.APP_HOST || "0.0.0.0";
 let appPort = parseInt(process.env.APP_PORT, 10) || 3000;
 let appOrigins = process.env.APP_ORIGINS;
@@ -109,15 +110,24 @@ class App {
     this.express.set("port", this.config.appPort);
     this.express.set("trust proxy", this.config.appTrustProxy);
 
-    // Dependency injection container
-    // https://www.npmjs.com/package/injectt
+    /*
+      Dependency injection container
+      https://www.npmjs.com/package/injectt
+
+      A class is a service when it has "$provides" static property (its name)
+      and optional "$requires" static property (list of names of the dependencies)
+      Instantiated dependencies are passed as arguments to the constructor
+    */
     this.di = new Injectt();
     this.di.load(path.resolve(__dirname, "src")); // auto load all the services
     this.di.registerInstance(this, "app");
     this.di.registerInstance(this.config, "config");
     this.di.registerInstance(new PubSub(), "pubsub");
 
-    // Redux store
+    /*
+      Redux store
+      Used for state management of the connected WebSockets
+    */
     this.store = getStore(this.di);
   }
 
@@ -132,6 +142,7 @@ class App {
       );
     }
 
+    // HTTP server
     this.server = mainServer;
 
     // Retrieve all the singletons and run their .init() method
