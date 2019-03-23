@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { AutoSizer } from "react-virtualized";
 import {
   VictoryChart,
-  VictoryVoronoiContainer,
+  VictoryContainer,
   VictoryAxis,
   VictoryCandlestick
 } from "victory";
@@ -31,20 +31,23 @@ class Chart6 extends React.Component {
 
   renderChart(width, height) {
     return (
-      <VictoryChart
-        width={width}
-        height={height}
-        scale={{ x: "time" }}
-        containerComponent={<VictoryVoronoiContainer responsive={false} />}
-        theme={theme({
-          theme: this.props.theme,
-          withGrid: true
-        })}
-      >
-        <VictoryAxis tickFormat={t => `${t.getDate()}/${t.getMonth()}`} />
-        <VictoryAxis dependentAxis />
-        <VictoryCandlestick data={this.getData()} size={8} />
-      </VictoryChart>
+      <svg width={width} height={height}>
+        <VictoryChart
+          width={width}
+          height={height}
+          standalone={false}
+          scale={{ x: "time" }}
+          containerComponent={<VictoryContainer responsive={false} />}
+          theme={theme({
+            theme: this.props.theme,
+            withGrid: true
+          })}
+        >
+          <VictoryAxis tickFormat={t => `${t.getDate()}/${t.getMonth()}`} />
+          <VictoryAxis dependentAxis />
+          <VictoryCandlestick data={this.getData()} size={8} />
+        </VictoryChart>
+      </svg>
     );
   }
 

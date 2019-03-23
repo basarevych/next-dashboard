@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { AutoSizer } from "react-virtualized";
 import {
   VictoryChart,
-  VictoryVoronoiContainer,
+  VictoryContainer,
   VictoryAxis,
   VictoryStack,
   VictoryArea
@@ -31,25 +31,28 @@ class Chart5 extends React.Component {
 
   renderChart(width, height) {
     return (
-      <VictoryChart
-        width={width}
-        height={height}
-        containerComponent={<VictoryVoronoiContainer responsive={false} />}
-        theme={theme({
-          theme: this.props.theme,
-          withGrid: true,
-          withAxis: true,
-          withArea: true
-        })}
-      >
-        <VictoryStack colorScale={"blue"}>
-          {_.map(this.getData(), (data, i) => (
-            <VictoryArea key={i} data={data} interpolation={"basis"} />
-          ))}
-        </VictoryStack>
-        <VictoryAxis />
-        <VictoryAxis dependentAxis />
-      </VictoryChart>
+      <svg width={width} height={height}>
+        <VictoryChart
+          width={width}
+          height={height}
+          standalone={false}
+          containerComponent={<VictoryContainer responsive={false} />}
+          theme={theme({
+            theme: this.props.theme,
+            withGrid: true,
+            withAxis: true,
+            withArea: true
+          })}
+        >
+          <VictoryStack colorScale={"blue"}>
+            {_.map(this.getData(), (data, i) => (
+              <VictoryArea key={i} data={data} interpolation={"basis"} />
+            ))}
+          </VictoryStack>
+          <VictoryAxis />
+          <VictoryAxis dependentAxis />
+        </VictoryChart>
+      </svg>
     );
   }
 

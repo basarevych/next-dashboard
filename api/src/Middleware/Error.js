@@ -11,7 +11,7 @@ class Error extends EventEmitter {
 
   async init() {}
 
-  async express(express) {
+  accept({ express }) {
     express.use((err, req, res, next) => {
       let status;
       if (err.status) status = err.status;

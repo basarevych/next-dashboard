@@ -9,12 +9,11 @@ const isRouteAllowed = require("../../../common/isRouteAllowed");
  * Render and/or cache the page using Next.JS
  */
 class Render extends EventEmitter {
-  constructor(app, i18n, helpers) {
+  constructor(app, i18n) {
     super();
 
     this.app = app;
     this.i18n = i18n;
-    this.helpers = helpers;
 
     this.numPages = _.keys(constants.pages).length * i18n.locales.length;
     this.usersCache = null;
@@ -27,7 +26,7 @@ class Render extends EventEmitter {
 
   // eslint-disable-next-line lodash/prefer-constant
   static get $requires() {
-    return ["app", "i18n", "middleware.helpers"];
+    return ["app", "i18n"];
   }
 
   // eslint-disable-next-line lodash/prefer-constant
@@ -43,7 +42,7 @@ class Render extends EventEmitter {
     this.app.server.once("listening", () => this.preCachePages({ user: null }));
   }
 
-  async express(express) {
+  accept({ express }) {
     express.get("*", async (req, res, next) => {
       try {
         req.cookieHeader = req.get("Cookie");
@@ -156,7 +155,7 @@ class Render extends EventEmitter {
               getUser: () =>
                 new Promise(resolve => setTimeout(() => resolve(user)))
             };
-            this.helpers.setHelpers(req, {});
+            this.app.middleware.get("helpers").setHelpers(req, {});
             let { page, query } = await this.app.analyzeRequest(req);
             let render = this.getRender({
               req,

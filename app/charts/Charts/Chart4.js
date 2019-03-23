@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { AutoSizer } from "react-virtualized";
 import {
   VictoryChart,
-  VictoryVoronoiContainer,
+  VictoryContainer,
   VictoryAxis,
   VictoryPie
 } from "victory";
@@ -22,17 +22,20 @@ class Chart4 extends React.Component {
 
   renderChart(width, height) {
     return (
-      <VictoryChart
-        domainPadding={{ x: 50 }}
-        width={width}
-        height={height}
-        containerComponent={<VictoryVoronoiContainer responsive={false} />}
-        theme={theme({ theme: this.props.theme })}
-      >
-        <VictoryAxis />
-        <VictoryAxis dependentAxis />
-        <VictoryPie data={this.getData()} />
-      </VictoryChart>
+      <svg width={width} height={height}>
+        <VictoryChart
+          domainPadding={{ x: 50 }}
+          width={width}
+          height={height}
+          standalone={false}
+          containerComponent={<VictoryContainer responsive={false} />}
+          theme={theme({ theme: this.props.theme })}
+        >
+          <VictoryAxis />
+          <VictoryAxis dependentAxis />
+          <VictoryPie data={this.getData()} />
+        </VictoryChart>
+      </svg>
     );
   }
 

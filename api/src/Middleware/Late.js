@@ -11,7 +11,7 @@ class Late extends EventEmitter {
 
   async init() {}
 
-  async express(express) {
+  accept({ express }) {
     // Throw 404 if we get this far in the stack
     // without ending the middleware chain
     express.use((req, res, next) => {

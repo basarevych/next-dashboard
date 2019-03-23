@@ -65,12 +65,10 @@ class Session extends EventEmitter {
     return this.promise;
   }
 
-  async express(express) {
+  accept({ express, io }) {
     express.use(this.session);
     if (process.env.NODE_ENV === "production") express.use(csrf());
-  }
 
-  async io(io) {
     io.use((socket, next) =>
       _.get(socket, "request.res")
         ? this.session(socket.request, socket.request.res, next)

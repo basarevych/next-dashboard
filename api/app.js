@@ -110,6 +110,7 @@ class App {
     this.express.set("trust proxy", this.config.appTrustProxy);
 
     // Dependency injection container
+    // https://www.npmjs.com/package/injectt
     this.di = new Injectt();
     this.di.load(path.resolve(__dirname, "src")); // auto load all the services
     this.di.registerInstance(this, "app");
@@ -142,12 +143,31 @@ class App {
     await this.next.prepare();
     this.nextHandler = this.next.getRequestHandler();
 
-    // Express and Socket.IO middleware
-    const middleware = this.di.get("middleware");
-    return Promise.all([
-      middleware.express(this.express),
-      middleware.io(this.di.get("ws").io)
-    ]);
+    // Express/Socket.IO middleware
+    this.middleware = _.reduce(
+      [
+        // Order matters
+        "early",
+        "parse",
+        "session",
+        "helpers",
+        "graphql",
+        "routes",
+        "render",
+        "late",
+        "error"
+      ],
+      (acc, cur) => acc.set(cur, this.di.get(`middleware.${cur}`)),
+      new Map()
+    );
+    // Initialize
+    await Promise.all(
+      _.invokeMap(Array.from(this.middleware.values()), "init")
+    );
+    // Install
+    _.forEach(Array.from(this.middleware.values()), item =>
+      item.accept({ express: this.express, io: this.di.get("ws").io })
+    );
   }
 
   /**

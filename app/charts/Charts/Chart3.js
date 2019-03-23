@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { AutoSizer } from "react-virtualized";
 import {
   VictoryChart,
-  VictoryVoronoiContainer,
+  VictoryContainer,
   VictoryGroup,
   VictoryArea,
   VictoryPolarAxis,
@@ -63,42 +63,45 @@ class Chart3 extends React.Component {
 
   renderChart(width, height) {
     return (
-      <VictoryChart
-        polar
-        domain={{ y: [0, 1] }}
-        width={width}
-        height={height}
-        containerComponent={<VictoryVoronoiContainer responsive={false} />}
-        theme={theme({
-          theme: this.props.theme,
-          withGrid: true
-        })}
-      >
-        <VictoryGroup
-          colorScale={["gold", "orange", "tomato"]}
-          style={{ data: { fillOpacity: 0.2, strokeWidth: 2 } }}
+      <svg width={width} height={height}>
+        <VictoryChart
+          polar
+          domain={{ y: [0, 1] }}
+          width={width}
+          height={height}
+          standalone={false}
+          containerComponent={<VictoryContainer responsive={false} />}
+          theme={theme({
+            theme: this.props.theme,
+            withGrid: true
+          })}
         >
-          {_.map(this.state.data, (data, i) => (
-            <VictoryArea key={i} data={data} />
+          <VictoryGroup
+            colorScale={["gold", "orange", "tomato"]}
+            style={{ data: { fillOpacity: 0.2, strokeWidth: 2 } }}
+          >
+            {_.map(this.state.data, (data, i) => (
+              <VictoryArea key={i} data={data} />
+            ))}
+          </VictoryGroup>
+          {_.map(_.keys(this.state.maxima), (key, i) => (
+            <VictoryPolarAxis
+              key={i}
+              dependentAxis
+              tickLabelComponent={<VictoryLabel labelPlacement="vertical" />}
+              labelPlacement="perpendicular"
+              axisValue={i + 1}
+              label={key}
+              tickFormat={t => Math.ceil(t * this.state.maxima[key])}
+              tickValues={[0.25, 0.5, 0.75]}
+            />
           ))}
-        </VictoryGroup>
-        {_.map(_.keys(this.state.maxima), (key, i) => (
           <VictoryPolarAxis
-            key={i}
-            dependentAxis
-            tickLabelComponent={<VictoryLabel labelPlacement="vertical" />}
-            labelPlacement="perpendicular"
-            axisValue={i + 1}
-            label={key}
-            tickFormat={t => Math.ceil(t * this.state.maxima[key])}
-            tickValues={[0.25, 0.5, 0.75]}
+            labelPlacement="parallel"
+            tickFormat={_.constant("")}
           />
-        ))}
-        <VictoryPolarAxis
-          labelPlacement="parallel"
-          tickFormat={_.constant("")}
-        />
-      </VictoryChart>
+        </VictoryChart>
+      </svg>
     );
   }
 

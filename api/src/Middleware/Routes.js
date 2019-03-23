@@ -44,15 +44,17 @@ class Routes extends EventEmitter {
     return "singleton";
   }
 
-  async init() {}
+  async init() {
+    if (this.promise) return this.promise;
 
-  async express(express) {
-    await Promise.all(
-      _.map(_.keys(this.routes), key => this.routes[key].init())
+    this.promise = Promise.resolve();
+    return Promise.all(_.invokeMap(_.values(this.routes), "init"));
+  }
+
+  accept({ express }) {
+    _.forEach(_.values(this.routes), item =>
+      express.use(constants.apiBase, item.router)
     );
-
-    for (let key of _.keys(this.routes))
-      express.use(constants.apiBase, this.routes[key].router);
   }
 }
 

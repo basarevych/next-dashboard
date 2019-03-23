@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { AutoSizer } from "react-virtualized";
 import {
   VictoryChart,
-  VictoryVoronoiContainer,
+  VictoryContainer,
   VictoryGroup,
   VictoryStack,
   VictoryBar
@@ -29,31 +29,34 @@ class Chart1 extends React.Component {
 
   renderChart(width, height) {
     return (
-      <VictoryChart
-        domainPadding={{ x: 50 }}
-        width={width}
-        height={height}
-        containerComponent={<VictoryVoronoiContainer responsive={false} />}
-        theme={theme({ theme: this.props.theme, withAxis: true })}
-      >
-        <VictoryGroup offset={20} style={{ data: { width: 15 } }}>
-          <VictoryStack colorScale={"red"}>
-            {_.map(this.getData(), (data, index) => (
-              <VictoryBar key={index} data={data} />
-            ))}
-          </VictoryStack>
-          <VictoryStack colorScale={"green"}>
-            {_.map(this.getData(), (data, index) => (
-              <VictoryBar key={index} data={data} />
-            ))}
-          </VictoryStack>
-          <VictoryStack colorScale={"blue"}>
-            {_.map(this.getData(), (data, index) => (
-              <VictoryBar key={index} data={data} />
-            ))}
-          </VictoryStack>
-        </VictoryGroup>
-      </VictoryChart>
+      <svg width={width} height={height}>
+        <VictoryChart
+          domainPadding={{ x: 50 }}
+          width={width}
+          height={height}
+          standalone={false}
+          containerComponent={<VictoryContainer responsive={false} />}
+          theme={theme({ theme: this.props.theme, withAxis: true })}
+        >
+          <VictoryGroup offset={20} style={{ data: { width: 15 } }}>
+            <VictoryStack colorScale={"red"}>
+              {_.map(this.getData(), (data, index) => (
+                <VictoryBar key={index} data={data} />
+              ))}
+            </VictoryStack>
+            <VictoryStack colorScale={"green"}>
+              {_.map(this.getData(), (data, index) => (
+                <VictoryBar key={index} data={data} />
+              ))}
+            </VictoryStack>
+            <VictoryStack colorScale={"blue"}>
+              {_.map(this.getData(), (data, index) => (
+                <VictoryBar key={index} data={data} />
+              ))}
+            </VictoryStack>
+          </VictoryGroup>
+        </VictoryChart>
+      </svg>
     );
   }
 

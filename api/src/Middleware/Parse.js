@@ -13,7 +13,7 @@ class Parse extends EventEmitter {
 
   async init() {}
 
-  async express(express) {
+  accept({ express }) {
     express.use(bodyParser.json());
     express.use(bodyParser.urlencoded({ extended: true }));
     express.use(cookieParser());

@@ -42,7 +42,7 @@ class Early extends EventEmitter {
     });
   }
 
-  async express(express) {
+  accept({ express }) {
     // CORS
     if (process.env.NODE_ENV === "production") express.use(this.cors);
 

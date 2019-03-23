@@ -11,7 +11,6 @@ class GraphQL extends EventEmitter {
 
     this.di = di;
     this.graphql = graphql;
-    this.middleware = null;
   }
 
   // eslint-disable-next-line lodash/prefer-constant
@@ -30,10 +29,13 @@ class GraphQL extends EventEmitter {
   }
 
   async init() {
+    if (this.promise) return this.promise;
+
+    this.promise = Promise.resolve();
     return this.graphql.init();
   }
 
-  async express(express) {
+  accept({ express }) {
     express.post(constants.graphqlBase, this.getGraphQL(false));
     if (process.env.NODE_ENV === "development")
       express.get(constants.graphqlBase, this.getGraphQL(true));
