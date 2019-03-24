@@ -13,7 +13,7 @@ const primaryBackground = "#707484";
 const secondaryColor = "rgba(255, 255, 255, 0.9)";
 const secondaryBackground = "#af441d";
 
-const bgNormal = "#3e4150";
+const bgNormal = "#3b3f4d";
 const bgPaper = "#484e5e";
 
 const textPrimary = "rgba(255, 255, 255, 0.9)";
@@ -66,8 +66,12 @@ module.exports = {
     computerWidth: 30,
     tabletWidth: 20,
     phoneWidth: 20,
-    background:
-      "linear-gradient(to bottom, #484e5e 0, #161920 80%, #161920 100%)",
+    background: `rgb(22, 25, 32) linear-gradient(
+        to bottom,
+        rgba(72, 78, 94, 1.0) 0,
+        rgba(72, 78, 94, 0.0) 80%,
+        rgba(72, 78, 94, 0.0) 100%
+      )`,
     color: "#f0f0f0",
     itemBackground: "transparent",
     itemBorder: "4px solid transparent",
@@ -92,7 +96,7 @@ module.exports = {
     areaColor: fade(primaryBackground, 0.5)
   },
   form: {
-    stepperBackground: lighten(bgPaper, 0.15),
+    stepperBackground: fade(primaryBackground, 0.65),
     stepperLine: textDisabled,
     stepperColor: textDisabled,
     stepperActive: textPrimary
@@ -124,10 +128,11 @@ module.exports = {
   overrides: {
     MuiPaper: {
       root: {
-        background: `linear-gradient(to bottom right, ${lighten(
-          bgPaper,
-          0.2
-        )} 0, ${darken(bgPaper, 0, 2)} 100%)`,
+        background: `rgba(72, 78, 94) linear-gradient(
+            to bottom right,
+            rgba(98, 106, 127, 1.0) 0,
+            rgba(98, 106, 127, 0.0) 100%
+          )`,
         color: textPrimary
       }
     },
