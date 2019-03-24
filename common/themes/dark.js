@@ -14,7 +14,7 @@ const secondaryColor = "rgba(255, 255, 255, 0.9)";
 const secondaryBackground = "#af441d";
 
 const bgNormal = "#3b3f4d";
-const bgPaper = "#484e5e";
+const bgPaper = "#585e6e";
 
 const textPrimary = "rgba(255, 255, 255, 0.9)";
 const textSecondary = "rgba(255, 255, 255, 0.6)";
@@ -65,7 +65,7 @@ module.exports = {
   sidebar: {
     computerWidth: 30,
     tabletWidth: 20,
-    phoneWidth: 20,
+    phoneWidth: 30,
     background: `rgb(22, 25, 32) linear-gradient(
         to bottom,
         rgba(72, 78, 94, 1.0) 0,
@@ -87,7 +87,7 @@ module.exports = {
     itemSelectedHoverBorder: `4px solid ${lighten(secondaryBackground, 0.05)}`
   },
   chart: {
-    statColor: textSecondary,
+    statColor: textPrimary,
     mapColor: textPrimary,
     mapBackground: lighten(primaryBackground, 0.25),
     mapHoverBackground: secondaryBackground,
@@ -128,11 +128,7 @@ module.exports = {
   overrides: {
     MuiPaper: {
       root: {
-        background: `rgba(72, 78, 94) linear-gradient(
-            to bottom right,
-            rgba(98, 106, 127, 1.0) 0,
-            rgba(98, 106, 127, 0.0) 100%
-          )`,
+        background: bgPaper,
         color: textPrimary
       }
     },

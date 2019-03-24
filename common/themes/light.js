@@ -19,8 +19,7 @@ const secondaryColor = "rgba(0, 0, 0, 0.9)";
 const secondaryBackground = yellow[800];
 
 const bgPage = "#e0e0f0";
-const bgNormal = "#e0e0f0";
-const bgPaper = lighten(bgPage, 0.4);
+const bgPaper = "#ffffff";
 
 const textPrimary = "rgba(0, 0, 0, 0.9)";
 const textSecondary = "rgba(0, 0, 0, 0.6)";
@@ -72,7 +71,12 @@ module.exports = {
     computerWidth: 30,
     tabletWidth: 20,
     phoneWidth: 20,
-    background: darken(primaryBackground, 0.2),
+    background: `rgb(30, 47, 65) linear-gradient(
+      to bottom,
+      rgba(65, 103, 165, 1.0) 0,
+      rgba(65, 103, 165, 0.0) 80%,
+      rgba(65, 103, 165, 0.0) 100%
+    )`,
     color: primaryColor,
     itemBackground: "transparent",
     itemBorder: "4px solid transparent",
@@ -103,7 +107,7 @@ module.exports = {
     stepperActive: textPrimary
   },
   main: {
-    background: bgNormal,
+    background: bgPage,
     color: textPrimary,
     backdrop: "rgba(0, 0, 0, 0.85)",
     spinner: "#ffffff",
@@ -212,7 +216,7 @@ module.exports = {
       root: {
         "&$disabled": {
           "&:not($containedPrimary):not($containedSecondary)": {
-            background: [darken(bgNormal, 0.25), "!important"],
+            background: [darken(bgPage, 0.25), "!important"],
             color: [darken(textPrimary, 0.25), "!important"]
           },
           "&$containedPrimary": {
@@ -260,13 +264,13 @@ module.exports = {
     },
     MuiFilledInput: {
       root: {
-        background: [lighten(bgNormal, 0.1), "!important"],
+        background: [lighten(bgPage, 0.1), "!important"],
         borderRadius: 4,
         "&:hover": {
-          background: [lighten(bgNormal, 0.2), "!important"]
+          background: [lighten(bgPage, 0.2), "!important"]
         },
         "&$focused": {
-          background: [lighten(bgNormal, 0.2), "!important"],
+          background: [lighten(bgPage, 0.2), "!important"],
           "&$error": {
             color: [textError, "!important"]
           }

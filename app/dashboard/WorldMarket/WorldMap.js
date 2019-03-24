@@ -33,30 +33,6 @@ class WorldMap extends React.Component {
           rotation: [-10, 0, 0]
         }}
         style={{ width: "100%", height: "auto" }}
-        defs={
-          <defs>
-            <filter
-              id="worldMapShadow"
-              x="-50%"
-              y="-50%"
-              width="200%"
-              height="200%"
-            >
-              <feComponentTransfer in="SourceAlpha">
-                <feFuncA type="table" tableValues="1 0" />
-              </feComponentTransfer>
-              <feGaussianBlur stdDeviation="2" />
-              <feOffset dx="4" dy="4" result="offsetblur" />
-              <feFlood floodColor="rgba(0, 0, 0, 0.5)" result="color" />
-              <feComposite in2="offsetblur" operator="in" />
-              <feComposite in2="SourceAlpha" operator="in" />
-              <feMerge>
-                <feMergeNode in="SourceGraphic" />
-                <feMergeNode />
-              </feMerge>
-            </filter>
-          </defs>
-        }
       >
         <ZoomableGroup center={[0, 20]} disablePanning>
           <Geographies geography="/static/map/world-50m.json">
@@ -77,8 +53,7 @@ class WorldMap extends React.Component {
                           fill: this.props.theme.chart.mapBackground,
                           stroke: this.props.theme.chart.mapColor,
                           strokeWidth: 1,
-                          outline: "none",
-                          filter: "url(#worldMapShadow)"
+                          outline: "none"
                         },
                         hover: {
                           fill: this.props.theme.chart.mapHoverBackground,

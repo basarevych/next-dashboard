@@ -1,6 +1,6 @@
 {
   "name": "next-dashboard",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "private": true,
   "dependencies": {
     "@babel/polyfill": "~7.4.0",
@@ -60,8 +60,8 @@
     "passport-google-oauth": "~2.0.0",
     "passport-twitter": "~1.0.4",
     "raf": "~3.4.1",
-    "react": "~16.8.4",
-    "react-dom": "~16.8.4",
+    "react": "~16.8.5",
+    "react-dom": "~16.8.5",
     "react-flags": "~0.1.17",
     "react-google-maps": "~9.4.5",
     "react-intl": "~2.8.0",

@@ -47,7 +47,10 @@ export const styles = theme => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    color: theme.sidebar.color
+    color: theme.sidebar.color,
+    "& img": {
+      borderRadius: theme.shape.borderRadius
+    }
   },
   item: {
     background: [theme.sidebar.itemBackground, "!important"],
