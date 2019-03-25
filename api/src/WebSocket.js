@@ -1,21 +1,17 @@
 const debug = require("debug")("app:ws");
-const uuid = require("uuid");
 const pkg = require("../../package.json");
 const IO = require("socket.io");
 const EventEmitter = require("events");
-const { usersOperations, usersSelectors } = require("../state/users");
 const constants = require("../../common/constants");
 
 class WebSocket extends EventEmitter {
-  constructor(app, config, getState, dispatch) {
+  constructor(di, app, config, pubsub) {
     super();
 
+    this.di = di;
     this.app = app;
     this.config = config;
-    this.getState = getState;
-    this.dispatch = dispatch;
-
-    this.sessionTimeout = 15 * 60 * 1000;
+    this.pubsub = pubsub;
   }
 
   // eslint-disable-next-line lodash/prefer-constant
@@ -25,7 +21,7 @@ class WebSocket extends EventEmitter {
 
   // eslint-disable-next-line lodash/prefer-constant
   static get $requires() {
-    return ["app", "config", "getState", "dispatch"];
+    return ["di", "app", "config", "pubsub"];
   }
 
   // eslint-disable-next-line lodash/prefer-constant
@@ -45,50 +41,20 @@ class WebSocket extends EventEmitter {
       this.io.on("connection", this.onConnection.bind(this));
     }
 
-    this.timer = setInterval(async () => {
-      let offlineUsers = usersSelectors.getOfflineUsersList(this.getState(), {
-        sessionTimeout: this.sessionTimeout
-      });
-
-      if (!offlineUsers.size) return;
-
-      await Promise.all(
-        offlineUsers // eslint-disable-line lodash/prefer-lodash-method
-          .map(userId => {
-            debug(`Destroying inactive user ${userId}`);
-            this.dispatch(usersOperations.remove({ userId })).catch(
-              console.error
-            );
-          })
-          .toJS()
-      );
-    }, 60 * 1000);
-  }
-
-  emit(userId, message, data) {
-    let sessions = usersSelectors.getSessionsMap(this.getState(), {
-      userId
-    });
-
-    if (sessions && sessions.size) {
-      // eslint-disable-next-line lodash/prefer-lodash-method
-      sessions.forEach(session => {
-        // eslint-disable-next-line lodash/prefer-lodash-method
-        session
-          .get("sockets")
-          .forEach(
-            info => info.get("socket") && info.get("socket").emit(message, data)
-          );
-      });
-    }
-  }
-
-  async emitStatus(socket, user) {
-    if (_.isUndefined(user)) user = await socket.request.getUser();
-    socket.emit(
-      constants.messages.SET_STATUS,
-      socket.request.di.get("auth").getStatus(user)
+    this.pubsub.subscribe("signOut", ({ signOut }) =>
+      this.onSessionDestroyed({ sessionId: signOut.sessionId })
     );
+    this.pubsub.subscribe("userDeleted", ({ userDeleted }) =>
+      this.onUserDestroyed({ userId: userDeleted.id })
+    );
+  }
+
+  emitUser(userId, message, data) {
+    this.io.to(`user:${userId.toString()}`).emit(message, data);
+  }
+
+  emitSession(sessionId, message, data) {
+    this.io.to(`session:${sessionId.toString()}`).emit(message, data);
   }
 
   async onConnection(socket) {
@@ -96,45 +62,50 @@ class WebSocket extends EventEmitter {
       let user = await socket.request.getUser();
       if (!user) {
         debug("Unauthorized socket dropped");
-        this.emitStatus(socket, null);
+        socket.emit(
+          constants.messages.SET_STATUS,
+          this.di.get("auth").getStatus(null)
+        );
         return process.nextTick(() => socket.disconnect(true));
       }
 
-      const userId = user.id;
-      const sessionId = socket.request.session.id;
-      const socketId = uuid.v4();
+      const userId = user.id.toString();
+      const sessionId = _.get(socket, "request.session.id");
 
-      debug(`Socket ${socketId} connected`);
-
-      socket.on(
-        "disconnect",
-        this.onDisconnect.bind(this, userId, sessionId, socketId)
-      );
-
-      await this.dispatch(
-        usersOperations.addSocket({
-          userId,
-          sessionId,
-          socketId,
-          socket
-        })
-      );
-
+      debug(`Socket of user ${userId} connected`);
+      if (userId) socket.join(`user:${userId}`);
+      if (sessionId) socket.join(`session:${sessionId}`);
+      socket.on("disconnect", this.onDisconnect.bind(this, userId, socket));
       socket.emit(constants.messages.HELLO, { version: pkg.version });
     } catch (error) {
       console.error(error);
     }
   }
 
-  async onDisconnect(userId, sessionId, socketId) {
+  async onDisconnect(userId) {
     try {
-      debug(`Socket ${socketId} disconnected`);
-      await this.dispatch(
-        usersOperations.removeSocket({ userId, sessionId, socketId })
-      );
+      debug(`Socket of user ${userId} disconnected`);
     } catch (error) {
       console.error(error);
     }
+  }
+
+  async onSessionDestroyed({ sessionId }) {
+    debug(`Session ${sessionId} destroyed`);
+    return this.emitSession(
+      sessionId,
+      constants.messages.SET_STATUS,
+      this.di.get("auth").getStatus(null)
+    );
+  }
+
+  async onUserDestroyed({ userId }) {
+    debug(`User ${userId} destroyed`);
+    return this.emitUser(
+      userId,
+      constants.messages.SET_STATUS,
+      this.di.get("auth").getStatus(null)
+    );
   }
 }
 

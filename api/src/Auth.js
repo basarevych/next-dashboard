@@ -2,11 +2,10 @@ const bcrypt = require("bcrypt");
 const passport = require("passport");
 const validator = require("validator");
 const EventEmitter = require("events");
-const { usersSelectors } = require("../state/users");
 const constants = require("../../common/constants");
 
 class Auth extends EventEmitter {
-  constructor(config, i18n, db, ws, mailer, fake, getState) {
+  constructor(config, i18n, db, ws, mailer, pubsub, fake) {
     super();
 
     this.config = config;
@@ -14,8 +13,8 @@ class Auth extends EventEmitter {
     this.db = db;
     this.ws = ws;
     this.mailer = mailer;
+    this.pubsub = pubsub;
     this.fake = fake;
-    this.getState = getState;
 
     this.passport = passport;
   }
@@ -27,7 +26,7 @@ class Auth extends EventEmitter {
 
   // eslint-disable-next-line lodash/prefer-constant
   static get $requires() {
-    return ["config", "i18n", "db", "ws", "mailer", "fake", "getState"];
+    return ["config", "i18n", "db", "ws", "mailer", "pubsub", "fake"];
   }
 
   // eslint-disable-next-line lodash/prefer-constant
@@ -385,42 +384,34 @@ class Auth extends EventEmitter {
   }
 
   async signIn(user, req) {
+    let userId = user.id.toString();
+    let sessionId = _.get(req, "session.id");
+
     await new Promise((resolve, reject) => {
       req.login(user, error => {
         if (error) return reject(error);
-
-        resolve(req.saveSession());
+        req.session.userId = userId;
+        resolve();
       });
     });
+
+    await req.saveSession();
+    this.pubsub.publish("signIn", { signIn: { userId, sessionId } });
   }
 
   async signOut(req) {
-    let userId = req.user && req.user.id;
+    let userId = _.get(req, "user.id");
+    let sessionId = _.get(req, "session.id");
 
     try {
+      req.session.userId = null;
       req.logout();
     } catch (error) {
       console.error(error);
     }
 
     await req.saveSession();
-
-    if (!userId) return;
-
-    let sockets = usersSelectors.getSocketsMap(this.getState(), {
-      userId,
-      sessionId: req.session.id
-    });
-
-    if (!sockets || !sockets.size) return;
-
-    for (let info of sockets.values())
-      if (info.get("socket")) this.ws.emitStatus(info.get("socket"), null);
-
-    process.nextTick(() => {
-      for (let info of sockets.values())
-        if (info.get("socket")) info.get("socket").disconnect(true);
-    });
+    this.pubsub.publish("signOut", { signOut: { userId, sessionId } });
   }
 
   sendVerificationEmail(req, email, token) {

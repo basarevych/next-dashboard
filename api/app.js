@@ -9,7 +9,6 @@ const nextApp = require("next");
 const path = require("path");
 const express = require("express");
 const { PubSub } = require("graphql-subscriptions");
-const getStore = require("./state/store");
 const constants = require("../common/constants");
 const styles = require("../common/themes");
 const l10n = require("../common/locales");
@@ -123,12 +122,6 @@ class App {
     this.di.registerInstance(this, "app");
     this.di.registerInstance(this.config, "config");
     this.di.registerInstance(new PubSub(), "pubsub");
-
-    /*
-      Redux store
-      Used for state management of the connected WebSockets
-    */
-    this.store = getStore(this.di);
   }
 
   async init({ mainServer }) {

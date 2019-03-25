@@ -4,11 +4,12 @@ const EventEmitter = require("events");
 const constants = require("../../../common/constants");
 
 class AuthRepository extends EventEmitter {
-  constructor(auth, db) {
+  constructor(auth, db, pubsub) {
     super();
 
     this.auth = auth;
     this.db = db;
+    this.pubsub = pubsub;
 
     this.chance = new Chance();
   }
@@ -20,7 +21,7 @@ class AuthRepository extends EventEmitter {
 
   // eslint-disable-next-line lodash/prefer-constant
   static get $requires() {
-    return ["auth", "db"];
+    return ["auth", "db", "pubsub"];
   }
 
   generateToken() {
@@ -96,6 +97,7 @@ class AuthRepository extends EventEmitter {
     await user.validateField({ field: "password", value: password }); // before it is encrypted
     await user.validate();
     await user.save();
+    this.pubsub.publish("userCreated", { userCreated: user });
 
     let success = false;
     if (user) {

@@ -1,3 +1,4 @@
+import Router from "next/router";
 import * as actions from "./actions";
 import * as selectors from "./selectors";
 import { getFormErrors } from "../../app/forms/connectForm";
@@ -36,8 +37,12 @@ export const setStatus = status => async (dispatch, getState, di) => {
 
   if (process.browser) {
     let socket = di.get("socket");
-    if (selectors.isAuthenticated(getState())) socket.connect();
-    else socket.disconnect();
+    if (selectors.isAuthenticated(getState())) {
+      socket.connect();
+    } else {
+      socket.disconnect();
+      if (Router.pathname !== "/") Router.push("/");
+    }
   }
 };
 

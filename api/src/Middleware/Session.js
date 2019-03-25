@@ -32,6 +32,11 @@ class Session extends EventEmitter {
     return "singleton";
   }
 
+  // eslint-disable-next-line lodash/prefer-constant
+  static get collection() {
+    return "frontSessions";
+  }
+
   async init() {
     if (this.promise) return this.promise;
 
@@ -41,7 +46,7 @@ class Session extends EventEmitter {
 
         this.store = new MongoStore({
           mongooseConnection: this.db.mongoose.connection,
-          collection: "frontSessions"
+          collection: this.constructor.collection
         });
 
         this.session = session({

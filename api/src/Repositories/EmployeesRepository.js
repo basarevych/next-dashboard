@@ -5,16 +5,7 @@ const jwt = require("jsonwebtoken");
 const { withFilter } = require("graphql-subscriptions");
 
 class EmployeesRepository extends EventEmitter {
-  constructor(
-    di,
-    config,
-    user,
-    employee,
-    dashboardRepo,
-    getState,
-    dispatch,
-    pubsub
-  ) {
+  constructor(di, config, user, employee, dashboardRepo, pubsub) {
     super();
 
     this.di = di;
@@ -22,8 +13,6 @@ class EmployeesRepository extends EventEmitter {
     this.user = user;
     this.employee = employee;
     this.dashboardRepo = dashboardRepo;
-    this.getState = getState;
-    this.dispatch = dispatch;
     this.pubsub = pubsub;
   }
 
@@ -40,8 +29,6 @@ class EmployeesRepository extends EventEmitter {
       "model.user",
       "model.employee",
       "repository.dashboard",
-      "getState",
-      "dispatch",
       "pubsub"
     ];
   }

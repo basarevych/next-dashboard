@@ -8,15 +8,14 @@ const constants = require("../../../common/constants");
 const accessLevel = constants.roles.ADMIN;
 
 class UsersRepository extends EventEmitter {
-  constructor(di, auth, config, user, getState, dispatch, pubsub) {
+  constructor(di, db, auth, config, user, pubsub) {
     super();
 
     this.di = di;
+    this.db = db;
     this.auth = auth;
     this.config = config;
     this.user = user;
-    this.getState = getState;
-    this.dispatch = dispatch;
     this.pubsub = pubsub;
   }
 
@@ -27,15 +26,7 @@ class UsersRepository extends EventEmitter {
 
   // eslint-disable-next-line lodash/prefer-constant
   static get $requires() {
-    return [
-      "di",
-      "auth",
-      "config",
-      "model.user",
-      "getState",
-      "dispatch",
-      "pubsub"
-    ];
+    return ["di", "db", "auth", "config", "model.user", "pubsub"];
   }
 
   isAllowed(requester) {
@@ -56,6 +47,24 @@ class UsersRepository extends EventEmitter {
         return true;
       }
     );
+  }
+
+  async destroyUserSessions(userId) {
+    const Session = this.di.getClass("middleware.session");
+    return new Promise((resolve, reject) => {
+      this.db.mongoose.connection.db.collection(
+        Session.collection,
+        async (error, collection) => {
+          if (error) return reject(error);
+          try {
+            await collection.remove({ "session.userId": userId });
+          } catch (error) {
+            return reject(error);
+          }
+          resolve();
+        }
+      );
+    });
   }
 
   async getUser(context, { id }) {
@@ -164,8 +173,10 @@ class UsersRepository extends EventEmitter {
     if (!user) throw this.di.get("error.entityNotFound");
 
     await user.remove();
+    await this.destroyUserSessions(id);
     context.preCachePages({ path: "/users" }).catch(console.error);
     this.pubsub.publish("userDeleted", { userDeleted: user });
+
     return user;
   }
 }
