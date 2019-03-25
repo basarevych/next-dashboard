@@ -5,18 +5,13 @@ const {
   lighten,
   fade
 } = require("@material-ui/core/styles/colorManipulator");
-const {
-  deepOrange,
-  yellow,
-  red,
-  blueGrey
-} = require("@material-ui/core/colors");
+const { red, blueGrey } = require("@material-ui/core/colors");
 
 const primaryColor = "rgba(255, 255, 255, 0.9)";
-const primaryBackground = "#2b446d";
+const primaryBackground = "#4b648d";
 
 const secondaryColor = "rgba(0, 0, 0, 0.9)";
-const secondaryBackground = yellow[800];
+const secondaryBackground = "#fda50f";
 
 const bgPage = "#e0e0f0";
 const bgPaper = "#ffffff";
@@ -24,7 +19,7 @@ const bgPaper = "#ffffff";
 const textPrimary = "rgba(0, 0, 0, 0.9)";
 const textSecondary = "rgba(0, 0, 0, 0.6)";
 const textDisabled = "rgba(0, 0, 0, 0.35)";
-const textError = red[400];
+const textError = red[500];
 const textInfo = blueGrey[400];
 
 const fontSize = 14;
@@ -70,7 +65,7 @@ module.exports = {
   sidebar: {
     computerWidth: 30,
     tabletWidth: 20,
-    phoneWidth: 20,
+    phoneWidth: 30,
     background: `rgb(30, 47, 65) linear-gradient(
       to bottom,
       rgba(65, 103, 165, 1.0) 0,
@@ -94,11 +89,11 @@ module.exports = {
   chart: {
     statColor: primaryBackground,
     mapColor: primaryColor,
-    mapBackground: lighten(primaryBackground, 0.5),
-    mapHoverBackground: darken(secondaryBackground, 0.15),
-    mapSelectedBackground: secondaryBackground,
-    lineColor: deepOrange[800],
-    areaColor: fade(primaryBackground, 0.25)
+    mapBackground: primaryBackground,
+    mapHoverBackground: secondaryBackground,
+    mapSelectedBackground: lighten(secondaryBackground, 0.15),
+    lineColor: textInfo,
+    areaColor: fade(textInfo, 0.25)
   },
   form: {
     stepperBackground: darken(bgPaper, 0.05),
@@ -331,10 +326,10 @@ module.exports = {
     },
     MuiSwitch: {
       icon: {
-        color: "#999999"
+        color: "#666666"
       },
       iconChecked: {
-        color: darken(secondaryBackground, 0.15)
+        color: secondaryBackground
       }
     }
   }

@@ -8,10 +8,10 @@ const {
 const { red, blueGrey } = require("@material-ui/core/colors");
 
 const primaryColor = "rgba(255, 255, 255, 0.9)";
-const primaryBackground = "#707484";
+const primaryBackground = "#808494";
 
 const secondaryColor = "rgba(255, 255, 255, 0.9)";
-const secondaryBackground = "#af441d";
+const secondaryBackground = "#eb6123";
 
 const bgNormal = "#3b3f4d";
 const bgPaper = "#585e6e";
@@ -20,7 +20,7 @@ const textPrimary = "rgba(255, 255, 255, 0.9)";
 const textSecondary = "rgba(255, 255, 255, 0.6)";
 const textDisabled = "rgba(255, 255, 255, 0.35)";
 const textError = red[400];
-const textInfo = blueGrey[400];
+const textInfo = blueGrey[200];
 
 const fontSize = 14;
 
@@ -89,11 +89,11 @@ module.exports = {
   chart: {
     statColor: textPrimary,
     mapColor: textPrimary,
-    mapBackground: lighten(primaryBackground, 0.25),
+    mapBackground: primaryBackground,
     mapHoverBackground: secondaryBackground,
-    mapSelectedBackground: lighten(secondaryBackground, 0.25),
-    lineColor: lighten(secondaryBackground, 0.5),
-    areaColor: fade(primaryBackground, 0.5)
+    mapSelectedBackground: lighten(secondaryBackground, 0.15),
+    lineColor: textInfo,
+    areaColor: fade(textInfo, 0.25)
   },
   form: {
     stepperBackground: fade(primaryBackground, 0.65),
@@ -339,7 +339,7 @@ module.exports = {
         color: "#999999"
       },
       iconChecked: {
-        color: lighten(secondaryBackground, 0.15)
+        color: secondaryBackground
       }
     }
   }
