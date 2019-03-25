@@ -1,6 +1,7 @@
 import Router from "next/router";
 import * as actions from "./actions";
 import { authOperations, authSelectors } from "../../auth/state";
+import constants from "../../../common/constants";
 
 export const setStatusCode = actions.setStatusCode;
 export const setConnected = actions.setConnected;
@@ -57,5 +58,13 @@ export const getCookie = ({ name }) => {
 export const getToken = () => {
   return async (dispatch, getState, di) => {
     return di.get("fetcher").getToken();
+  };
+};
+
+export const sendToast = ({ position, title, content }) => {
+  return async (dispatch, getState, di) => {
+    return di
+      .get("socket")
+      .emit(constants.messages.TOAST, { position, title, content });
   };
 };

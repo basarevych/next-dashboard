@@ -3,84 +3,84 @@
   "pages": {
     "/_app": [
       "static/runtime/webpack-49245e1883bd9093e553.js",
-      "static/chunks/commons.037e52e9736d8985608b.js",
+      "static/chunks/commons.39e4705b601780c8c609.js",
       "static/css/styles.65a36a00.chunk.css",
       "static/chunks/styles.86528e070af9e2ddc9d7.js",
       "static/runtime/main-b3c041c634a8d73a134e.js"
     ],
     "/_error": [
       "static/runtime/webpack-49245e1883bd9093e553.js",
-      "static/chunks/commons.037e52e9736d8985608b.js",
+      "static/chunks/commons.39e4705b601780c8c609.js",
       "static/runtime/main-b3c041c634a8d73a134e.js"
     ],
     "/auth/error": [
       "static/runtime/webpack-49245e1883bd9093e553.js",
-      "static/chunks/commons.037e52e9736d8985608b.js",
+      "static/chunks/commons.39e4705b601780c8c609.js",
       "static/runtime/main-b3c041c634a8d73a134e.js"
     ],
     "/auth/profile": [
       "static/runtime/webpack-49245e1883bd9093e553.js",
-      "static/chunks/commons.037e52e9736d8985608b.js",
+      "static/chunks/commons.39e4705b601780c8c609.js",
       "static/runtime/main-b3c041c634a8d73a134e.js"
     ],
     "/auth/verify": [
       "static/runtime/webpack-49245e1883bd9093e553.js",
-      "static/chunks/commons.037e52e9736d8985608b.js",
+      "static/chunks/commons.39e4705b601780c8c609.js",
       "static/runtime/main-b3c041c634a8d73a134e.js"
     ],
     "/charts": [
       "static/runtime/webpack-49245e1883bd9093e553.js",
-      "static/chunks/commons.037e52e9736d8985608b.js",
+      "static/chunks/commons.39e4705b601780c8c609.js",
       "static/runtime/main-b3c041c634a8d73a134e.js"
     ],
     "/dashboard": [
       "static/runtime/webpack-49245e1883bd9093e553.js",
-      "static/chunks/commons.037e52e9736d8985608b.js",
+      "static/chunks/commons.39e4705b601780c8c609.js",
       "static/runtime/main-b3c041c634a8d73a134e.js"
     ],
     "/forms": [
       "static/runtime/webpack-49245e1883bd9093e553.js",
-      "static/chunks/commons.037e52e9736d8985608b.js",
+      "static/chunks/commons.39e4705b601780c8c609.js",
       "static/runtime/main-b3c041c634a8d73a134e.js"
     ],
     "/icons": [
       "static/runtime/webpack-49245e1883bd9093e553.js",
-      "static/chunks/commons.037e52e9736d8985608b.js",
+      "static/chunks/commons.39e4705b601780c8c609.js",
       "static/runtime/main-b3c041c634a8d73a134e.js"
     ],
     "/index": [
       "static/runtime/webpack-49245e1883bd9093e553.js",
-      "static/chunks/commons.037e52e9736d8985608b.js",
+      "static/chunks/commons.39e4705b601780c8c609.js",
       "static/runtime/main-b3c041c634a8d73a134e.js"
     ],
     "/maps": [
       "static/runtime/webpack-49245e1883bd9093e553.js",
-      "static/chunks/commons.037e52e9736d8985608b.js",
+      "static/chunks/commons.39e4705b601780c8c609.js",
       "static/runtime/main-b3c041c634a8d73a134e.js"
     ],
     "/notifications": [
       "static/runtime/webpack-49245e1883bd9093e553.js",
-      "static/chunks/commons.037e52e9736d8985608b.js",
+      "static/chunks/commons.39e4705b601780c8c609.js",
       "static/runtime/main-b3c041c634a8d73a134e.js"
     ],
     "/tables": [
       "static/runtime/webpack-49245e1883bd9093e553.js",
-      "static/chunks/commons.037e52e9736d8985608b.js",
+      "static/chunks/commons.39e4705b601780c8c609.js",
       "static/runtime/main-b3c041c634a8d73a134e.js"
     ],
     "/typography": [
       "static/runtime/webpack-49245e1883bd9093e553.js",
-      "static/chunks/commons.037e52e9736d8985608b.js",
+      "static/chunks/commons.39e4705b601780c8c609.js",
       "static/runtime/main-b3c041c634a8d73a134e.js"
     ],
     "/users": [
       "static/runtime/webpack-49245e1883bd9093e553.js",
-      "static/chunks/commons.037e52e9736d8985608b.js",
+      "static/chunks/commons.39e4705b601780c8c609.js",
       "static/runtime/main-b3c041c634a8d73a134e.js"
     ],
     "/": [
       "static/runtime/webpack-49245e1883bd9093e553.js",
-      "static/chunks/commons.037e52e9736d8985608b.js",
+      "static/chunks/commons.39e4705b601780c8c609.js",
       "static/runtime/main-b3c041c634a8d73a134e.js"
     ]
   }

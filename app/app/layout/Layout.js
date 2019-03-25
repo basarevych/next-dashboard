@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import Head from "next/head";
 import { intlShape } from "react-intl";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Hidden from "@material-ui/core/Hidden";
 import Drawer from "@material-ui/core/Drawer";
@@ -11,6 +11,7 @@ import Sidebar from "./SidebarContainer";
 import Header from "./HeaderContainer";
 import AppAuthModal from "../../auth/AppAuthModalContainer";
 import ErrorPage from "../error/ErrorPage";
+import constants from "../../../common/constants";
 
 import "../styles";
 import styledScroll from "../styles/styledScroll";
@@ -98,6 +99,18 @@ export const styles = theme => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center"
+  },
+  toastBox: {
+    borderRadius: theme.shape.borderRadius,
+    background: theme.palette.background.paper,
+    color: theme.palette.text.primary,
+    "& button": {
+      color: theme.palette.text.primary
+    }
+  },
+  toastProgress: {
+    background: theme.palette.secondary.main,
+    color: theme.palette.primary.contrastText
   }
 });
 
@@ -127,6 +140,15 @@ class Layout extends React.Component {
     this.handleSidebarToggle = this.handleSidebarToggle.bind(this);
     this.handleSidebarOpen = this.handleSidebarOpen.bind(this);
     this.handleSidebarClose = this.handleSidebarClose.bind(this);
+    this.showToast = this.showToast.bind(this);
+  }
+
+  componentDidMount() {
+    window.addEventListener(constants.events.TOAST, this.showToast);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener(constants.events.TOAST, this.showToast);
   }
 
   handleSidebarToggle() {
@@ -139,6 +161,20 @@ class Layout extends React.Component {
 
   handleSidebarClose() {
     if (this.state.isSidebarOpen) this.setState({ isSidebarOpen: false });
+  }
+
+  showToast(evt) {
+    toast(
+      <div>
+        <h3>{evt.detail.title}</h3>
+        <p>{evt.detail.content}</p>
+      </div>,
+      {
+        position: evt.detail.position,
+        className: this.props.classes.toastBox,
+        progressClassName: this.props.classes.toastProgress
+      }
+    );
   }
 
   render() {
@@ -164,6 +200,8 @@ class Layout extends React.Component {
           <React.Fragment>
             {this.props.isAuthenticated && (
               <React.Fragment>
+                <ToastContainer />
+
                 <Hidden implementation="css" smUp>
                   <SwipeableDrawer
                     open={this.state.isSidebarOpen}
@@ -213,7 +251,6 @@ class Layout extends React.Component {
         )}
 
         <AppAuthModal />
-        <ToastContainer />
       </div>
     );
   }

@@ -1,3 +1,4 @@
+import Router from "next/router";
 import io from "socket.io-client";
 import { appOperations, appSelectors } from "../state";
 import { authOperations } from "../../auth/state";
@@ -17,6 +18,7 @@ class Socket {
     });
     this.socket.on(constants.messages.HELLO, this.onHello.bind(this));
     this.socket.on(constants.messages.SET_STATUS, this.onSetStatus.bind(this));
+    this.socket.on(constants.messages.TOAST, this.onToast.bind(this));
     this.socket.on("disconnect", this.onDisconnect.bind(this));
   }
 
@@ -65,7 +67,10 @@ class Socket {
   disconnect() {
     if (!process.browser) return;
 
-    if (appSelectors.isConnected(this.getState())) this.socket.disconnect();
+    if (appSelectors.isConnected(this.getState())) {
+      this.socket.disconnect();
+      if (Router.pathname !== "/") Router.push("/");
+    }
   }
 
   async onHello(msg) {
@@ -95,6 +100,18 @@ class Socket {
       }
 
       await this.dispatch(authOperations.setStatus(msg));
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async onToast(msg) {
+    try {
+      if (process.env.NODE_ENV === "development")
+        console.log(`[WS] <-- ${constants.messages.TOAST}`);
+      window.dispatchEvent(
+        new CustomEvent(constants.events.TOAST, { detail: msg })
+      );
     } catch (error) {
       console.error(error);
     }

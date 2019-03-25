@@ -2,12 +2,11 @@ import React from "react";
 import PropTypes from "prop-types";
 import { FormattedMessage } from "react-intl";
 import { toast } from "react-toastify";
-import { lighten } from "@material-ui/core/styles/colorManipulator";
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 
-export const styles = theme => ({
+export const styles = () => ({
   layout: {
     width: "100%",
     flex: 1,
@@ -30,42 +29,21 @@ export const styles = theme => ({
     display: "flex",
     justifyContent: "center",
     alignItems: "center"
-  },
-  toast: {
-    borderRadius: theme.shape.borderRadius,
-    background: lighten(theme.palette.primary.main, 0.15),
-    color: theme.palette.primary.contrastText,
-    "& button": {
-      color: theme.palette.primary.contrastText
-    }
-  },
-  progress: {
-    background: theme.palette.secondary.main,
-    color: theme.palette.primary.contrastText
   }
 });
 
 class NotificationsPage extends React.Component {
   static propTypes = {
-    classes: PropTypes.object.isRequired
+    classes: PropTypes.object.isRequired,
+    sendToast: PropTypes.func.isRequired
   };
 
   toast(position) {
-    toast(
-      <div>
-        <h3>
-          <FormattedMessage id="NOTIFICATIONS_TITLE" />
-        </h3>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent
-          ornare viverra sapien in cursus.
-        </p>
-      </div>,
-      {
-        position,
-        className: this.props.classes.toast,
-        progressClassName: this.props.classes.progress
-      }
+    this.props.sendToast(
+      position,
+      "Lorem Ipsum!",
+      `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent
+       ornare viverra sapien in cursus.`
     );
   }
 

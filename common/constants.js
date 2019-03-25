@@ -108,9 +108,11 @@ module.exports = {
   tableUrl: "https://jsonplaceholder.typicode.com/photos",
   messages: {
     HELLO: "HELLO",
-    SET_STATUS: "SET_STATUS"
+    SET_STATUS: "SET_STATUS",
+    TOAST: "TOAST"
   },
   events: {
-    FONTS_LOADED: "FONTS_LOADED"
+    FONTS_LOADED: "FONTS_LOADED",
+    TOAST: "TOAST"
   }
 };
