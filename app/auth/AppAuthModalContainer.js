@@ -1,3 +1,4 @@
+import Router from "next/router";
 import { injectIntl } from "react-intl";
 import { withStyles } from "@material-ui/core/styles";
 import { appSelectors, appOperations } from "../app/state";
@@ -8,6 +9,7 @@ import AppAuthModalComponent, { styles } from "./AppAuthModal";
 const mapStateToProps = state => {
   return {
     isOpen:
+      !_.startsWith(Router.pathname, "/auth") &&
       appSelectors.isStarted(state) &&
       appSelectors.getStatusCode(state) === 200 &&
       !authSelectors.isAuthenticated(state),

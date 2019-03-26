@@ -640,6 +640,7 @@ class Header extends React.Component {
                     <Button
                       color="inherit"
                       className={this.props.classes.barItem}
+                      onClick={() => Router.push("/auth/profile")}
                     >
                       <ProfileIcon />
                       &nbsp;&nbsp;
