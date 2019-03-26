@@ -52,6 +52,7 @@ export const styles = theme => ({
     }
   },
   facebook: {
+    margin: "1rem",
     color: theme.palette.primary.contrastText,
     background: ["#3b5998", "!important"],
     "&:hover": {
@@ -59,6 +60,7 @@ export const styles = theme => ({
     }
   },
   google: {
+    margin: "1rem",
     color: theme.palette.primary.contrastText,
     background: ["#dd4b39", "!important"],
     "&:hover": {
@@ -66,6 +68,7 @@ export const styles = theme => ({
     }
   },
   twitter: {
+    margin: "1rem",
     color: theme.palette.primary.contrastText,
     background: ["#38A1F3", "!important"],
     "&:hover": {
@@ -230,6 +233,14 @@ class ProfilePage extends Form {
   render() {
     if (!isRouteAllowed("/auth/profile", this.props.userRoles)) return null;
 
+    const services = (
+      <React.Fragment>
+        {this.renderButton(constants.oauthProviders.FACEBOOK)}
+        {this.renderButton(constants.oauthProviders.GOOGLE)}
+        {this.renderButton(constants.oauthProviders.TWITTER)}
+      </React.Fragment>
+    );
+
     return (
       <div className={this.props.classes.layout}>
         <Paper className={this.props.classes.profile}>
@@ -249,11 +260,16 @@ class ProfilePage extends Form {
                 <FormattedMessage id="TITLE_PROFILE" />
               </Typography>
             </Grid>
-            <Grid item xs={12} container justify="space-between">
-              {this.renderButton(constants.oauthProviders.FACEBOOK)}
-              {this.renderButton(constants.oauthProviders.GOOGLE)}
-              {this.renderButton(constants.oauthProviders.TWITTER)}
-            </Grid>
+            <Hidden xsDown>
+              <Grid item xs={12} container justify="space-between">
+                {services}
+              </Grid>
+            </Hidden>
+            <Hidden smUp>
+              <Grid item xs={12} container justify="center">
+                {services}
+              </Grid>
+            </Hidden>
             {this.props.error && (
               <Grid item xs={12}>
                 {_.map(
