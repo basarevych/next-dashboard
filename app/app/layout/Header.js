@@ -713,12 +713,26 @@ class Header extends React.Component {
                     <MailIcon />
                   </Badge>
                 </IconButton>
-                <IconButton
-                  color="inherit"
-                  onClick={() => Router.push("/auth/profile")}
-                >
-                  <ProfileIcon />
-                </IconButton>
+                {this.props.isAnonymous && (
+                  <Tooltip
+                    title={this.props.intl.formatMessage({
+                      id: "HEADER_PROFILE_TOOLTIP"
+                    })}
+                    classes={{ tooltip: this.props.classes.tooltip }}
+                  >
+                    <IconButton color="inherit">
+                      <ProfileIcon />
+                    </IconButton>
+                  </Tooltip>
+                )}
+                {!this.props.isAnonymous && (
+                  <IconButton
+                    color="inherit"
+                    onClick={() => Router.push("/auth/profile")}
+                  >
+                    <ProfileIcon />
+                  </IconButton>
+                )}
                 <IconButton color="inherit" onClick={this.handleLocalesOpen}>
                   <Flag
                     name={l10n.flags[this.props.locale]}
