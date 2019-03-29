@@ -463,10 +463,16 @@
       "publicPath": "/_next/static/chunks/commons.1d4a4b36ffd0e8e6f7f7.js"
     }
   ],
-  "fbjs/lib/emptyFunction": [
+  "./emptyFunction": [
     {
       "id": "2TFQ",
       "name": "./node_modules/relay-runtime/node_modules/fbjs/lib/emptyFunction.js",
+      "file": "static/chunks/commons.1d4a4b36ffd0e8e6f7f7.js",
+      "publicPath": "/_next/static/chunks/commons.1d4a4b36ffd0e8e6f7f7.js"
+    },
+    {
+      "id": "yDf7",
+      "name": "./node_modules/react-relay/node_modules/fbjs/lib/emptyFunction.js",
       "file": "static/chunks/commons.1d4a4b36ffd0e8e6f7f7.js",
       "publicPath": "/_next/static/chunks/commons.1d4a4b36ffd0e8e6f7f7.js"
     }
@@ -1011,10 +1017,16 @@
       "publicPath": "/_next/static/chunks/commons.1d4a4b36ffd0e8e6f7f7.js"
     }
   ],
-  "@babel/runtime/helpers/objectWithoutPropertiesLoose": [
+  "./objectWithoutPropertiesLoose": [
     {
       "id": "8OQS",
       "name": "./node_modules/@babel/runtime/helpers/objectWithoutPropertiesLoose.js",
+      "file": "static/chunks/commons.1d4a4b36ffd0e8e6f7f7.js",
+      "publicPath": "/_next/static/chunks/commons.1d4a4b36ffd0e8e6f7f7.js"
+    },
+    {
+      "id": "L2E4",
+      "name": "./node_modules/@babel/runtime-corejs2/helpers/objectWithoutPropertiesLoose.js",
       "file": "static/chunks/commons.1d4a4b36ffd0e8e6f7f7.js",
       "publicPath": "/_next/static/chunks/commons.1d4a4b36ffd0e8e6f7f7.js"
     }
@@ -1335,7 +1347,7 @@
       "publicPath": "/_next/static/chunks/commons.1d4a4b36ffd0e8e6f7f7.js"
     }
   ],
-  "./../../next/node_modules/webpack/buildin/harmony-module.js": [
+  "./../../../next/node_modules/webpack/buildin/harmony-module.js": [
     {
       "id": "BKcT",
       "name": "./node_modules/next/node_modules/webpack/buildin/harmony-module.js",
@@ -2261,14 +2273,6 @@
       "publicPath": "/_next/static/chunks/commons.1d4a4b36ffd0e8e6f7f7.js"
     }
   ],
-  "./objectWithoutPropertiesLoose": [
-    {
-      "id": "L2E4",
-      "name": "./node_modules/@babel/runtime-corejs2/helpers/objectWithoutPropertiesLoose.js",
-      "file": "static/chunks/commons.1d4a4b36ffd0e8e6f7f7.js",
-      "publicPath": "/_next/static/chunks/commons.1d4a4b36ffd0e8e6f7f7.js"
-    }
-  ],
   "./cjs/react-is.production.min.js": [
     {
       "id": "L5of",
@@ -2937,7 +2941,7 @@
       "publicPath": "/_next/static/chunks/commons.1d4a4b36ffd0e8e6f7f7.js"
     }
   ],
-  "../rules/StyleRule": [
+  "./rules/StyleRule": [
     {
       "id": "Rx9b",
       "name": "./node_modules/jss/lib/rules/StyleRule.js",
@@ -3135,7 +3139,7 @@
       "publicPath": "/_next/static/chunks/commons.1d4a4b36ffd0e8e6f7f7.js"
     }
   ],
-  "./isObservable": [
+  "../utils/isObservable": [
     {
       "id": "UCXN",
       "name": "./node_modules/jss/lib/utils/isObservable.js",
@@ -3563,7 +3567,7 @@
       "publicPath": "/_next/static/chunks/commons.1d4a4b36ffd0e8e6f7f7.js"
     }
   ],
-  "../StyleSheet": [
+  "./StyleSheet": [
     {
       "id": "XY0u",
       "name": "./node_modules/jss/lib/StyleSheet.js",
@@ -5033,7 +5037,7 @@
       "publicPath": "/_next/static/chunks/commons.1d4a4b36ffd0e8e6f7f7.js"
     }
   ],
-  "lodash/get": [
+  "./get": [
     {
       "id": "mwIZ",
       "name": "./node_modules/lodash/get.js",
@@ -5137,7 +5141,7 @@
       "publicPath": "/_next/static/chunks/commons.1d4a4b36ffd0e8e6f7f7.js"
     }
   ],
-  "../../../common/constants": [
+  "../common/constants": [
     {
       "id": "o4p3",
       "name": "./common/constants.js",
@@ -5625,7 +5629,7 @@
       "publicPath": "/_next/static/chunks/commons.1d4a4b36ffd0e8e6f7f7.js"
     }
   ],
-  "../utils/toCssValue": [
+  "./utils/toCssValue": [
     {
       "id": "uIix",
       "name": "./node_modules/jss/lib/utils/toCssValue.js",
@@ -5961,14 +5965,6 @@
       "publicPath": "/_next/static/chunks/commons.1d4a4b36ffd0e8e6f7f7.js"
     }
   ],
-  "./emptyFunction": [
-    {
-      "id": "yDf7",
-      "name": "./node_modules/react-relay/node_modules/fbjs/lib/emptyFunction.js",
-      "file": "static/chunks/commons.1d4a4b36ffd0e8e6f7f7.js",
-      "publicPath": "/_next/static/chunks/commons.1d4a4b36ffd0e8e6f7f7.js"
-    }
-  ],
   "./_Set": [
     {
       "id": "yGk4",
@@ -6057,7 +6053,7 @@
       "publicPath": "/_next/static/chunks/commons.1d4a4b36ffd0e8e6f7f7.js"
     }
   ],
-  "./isEvent": [
+  "./events/isEvent": [
     {
       "id": "yzTH",
       "name": "./node_modules/redux-form/lib/events/isEvent.js",

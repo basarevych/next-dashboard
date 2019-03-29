@@ -151,10 +151,7 @@ module.exports = withPlugins([...plugins], {
   exportPathMap: async () => {
     const map = {};
     for (let path of _.keys(constants.pages)) {
-      map[path] = await app.analyzeRequest({
-        path,
-        locale: l10n.defaultLocale
-      });
+      map[path] = await app.analyzeRequest({ path });
       map[path].query.isExport = true; // appears when building with npm export
     }
     return map;
