@@ -45,38 +45,34 @@ class Render extends EventEmitter {
   }
 
   async renderPage(req, res, next) {
+    const { page, query } = await this.app.analyzeRequest(req);
+    if (!page) {
+      // Don't try doing SSR for the resource files
+      return next();
+    }
+
     try {
-      const { page, query } = await this.app.analyzeRequest(req);
-      if (!page) {
-        // Don't try doing SSR for the resource files
-        return next();
+      const user = await req.getUser();
+      if (!isRouteAllowed(req.path, user ? user.roles : [])) {
+        if (req.path !== "/" && !user)
+          return res.redirect(`/?redirect=${encodeURIComponent(req.path)}`);
+        res.status(403);
+        return this.app.next.render(req, res, page, query);
       }
 
-      try {
-        const user = await req.getUser();
-        if (!isRouteAllowed(req.path, user ? user.roles : [])) {
-          if (req.path !== "/" && !user)
-            return res.redirect(`/?redirect=${encodeURIComponent(req.path)}`);
-          res.status(403);
-          return next();
-        }
-
-        const html = await this.renderer.renderPage({
-          req,
-          res,
-          page,
-          query,
-          user
-        });
-        if (html) res.end(html);
-        else next();
-      } catch (error) {
-        debug(`Renderer: ${error.message}`);
-        if (res.headersSent) next(error);
-        else this.app.next.renderError(error, req, res, page, query);
-      }
+      const html = await this.renderer.renderPage({
+        req,
+        res,
+        page,
+        query,
+        user
+      });
+      if (html) res.end(html);
+      else this.app.next.render(req, res, page, query);
     } catch (error) {
-      next(error);
+      debug(`Renderer: ${error.message}`);
+      if (res.headersSent) next(error);
+      else this.app.next.renderError(error, req, res, page, query);
     }
   }
 

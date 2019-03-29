@@ -63,6 +63,14 @@ class CachingProxy extends EventEmitter {
       });
     }
 
+    const delCache = () => {
+      let cache = this.caches.has(userId) && this.caches.get(userId).cache;
+      if (cache && cache.has(key)) {
+        cache.del(key);
+        this.caches.set(userId, { cache, user });
+      }
+    };
+
     let promise = new Promise(async (resolve, reject) => {
       try {
         const html = await this.renderer.renderPage({
@@ -73,17 +81,19 @@ class CachingProxy extends EventEmitter {
           user
         });
         if (html && res.statusCode === 200) {
+          promise.isDone = true;
           if (process.env.NODE_ENV !== "test")
             console.log(`> Cached ${key} for ${name}`);
         } else {
-          this.invalidate(userId, key);
+          delCache();
         }
         resolve(html);
       } catch (error) {
-        this.invalidate(userId, key);
+        delCache();
         reject(error);
       }
     });
+    promise.isDone = false;
     cache.set(key, promise);
     this.caches.set(userId, { cache, user });
     return promise;
@@ -111,7 +121,7 @@ class CachingProxy extends EventEmitter {
           for (let locale of locales) {
             if (!isRouteAllowed(route, user ? user.roles : [])) continue;
 
-            let req = {
+            const req = {
               path: route,
               locale,
               theme: defaultTheme,
@@ -119,9 +129,10 @@ class CachingProxy extends EventEmitter {
                 new Promise(resolve => setTimeout(() => resolve(user)))
             };
             this.helpers.setHelpers(req, {});
-            let { page, query } = await this.app.analyzeRequest(req);
 
-            this.invalidate(locale, route, user ? user.id : null);
+            const { page, query } = await this.app.analyzeRequest(req);
+            const key = this.getKey({ req, query });
+            this.invalidate({ userId: user ? user.id : null, key });
 
             await this.renderPage({
               req,
@@ -141,17 +152,19 @@ class CachingProxy extends EventEmitter {
   /**
    * Remove pages from the cache
    */
-  invalidate(locale, path, userId) {
+  invalidate({ userId, key }) {
     const { cache, user } = this.caches.has(userId)
       ? this.caches.get(userId)
       : {};
     if (!cache) return;
 
+    let [locale, path] = _.split(key, ":");
     for (let item of cache.keys()) {
       if (!_.startsWith(item, `${locale}:${path}:`)) continue;
+      let promise = cache.get(item);
       cache.del(item);
       this.caches.set(userId, { cache, user });
-      if (process.env.NODE_ENV !== "test") {
+      if (promise.isDone && process.env.NODE_ENV !== "test") {
         const name = (user && user.email) || "unauthenticated";
         console.log(`> Invalidated ${item} for ${name}`);
       }
