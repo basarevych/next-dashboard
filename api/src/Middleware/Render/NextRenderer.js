@@ -28,8 +28,8 @@ class NextRenderer extends EventEmitter {
   }
 
   /**
-   * Returns either HTML string or null when the default Next
-   * request handler should be used instead
+   * Returns the page rendered into an HTML string
+   * or null when can't render
    */
   async renderPage({ req, res, page, query, user }) {
     if (!this.canRender({ req, user })) return null;

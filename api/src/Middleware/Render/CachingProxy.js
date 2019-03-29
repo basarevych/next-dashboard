@@ -44,10 +44,12 @@ class CachingProxy extends EventEmitter {
   }
 
   /**
-   * Returns either HTML string or null when the default Next
-   * request handler should be used instead
+   * Returns the page rendered into an HTML string
+   * or null when can't render
    */
   async renderPage({ req, res, page, query, user }) {
+    if (process.env.NODE_ENV === "development") return null;
+
     const userId = (user && user.id) || null;
     const name = (user && user.email) || "unauthenticated";
     const key = this.getKey({ req, query });
@@ -103,6 +105,8 @@ class CachingProxy extends EventEmitter {
    * Pre-cache the pages
    */
   async preparePages({ user, path }) {
+    if (process.env.NODE_ENV === "development") return;
+
     try {
       const pages = path
         ? _.isArray(path)

@@ -20,12 +20,7 @@ class Render extends EventEmitter {
 
   // eslint-disable-next-line lodash/prefer-constant
   static get $requires() {
-    return [
-      "app",
-      process.env.NODE_ENV === "production" // we are caching in production only
-        ? "middleware.render.cachingProxy"
-        : "middleware.render.nextRenderer"
-    ];
+    return ["app", "middleware.render.cachingProxy"];
   }
 
   // eslint-disable-next-line lodash/prefer-constant
