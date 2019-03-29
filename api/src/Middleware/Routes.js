@@ -39,11 +39,6 @@ class Routes extends EventEmitter {
     ];
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
-  static get $lifecycle() {
-    return "singleton";
-  }
-
   async init() {
     if (this.promise) return this.promise;
 

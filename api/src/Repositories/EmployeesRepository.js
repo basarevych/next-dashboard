@@ -145,7 +145,7 @@ class EmployeesRepository extends EventEmitter {
 
     await employee.validate();
     await employee.save();
-    context.preCachePages({ path: ["/", "/tables"] }).catch(console.error);
+    context.preparePages({ path: ["/", "/tables"] }).catch(console.error);
     this.pubsub.publish("employeeCreated", { employeeCreated: employee });
     return employee;
   }
@@ -189,7 +189,7 @@ class EmployeesRepository extends EventEmitter {
 
     await employee.validate();
     await employee.save();
-    context.preCachePages({ path: ["/", "/tables"] }).catch(console.error);
+    context.preparePages({ path: ["/", "/tables"] }).catch(console.error);
     this.pubsub.publish("employeeUpdated", { employeeUpdated: employee });
     return employee;
   }
@@ -204,7 +204,7 @@ class EmployeesRepository extends EventEmitter {
     if (!employee) throw this.di.get("error.entityNotFound");
 
     await employee.remove();
-    context.preCachePages({ path: ["/", "/tables"] }).catch(console.error);
+    context.preparePages({ path: ["/", "/tables"] }).catch(console.error);
     this.pubsub.publish("employeeDeleted", { employeeDeleted: employee });
     return employee;
   }

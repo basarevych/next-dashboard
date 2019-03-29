@@ -76,8 +76,12 @@ class Helpers extends EventEmitter {
 
   setHelpers(req /*, res */) {
     const render = this.app.middleware.get("render");
+
+    req.cookieHeader = _.isFunction(req.get) ? req.get("Cookie") : null;
+    req.csrfHeader = _.isFunction(req.csrfToken) ? req.csrfToken() : null;
+
     req.di = this.app.di;
-    req.preCachePages = render.preCachePages.bind(render);
+    req.preparePages = render.preparePages.bind(render);
     req.getAuthStatus = async () => this.auth.getStatus(await req.getUser());
   }
 

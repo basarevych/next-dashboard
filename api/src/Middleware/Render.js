@@ -1,22 +1,16 @@
-const crypto = require("crypto");
-const LRU = require("lru-cache");
+const debug = require("debug")("app:render");
 const EventEmitter = require("events");
-const constants = require("../../../common/constants");
-const { defaultTheme } = require("../../../common/themes");
 const isRouteAllowed = require("../../../common/isRouteAllowed");
 
 /**
  * Render and/or cache the page using Next.JS
  */
 class Render extends EventEmitter {
-  constructor(app, i18n) {
+  constructor(app, renderer) {
     super();
 
     this.app = app;
-    this.i18n = i18n;
-
-    this.numPages = _.keys(constants.pages).length * i18n.locales.length;
-    this.usersCache = null;
+    this.renderer = renderer;
   }
 
   // eslint-disable-next-line lodash/prefer-constant
@@ -26,7 +20,12 @@ class Render extends EventEmitter {
 
   // eslint-disable-next-line lodash/prefer-constant
   static get $requires() {
-    return ["app", "i18n"];
+    return [
+      "app",
+      process.env.NODE_ENV === "production" // we are caching in production only
+        ? "middleware.render.cachingProxy"
+        : "middleware.render.nextRenderer"
+    ];
   }
 
   // eslint-disable-next-line lodash/prefer-constant
@@ -36,144 +35,53 @@ class Render extends EventEmitter {
 
   async init() {
     if (this.promise) return this.promise;
-
     this.promise = Promise.resolve();
-    this.usersCache = new LRU(this.app.config.appOnlineUsers);
-    this.app.server.once("listening", () => this.preCachePages({ user: null }));
+    this.app.server.once("listening", () => this.preparePages({ user: null }));
   }
 
   accept({ express }) {
-    express.get("*", async (req, res, next) => {
-      try {
-        req.cookieHeader = req.get("Cookie");
-        req.csrfHeader = _.isFunction(req.csrfToken) ? req.csrfToken() : "none";
-
-        const { page, query } = await this.app.analyzeRequest(req);
-        if (!page) return this.app.nextHandler(req, res, next);
-
-        let user = await req.getUser();
-        if (!isRouteAllowed(req.path, user ? user.roles : [])) {
-          if (req.path === "/" || !!user) {
-            res.status(403);
-          } else {
-            return res.redirect(
-              `/?redirect=${encodeURIComponent(req.originalUrl)}`
-            );
-          }
-        }
-
-        if (process.env.NODE_ENV !== "production")
-          return this.app.next.render(req, res, page, query);
-
-        let render = this.getRender({ req, res, page, query, user });
-        if (!render) return this.app.next.render(req, res, page, query);
-
-        render
-          .then(html => res.send(html))
-          .catch(error => {
-            if (!res.headersSent)
-              this.app.next.renderError(error, req, res, page, query);
-          });
-      } catch (error) {
-        next(error);
-      }
-    });
+    express.get("*", this.renderPage.bind(this));
+    express.get("*", this.app.next.getRequestHandler());
   }
 
-  async getRender({ req, res, page, query, user, force }) {
-    const id = (user && user.id) || null;
-    const name = (user && user.email) || "unauthenticated";
-    const cache = this.usersCache.has(id)
-      ? this.usersCache.get(id).cache
-      : new LRU(this.numPages);
-
-    const hash = crypto.createHash("md5");
-    hash.update(JSON.stringify(query));
-
-    const key = query.locale + ":" + req.path + ":" + hash.digest("hex");
-
-    if (user && (!req.cookieHeader || !req.csrfHeader)) {
-      // just invalidate the cached version when not enough data to render
-      if (cache.has(key)) {
-        cache.del(key);
-        console.log(`> Invalidated ${key} for ${name}`);
-      }
-      return Promise.resolve();
-    }
-
-    if (!force && cache.has(key)) {
-      console.log(`> Cache hit ${key} for ${name}`);
-      return cache.get(key);
-    }
-
-    // render and cache the page
-    cache.set(
-      key,
-      new Promise(async (resolve, reject) => {
-        try {
-          let html = await this.app.next.renderToHTML(req, res, page, query);
-          if (res.statusCode !== 200)
-            throw new Error(`Could not render ${key} [User: ${name}]`);
-          console.log(`> Cached ${key} for ${name}`);
-          resolve(html);
-        } catch (error) {
-          reject(error);
-        }
-      })
-    );
-
-    this.usersCache.set(id, { cache, user });
-    return cache.get(key);
-  }
-
-  async preCachePages({ user, path }) {
-    if (process.env.NODE_ENV !== "production") return;
-
+  async renderPage(req, res, next) {
     try {
-      let promises = [];
-
-      const pages = _.isUndefined(path)
-        ? _.keys(constants.pages)
-        : _.isArray(path)
-        ? path
-        : [path];
-
-      const users = _.isUndefined(user)
-        ? _.map(Array.from(this.usersCache.values()), "user")
-        : _.isArray(user)
-        ? user
-        : [user];
-
-      for (let user of users) {
-        for (let route of pages) {
-          if (!isRouteAllowed(route, user ? user.roles : [])) continue;
-          for (let locale of this.i18n.locales) {
-            let req = {
-              path: route,
-              locale,
-              theme: defaultTheme,
-              getUser: () =>
-                new Promise(resolve => setTimeout(() => resolve(user)))
-            };
-            this.app.middleware.get("helpers").setHelpers(req, {});
-            let { page, query } = await this.app.analyzeRequest(req);
-            let render = this.getRender({
-              req,
-              res: { statusCode: 200 },
-              page,
-              query,
-              user,
-              force: true
-            });
-            if (render) promises.push(render);
-          }
-        }
+      const { page, query } = await this.app.analyzeRequest(req);
+      if (!page) {
+        // Don't try doing SSR for the resource files
+        return next();
       }
 
-      await Promise.all(promises);
+      try {
+        const user = await req.getUser();
+        if (!isRouteAllowed(req.path, user ? user.roles : [])) {
+          if (req.path !== "/" && !user)
+            return res.redirect(`/?redirect=${encodeURIComponent(req.path)}`);
+          res.status(403);
+          return next();
+        }
+
+        const html = await this.renderer.renderPage({
+          req,
+          res,
+          page,
+          query,
+          user
+        });
+        if (html) res.end(html);
+        else next();
+      } catch (error) {
+        debug(`Renderer: ${error.message}`);
+        if (res.headersSent) next(error);
+        else this.app.next.renderError(error, req, res, page, query);
+      }
     } catch (error) {
-      console.error(error);
+      next(error);
     }
+  }
+
+  async preparePages(...args) {
+    return this.renderer.preparePages(...args);
   }
 }
 

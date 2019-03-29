@@ -28,11 +28,6 @@ class Session extends EventEmitter {
   }
 
   // eslint-disable-next-line lodash/prefer-constant
-  static get $lifecycle() {
-    return "singleton";
-  }
-
-  // eslint-disable-next-line lodash/prefer-constant
   static get collection() {
     return "frontSessions";
   }

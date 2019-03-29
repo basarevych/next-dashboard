@@ -145,7 +145,6 @@ class App {
     // Initialize Next
     this.next = nextApp({ dev: process.env.NODE_ENV === "development" });
     await this.next.prepare();
-    this.nextHandler = this.next.getRequestHandler();
 
     // Express/Socket.IO middleware
     this.middleware = _.reduce(

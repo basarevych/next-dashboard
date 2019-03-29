@@ -56,7 +56,7 @@ class DashboardRepository extends EventEmitter {
       );
     }
     this.profitsTime = Date.now();
-    context.preCachePages({ path: ["/dashboard"] }).catch(console.error);
+    context.preparePages({ path: ["/dashboard"] }).catch(console.error);
   }
 
   generateSales(context) {
@@ -72,7 +72,7 @@ class DashboardRepository extends EventEmitter {
       );
     }
     this.salesTime = Date.now();
-    context.preCachePages({ path: ["/dashboard"] }).catch(console.error);
+    context.preparePages({ path: ["/dashboard"] }).catch(console.error);
   }
 
   generateClients(context) {
@@ -93,7 +93,7 @@ class DashboardRepository extends EventEmitter {
       );
     }
     this.clientsTime = Date.now();
-    context.preCachePages({ path: ["/dashboard"] }).catch(console.error);
+    context.preparePages({ path: ["/dashboard"] }).catch(console.error);
   }
 
   generateAvgTimes(context) {
@@ -115,7 +115,7 @@ class DashboardRepository extends EventEmitter {
       );
     }
     this.avgTimesTime = Date.now();
-    context.preCachePages({ path: ["/dashboard"] }).catch(console.error);
+    context.preparePages({ path: ["/dashboard"] }).catch(console.error);
   }
 
   generateMarketShares(context) {
@@ -172,7 +172,7 @@ class DashboardRepository extends EventEmitter {
     this.marketShares.unshift(getRandomData("WORLD"));
 
     this.marketSharesTime = Date.now();
-    context.preCachePages({ path: ["/dashboard"] }).catch(console.error);
+    context.preparePages({ path: ["/dashboard"] }).catch(console.error);
   }
 
   async getCountry(context, { id }) {

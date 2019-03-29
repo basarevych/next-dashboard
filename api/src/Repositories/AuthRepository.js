@@ -72,7 +72,7 @@ class AuthRepository extends EventEmitter {
       }
 
       if (user) {
-        context.preCachePages({ user }).catch(console.error);
+        context.preparePages({ user }).catch(console.error);
         await this.auth.signIn(user, context);
         success = true;
       }
@@ -106,7 +106,7 @@ class AuthRepository extends EventEmitter {
         user.email,
         user.emailToken
       );
-      context.preCachePages({ user }).catch(console.error);
+      context.preparePages({ user }).catch(console.error);
       await this.auth.signIn(user, context);
       success = true;
     }
@@ -158,7 +158,7 @@ class AuthRepository extends EventEmitter {
 
     await user.validate();
     await user.save();
-    context.preCachePages({ user, path: "/auth/profile" }).catch(console.error);
+    context.preparePages({ user, path: "/auth/profile" }).catch(console.error);
 
     let cur = await context.getUser();
     if (cur && cur.email !== user.email) {
@@ -185,7 +185,7 @@ class AuthRepository extends EventEmitter {
         await user.validate();
         await user.save();
         context
-          .preCachePages({ user, path: "/auth/profile" })
+          .preparePages({ user, path: "/auth/profile" })
           .catch(console.error);
         return { success: true };
       }
@@ -213,7 +213,7 @@ class AuthRepository extends EventEmitter {
 
     await user.validate();
     await user.save();
-    context.preCachePages({ user, path: "/auth/profile" }).catch(console.error);
+    context.preparePages({ user, path: "/auth/profile" }).catch(console.error);
     return { success: true };
   }
 

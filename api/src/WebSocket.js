@@ -12,6 +12,8 @@ class WebSocket extends EventEmitter {
     this.app = app;
     this.config = config;
     this.pubsub = pubsub;
+
+    this.commands = {};
   }
 
   // eslint-disable-next-line lodash/prefer-constant
@@ -41,15 +43,16 @@ class WebSocket extends EventEmitter {
       this.io.on("connection", this.onConnection.bind(this));
     }
 
-    this.pubsub.subscribe("toast", ({ toast }) =>
-      this.onToastBroadcasted({ toast })
-    );
     this.pubsub.subscribe("signOut", ({ signOut }) =>
       this.onSessionDestroyed({ sessionId: signOut.sessionId })
     );
     this.pubsub.subscribe("userDeleted", ({ userDeleted }) =>
       this.onUserDestroyed({ userId: userDeleted.id })
     );
+
+    this.commands.toast = this.di.get("ws.toast");
+
+    await Promise.all(_.invokeMap(_.values(this.commands), "init"));
   }
 
   async checkUser(socket) {
@@ -85,21 +88,15 @@ class WebSocket extends EventEmitter {
       if (userId) socket.join(`user:${userId}`);
       if (sessionId) socket.join(`session:${sessionId}`);
       socket.on("disconnect", this.onDisconnect.bind(this, userId, socket));
-      socket.on(
-        constants.messages.TOAST,
-        this.onToastRequest.bind(this, userId, socket)
+
+      _.forEach(_.values(this.commands), command =>
+        command.accept({ userId, sessionId, socket })
       );
+
       socket.emit(constants.messages.HELLO, { version: pkg.version });
     } catch (error) {
       console.error(error);
     }
-  }
-
-  async onToastRequest(userId, socket, msg) {
-    let user = await this.checkUser(socket);
-    if (!user) return;
-
-    this.pubsub.publish("toast", { toast: msg });
   }
 
   async onDisconnect(userId) {
@@ -108,10 +105,6 @@ class WebSocket extends EventEmitter {
     } catch (error) {
       console.error(error);
     }
-  }
-
-  async onToastBroadcasted({ toast }) {
-    this.io.emit(constants.messages.TOAST, toast);
   }
 
   async onSessionDestroyed({ sessionId }) {

@@ -12,6 +12,7 @@ class Early extends EventEmitter {
   constructor(config) {
     super();
 
+    this.maxAge = "365d";
     this.config = config;
     this.cors = null;
   }
@@ -60,7 +61,7 @@ class Early extends EventEmitter {
     express.use(
       "/static",
       Express.static(path.join(__dirname, "..", "..", "..", "static"), {
-        maxAge: "10d"
+        maxAge: this.maxAge
       })
     );
     express.use(
@@ -68,7 +69,7 @@ class Early extends EventEmitter {
       Express.static(
         path.join(__dirname, "..", "..", "..", "static", "img", "favicon.ico"),
         {
-          maxAge: "10d"
+          maxAge: this.maxAge
         }
       )
     );

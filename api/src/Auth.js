@@ -294,7 +294,7 @@ class Auth extends EventEmitter {
                     await user.save();
                   }
 
-                  req.preCachePages({ user }).catch(console.error);
+                  req.preparePages({ user }).catch(console.error);
                   await this.signIn(user, req);
                   return next(null, user);
                 } else {
