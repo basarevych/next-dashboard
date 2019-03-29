@@ -67,7 +67,7 @@ class Render extends EventEmitter {
         query,
         user
       });
-      if (html) res.end(html);
+      if (html) res.send(html);
       else this.app.next.render(req, res, page, query);
     } catch (error) {
       debug(`Renderer: ${error.message}`);
