@@ -103,7 +103,7 @@
     "css-mqpacker": "~7.0.0",
     "enzyme": "~3.9.0",
     "enzyme-adapter-react-16": "~1.11.2",
-    "eslint": "~5.15.3",
+    "eslint": "~5.16.0",
     "eslint-plugin-lodash": "~5.1.0",
     "eslint-plugin-react": "~7.12.4",
     "graphql-compiler": "^2.0.0-rc.1",
