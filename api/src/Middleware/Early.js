@@ -53,11 +53,32 @@ class Early extends EventEmitter {
     // Log request
     if (process.env.NODE_ENV !== "test") express.use(logger("short"));
 
-    // Shortcuts to static
+    // Service Worker (Google Workbox)
     express.use(
       "/sw.js",
       Express.static(path.join(__dirname, "..", "..", "..", ".next", "sw.js"))
     );
+    express.use(
+      "/_next/build-manifest.json",
+      Express.static(
+        path.join(__dirname, "..", "..", "..", ".next", "build-manifest.json")
+      )
+    );
+    express.use(
+      "/_next/react-loadable-manifest.json",
+      Express.static(
+        path.join(
+          __dirname,
+          "..",
+          "..",
+          "..",
+          ".next",
+          "react-loadable-manifest.json"
+        )
+      )
+    );
+
+    // Shortcuts to static
     express.use(
       "/static",
       Express.static(path.join(__dirname, "..", "..", "..", "static"), {

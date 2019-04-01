@@ -24,6 +24,7 @@
   "THEME_DARK_LABEL": "Dark Theme",
   "THEME_LIGHT_MENU": "Light",
   "THEME_LIGHT_LABEL": "Light Theme",
+  "LAYOUT_SW_UPDATE_MESSAGE": "An update is available. Click here to reload the page.",
   "SIDEBAR_GITHUB_LINK": "Github",
   "SIDEBAR_BENCHMARKS_LINK": "Benchmarks",
   "SIDEBAR_RESPONSIVENESS_LINK": "Responsiveness Test",

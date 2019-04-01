@@ -5,7 +5,7 @@ const path = require("path");
 const DefinePlugin = require("webpack").DefinePlugin;
 const ProvidePlugin = require("webpack").ProvidePlugin;
 const ContextReplacementPlugin = require("webpack").ContextReplacementPlugin;
-const ServiceWorkerPlugin = require("serviceworker-webpack-plugin");
+const { GenerateSW, strategies } = require("workbox-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 const RelayCompilerWebpackPlugin = require("relay-compiler-webpack-plugin");
 const withCSS = require("@zeit/next-css");
@@ -13,6 +13,7 @@ const withBundleAnalyzer = require("@zeit/next-bundle-analyzer");
 const withPlugins = require("next-compose-plugins");
 const constants = require("./common/constants");
 const l10n = require("./common/locales");
+const pkg = require("./package.json");
 
 let app = new App();
 
@@ -116,19 +117,28 @@ module.exports = withPlugins([...plugins], {
       );
     }
 
-    if (!isServer) {
+    if (!dev) {
       config.plugins.push(
-        new ServiceWorkerPlugin({
-          entry: path.resolve(
-            __dirname,
-            "app",
-            "app",
-            "lib",
-            "serviceWorker.js"
-          ),
-          excludes: ["**/.*", "**/*.map"],
-          includes: ["**/*"],
-          publicPath: "/"
+        new GenerateSW({
+          cacheId: pkg.name,
+          clientsClaim: true,
+          skipWaiting: true,
+          swDest: "sw.js",
+          importsDirectory: "static",
+          importWorkboxFrom: "local",
+          exclude: [/\.next\//],
+          runtimeCaching: [
+            {
+              urlPattern: new RegExp(
+                `^https?://[^/]+${constants.socketsBase}.*`
+              ),
+              handler: "NetworkOnly"
+            },
+            {
+              urlPattern: new RegExp("^https?://.*"),
+              handler: "NetworkFirst"
+            }
+          ]
         })
       );
     }

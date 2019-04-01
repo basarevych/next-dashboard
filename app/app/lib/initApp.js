@@ -4,9 +4,6 @@ require("@babel/polyfill");
 require("core-js/es6");
 require("isomorphic-unfetch");
 
-const swRuntime = require("serviceworker-webpack-plugin/lib/runtime");
-const swEvents = require("serviceworker-webpack-plugin/lib/browser/registerEvents");
-const swApplyUpdate = require("serviceworker-webpack-plugin/lib/browser/applyUpdate");
 const WebFont = require("webfontloader");
 const locales = require("../../../common/locales").locales;
 const constants = require("../../../common/constants");
@@ -117,22 +114,60 @@ if (process.browser) {
     }
   });
 
-  if (
-    "serviceWorker" in navigator &&
-    (window.location.protocol === "https:" ||
-      window.location.hostname === "localhost")
-  ) {
-    const registration = swRuntime.register(); // install the service worker
-    swEvents(registration, {
-      onUpdateReady: () => {
-        swApplyUpdate()
-          .then(() => window.location.reload())
-          .catch(error => console.error(error));
-      }
-    });
-  } else {
-    if (process.env.NODE_ENV === "development")
-      console.log("[SW] Service Worker is not available");
+  if ("serviceWorker" in navigator) {
+    if (process.env.NODE_ENV === "production") {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker
+          .register("sw.js")
+          .then(reg => {
+            reg.onupdatefound = () => {
+              let installingWorker = reg.installing;
+
+              installingWorker.onstatechange = () => {
+                switch (installingWorker.state) {
+                  case "installed":
+                    if (navigator.serviceWorker.controller) {
+                      if (process.env.NODE_ENV === "development") {
+                        console.log(
+                          "[SW]",
+                          "New or updated content is available"
+                        );
+                      }
+                      window.__swUpdateReady = true;
+                      window.dispatchEvent(
+                        new CustomEvent(constants.events.SW_UPDATE_READY)
+                      );
+                    } else {
+                      if (process.env.NODE_ENV === "development")
+                        console.log("[SW]", "Content is now available offline");
+                    }
+                    break;
+
+                  case "redundant":
+                    if (process.env.NODE_ENV === "development") {
+                      console.log(
+                        "[SW]",
+                        "The installing service worker became redundant."
+                      );
+                    }
+                    break;
+                }
+              };
+            };
+          })
+          .catch(error => {
+            if (process.env.NODE_ENV === "development") {
+              console.error(
+                "[SW]",
+                "Error during service worker registration",
+                error
+              );
+            }
+          });
+      });
+    } else {
+      navigator.serviceWorker.unregister("sw.js");
+    }
   }
 }
 

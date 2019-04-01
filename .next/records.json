@@ -1,19 +1,4 @@
 {
-  "serviceworker-plugin": [
-    {
-      "modules": {
-        "byIdentifier": {},
-        "usedIds": {}
-      },
-      "chunks": {
-        "byName": {},
-        "bySource": {},
-        "usedIds": [
-          0
-        ]
-      }
-    }
-  ],
   "mini-css-extract-plugin node_modules/css-loader/index.js??ref--5-1!node_modules/postcss-loader/src/index.js??ref--5-2!node_modules/react-virtualized/styles.css": [
     {
       "modules": {
@@ -79,27 +64,27 @@
       "commons": 0,
       "static/runtime/webpack.js": 1,
       "polyfills": 2,
-      "static/RZjQRltbDIUV5RlW~_Sji/pages/_app.js": 3,
-      "static/RZjQRltbDIUV5RlW~_Sji/pages/_error.js": 4,
-      "static/RZjQRltbDIUV5RlW~_Sji/pages/auth/error.js": 5,
-      "static/RZjQRltbDIUV5RlW~_Sji/pages/auth/profile.js": 6,
-      "static/RZjQRltbDIUV5RlW~_Sji/pages/auth/verify.js": 7,
-      "static/RZjQRltbDIUV5RlW~_Sji/pages/charts.js": 8,
-      "static/RZjQRltbDIUV5RlW~_Sji/pages/dashboard.js": 9,
-      "static/RZjQRltbDIUV5RlW~_Sji/pages/forms.js": 10,
-      "static/RZjQRltbDIUV5RlW~_Sji/pages/icons.js": 11,
-      "static/RZjQRltbDIUV5RlW~_Sji/pages/index.js": 12,
-      "static/RZjQRltbDIUV5RlW~_Sji/pages/maps.js": 13,
-      "static/RZjQRltbDIUV5RlW~_Sji/pages/notifications.js": 14,
-      "static/RZjQRltbDIUV5RlW~_Sji/pages/tables.js": 15,
-      "static/RZjQRltbDIUV5RlW~_Sji/pages/typography.js": 16,
-      "static/RZjQRltbDIUV5RlW~_Sji/pages/users.js": 17,
+      "static/OP9l~8HgUEQ_V3Xa4KO2q/pages/_app.js": 3,
+      "static/OP9l~8HgUEQ_V3Xa4KO2q/pages/_error.js": 4,
+      "static/OP9l~8HgUEQ_V3Xa4KO2q/pages/auth/error.js": 5,
+      "static/OP9l~8HgUEQ_V3Xa4KO2q/pages/auth/profile.js": 6,
+      "static/OP9l~8HgUEQ_V3Xa4KO2q/pages/auth/verify.js": 7,
+      "static/OP9l~8HgUEQ_V3Xa4KO2q/pages/charts.js": 8,
+      "static/OP9l~8HgUEQ_V3Xa4KO2q/pages/dashboard.js": 9,
+      "static/OP9l~8HgUEQ_V3Xa4KO2q/pages/forms.js": 10,
+      "static/OP9l~8HgUEQ_V3Xa4KO2q/pages/icons.js": 11,
+      "static/OP9l~8HgUEQ_V3Xa4KO2q/pages/index.js": 12,
+      "static/OP9l~8HgUEQ_V3Xa4KO2q/pages/maps.js": 13,
+      "static/OP9l~8HgUEQ_V3Xa4KO2q/pages/notifications.js": 14,
+      "static/OP9l~8HgUEQ_V3Xa4KO2q/pages/tables.js": 15,
+      "static/OP9l~8HgUEQ_V3Xa4KO2q/pages/typography.js": 16,
+      "static/OP9l~8HgUEQ_V3Xa4KO2q/pages/users.js": 17,
       "static/runtime/main.js": 18,
       "styles": 19
     },
     "bySource": {
-      "0 node_modules/next/dist/build/webpack/loaders/next-babel-loader.js??ref--4!app/app/lib/initApp.js {\"line\":32,\"column\":4}": 2,
-      "0 node_modules/next/dist/build/webpack/loaders/next-babel-loader.js??ref--4!app/app/lib/initApp.js {\"line\":57,\"column\":6}": 2
+      "0 node_modules/next/dist/build/webpack/loaders/next-babel-loader.js??ref--4!app/app/lib/initApp.js {\"line\":26,\"column\":4}": 2,
+      "0 node_modules/next/dist/build/webpack/loaders/next-babel-loader.js??ref--4!app/app/lib/initApp.js {\"line\":51,\"column\":6}": 2
     },
     "usedIds": [
       0,

@@ -115,6 +115,7 @@ module.exports = {
   },
   events: {
     FONTS_LOADED: "FONTS_LOADED",
+    SW_UPDATE_READY: "SW_UPDATE_READY",
     TOAST: "TOAST"
   }
 };
