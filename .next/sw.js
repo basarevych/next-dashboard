@@ -15,7 +15,7 @@ importScripts("/_next/static/workbox-v4.1.1/workbox-sw.js");
 workbox.setConfig({modulePathPrefix: "/_next/static/workbox-v4.1.1"});
 
 importScripts(
-  "/_next/static/precache-manifest.b24102d56bcdcc9787d2078af0b541d2.js"
+  "/_next/static/precache-manifest.5ce4abf40439fcd4a6e37acdb5940c16.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "next-dashboard"});

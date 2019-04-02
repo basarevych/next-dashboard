@@ -114,60 +114,56 @@ if (process.browser) {
     }
   });
 
-  if ("serviceWorker" in navigator) {
-    if (process.env.NODE_ENV === "production") {
-      window.addEventListener("load", () => {
-        navigator.serviceWorker
-          .register("sw.js")
-          .then(reg => {
-            reg.onupdatefound = () => {
-              let installingWorker = reg.installing;
+  if ("serviceWorker" in navigator && process.env.NODE_ENV === "production") {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker
+        .register("sw.js")
+        .then(reg => {
+          reg.onupdatefound = () => {
+            let installingWorker = reg.installing;
 
-              installingWorker.onstatechange = () => {
-                switch (installingWorker.state) {
-                  case "installed":
-                    if (navigator.serviceWorker.controller) {
-                      if (process.env.NODE_ENV === "development") {
-                        console.log(
-                          "[SW]",
-                          "New or updated content is available"
-                        );
-                      }
-                      window.__swUpdateReady = true;
-                      window.dispatchEvent(
-                        new CustomEvent(constants.events.SW_UPDATE_READY)
-                      );
-                    } else {
-                      if (process.env.NODE_ENV === "development")
-                        console.log("[SW]", "Content is now available offline");
-                    }
-                    break;
-
-                  case "redundant":
+            installingWorker.onstatechange = () => {
+              switch (installingWorker.state) {
+                case "installed":
+                  if (navigator.serviceWorker.controller) {
                     if (process.env.NODE_ENV === "development") {
                       console.log(
                         "[SW]",
-                        "The installing service worker became redundant."
+                        "New or updated content is available"
                       );
                     }
-                    break;
-                }
-              };
+                    window.__swUpdateReady = true;
+                    window.dispatchEvent(
+                      new CustomEvent(constants.events.SW_UPDATE_READY)
+                    );
+                  } else {
+                    if (process.env.NODE_ENV === "development")
+                      console.log("[SW]", "Content is now available offline");
+                  }
+                  break;
+
+                case "redundant":
+                  if (process.env.NODE_ENV === "development") {
+                    console.log(
+                      "[SW]",
+                      "The installing service worker became redundant."
+                    );
+                  }
+                  break;
+              }
             };
-          })
-          .catch(error => {
-            if (process.env.NODE_ENV === "development") {
-              console.error(
-                "[SW]",
-                "Error during service worker registration",
-                error
-              );
-            }
-          });
-      });
-    } else {
-      navigator.serviceWorker.unregister("sw.js");
-    }
+          };
+        })
+        .catch(error => {
+          if (process.env.NODE_ENV === "development") {
+            console.error(
+              "[SW]",
+              "Error during service worker registration",
+              error
+            );
+          }
+        });
+    });
   }
 }
 

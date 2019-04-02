@@ -5,7 +5,7 @@ const path = require("path");
 const DefinePlugin = require("webpack").DefinePlugin;
 const ProvidePlugin = require("webpack").ProvidePlugin;
 const ContextReplacementPlugin = require("webpack").ContextReplacementPlugin;
-const { GenerateSW, strategies } = require("workbox-webpack-plugin");
+const { GenerateSW } = require("workbox-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 const RelayCompilerWebpackPlugin = require("relay-compiler-webpack-plugin");
 const withCSS = require("@zeit/next-css");
@@ -117,7 +117,7 @@ module.exports = withPlugins([...plugins], {
       );
     }
 
-    if (!dev) {
+    if (!dev && !isServer) {
       config.plugins.push(
         new GenerateSW({
           cacheId: pkg.name,
