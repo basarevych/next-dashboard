@@ -22,6 +22,8 @@ https://dashboard.daemon-notes.com
 
 - Email/password or Twitter/Google/Facebook using Passport.js
 
+- Caching service worker from Google Workbox
+
 - Modular "ducks" project structure with Dependency Injection Container
 
 ## Installation
