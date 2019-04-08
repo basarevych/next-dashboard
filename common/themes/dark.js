@@ -8,10 +8,10 @@ const {
 const { red, blueGrey } = require("@material-ui/core/colors");
 
 const primaryColor = "rgba(255, 255, 255, 0.9)";
-const primaryBackground = "#808494";
+const primaryBackground = "#80838f";
 
 const secondaryColor = "rgba(255, 255, 255, 0.9)";
-const secondaryBackground = "#eb6123";
+const secondaryBackground = "#c5511d";
 
 const bgNormal = "#3b3f4d";
 const bgPaper = "#585e6e";
@@ -163,7 +163,7 @@ module.exports = {
       body: {
         fontSize: "1rem",
         "&.selected": {
-          background: lighten(bgNormal, 0.15)
+          background: primaryBackground
         }
       }
     },
@@ -336,10 +336,10 @@ module.exports = {
     },
     MuiSwitch: {
       icon: {
-        color: "#999999"
+        color: darken(primaryBackground, 0.1)
       },
       iconChecked: {
-        color: secondaryBackground
+        color: lighten(secondaryBackground, 0.25)
       }
     }
   }

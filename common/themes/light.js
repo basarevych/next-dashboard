@@ -163,7 +163,7 @@ module.exports = {
       body: {
         fontSize: "1rem",
         "&.selected": {
-          background: darken(bgPaper, 0.15)
+          background: lighten(primaryBackground, 0.85)
         }
       }
     },
@@ -326,10 +326,10 @@ module.exports = {
     },
     MuiSwitch: {
       icon: {
-        color: "#666666"
+        color: darken(primaryBackground, 0.1)
       },
       iconChecked: {
-        color: secondaryBackground
+        color: lighten(secondaryBackground, 0.25)
       }
     }
   }

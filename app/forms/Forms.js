@@ -71,7 +71,7 @@ export const styles = theme => ({
   },
   stepLabelError: {
     fontWeight: "bold",
-    color: red[500]
+    color: [theme.form.stepperActive, "!important"]
   },
   page: {
     flex: 1

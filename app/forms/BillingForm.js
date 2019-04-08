@@ -18,7 +18,10 @@ class BillingForm extends ShippingForm {
   static refresh(props) {
     if (props.getValue("isSameAddress")) {
       for (let field of _.keys(BillingForm.addressFields)) {
-        props.dispatch(props.change(field, props.getShippingValue(field)));
+        delete this.cachedErrors[field];
+        props.dispatch(
+          props.change(field, props.getShippingValue(field) || "")
+        );
         props.dispatch(props.clearAsyncError(field));
       }
     }
@@ -27,7 +30,7 @@ class BillingForm extends ShippingForm {
   static onChange(values, dispatch, props, prevValues) {
     super.onChange(values, dispatch, props, prevValues);
     if (prevValues.get("isSameAddress") !== values.get("isSameAddress"))
-      this.refresh(props);
+      setTimeout(() => this.refresh(props));
   }
 
   static async onValidate(
@@ -37,33 +40,22 @@ class BillingForm extends ShippingForm {
     blurredField,
     transform = true
   ) {
-    let thrown;
     try {
-      return await super.onValidate(
+      let result = await super.onValidate(
         values,
         dispatch,
         props,
         blurredField,
         transform
       );
+      this.refresh(props);
+      return result;
     } catch (error) {
-      thrown = error;
+      if (values.get("isSameAddress"))
+        for (let field of _.keys(this.addressFields)) delete error[field];
+      this.refresh(props);
+      throw error;
     }
-
-    if (values.get("isSameAddress")) {
-      for (let field of _.keys(this.addressFields)) {
-        delete this.cachedErrors[field];
-        delete thrown[field];
-      }
-      if (!blurredField) {
-        blurredField = _.difference(
-          _.keys(this.fields),
-          _.keys(this.addressFields)
-        );
-      }
-    }
-
-    throw thrown;
   }
 
   componentDidMount() {

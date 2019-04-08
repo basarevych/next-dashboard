@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
+import ArrowIcon from "@material-ui/icons/ArrowRightAlt";
 
 export const styles = () => ({
   layout: {
@@ -23,12 +24,14 @@ export const styles = () => ({
   },
   item: {
     width: "33%",
-    fontSize: "200%"
+    fontSize: "200%",
+    padding: "0.5rem"
   },
   label: {
     display: "flex",
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
+    padding: "1rem"
   }
 });
 
@@ -56,19 +59,19 @@ class NotificationsPage extends React.Component {
               className={this.props.classes.item}
               onClick={() => this.toast(toast.POSITION.TOP_LEFT)}
             >
-              ⬁
+              <ArrowIcon style={{ transform: "rotate(-135deg)" }} />
             </Button>
             <Button
               className={this.props.classes.item}
               onClick={() => this.toast(toast.POSITION.TOP_CENTER)}
             >
-              ⇧
+              <ArrowIcon style={{ transform: "rotate(-90deg)" }} />
             </Button>
             <Button
               className={this.props.classes.item}
               onClick={() => this.toast(toast.POSITION.TOP_RIGHT)}
             >
-              ⬀
+              <ArrowIcon style={{ transform: "rotate(-45deg)" }} />
             </Button>
           </div>
           <div className={this.props.classes.label}>
@@ -81,19 +84,19 @@ class NotificationsPage extends React.Component {
               className={this.props.classes.item}
               onClick={() => this.toast(toast.POSITION.BOTTOM_LEFT)}
             >
-              ⬃
+              <ArrowIcon style={{ transform: "rotate(135deg)" }} />
             </Button>
             <Button
               className={this.props.classes.item}
               onClick={() => this.toast(toast.POSITION.BOTTOM_CENTER)}
             >
-              ⇩
+              <ArrowIcon style={{ transform: "rotate(90deg)" }} />
             </Button>
             <Button
               className={this.props.classes.item}
               onClick={() => this.toast(toast.POSITION.BOTTOM_RIGHT)}
             >
-              ⬂
+              <ArrowIcon style={{ transform: "rotate(45deg)" }} />
             </Button>
           </div>
         </Paper>
