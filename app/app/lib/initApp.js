@@ -114,11 +114,21 @@ if (process.browser) {
     }
   });
 
-  if ("serviceWorker" in navigator && process.env.NODE_ENV === "production") {
+  if ("serviceWorker" in navigator) {
     window.addEventListener("load", () => {
-      navigator.serviceWorker
-        .register("sw.js")
-        .then(reg => {
+      let promise;
+
+      if (process.env.NODE_ENV !== "production") {
+        promise = navigator.serviceWorker.getRegistrations().then(regs => {
+          if (!regs.length) return;
+
+          return Promise.all(_.invokeMap(regs, "unregister")).then(() => {
+            console.log("[SW]", "Unregistered");
+            window.location.reload(true);
+          });
+        });
+      } else {
+        promise = navigator.serviceWorker.register("sw.js").then(reg => {
           reg.onupdatefound = () => {
             let installingWorker = reg.installing;
 
@@ -153,16 +163,13 @@ if (process.browser) {
               }
             };
           };
-        })
-        .catch(error => {
-          if (process.env.NODE_ENV === "development") {
-            console.error(
-              "[SW]",
-              "Error during service worker registration",
-              error
-            );
-          }
         });
+      }
+
+      promise.catch(error => {
+        if (process.env.NODE_ENV === "development")
+          console.error("[SW]", error);
+      });
     });
   }
 }
