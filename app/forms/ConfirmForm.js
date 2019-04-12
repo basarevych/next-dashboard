@@ -41,38 +41,28 @@ export const styles = theme => ({
   }
 });
 
-class ConfirmForm extends React.Component {
+class ConfirmForm extends React.PureComponent {
   static propTypes = {
     classes: PropTypes.object.isRequired,
-    getShippingValue: PropTypes.func.isRequired,
-    getShippingError: PropTypes.func.isRequired,
-    getBillingValue: PropTypes.func.isRequired,
-    getBillingError: PropTypes.func.isRequired,
-    onReady: PropTypes.func.isRequired
+    shippingValues: PropTypes.object.isRequired,
+    shippingErrors: PropTypes.object,
+    billingValues: PropTypes.object.isRequired,
+    billingErrors: PropTypes.object
   };
 
   static formName = "confirmForm";
 
-  componentDidMount() {
-    this.props.onReady({
-      formName: this.constructor.formName,
-      validate: null,
-      refresh: null
-    });
-  }
-
   renderField(form, field) {
-    const hasError = !!(form === "shipping" ||
-    (this.props.getBillingValue("isSameAddress") &&
-      !_.includes(["cardNumber", "cardDate"], field))
-      ? this.props.getShippingError(field)
-      : this.props.getBillingError(field));
+    let hasError =
+      form === "shipping"
+        ? this.props.shippingErrors[field]
+        : this.props.billingErrors[field];
     if (hasError) return null;
 
     let value =
       form === "shipping"
-        ? this.props.getShippingValue(field)
-        : this.props.getBillingValue(field);
+        ? this.props.shippingValues[field]
+        : this.props.billingValues[field];
     if (!value) return null;
 
     let label;

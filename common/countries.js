@@ -7,5 +7,12 @@ module.exports = {
     country.name = /^(.*?)(\s*\([^)]+\)\s*)*$/.exec(country.name)[1];
     return country;
   }),
-  iso2Lookup
+  iso2Lookup,
+  countryOptions: _.map(
+    [{ iso2: "", name: "" }].concat(allCountries),
+    item => ({
+      value: _.toUpper(item.iso2),
+      label: item.name
+    })
+  )
 };

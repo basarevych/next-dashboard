@@ -1,10 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { fromJS } from "immutable";
 import { intlShape, FormattedMessage } from "react-intl";
 import { graphql } from "react-relay";
 import { fromGlobalId } from "graphql-relay";
-import { SubmissionError } from "redux-form/immutable";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -14,15 +12,18 @@ import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import red from "@material-ui/core/colors/red";
 import { NextQueryRenderer } from "../app/providers/Relay";
-import Form from "../app/forms/Form";
-import Field from "../app/forms/FieldContainer";
+import { Form, Field } from "../app/forms";
 import constants from "../../common/constants";
 import fields from "../../common/forms/employee";
-import { allCountries } from "../../common/countries";
+import { countryOptions } from "../../common/countries";
 
-export const styles = () => ({
+export const styles = theme => ({
   error: {
     color: red[500]
+  },
+  radioError: {
+    marginLeft: 16,
+    borderTop: `2px solid ${theme.palette.text.secondary}`
   },
   actions: {
     paddingLeft: "1rem",
@@ -51,9 +52,8 @@ export const query = graphql`
   }
 `;
 
-class EditEmployeeModal extends Form {
+class EditEmployeeModal extends React.Component {
   static propTypes = {
-    ...Form.propTypes,
     intl: intlShape.isRequired,
     classes: PropTypes.object.isRequired,
     currentId: PropTypes.string,
@@ -62,229 +62,192 @@ class EditEmployeeModal extends Form {
     onEdit: PropTypes.func.isRequired
   };
 
-  static formName = "editEmployeeForm";
-
-  static fields = fields;
-
-  static async onSubmit(values, dispatch, props) {
-    let result;
-
-    if (props.currentId) {
-      result = await props.onEdit(
-        props.currentId,
-        props.getValue("uid"),
-        props.getValue("checked") || false,
-        props.getValue("name"),
-        props.getValue("dept"),
-        props.getValue("title"),
-        props.getValue("country"),
-        parseInt(props.getValue("salary"))
-      );
-    } else {
-      result = await props.onCreate(
-        props.getValue("uid"),
-        props.getValue("checked") || false,
-        props.getValue("name"),
-        props.getValue("dept"),
-        props.getValue("title"),
-        props.getValue("country"),
-        parseInt(props.getValue("salary"))
-      );
-    }
-
-    if (result && _.isObject(result)) throw new SubmissionError(result);
-
-    return result;
-  }
-
   constructor(props) {
     super(props);
 
-    this.deptOptions = fromJS(
-      _.map(_.values(constants.depts), item => ({
-        value: item,
-        label: item && this.props.intl.formatMessage({ id: `DEPT_${item}` })
-      }))
-    );
-
-    this.countryOptions = fromJS(
-      _.map(allCountries, item => ({
-        value: item.iso2,
-        label: item.name
-      }))
-    );
-
+    this.countryOptions = countryOptions;
     this.state = {
-      isLoaded: false
+      initialValues: null
     };
 
-    props.dispatch(props.change("dept", this.deptOptions.getIn([0, "value"])));
-    props.dispatch(
-      props.change("country", this.countryOptions.getIn([0, "value"]))
-    );
+    this.submit = this.submit.bind(this);
+  }
+
+  async submit({ uid, checked, name, dept, title, country, salary }) {
+    let result;
+    if (this.props.currentId) {
+      result = await this.props.onEdit(
+        this.props.currentId,
+        uid,
+        checked || false,
+        name,
+        dept,
+        title,
+        country,
+        parseInt(salary)
+      );
+    } else {
+      result = await this.props.onCreate(
+        uid,
+        checked || false,
+        name,
+        dept,
+        title,
+        country,
+        parseInt(salary)
+      );
+    }
+    return result === true ? {} : result;
   }
 
   renderForm() {
     return (
-      <Dialog maxWidth="xs" open onClose={this.props.onCancel}>
-        <DialogTitle>
-          <FormattedMessage
-            id={
-              this.props.currentId
-                ? "EDIT_EMPLOYEE_TITLE_EDIT"
-                : "EDIT_EMPLOYEE_TITLE_CREATE"
-            }
-          />
-        </DialogTitle>
-        {this.props.error && (
-          <DialogContent>
-            {_.map(
-              _.isArray(this.props.error)
-                ? this.props.error
-                : [this.props.error],
-              (error, index) => (
-                <DialogContentText
-                  key={`error-${index}`}
-                  classes={{ root: this.props.classes.error }}
-                >
-                  {_.isArray(error) ? (
-                    <FormattedMessage id={error[0]} values={error[1]} />
-                  ) : (
-                    <FormattedMessage id={error} />
-                  )}
-                </DialogContentText>
-              )
-            )}
-          </DialogContent>
-        )}
-        <DialogContent>
-          <Grid
-            container
-            spacing={16}
-            component="form"
-            noValidate
-            autoComplete="off"
-            onSubmit={this.submit}
-          >
-            <Grid item xs={12}>
-              <Field name="uid" type="text" onSubmit={this.submit} />
-            </Grid>
-            <Grid item xs={12}>
-              <Field name="name" type="text" onSubmit={this.submit} />
-            </Grid>
-            <Grid item xs={12}>
-              <Field name="checked" type="checkbox" onSubmit={this.submit} />
-            </Grid>
-            <Grid item xs={12} container spacing={16}>
-              <Grid item xs={6}>
-                {_.map(_.values(constants.depts), (item, index) => {
-                  if (index % 2 !== 0) return null;
-                  return (
-                    <Field
-                      key={`radio-${item}`}
-                      name="dept"
-                      type="radio"
-                      value={item}
-                      label={this.props.intl.formatMessage({
-                        id: `DEPT_${item}`
-                      })}
-                      onSubmit={this.submit}
-                    />
-                  );
-                })}
-              </Grid>
-              <Grid item xs={6}>
-                {_.map(_.values(constants.depts), (item, index) => {
-                  if (index % 2 === 0) return null;
-                  return (
-                    <Field
-                      key={`radio-${item}`}
-                      name="dept"
-                      type="radio"
-                      value={item}
-                      label={this.props.intl.formatMessage({
-                        id: `DEPT_${item}`
-                      })}
-                      onSubmit={this.submit}
-                    />
-                  );
-                })}
-              </Grid>
-            </Grid>
-            <Grid item xs={12}>
-              <Field name="title" type="text" onSubmit={this.submit} />
-            </Grid>
-            <Grid item xs={12}>
-              <Field
-                name="country"
-                type="select"
-                native
-                options={this.countryOptions}
-                onSubmit={this.submit}
+      <Form
+        fields={fields}
+        onSubmit={this.submit}
+        initialValues={
+          this.state.initialValues || {
+            dept: _.values(constants.depts)[0]
+          }
+        }
+        render={({ submitting, submitError, handleSubmit }) => (
+          <Dialog maxWidth="xs" open onClose={this.props.onCancel}>
+            <DialogTitle>
+              <FormattedMessage
+                id={
+                  this.props.currentId
+                    ? "EDIT_EMPLOYEE_TITLE_EDIT"
+                    : "EDIT_EMPLOYEE_TITLE_CREATE"
+                }
               />
-            </Grid>
-            <Grid item xs={12}>
-              <Field name="salary" type="text" onSubmit={this.submit} />
-            </Grid>
-          </Grid>
-        </DialogContent>
-        <DialogActions classes={{ root: this.props.classes.actions }}>
-          <Button
-            variant="contained"
-            color="primary"
-            disabled={this.props.submitting}
-            onClick={this.props.onCancel}
-          >
-            <FormattedMessage id="EDIT_EMPLOYEE_CANCEL" />
-          </Button>
-          <Button
-            variant="contained"
-            color="secondary"
-            disabled={this.props.submitting}
-            onClick={this.submit}
-          >
-            <FormattedMessage id="EDIT_EMPLOYEE_SUBMIT" />
-          </Button>
-        </DialogActions>
-      </Dialog>
+            </DialogTitle>
+            {!!submitError && (
+              <DialogContent>
+                {_.map(
+                  _.isArray(submitError) ? submitError : [submitError],
+                  (error, index) => (
+                    <DialogContentText
+                      key={`error-${index}`}
+                      classes={{ root: this.props.classes.error }}
+                    >
+                      {_.isArray(error) ? (
+                        <FormattedMessage id={error[0]} values={error[1]} />
+                      ) : (
+                        <FormattedMessage id={error} />
+                      )}
+                    </DialogContentText>
+                  )
+                )}
+              </DialogContent>
+            )}
+            <DialogContent>
+              <Grid container spacing={16}>
+                <Grid item xs={12}>
+                  <Field
+                    name="uid"
+                    type="text"
+                    messages={["EDIT_EMPLOYEE_UID_HINT"]}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <Field name="name" type="text" />
+                </Grid>
+                <Grid item xs={12}>
+                  <Field name="checked" type="checkbox" />
+                </Grid>
+                <Grid item xs={12} container spacing={16}>
+                  <Grid item xs={6}>
+                    {_.map(_.values(constants.depts), (item, index) => {
+                      if (index % 2 !== 0) return null;
+                      return (
+                        <Field
+                          key={`radio-${item}`}
+                          name="dept"
+                          type="radio"
+                          value={item}
+                          label={this.props.intl.formatMessage({
+                            id: `DEPT_${item}`
+                          })}
+                        />
+                      );
+                    })}
+                  </Grid>
+                  <Grid item xs={6}>
+                    {_.map(_.values(constants.depts), (item, index) => {
+                      if (index % 2 === 0) return null;
+                      return (
+                        <Field
+                          key={`radio-${item}`}
+                          name="dept"
+                          type="radio"
+                          value={item}
+                          label={this.props.intl.formatMessage({
+                            id: `DEPT_${item}`
+                          })}
+                        />
+                      );
+                    })}
+                  </Grid>
+                  <Field
+                    name="dept"
+                    type="error"
+                    className={this.props.classes.radioError}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <Field name="title" type="text" />
+                </Grid>
+                <Grid item xs={12}>
+                  <Field
+                    name="country"
+                    type="select"
+                    native
+                    options={this.countryOptions}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <Field name="salary" type="text" />
+                </Grid>
+              </Grid>
+            </DialogContent>
+            <DialogActions classes={{ root: this.props.classes.actions }}>
+              <Button
+                variant="contained"
+                color="primary"
+                disabled={submitting}
+                onClick={this.props.onCancel}
+              >
+                <FormattedMessage id="EDIT_EMPLOYEE_CANCEL" />
+              </Button>
+              <Button
+                variant="contained"
+                color="secondary"
+                disabled={submitting}
+                onClick={handleSubmit}
+              >
+                <FormattedMessage id="EDIT_EMPLOYEE_SUBMIT" />
+              </Button>
+            </DialogActions>
+          </Dialog>
+        )}
+      />
     );
   }
 
-  loadData(viewer) {
-    if (this.state.isLoaded) return;
+  async loadData(viewer) {
+    await new Promise(resolve => setTimeout(resolve));
+    if (this.state.initialValues) return;
 
-    setTimeout(() => {
-      this.props.dispatch(
-        this.props.change(
-          "uid",
-          parseInt(_.get(viewer, "employee.uid", "0")).toString()
-        )
-      );
-      this.props.dispatch(
-        this.props.change("checked", _.get(viewer, "employee.checked", false))
-      );
-      this.props.dispatch(
-        this.props.change("name", _.get(viewer, "employee.name", ""))
-      );
-      this.props.dispatch(
-        this.props.change("dept", _.get(viewer, "employee.dept", ""))
-      );
-      this.props.dispatch(
-        this.props.change("title", _.get(viewer, "employee.title", ""))
-      );
-      this.props.dispatch(
-        this.props.change(
-          "country",
-          fromGlobalId(_.get(viewer, "employee.country.id", "")).id
-        )
-      );
-      this.props.dispatch(
-        this.props.change(
-          "salary",
-          _.get(viewer, "employee.salary", "").toString()
-        )
-      );
-      this.setState({ isLoaded: true });
+    this.setState({
+      initialValues: {
+        uid: parseInt(_.get(viewer, "employee.uid", "0")).toString(),
+        checked: _.get(viewer, "employee.checked", false),
+        name: _.get(viewer, "employee.name", ""),
+        dept: _.get(viewer, "employee.dept", ""),
+        title: _.get(viewer, "employee.title", ""),
+        country: fromGlobalId(_.get(viewer, "employee.country.id", "")).id,
+        salary: _.get(viewer, "employee.salary", "").toString()
+      }
     });
   }
 

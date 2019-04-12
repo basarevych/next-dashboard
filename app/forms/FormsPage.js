@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { FormattedMessage } from "react-intl";
 import Typography from "@material-ui/core/Typography";
 import { lighten } from "@material-ui/core/styles/colorManipulator";
-import Forms from "./FormsContainer";
+import Wizard from "./WizardContainer";
 
 export const styles = theme => ({
   message: {
@@ -58,7 +58,7 @@ class FormsPage extends React.Component {
         </div>
 
         <div className={this.props.classes.layout}>
-          <Forms />
+          <Wizard />
         </div>
       </React.Fragment>
     );

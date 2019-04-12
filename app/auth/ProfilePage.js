@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import Router from "next/router";
 import { FormattedMessage } from "react-intl";
-import { SubmissionError } from "redux-form/immutable";
 import Paper from "@material-ui/core/Paper";
 import Grow from "@material-ui/core/Grow";
 import Hidden from "@material-ui/core/Hidden";
@@ -10,8 +9,7 @@ import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import red from "@material-ui/core/colors/red";
-import Form from "../app/forms/Form";
-import Field from "../app/forms/FieldContainer";
+import { Form, Field } from "../app/forms";
 import fields from "../../common/forms/profile";
 import isRouteAllowed from "../../common/isRouteAllowed";
 import ConfirmModal from "../app/modals/ConfirmModalContainer";
@@ -77,9 +75,8 @@ export const styles = theme => ({
   }
 });
 
-class ProfilePage extends Form {
+class ProfilePage extends React.Component {
   static propTypes = {
-    ...Form.propTypes,
     theme: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired,
     userRoles: PropTypes.array.isRequired,
@@ -93,34 +90,11 @@ class ProfilePage extends Form {
     onDestroy: PropTypes.func.isRequired
   };
 
-  static formName = "profileForm";
-  static fields = fields;
-
-  static async onSubmit(values, dispatch, props) {
-    let result = await props.onSave(
-      props.getValue("name") || null,
-      props.getValue("email"),
-      props.getValue("password1")
-    );
-
-    if (result && _.isObject(result)) throw new SubmissionError(result);
-    if (result === true) await ProfilePage.load(props);
-
-    return result;
-  }
-
-  static async load(props) {
-    const { name, email } = await props.onLoad();
-    props.dispatch(props.change("name", name));
-    props.dispatch(props.change("email", email));
-    props.dispatch(props.change("password1", ""));
-    props.dispatch(props.change("password2", ""));
-  }
-
   constructor(props) {
     super(props);
 
     this.state = {
+      initialValues: null,
       animating: false,
       message: null,
       isConfirmOpen: false
@@ -128,7 +102,7 @@ class ProfilePage extends Form {
 
     this.messageTimer = null;
 
-    this.submit = this.submit.bind(this);
+    this.save = this.save.bind(this);
     this.verify = this.verify.bind(this);
     this.destroy = this.destroy.bind(this);
 
@@ -136,27 +110,23 @@ class ProfilePage extends Form {
     this.handleCancelDelete = this.handleCancelDelete.bind(this);
   }
 
-  componentDidMount() {
-    ProfilePage.load(this.props).catch(console.error);
+  async componentDidMount() {
+    const { name, email } = await this.props.onLoad();
+    this.setState({
+      initialValues: { name, email, password1: "", password2: "" }
+    });
   }
 
-  showMessage(message) {
-    if (this.messageTimer) clearTimeout(this.messageTimer);
-    this.messageTimer = setTimeout(() => {
-      this.messageTimer = null;
-      this.setState({ animating: false }, () => {
-        this.messageTimer = setTimeout(() => {
-          this.messageTimer = null;
-          this.setState({ message: null });
-        }, this.props.theme.transitions.duration.leavingScreen);
-      });
-    }, 5000);
-    this.setState({ message, animating: true });
-  }
+  async save({ name, email, password1 }, form) {
+    let result = await this.props.onSave(name || null, email, password1);
+    if (result !== true) return result;
 
-  async submit() {
-    if ((await super.submit()) === true)
-      this.showMessage("PROFILE_SAVE_SUCCESS");
+    let update = await this.props.onLoad();
+    form.batch(() => {
+      form.change("email", update.email);
+      form.change("name", update.name);
+    });
+    this.showMessage("PROFILE_SAVE_SUCCESS");
   }
 
   async verify() {
@@ -187,7 +157,21 @@ class ProfilePage extends Form {
     if (await this.props.onDestroy()) Router.push("/");
   }
 
-  renderButton(provider) {
+  showMessage(message) {
+    if (this.messageTimer) clearTimeout(this.messageTimer);
+    this.messageTimer = setTimeout(() => {
+      this.messageTimer = null;
+      this.setState({ animating: false }, () => {
+        this.messageTimer = setTimeout(() => {
+          this.messageTimer = null;
+          this.setState({ message: null });
+        }, this.props.theme.transitions.duration.leavingScreen);
+      });
+    }, 5000);
+    this.setState({ message, animating: true });
+  }
+
+  renderButton(provider, submitting) {
     provider = _.toLower(provider);
     const isLinked = this.props.userProviders[provider];
 
@@ -197,8 +181,7 @@ class ProfilePage extends Form {
         color="default"
         classes={{ contained: this.props.classes[provider] }}
         disabled={
-          this.props.submitting ||
-          !_.includes(_.keys(this.props.userProviders), provider)
+          submitting || !_.includes(_.keys(this.props.userProviders), provider)
         }
         onClick={() => (isLinked ? this.unlink(provider) : this.link(provider))}
       >
@@ -231,135 +214,153 @@ class ProfilePage extends Form {
   }
 
   render() {
-    if (!isRouteAllowed("/auth/profile", this.props.userRoles)) return null;
-
-    const services = (
-      <React.Fragment>
-        {this.renderButton(constants.oauthProviders.FACEBOOK)}
-        {this.renderButton(constants.oauthProviders.GOOGLE)}
-        {this.renderButton(constants.oauthProviders.TWITTER)}
-      </React.Fragment>
-    );
+    if (
+      !this.state.initialValues ||
+      !isRouteAllowed("/auth/profile", this.props.userRoles)
+    ) {
+      return null;
+    }
 
     return (
       <div className={this.props.classes.layout}>
         <Paper className={this.props.classes.profile}>
-          <Grid
-            container
-            spacing={this.props.theme.main.spacing}
-            component="form"
-            noValidate
-            autoComplete="off"
-            onSubmit={this.submit}
-          >
-            <Grid item xs={12}>
-              <Typography
-                variant="h4"
-                classes={{ root: this.props.classes.title }}
-              >
-                <FormattedMessage id="TITLE_PROFILE" />
-              </Typography>
-            </Grid>
-            <Hidden xsDown>
-              <Grid item xs={12} container justify="space-between">
-                {services}
-              </Grid>
-            </Hidden>
-            <Hidden smUp>
-              <Grid item xs={12} container justify="center">
-                {services}
-              </Grid>
-            </Hidden>
-            {this.props.error && (
-              <Grid item xs={12}>
-                {_.map(
-                  _.isArray(this.props.error)
-                    ? this.props.error
-                    : [this.props.error],
-                  (error, index) => (
-                    <div
-                      key={`error-${index}`}
-                      className={this.props.classes.error}
+          <Form
+            fields={fields}
+            initialValues={this.state.initialValues}
+            onSubmit={this.save}
+            render={({ submitting, submitError, handleSubmit }) => {
+              const services = (
+                <React.Fragment>
+                  {this.renderButton(
+                    constants.oauthProviders.FACEBOOK,
+                    submitting
+                  )}
+                  {this.renderButton(
+                    constants.oauthProviders.GOOGLE,
+                    submitting
+                  )}
+                  {this.renderButton(
+                    constants.oauthProviders.TWITTER,
+                    submitting
+                  )}
+                </React.Fragment>
+              );
+
+              return (
+                <Grid container spacing={this.props.theme.main.spacing}>
+                  <Grid item xs={12}>
+                    <Typography
+                      variant="h4"
+                      classes={{ root: this.props.classes.title }}
                     >
-                      {_.isArray(error) ? (
-                        <FormattedMessage id={error[0]} values={error[1]} />
-                      ) : (
-                        <FormattedMessage id={error} />
+                      <FormattedMessage id="TITLE_PROFILE" />
+                    </Typography>
+                  </Grid>
+                  <Hidden xsDown>
+                    <Grid item xs={12} container justify="space-between">
+                      {services}
+                    </Grid>
+                  </Hidden>
+                  <Hidden smUp>
+                    <Grid item xs={12} container justify="center">
+                      {services}
+                    </Grid>
+                  </Hidden>
+                  {!!submitError && (
+                    <Grid item xs={12}>
+                      {_.map(
+                        _.isArray(submitError) ? submitError : [submitError],
+                        (error, index) => (
+                          <div
+                            key={`error-${index}`}
+                            className={this.props.classes.error}
+                          >
+                            {_.isArray(error) ? (
+                              <FormattedMessage
+                                id={error[0]}
+                                values={error[1]}
+                              />
+                            ) : (
+                              <FormattedMessage id={error} />
+                            )}
+                          </div>
+                        )
                       )}
-                    </div>
-                  )
-                )}
-              </Grid>
-            )}
-            {this.state.message && (
-              <Grid item xs={12}>
-                <Grow in={this.state.animating}>
-                  <div className={this.props.classes.info}>
-                    <FormattedMessage id={this.state.message} />
-                  </div>
-                </Grow>
-              </Grid>
-            )}
-            <Hidden xsDown>
-              <Grid item sm={6}>
-                <Field name="name" type="text" />
-              </Grid>
-              <Grid item sm={6}>
-                <Field name="password1" type="password" />
-              </Grid>
-              <Grid item sm={6}>
-                <Field name="email" type="text" />
-              </Grid>
-              <Grid item sm={6}>
-                <Field name="password2" type="password" />
-              </Grid>
-            </Hidden>
-            <Hidden smUp>
-              <Grid item xs={12}>
-                <Field name="name" type="text" />
-              </Grid>
-              <Grid item xs={12}>
-                <Field name="email" type="text" />
-              </Grid>
-              <Grid item xs={12}>
-                <Field name="password1" type="password" />
-              </Grid>
-              <Grid item xs={12}>
-                <Field name="password2" type="password" />
-              </Grid>
-            </Hidden>
-            <Grid item xs={12} container justify="space-between">
-              <Button
-                variant="contained"
-                color="primary"
-                disabled={this.props.submitting}
-                onClick={this.submit}
-              >
-                <FormattedMessage id="PROFILE_SAVE_BUTTON" />
-              </Button>
-              <Button
-                variant="contained"
-                color="inherit"
-                className={this.props.classes.destroyButton}
-                disabled={this.props.submitting}
-                onClick={this.destroy}
-              >
-                <FormattedMessage id="PROFILE_DESTROY_BUTTON" />
-              </Button>
-            </Grid>
-            {!this.props.userVerified && (
-              <Grid item xs={12} container justify="flex-start">
-                <Button
-                  variant="contained"
-                  color="primary"
-                  disabled={this.props.submitting}
-                  onClick={this.verify}
-                >
-                  <FormattedMessage id="PROFILE_VERIFY_BUTTON" />
-                </Button>
-              </Grid>
-            )}
-          </Grid>
+                    </Grid>
+                  )}
+                  {this.state.message && (
+                    <Grid item xs={12}>
+                      <Grow in={this.state.animating}>
+                        <div className={this.props.classes.info}>
+                          <FormattedMessage id={this.state.message} />
+                        </div>
+                      </Grow>
+                    </Grid>
+                  )}
+                  <Hidden xsDown>
+                    <Grid item sm={6}>
+                      <Field name="name" type="text" />
+                    </Grid>
+                    <Grid item sm={6}>
+                      <Field name="password1" type="password" />
+                    </Grid>
+                    <Grid item sm={6}>
+                      <Field name="email" type="text" />
+                    </Grid>
+                    <Grid item sm={6}>
+                      <Field name="password2" type="password" />
+                    </Grid>
+                  </Hidden>
+                  <Hidden smUp>
+                    <Grid item xs={12}>
+                      <Field name="name" type="text" />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Field name="email" type="text" />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Field name="password1" type="password" />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Field name="password2" type="password" />
+                    </Grid>
+                  </Hidden>
+                  <Grid item xs={12} container justify="space-between">
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      disabled={submitting}
+                      onClick={handleSubmit}
+                    >
+                      <FormattedMessage id="PROFILE_SAVE_BUTTON" />
+                    </Button>
+                    <Button
+                      variant="contained"
+                      color="inherit"
+                      className={this.props.classes.destroyButton}
+                      disabled={submitting}
+                      onClick={this.destroy}
+                    >
+                      <FormattedMessage id="PROFILE_DESTROY_BUTTON" />
+                    </Button>
+                  </Grid>
+                  {!this.props.userVerified && (
+                    <Grid item xs={12} container justify="flex-start">
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        disabled={submitting}
+                        onClick={this.verify}
+                      >
+                        <FormattedMessage id="PROFILE_VERIFY_BUTTON" />
+                      </Button>
+                    </Grid>
+                  )}
+                </Grid>
+              );
+            }}
+          />
+
           <ConfirmModal
             isOpen={this.state.isConfirmOpen}
             title="DELETE_PROFILE_TITLE"

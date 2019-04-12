@@ -21,7 +21,7 @@ const { allCountries, iso2Lookup } = require("country-telephone-data");
  * match:otherField           value should be the same as the value of otherField
  */
 
-module.exports = function validate(props, options, value, allValues) {
+module.exports = function validate(options, value, allValues) {
   let rules = {};
   for (let rule of tokenize(options, "\\", "|")) {
     let params = tokenize(rule, "\\", ":");
@@ -50,7 +50,7 @@ module.exports = function validate(props, options, value, allValues) {
         rules.required.params.length &&
         rules.required.params[0]
       ) {
-        let other = allValues.get(rules.required.params[0]);
+        let other = allValues[rules.required.params[0]];
         if (!other || !other.length) failed = false;
       }
       if (failed) errors.push("ERROR_FIELD_REQUIRED");
@@ -82,7 +82,7 @@ module.exports = function validate(props, options, value, allValues) {
               search =
                 allCountries &&
                 iso2Lookup &&
-                allCountries[iso2Lookup[allValues.get("country")]];
+                allCountries[iso2Lookup[allValues.country]];
               if (search && search.dialCode)
                 success = _.startsWith(normalized, search.dialCode);
               else success = true;
@@ -152,7 +152,7 @@ module.exports = function validate(props, options, value, allValues) {
         case "match":
           // this rule is triggered when field set by first param has other value than this one
           tmp = rules[command].params.length && rules[command].params[0];
-          if (tmp && allValues && allValues.get(tmp) !== value)
+          if (tmp && allValues && allValues[tmp] !== value)
             errors.push(rules[command].msg || "ERROR_MISMATCHED_VALUES");
           break;
       }

@@ -20,13 +20,7 @@ const { allCountries, iso2Lookup } = require("country-telephone-data");
  * credit_card:date           normalizes credit card expiration date
  * credit_card:secret         normalizes credit card CVV2 code
  */
-module.exports = function normalize(
-  options,
-  value,
-  prevValue,
-  allValues
-  /* prevAllValues */
-) {
+module.exports = function normalize(options, value, allValues) {
   let rules = {};
   for (let rule of tokenize(options, "\\", "|")) {
     let params = tokenize(rule, "\\", ":");
@@ -93,7 +87,7 @@ module.exports = function normalize(
         search =
           allCountries &&
           iso2Lookup &&
-          allCountries[iso2Lookup[allValues.get("country")]];
+          allCountries[iso2Lookup[allValues.country]];
         if (search && search.dialCode && _.startsWith(tmp, search.dialCode)) {
           result +=
             search.dialCode + (search.dialCode.length < tmp.length ? " " : "");

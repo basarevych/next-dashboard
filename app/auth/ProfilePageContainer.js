@@ -1,6 +1,6 @@
+import { connect } from "react-redux";
 import { withStyles } from "@material-ui/core/styles";
 import { authSelectors, authOperations } from "../auth/state";
-import connectForm from "../app/forms/connectForm";
 import ProfilePageComponent, { styles } from "./ProfilePage";
 
 const mapStateToProps = state => {
@@ -24,7 +24,10 @@ const mapDispatchToProps = dispatch => {
 };
 
 const ProfilePage = withStyles(styles, { withTheme: true })(
-  connectForm(ProfilePageComponent, mapStateToProps, mapDispatchToProps)
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(ProfilePageComponent)
 );
 ProfilePage.getInitialProps = ProfilePageComponent.getInitialProps;
 

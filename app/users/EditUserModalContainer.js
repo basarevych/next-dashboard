@@ -1,6 +1,6 @@
+import { connect } from "react-redux";
 import { withStyles } from "@material-ui/core/styles";
 import { usersOperations, usersSelectors } from "./state";
-import connectForm from "../app/forms/connectForm";
 import EditUserModalComponent, { styles } from "./EditUserModal";
 
 const mapStateToProps = state => {
@@ -28,7 +28,10 @@ const mapDispatchToProps = dispatch => {
 };
 
 const EditUserModal = withStyles(styles)(
-  connectForm(EditUserModalComponent, mapStateToProps, mapDispatchToProps)
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(EditUserModalComponent)
 );
 
 export default EditUserModal;

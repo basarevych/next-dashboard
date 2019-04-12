@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import TextField from "@material-ui/core/TextField";
-import Errors from "./ErrorsContainer";
+import FieldMessages from "./FieldMessagesContainer";
 
 export const styles = () => ({
   formHelper: {
@@ -12,10 +12,11 @@ export const styles = () => ({
 class MyText extends React.PureComponent {
   static propTypes = {
     classes: PropTypes.object.isRequired,
-    fieldId: PropTypes.string.isRequired,
+    form: PropTypes.object.isRequired,
     input: PropTypes.object.isRequired,
     meta: PropTypes.object.isRequired,
     type: PropTypes.oneOf(["text", "password", "textarea"]).isRequired,
+    messages: PropTypes.arrayOf(PropTypes.string),
     label: PropTypes.string.isRequired,
     autoFocus: PropTypes.bool,
     rows: PropTypes.number,
@@ -40,7 +41,8 @@ class MyText extends React.PureComponent {
 
   componentDidUpdate() {
     if (this.input.current) {
-      // fix cursor position on changing the value to the normalized variant
+      // Fixes case when input is normalized in onChange() and
+      // the cursor sometimes jumps to the end of input.
       let cur = this.props.input.value || "";
       let cached = this.cachedValue || "";
       if (this.cachedPosition !== cached.length) {
@@ -49,20 +51,18 @@ class MyText extends React.PureComponent {
         index =
           index === -1 ? this.cachedPosition : index + this.cachedPosition;
         let delta = cur.length - cached.length;
-        if (delta > 0) index += delta;
+        if (cached !== str && delta > 0) index += delta;
         if (index <= cur.length)
           this.input.current.setSelectionRange(index, index);
       }
     }
-
-    this.cachedValue = this.props.input.value;
   }
 
   handleChange(evt) {
     this.cachedPosition = evt.target.selectionEnd;
     this.cachedValue = evt.target.value;
     this.forceUpdate();
-    return this.props.input.onChange(evt.target.value);
+    return this.props.input.onChange(evt);
   }
 
   handleFocus(evt) {
@@ -76,9 +76,17 @@ class MyText extends React.PureComponent {
   }
 
   render() {
-    const errors = this.props.meta.error ? (
-      <Errors errors={this.props.meta.error} />
-    ) : null;
+    let errors = null;
+    if (
+      this.props.meta.touched &&
+      (this.props.meta.error || this.props.meta.submitError)
+    ) {
+      errors = [];
+      if (this.props.meta.error) errors = errors.concat(this.props.meta.error);
+      if (this.props.meta.submitError)
+        errors = errors.concat(this.props.meta.submitError);
+      errors = _.uniq(errors);
+    }
 
     return (
       <TextField
@@ -99,20 +107,30 @@ class MyText extends React.PureComponent {
         disabled={this.props.meta.submitting || this.props.disabled}
         error={!!errors}
         FormHelperTextProps={{
-          component: errors ? "div" : undefined,
+          component: this.props.messages || errors ? "div" : undefined,
           classes: { root: this.props.classes.formHelper }
         }}
-        helperText={errors || undefined}
+        helperText={
+          this.props.messages || errors ? (
+            <FieldMessages messages={this.props.messages} errors={errors} />
+          ) : (
+            undefined
+          )
+        }
         onChange={this.handleChange}
         onFocus={this.handleFocus}
         onBlur={this.handleBlur}
         inputRef={this.input}
         inputProps={{
-          id: this.props.fieldId,
           onKeyDown: evt => {
-            if (this.props.onSubmit && evt.keyCode === 13) {
+            if (
+              this.props.type !== "textarea" &&
+              this.props.onSubmit &&
+              evt.keyCode === 13
+            ) {
               evt.preventDefault();
               evt.stopPropagation();
+              this.props.form.blur(this.props.input.name);
               this.props.onSubmit();
             }
           }

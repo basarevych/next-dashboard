@@ -2,9 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import FormControl from "@material-ui/core/FormControl";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import FormHelperText from "@material-ui/core/FormHelperText";
 import Radio from "@material-ui/core/Radio";
-import Errors from "./ErrorsContainer";
 
 export const styles = () => ({
   formHelper: {
@@ -18,10 +16,9 @@ export const styles = () => ({
 class MyRadio extends React.PureComponent {
   static propTypes = {
     classes: PropTypes.object.isRequired,
-    fieldId: PropTypes.string.isRequired,
+    form: PropTypes.object.isRequired,
     input: PropTypes.object.isRequired,
     meta: PropTypes.object.isRequired,
-    type: PropTypes.oneOf(["radio"]).isRequired,
     label: PropTypes.string.isRequired,
     autoFocus: PropTypes.bool,
     className: PropTypes.string,
@@ -31,35 +28,18 @@ class MyRadio extends React.PureComponent {
     onSubmit: PropTypes.func
   };
 
-  constructor(props) {
-    super(props);
-
-    this.handleChange = this.handleChange.bind(this);
-    this.handleFocus = this.handleFocus.bind(this);
-    this.handleBlur = this.handleBlur.bind(this);
-  }
-
-  handleChange(evt) {
-    return this.props.input.onChange(evt.target.value);
-  }
-
-  handleFocus(evt) {
-    return this.props.input.onFocus(evt);
-  }
-
-  handleBlur(evt) {
-    return this.props.input.onBlur(evt);
-  }
-
   render() {
-    const errors = this.props.meta.error ? (
-      <FormHelperText
-        component="div"
-        classes={{ root: this.props.classes.formHelper }}
-      >
-        <Errors errors={this.props.meta.error} />
-      </FormHelperText>
-    ) : null;
+    let errors = null;
+    if (
+      this.props.meta.touched &&
+      (this.props.meta.error || this.props.meta.submitError)
+    ) {
+      errors = [];
+      if (this.props.meta.error) errors = errors.concat(this.props.meta.error);
+      if (this.props.meta.submitError)
+        errors = errors.concat(this.props.meta.submitError);
+      errors = _.uniq(errors);
+    }
 
     return (
       <FormControl
@@ -70,23 +50,31 @@ class MyRadio extends React.PureComponent {
       >
         <FormControlLabel
           classes={{ root: this.props.classes.label }}
+          label={this.props.label}
           control={
             <Radio
-              id={`${this.props.fieldId}-${this.props.input.value}`}
               name={this.props.input.name}
               value={this.props.input.value}
               autoFocus={this.props.autoFocus}
               checked={this.props.input.checked}
               disabled={this.props.meta.submitting || this.props.disabled}
-              onChange={this.handleChange}
-              onFocus={this.handleFocus}
-              onBlur={this.handleBlur}
               color={this.props.color || "primary"}
+              onChange={this.props.input.onChange}
+              onBlur={this.props.input.onBlur}
+              onFocus={this.props.input.onFocus}
+              inputProps={{
+                onKeyDown: evt => {
+                  if (this.props.onSubmit && evt.keyCode === 13) {
+                    evt.preventDefault();
+                    evt.stopPropagation();
+                    this.props.form.blur(this.props.input.name);
+                    this.props.onSubmit();
+                  }
+                }
+              }}
             />
           }
-          label={this.props.label}
         />
-        {errors}
       </FormControl>
     );
   }

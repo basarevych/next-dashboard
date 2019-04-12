@@ -11,7 +11,7 @@
       // happens on blur, optional:
       transform: 'rule1:param1:param2|rule2:param1:param2|...',
 
-      // happens on blur, optional:
+      // happens on change, shown on blur, optional:
       validate: 'rule1:param1:param2|rule2:param1:param2|...',
     }
  }

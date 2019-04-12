@@ -8,7 +8,7 @@ module.exports = {
     label: "EDIT_EMPLOYEE_CHECKED_LABEL"
   },
   name: {
-    normalize: "rows:1|remove:spaces",
+    normalize: "rows:1|compact:spaces",
     transform: "trim",
     validate: "required",
     label: "EDIT_EMPLOYEE_NAME_LABEL"
@@ -18,6 +18,8 @@ module.exports = {
     label: "EDIT_EMPLOYEE_DEPT_LABEL"
   },
   title: {
+    normalize: "rows:1|compact:spaces",
+    transform: "trim",
     validate: "required",
     label: "EDIT_EMPLOYEE_TITLE_LABEL"
   },

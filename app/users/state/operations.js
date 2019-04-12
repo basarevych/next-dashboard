@@ -1,7 +1,7 @@
 import * as actions from "./actions";
 import * as selectors from "./selectors";
 import constants from "../../../common/constants";
-import { getFormErrors } from "../../app/forms/connectForm";
+import getFormErrors from "../../app/forms/getFormErrors";
 import CreateUserMutation from "../mutations/CreateUser";
 import EditUserMutation from "../mutations/EditUser";
 import DeleteUserMutation from "../mutations/DeleteUser";

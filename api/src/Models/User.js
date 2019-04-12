@@ -1,8 +1,7 @@
-const { fromJS } = require("immutable");
 const EventEmitter = require("events");
 const ValidationError = require("../Errors/ValidationError");
 const constants = require("../../../common/constants");
-const fields = require("../../../common/forms/user");
+const fields = require("../../../common/forms/createUser");
 const validate = require("../../../common/validate");
 
 class User extends EventEmitter {
@@ -102,11 +101,11 @@ class User extends EventEmitter {
       } else {
         const rules = fields[field];
         if (rules && rules.validate) {
-          const obj = this.toObject();
-          const fieldErrors = validate({}, rules.validate, value, fromJS(obj));
+          const fieldErrors = validate(rules.validate, value, this.toObject());
           if (fieldErrors.length) {
-            errors[field] =
-              fieldErrors.length === 1 ? fieldErrors[0] : fieldErrors;
+            errors[field] = {
+              message: fieldErrors.length === 1 ? fieldErrors[0] : fieldErrors
+            };
           }
         }
       }
@@ -142,7 +141,7 @@ class User extends EventEmitter {
   validate(field, value, allValues, callback) {
     let rules = fields[field];
     if (!rules || !rules.validate) return callback(true);
-    let errors = validate({}, rules.validate, value, fromJS(allValues));
+    let errors = validate(rules.validate, value, allValues);
     if (!errors.length) return callback(true);
     return callback(false, errors.length === 1 ? errors[0] : errors);
   }

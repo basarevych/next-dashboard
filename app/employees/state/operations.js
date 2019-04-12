@@ -1,6 +1,6 @@
 import * as actions from "./actions";
 import * as selectors from "./selectors";
-import { getFormErrors } from "../../app/forms/connectForm";
+import getFormErrors from "../../app/forms/getFormErrors";
 import CreateEmployeeMutation from "../mutations/CreateEmployee";
 import EditEmployeeMutation from "../mutations/EditEmployee";
 import DeleteEmployeeMutation from "../mutations/DeleteEmployee";

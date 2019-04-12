@@ -1,7 +1,7 @@
+import { connect } from "react-redux";
 import { withStyles } from "@material-ui/core/styles";
 import { injectIntl } from "react-intl";
 import { employeesOperations, employeesSelectors } from "./state";
-import connectForm from "../app/forms/connectForm";
 import EditEmployeeModalComponent, { styles } from "./EditEmployeeModal";
 
 const mapStateToProps = state => {
@@ -43,7 +43,10 @@ const mapDispatchToProps = dispatch => {
 
 const EditEmployeeModal = withStyles(styles)(
   injectIntl(
-    connectForm(EditEmployeeModalComponent, mapStateToProps, mapDispatchToProps)
+    connect(
+      mapStateToProps,
+      mapDispatchToProps
+    )(EditEmployeeModalComponent)
   )
 );
 

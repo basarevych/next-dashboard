@@ -97,6 +97,7 @@
   "EDIT_EMPLOYEE_TITLE_CREATE": "Create employee",
   "EDIT_EMPLOYEE_TITLE_EDIT": "Edit employee",
   "EDIT_EMPLOYEE_UID_LABEL": "UID",
+  "EDIT_EMPLOYEE_UID_HINT": "Digits only",
   "EDIT_EMPLOYEE_CHECKED_LABEL": "Enabled",
   "EDIT_EMPLOYEE_NAME_LABEL": "Name",
   "EDIT_EMPLOYEE_DEPT_LABEL": "Department",

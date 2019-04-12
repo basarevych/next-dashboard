@@ -101,6 +101,7 @@
   "EDIT_EMPLOYEE_TITLE_CREATE": "Создать сотрудника",
   "EDIT_EMPLOYEE_TITLE_EDIT": "Изменить сотрудника",
   "EDIT_EMPLOYEE_UID_LABEL": "UID",
+  "EDIT_EMPLOYEE_UID_HINT": "Только цифры",
   "EDIT_EMPLOYEE_CHECKED_LABEL": "Включен",
   "EDIT_EMPLOYEE_NAME_LABEL": "Имя",
   "EDIT_EMPLOYEE_DEPT_LABEL": "Отдел",
