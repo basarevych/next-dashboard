@@ -63,6 +63,7 @@
     "passport-twitter": "~1.0.4",
     "raf": "~3.4.1",
     "react": "~16.8.6",
+    "react-credit-cards": "^0.7.0",
     "react-dom": "~16.8.6",
     "react-final-form": "~4.1.0",
     "react-flags": "~0.1.17",

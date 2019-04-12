@@ -21,7 +21,7 @@ import NextIcon from "@material-ui/icons/KeyboardArrowRight";
 import SubmitIcon from "@material-ui/icons/Check";
 import ShippingForm from "./ShippingForm";
 import ShippingInfo from "./ShippingInfoContainer";
-import BillingForm from "./BillingForm";
+import BillingForm from "./BillingFormContainer";
 import BillingInfo from "./BillingInfoContainer";
 import ConfirmForm from "./ConfirmFormContainer";
 import MessageModal from "../app/modals/MessageModalContainer";

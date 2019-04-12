@@ -581,7 +581,7 @@ var _ShippingForm = _interopRequireDefault(__webpack_require__("6g1f"));
 
 var _ShippingInfoContainer = _interopRequireDefault(__webpack_require__("6rdP"));
 
-var _BillingForm = _interopRequireDefault(__webpack_require__("NoFV"));
+var _BillingFormContainer = _interopRequireDefault(__webpack_require__("IYN7"));
 
 var _BillingInfoContainer = _interopRequireDefault(__webpack_require__("O7RJ"));
 
@@ -1087,8 +1087,8 @@ function (_React$Component) {
           }, _react.default.createElement(Form, {
             shippingValues: _this4.forms[_ShippingForm.default.formName].values,
             shippingErrors: _this4.forms[_ShippingForm.default.formName].errors,
-            billingValues: _this4.forms[_BillingForm.default.formName].values,
-            billingErrors: _this4.forms[_BillingForm.default.formName].errors,
+            billingValues: _this4.forms[_BillingFormContainer.default.formName].values,
+            billingErrors: _this4.forms[_BillingFormContainer.default.formName].errors,
             onSetStatus: _this4.handleStepStatus
           }));
         }));
@@ -1124,7 +1124,7 @@ function (_React$Component) {
   icon: _AccountBalanceWallet.default,
   label: "BILLING_STEP_TITLE",
   descr: "BILLING_STEP_DESCR",
-  form: _BillingForm.default,
+  form: _BillingFormContainer.default,
   info: _BillingInfoContainer.default
 }, {
   icon: _ShoppingCart.default,
@@ -2234,6 +2234,30 @@ exports.default = _default;
 
 /***/ }),
 
+/***/ "IYN7":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireWildcard = __webpack_require__("5Uuq");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _styles = __webpack_require__("9Pu4");
+
+var _BillingForm = _interopRequireWildcard(__webpack_require__("NoFV"));
+
+var BillingForm = (0, _styles.withStyles)(_BillingForm.styles)(_BillingForm.default);
+BillingForm.formName = _BillingForm.default.formName;
+var _default = BillingForm;
+exports.default = _default;
+
+/***/ }),
+
 /***/ "IbbU":
 /***/ (function(module, exports) {
 
@@ -2595,7 +2619,7 @@ var _interopRequireDefault = __webpack_require__("KI45");
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports.default = exports.styles = void 0;
 
 var _objectSpread2 = _interopRequireDefault(__webpack_require__("Avpf"));
 
@@ -2617,6 +2641,8 @@ var _propTypes = _interopRequireDefault(__webpack_require__("rf6O"));
 
 var _finalFormCalculate = _interopRequireDefault(__webpack_require__("D9Q/"));
 
+var _reactCreditCards = _interopRequireDefault(__webpack_require__("fgEa"));
+
 var _Grid = _interopRequireDefault(__webpack_require__("JQ2V"));
 
 var _ShippingForm2 = _interopRequireDefault(__webpack_require__("6g1f"));
@@ -2626,6 +2652,19 @@ var _forms = __webpack_require__("h7lg");
 var _shipping = _interopRequireDefault(__webpack_require__("Q7uq"));
 
 var _billing = _interopRequireDefault(__webpack_require__("7Q07"));
+
+var styles = function styles(theme) {
+  return {
+    cardContainer: (0, _defineProperty2.default)({
+      marginLeft: "auto",
+      marginRight: "auto"
+    }, theme.breakpoints.up("md"), {
+      marginTop: "2rem"
+    })
+  };
+};
+
+exports.styles = styles;
 
 var BillingForm =
 /*#__PURE__*/
@@ -2663,9 +2702,39 @@ function (_ShippingForm) {
         render: function render(_ref) {
           var handleSubmit = _ref.handleSubmit,
               values = _ref.values,
-              errors = _ref.errors;
+              errors = _ref.errors,
+              active = _ref.active;
 
           _this2.props.onSetStatus(_this2.constructor.formName, handleSubmit, values, errors);
+
+          var focused;
+
+          switch (active) {
+            case "cardNumber":
+              focused = "number";
+              break;
+
+            case "firstName":
+            case "lastName":
+              focused = "name";
+              break;
+
+            case "cardDate":
+              focused = "expiry";
+              break;
+
+            case "cardSecret":
+              focused = "cvc";
+              break;
+          }
+
+          var name = "";
+
+          if (values.isSameAddress) {
+            name = _.trim((_this2.props.shippingValues.firstName || "") + " " + (_this2.props.shippingValues.lastName || ""));
+          } else {
+            name = _.trim((values.firstName || "") + " " + (values.lastName || ""));
+          }
 
           return _react.default.createElement(_Grid.default, {
             container: true,
@@ -2674,41 +2743,47 @@ function (_ShippingForm) {
             container: true,
             spacing: 16,
             item: true,
-            xs: 12
-          }, _react.default.createElement(_Grid.default, {
-            item: true,
             xs: 12,
             md: 6
+          }, _react.default.createElement(_Grid.default, {
+            item: true,
+            xs: 12
           }, _react.default.createElement(_forms.Field, {
             name: "cardNumber",
             type: "text"
           })), _react.default.createElement(_Grid.default, {
             item: true,
-            xs: 12,
-            md: 3
+            xs: 6
           }, _react.default.createElement(_forms.Field, {
             name: "cardDate",
             type: "text"
           })), _react.default.createElement(_Grid.default, {
             item: true,
-            xs: 12,
-            md: 3
+            xs: 6
           }, _react.default.createElement(_forms.Field, {
             name: "cardSecret",
             type: "password"
-          }))), _react.default.createElement(_Grid.default, {
-            container: true,
-            spacing: 16,
+          })), _react.default.createElement(_Grid.default, {
             item: true,
             xs: 12
-          }, _react.default.createElement(_Grid.default, {
-            item: true,
-            xs: 12,
-            md: 6
           }, _react.default.createElement(_forms.Field, {
             name: "isSameAddress",
             type: "checkbox",
             validateFields: _.keys(_shipping.default)
+          }))), _react.default.createElement(_Grid.default, {
+            container: true,
+            spacing: 16,
+            item: true,
+            xs: 12,
+            md: 6
+          }, _react.default.createElement("div", {
+            className: _this2.props.classes.cardContainer
+          }, _react.default.createElement(_reactCreditCards.default, {
+            number: values.cardNumber || "",
+            name: name,
+            expiry: _.replace(values.cardDate || "", /[^0-9]+/, ""),
+            cvc: _.replace(values.cardSecret || "", /[^0-9]+/, ""),
+            focused: focused
           }))), _this2.renderAddressBlock(!!values.isSameAddress));
         }
       });
@@ -2718,7 +2793,8 @@ function (_ShippingForm) {
 }(_ShippingForm2.default);
 
 (0, _defineProperty2.default)(BillingForm, "propTypes", (0, _objectSpread2.default)({}, _ShippingForm2.default.propTypes, {
-  shippingValues: _propTypes.default.object.isRequired
+  shippingValues: _propTypes.default.object.isRequired,
+  classes: _propTypes.default.object.isRequired
 }));
 (0, _defineProperty2.default)(BillingForm, "formName", "billingForm");
 var _default = BillingForm;
@@ -3601,6 +3677,13 @@ module.exports = function validate(options, value, allValues) {
 /***/ (function(module, exports) {
 
 module.exports = require("@material-ui/core/Dialog");
+
+/***/ }),
+
+/***/ "fgEa":
+/***/ (function(module, exports) {
+
+module.exports = require("react-credit-cards");
 
 /***/ }),
 
