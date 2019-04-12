@@ -11,7 +11,7 @@ module.exports = {
   countryOptions: _.map(
     [{ iso2: "", name: "" }].concat(allCountries),
     item => ({
-      value: _.toUpper(item.iso2),
+      value: item.iso2,
       label: item.name
     })
   )

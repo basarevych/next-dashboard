@@ -79,6 +79,7 @@ class MyText extends React.PureComponent {
     let errors = null;
     if (
       this.props.meta.touched &&
+      !this.props.meta.active &&
       (this.props.meta.error || this.props.meta.submitError)
     ) {
       errors = [];

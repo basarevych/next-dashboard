@@ -48,7 +48,6 @@ module.exports = () => {
     "postcss-url": {
       url: copyAssets
     },
-    "css-mqpacker": {},
     "postcss-preset-env": {
       browsers: _.split(browsers, /[\r\n]+/),
       features: {

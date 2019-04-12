@@ -6,13 +6,9 @@
         "usedIds": {}
       },
       "chunks": {
-        "byName": {
-          "mini-css-extract-plugin": 0
-        },
+        "byName": {},
         "bySource": {},
-        "usedIds": [
-          0
-        ]
+        "usedIds": []
       }
     }
   ],
@@ -23,90 +19,19 @@
         "usedIds": {}
       },
       "chunks": {
-        "byName": {
-          "mini-css-extract-plugin": 0
-        },
+        "byName": {},
         "bySource": {},
-        "usedIds": [
-          0
-        ]
+        "usedIds": []
       }
     }
   ],
   "modules": {
-    "byIdentifier": {
-      "ignored node_modules/react-intl/lib ../locale-data/index.js": 0,
-      "multi app/app/lib/initApp.js node_modules/next/dist/client/next": 1,
-      "ignored node_modules/readable-stream/lib util": 2,
-      "ignored node_modules/readable-stream/lib/internal/streams util": 3,
-      "ignored node_modules/engine.io-client/lib/transports ws": 4,
-      "ignored node_modules/intl-messageformat ./lib/locales": 5,
-      "ignored node_modules/intl-relativeformat ./lib/locales": 6,
-      "css node_modules/css-loader/index.js??ref--5-1!node_modules/postcss-loader/src/index.js??ref--5-2!node_modules/react-virtualized/styles.css 0": 7,
-      "css node_modules/css-loader/index.js??ref--5-1!node_modules/postcss-loader/src/index.js??ref--5-2!node_modules/react-toastify/dist/ReactToastify.css 0": 8,
-      "ignored node_modules/intl ./locale-data/complete.js": 9
-    },
-    "usedIds": {
-      "0": 0,
-      "1": 1,
-      "2": 2,
-      "3": 3,
-      "4": 4,
-      "5": 5,
-      "6": 6,
-      "7": 7,
-      "8": 8,
-      "9": 9
-    }
+    "byIdentifier": {},
+    "usedIds": {}
   },
   "chunks": {
-    "byName": {
-      "commons": 0,
-      "static/runtime/webpack.js": 1,
-      "polyfills": 2,
-      "static/A7lGLm~MvSt5j~FkuyrE6/pages/_app.js": 3,
-      "static/A7lGLm~MvSt5j~FkuyrE6/pages/_error.js": 4,
-      "static/A7lGLm~MvSt5j~FkuyrE6/pages/auth/error.js": 5,
-      "static/A7lGLm~MvSt5j~FkuyrE6/pages/auth/profile.js": 6,
-      "static/A7lGLm~MvSt5j~FkuyrE6/pages/auth/verify.js": 7,
-      "static/A7lGLm~MvSt5j~FkuyrE6/pages/charts.js": 8,
-      "static/A7lGLm~MvSt5j~FkuyrE6/pages/dashboard.js": 9,
-      "static/A7lGLm~MvSt5j~FkuyrE6/pages/forms.js": 10,
-      "static/A7lGLm~MvSt5j~FkuyrE6/pages/icons.js": 11,
-      "static/A7lGLm~MvSt5j~FkuyrE6/pages/index.js": 12,
-      "static/A7lGLm~MvSt5j~FkuyrE6/pages/maps.js": 13,
-      "static/A7lGLm~MvSt5j~FkuyrE6/pages/notifications.js": 14,
-      "static/A7lGLm~MvSt5j~FkuyrE6/pages/tables.js": 15,
-      "static/A7lGLm~MvSt5j~FkuyrE6/pages/typography.js": 16,
-      "static/A7lGLm~MvSt5j~FkuyrE6/pages/users.js": 17,
-      "static/runtime/main.js": 18,
-      "styles": 19
-    },
-    "bySource": {
-      "0 node_modules/next/dist/build/webpack/loaders/next-babel-loader.js??ref--4!app/app/lib/initApp.js {\"line\":26,\"column\":4}": 2,
-      "0 node_modules/next/dist/build/webpack/loaders/next-babel-loader.js??ref--4!app/app/lib/initApp.js {\"line\":51,\"column\":6}": 2
-    },
-    "usedIds": [
-      0,
-      1,
-      10,
-      11,
-      12,
-      13,
-      14,
-      15,
-      16,
-      17,
-      18,
-      19,
-      2,
-      3,
-      4,
-      5,
-      6,
-      7,
-      8,
-      9
-    ]
+    "byName": {},
+    "bySource": {},
+    "usedIds": []
   }
 }

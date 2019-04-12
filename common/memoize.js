@@ -1,5 +1,4 @@
 module.exports = function memoize(fn) {
-  return fn;
   let lastArg;
   let lastResult;
   return (...args) => {

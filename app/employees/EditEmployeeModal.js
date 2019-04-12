@@ -245,7 +245,9 @@ class EditEmployeeModal extends React.Component {
         name: _.get(viewer, "employee.name", ""),
         dept: _.get(viewer, "employee.dept", ""),
         title: _.get(viewer, "employee.title", ""),
-        country: fromGlobalId(_.get(viewer, "employee.country.id", "")).id,
+        country: _.toLower(
+          fromGlobalId(_.get(viewer, "employee.country.id", "")).id
+        ),
         salary: _.get(viewer, "employee.salary", "").toString()
       }
     });

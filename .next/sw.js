@@ -11,11 +11,11 @@
  * See https://goo.gl/2aRDsh
  */
 
-importScripts("/_next/static/workbox-v4.1.1/workbox-sw.js");
-workbox.setConfig({modulePathPrefix: "/_next/static/workbox-v4.1.1"});
+importScripts("/_next/static/workbox-v4.2.0/workbox-sw.js");
+workbox.setConfig({modulePathPrefix: "/_next/static/workbox-v4.2.0"});
 
 importScripts(
-  "/_next/static/precache-manifest.50bdd2b2f7264193a06ba1c3d5b4190f.js"
+  "/_next/static/precache-manifest.a2e34aed4b20baa20a4f309f926c68db.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "next-dashboard"});
