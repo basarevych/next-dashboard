@@ -9,8 +9,11 @@ class ValidationError extends GraphQLError {
       this.details = _.reduce(
         _.keys(mongooseError.errors),
         (acc, cur) => {
-          if (acc[cur]) acc[cur].push(mongooseError.errors[cur].message);
-          else acc[cur] = [mongooseError.errors[cur].message];
+          let msg =
+            mongooseError.errors[cur].reason ||
+            mongooseError.errors[cur].message;
+          if (acc[cur]) acc[cur].push(msg);
+          else acc[cur] = [msg];
           return acc;
         },
         {}

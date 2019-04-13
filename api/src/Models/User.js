@@ -1,26 +1,18 @@
-const EventEmitter = require("events");
-const ValidationError = require("../Errors/ValidationError");
+const BaseModel = require("./BaseModel");
 const constants = require("../../../common/constants");
 const fields = require("../../../common/forms/createUser");
-const validate = require("../../../common/validate");
 
-class User extends EventEmitter {
+class User extends BaseModel {
   constructor(db, provider) {
     super();
 
+    this.fields = fields;
     this.roles = _.values(constants.roles);
     this.sortBy = ["email", "name"];
     this.sortDir = ["asc", "desc"];
 
     this.db = db;
     this.provider = provider;
-
-    const self = this;
-    const validateFactory = field => ({
-      validator: async function(value) {
-        return self.validate(field, value, this.toObject());
-      }
-    });
 
     this.schema = new this.db.mongoose.Schema({
       _id: {
@@ -31,49 +23,49 @@ class User extends EventEmitter {
         type: Date,
         default: Date.now,
         required: [true, "ERROR_FIELD_REQUIRED"],
-        validate: validateFactory("whenCreated")
+        validate: this.getValidator("whenCreated")
       },
       whenUpdated: {
         type: Date,
         default: Date.now,
         required: [true, "ERROR_FIELD_REQUIRED"],
-        validate: validateFactory("whenUpdated")
+        validate: this.getValidator("whenUpdated")
       },
       email: {
         type: String,
         required: [true, "ERROR_FIELD_REQUIRED"],
-        validate: validateFactory("email")
+        validate: this.getValidator("email")
       },
       emailToken: {
         type: String,
-        validate: validateFactory("emailToken")
+        validate: this.getValidator("emailToken")
       },
       isEmailVerified: {
         type: Boolean,
         default: false,
-        validate: validateFactory("isEmailVerified")
+        validate: this.getValidator("isEmailVerified")
       },
       name: {
         type: String,
-        validate: validateFactory("name")
+        validate: this.getValidator("name")
       },
       password: {
         type: String,
         required: [true, "ERROR_FIELD_REQUIRED"],
-        validate: validateFactory("password")
+        validate: this.getValidator("password")
       },
       roles: {
         type: [String],
         enum: this.roles,
         default: [],
         required: [true, "ERROR_FIELD_REQUIRED"],
-        validate: validateFactory("roles")
+        validate: this.getValidator("roles")
       },
       providers: {
         type: [this.provider.schema],
         default: [],
         required: [true, "ERROR_FIELD_REQUIRED"],
-        validate: validateFactory("providers")
+        validate: this.getValidator("providers")
       }
     });
 
@@ -85,33 +77,6 @@ class User extends EventEmitter {
       .set(function(id) {
         this.set("_id", this.db.ObjectId(id));
       });
-
-    this.schema.methods.validateField = async function({
-      field,
-      path,
-      value,
-      doThrow = true
-    }) {
-      if (!path) path = field;
-      if (!field) field = path;
-      let errors = {};
-      if (_.includes(this.schema.requiredPaths(), path) && !value) {
-        errors[field] = { message: "ERROR_FIELD_REQUIRED" };
-      } else {
-        const rules = fields[field];
-        if (rules && rules.validate) {
-          const fieldErrors = validate(rules.validate, value, this.toObject());
-          if (fieldErrors.length) {
-            errors[field] = {
-              message: fieldErrors.length === 1 ? fieldErrors[0] : fieldErrors
-            };
-          }
-        }
-      }
-      if (_.keys(errors).length && doThrow)
-        throw new ValidationError({ errors });
-      return errors || true;
-    };
 
     this.schema.pre("save", function() {
       this.whenUpdated = Date.now();
@@ -136,16 +101,6 @@ class User extends EventEmitter {
   static get $lifecycle() {
     return "singleton";
   }
-
-  async validate(field, value, allValues) {
-    let rules = fields[field];
-    if (!rules || !rules.validate) return true;
-    let errors = validate(rules.validate, value, allValues);
-    if (!errors.length) return true;
-    throw errors.length === 1 ? errors[0] : errors;
-  }
-
-  async init() {}
 }
 
 module.exports = User;

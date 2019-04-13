@@ -4,11 +4,12 @@ const EventEmitter = require("events");
 const constants = require("../../../common/constants");
 
 class AuthRepository extends EventEmitter {
-  constructor(auth, db, pubsub) {
+  constructor(auth, di, user, pubsub) {
     super();
 
     this.auth = auth;
-    this.db = db;
+    this.di = di;
+    this.user = user;
     this.pubsub = pubsub;
 
     this.chance = new Chance();
@@ -21,7 +22,7 @@ class AuthRepository extends EventEmitter {
 
   // eslint-disable-next-line lodash/prefer-constant
   static get $requires() {
-    return ["auth", "db", "pubsub"];
+    return ["auth", "di", "model.user", "pubsub"];
   }
 
   generateToken() {
@@ -61,12 +62,12 @@ class AuthRepository extends EventEmitter {
       let user;
       if (email && password) {
         // normal sign-in
-        user = await this.db.UserModel.findOne({ email });
+        user = await this.user.model.findOne({ email });
         if (user && !(await this.auth.checkPassword(password, user.password)))
           user = null;
       } else {
         // anonymous sign-in
-        user = await this.db.UserModel.findOne({
+        user = await this.user.model.findOne({
           roles: { $in: constants.roles.ANONYMOUS }
         });
       }
@@ -84,18 +85,27 @@ class AuthRepository extends EventEmitter {
   async signUp(context, { email, password }) {
     debug("signUp");
 
-    if (await this.db.UserModel.findOne({ email })) return { success: false };
+    if (await this.user.model.findOne({ email })) return { success: false };
 
     if (await context.getUser()) await this.auth.signOut(context);
 
-    let user = new this.db.UserModel({
+    let user = new this.user.model({
       email: email,
       emailToken: this.generateToken(),
       password: password && (await this.auth.encryptPassword(password))
     });
 
-    await user.validateField({ field: "password", value: password }); // before it is encrypted
     await user.validate();
+
+    const { validator } = this.user.getValidator("password");
+    try {
+      await validator.bind(user)(password); // before it is encrypted
+    } catch (error) {
+      throw this.di.get("error.validation", {
+        errors: { password: { message: error } }
+      });
+    }
+
     await user.save();
     this.pubsub.publish("userCreated", { userCreated: user });
 
@@ -143,12 +153,12 @@ class AuthRepository extends EventEmitter {
     return { success: true };
   }
 
-  async verifyEmail(context, args) {
+  async verifyEmail(context, { token }) {
     debug("verifyEmail");
 
-    if (!args.token) return { success: false };
+    if (!token) return { success: false };
 
-    let user = await this.db.UserModel.findOne({ emailToken: args.token });
+    let user = await this.user.model.findOne({ emailToken: token });
     if (!user || _.includes(user.roles, constants.roles.ANONYMOUS))
       return { success: false };
     if (user.isEmailVerified) return { success: false };
@@ -170,18 +180,18 @@ class AuthRepository extends EventEmitter {
     return { success: true };
   }
 
-  async unlinkProvider(context, args) {
+  async unlinkProvider(context, { provider }) {
     debug("unlinkProvider");
 
-    if (!args.provider) return { success: false };
+    if (!provider) return { success: false };
 
     let user = await context.getUser();
     if (!user || _.includes(user.roles, constants.roles.ANONYMOUS))
       return { success: false };
 
-    for (let provider of user.providers) {
-      if (_.lowerCase(provider.name) === _.lowerCase(args.provider)) {
-        provider.remove();
+    for (let item of user.providers) {
+      if (_.lowerCase(item.name) === _.lowerCase(provider)) {
+        item.remove();
         await user.validate();
         await user.save();
         context
@@ -194,24 +204,33 @@ class AuthRepository extends EventEmitter {
     return { success: false };
   }
 
-  async updateProfile(context, args) {
+  async updateProfile(context, { name, email, password }) {
     debug("updateProfile");
 
     let user = await context.getUser();
     if (!user || _.includes(user.roles, constants.roles.ANONYMOUS))
       return { success: false };
 
-    if (args.email !== user.email) {
-      user.email = args.email;
+    if (email !== user.email) {
+      user.email = email;
       user.isEmailVerified = false;
     }
-    user.name = args.name;
-    if (args.password) {
-      await user.validateField({ field: "password", value: args.password }); // before it is encrypted
-      user.password = await this.auth.encryptPassword(args.password);
-    }
+    user.name = name;
+    if (password) user.password = await this.auth.encryptPassword(password);
 
     await user.validate();
+
+    if (password) {
+      const { validator } = this.user.getValidator("password");
+      try {
+        await validator.bind(user)(password); // before it is encrypted
+      } catch (error) {
+        throw this.di.get("error.validation", {
+          errors: { password: { message: error } }
+        });
+      }
+    }
+
     await user.save();
     context.preparePages({ user, path: "/auth/profile" }).catch(console.error);
     return { success: true };
@@ -224,7 +243,7 @@ class AuthRepository extends EventEmitter {
     if (!user || _.includes(user.roles, constants.roles.ANONYMOUS))
       return { success: false };
 
-    await this.db.UserModel.findById(user.id).remove();
+    await this.user.model.findById(user.id).remove();
     await this.auth.signOut(context);
     return { success: true };
   }

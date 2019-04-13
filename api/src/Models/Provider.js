@@ -1,7 +1,6 @@
-const EventEmitter = require("events");
-const ValidationError = require("../Errors/ValidationError");
+const BaseModel = require("./BaseModel");
 
-class Provider extends EventEmitter {
+class Provider extends BaseModel {
   constructor(db) {
     super();
 
@@ -15,26 +14,32 @@ class Provider extends EventEmitter {
       whenCreated: {
         type: Date,
         default: Date.now,
-        required: [true, "ERROR_FIELD_REQUIRED"]
+        required: [true, "ERROR_FIELD_REQUIRED"],
+        validate: this.getValidator("whenCreated")
       },
       whenUpdated: {
         type: Date,
         default: Date.now,
-        required: [true, "ERROR_FIELD_REQUIRED"]
+        required: [true, "ERROR_FIELD_REQUIRED"],
+        validate: this.getValidator("whenUpdated")
       },
       name: {
         type: String,
-        required: [true, "ERROR_FIELD_REQUIRED"]
+        required: [true, "ERROR_FIELD_REQUIRED"],
+        validate: this.getValidator("name")
       },
       profile: {
         type: this.db.mongoose.Schema.Types.Mixed,
-        required: [true, "ERROR_FIELD_REQUIRED"]
+        required: [true, "ERROR_FIELD_REQUIRED"],
+        validate: this.getValidator("profile")
       },
       accessToken: {
-        type: String
+        type: String,
+        validate: this.getValidator("accessToken")
       },
       refreshToken: {
-        type: String
+        type: String,
+        validate: this.getValidator("refreshToken")
       }
     });
 
@@ -46,22 +51,6 @@ class Provider extends EventEmitter {
       .set(function(id) {
         this.set("_id", this.db.ObjectId(id));
       });
-
-    this.schema.methods.validateField = async function({
-      field,
-      path,
-      value,
-      doThrow = true
-    }) {
-      if (!path) path = field;
-      if (!field) field = path;
-      let errors = {};
-      if (_.includes(this.schema.requiredPaths(), path) && !value)
-        errors[field] = { message: "ERROR_FIELD_REQUIRED" };
-      if (_.keys(errors).length && doThrow)
-        throw new ValidationError({ errors });
-      return errors || true;
-    };
 
     this.schema.pre("save", function() {
       this.whenUpdated = Date.now();
@@ -84,8 +73,6 @@ class Provider extends EventEmitter {
   static get $lifecycle() {
     return "singleton";
   }
-
-  async init() {}
 }
 
 module.exports = Provider;

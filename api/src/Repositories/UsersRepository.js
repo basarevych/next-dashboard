@@ -127,8 +127,17 @@ class UsersRepository extends EventEmitter {
       roles
     });
 
-    await user.validateField({ field: "password", value: password }); // before it is encrypted
     await user.validate();
+
+    const { validator } = this.user.getValidator("password");
+    try {
+      await validator.bind(user)(password); // before it is encrypted
+    } catch (error) {
+      throw this.di.get("error.validation", {
+        errors: { password: { message: error } }
+      });
+    }
+
     await user.save();
     context.preparePages({ path: "/users" }).catch(console.error);
     this.pubsub.publish("userCreated", { userCreated: user });
@@ -146,10 +155,7 @@ class UsersRepository extends EventEmitter {
 
     user.email = email;
     user.name = name;
-    if (password) {
-      await user.validateField({ field: "password", value: password }); // before it is encrypted
-      user.password = await this.auth.encryptPassword(password);
-    }
+    if (password) user.password = await this.auth.encryptPassword(password);
 
     let isAnonymous = _.includes(user.roles, constants.roles.ANONYMOUS);
     user.roles = roles;
@@ -157,6 +163,18 @@ class UsersRepository extends EventEmitter {
       user.roles.push(constants.roles.ANONYMOUS);
 
     await user.validate();
+
+    if (password) {
+      const { validator } = this.user.getValidator("password");
+      try {
+        await validator.bind(user)(password); // before it is encrypted
+      } catch (error) {
+        throw this.di.get("error.validation", {
+          errors: { password: { message: error } }
+        });
+      }
+    }
+
     await user.save();
     context.preparePages({ path: "/users" }).catch(console.error);
     this.pubsub.publish("userUpdated", { userUpdated: user });

@@ -18,7 +18,7 @@ https://dashboard.daemon-notes.com
 
 - Material UI with custom dark and light themes
 
-- Redux Form, Victory Chart, React Intl, React Virtualized, etc.
+- Final Form, Victory Chart, React Intl, React Virtualized, etc.
 
 - Email/password or Twitter/Google/Facebook using Passport.js
 

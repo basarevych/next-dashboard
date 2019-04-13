@@ -1,13 +1,12 @@
-const EventEmitter = require("events");
-const ValidationError = require("../Errors/ValidationError");
+const BaseModel = require("./BaseModel");
 const fields = require("../../../common/forms/employee");
-const validate = require("../../../common/validate");
 const constants = require("../../../common/constants");
 
-class Employee extends EventEmitter {
+class Employee extends BaseModel {
   constructor(db) {
     super();
 
+    this.fields = fields;
     this.depts = _.values(constants.depts);
     this.sortBy = [
       "uid",
@@ -22,13 +21,6 @@ class Employee extends EventEmitter {
 
     this.db = db;
 
-    const self = this;
-    const validateFactory = field => ({
-      validator: async function(value) {
-        return self.validate(field, value, this.toObject());
-      }
-    });
-
     this.schema = new this.db.mongoose.Schema({
       _id: {
         type: this.db.mongoose.Schema.Types.ObjectId,
@@ -38,56 +30,56 @@ class Employee extends EventEmitter {
         type: Date,
         default: Date.now,
         required: [true, "ERROR_FIELD_REQUIRED"],
-        validate: validateFactory("whenCreated")
+        validate: this.getValidator("whenCreated")
       },
       whenUpdated: {
         type: Date,
         default: Date.now,
         required: [true, "ERROR_FIELD_REQUIRED"],
-        validate: validateFactory("whenUpdated")
+        validate: this.getValidator("whenUpdated")
       },
       uid: {
         type: String,
         required: [true, "ERROR_FIELD_REQUIRED"],
-        validate: validateFactory("uid")
+        validate: this.getValidator("uid")
       },
       checked: {
         type: Boolean,
         required: [true, "ERROR_FIELD_REQUIRED"],
-        validate: validateFactory("checked")
+        validate: this.getValidator("checked")
       },
       name: {
         type: String,
         required: [true, "ERROR_FIELD_REQUIRED"],
-        validate: validateFactory("name")
+        validate: this.getValidator("name")
       },
       dept: {
         type: String,
         enum: this.depts,
         required: [true, "ERROR_FIELD_REQUIRED"],
-        validate: validateFactory("dept")
+        validate: this.getValidator("dept")
       },
       title: {
         type: String,
         required: [true, "ERROR_FIELD_REQUIRED"],
-        validate: validateFactory("title")
+        validate: this.getValidator("title")
       },
       country: {
         id: {
           type: String,
           required: [true, "ERROR_FIELD_REQUIRED"],
-          validate: validateFactory("countryId")
+          validate: this.getValidator("countryId")
         },
         name: {
           type: String,
           required: [true, "ERROR_FIELD_REQUIRED"],
-          validate: validateFactory("countryName")
+          validate: this.getValidator("countryName")
         }
       },
       salary: {
         type: Number,
         required: [true, "ERROR_FIELD_REQUIRED"],
-        validate: validateFactory("salary")
+        validate: this.getValidator("salary")
       }
     });
 
@@ -99,33 +91,6 @@ class Employee extends EventEmitter {
       .set(function(id) {
         this.set("_id", this.db.ObjectId(id));
       });
-
-    this.schema.methods.validateField = async function({
-      field,
-      path,
-      value,
-      doThrow = true
-    }) {
-      if (!path) path = field;
-      if (!field) field = path;
-      let errors = {};
-      if (_.includes(this.schema.requiredPaths(), path) && !value) {
-        errors[field] = { message: "ERROR_FIELD_REQUIRED" };
-      } else {
-        const rules = fields[field];
-        if (rules && rules.validate) {
-          const fieldErrors = validate(rules.validate, value, this.toObject());
-          if (fieldErrors.length) {
-            errors[field] = {
-              message: fieldErrors.length === 1 ? fieldErrors[0] : fieldErrors
-            };
-          }
-        }
-      }
-      if (_.keys(errors).length && doThrow)
-        throw new ValidationError({ errors });
-      return errors || true;
-    };
 
     this.schema.pre("save", function() {
       this.whenUpdated = Date.now();
@@ -148,16 +113,6 @@ class Employee extends EventEmitter {
   static get $lifecycle() {
     return "singleton";
   }
-
-  async validate(field, value, allValues) {
-    let rules = fields[field];
-    if (!rules || !rules.validate) return true;
-    let errors = validate(rules.validate, value, allValues);
-    if (!errors.length) return true;
-    throw errors.length === 1 ? errors[0] : errors;
-  }
-
-  async init() {}
 }
 
 module.exports = Employee;
