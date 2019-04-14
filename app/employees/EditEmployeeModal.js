@@ -56,6 +56,7 @@ class EditEmployeeModal extends React.Component {
   static propTypes = {
     intl: intlShape.isRequired,
     classes: PropTypes.object.isRequired,
+    isOpen: PropTypes.bool.isRequired,
     currentId: PropTypes.string,
     onCancel: PropTypes.func.isRequired,
     onCreate: PropTypes.func.isRequired,
@@ -71,6 +72,11 @@ class EditEmployeeModal extends React.Component {
     };
 
     this.submit = this.submit.bind(this);
+  }
+
+  componentDidUpdate(prevProps) {
+    if (!this.props.isOpen && prevProps.isOpen)
+      this.setState({ initialValues: null });
   }
 
   async submit({ uid, checked, name, dept, title, country, salary }) {
@@ -254,6 +260,7 @@ class EditEmployeeModal extends React.Component {
   }
 
   render() {
+    if (!this.props.isOpen) return null;
     if (!this.props.currentId) return this.renderForm();
 
     return (

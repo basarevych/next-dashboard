@@ -97,7 +97,6 @@ class EmployeeList extends React.Component {
     relay: PropTypes.object.isRequired,
     viewer: PropTypes.object.isRequired,
     selected: PropTypes.array.isRequired,
-    isEditing: PropTypes.bool.isRequired,
     getToken: PropTypes.func.isRequired,
     onCreate: PropTypes.func.isRequired,
     onEdit: PropTypes.func.isRequired,
@@ -489,7 +488,7 @@ class EmployeeList extends React.Component {
 
           {this.renderTable()}
 
-          {this.props.isEditing && <EditEmployeeModal />}
+          <EditEmployeeModal />
 
           <ConfirmModal
             isOpen={this.state.isConfirmOpen}

@@ -43,6 +43,7 @@ export const query = graphql`
 class EditUserModal extends Form {
   static propTypes = {
     classes: PropTypes.object.isRequired,
+    isOpen: PropTypes.bool.isRequired,
     currentId: PropTypes.string,
     onCancel: PropTypes.func.isRequired,
     onCreate: PropTypes.func.isRequired,
@@ -57,6 +58,11 @@ class EditUserModal extends Form {
     };
 
     this.submit = this.submit.bind(this);
+  }
+
+  componentDidUpdate(prevProps) {
+    if (!this.props.isOpen && prevProps.isOpen)
+      this.setState({ initialValues: null });
   }
 
   async submit({ name, email, password, isAdmin }) {
@@ -179,6 +185,7 @@ class EditUserModal extends Form {
   }
 
   render() {
+    if (!this.props.isOpen) return null;
     if (!this.props.currentId) return this.renderForm();
 
     return (

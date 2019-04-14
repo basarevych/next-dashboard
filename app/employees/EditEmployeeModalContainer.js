@@ -6,6 +6,7 @@ import EditEmployeeModalComponent, { styles } from "./EditEmployeeModal";
 
 const mapStateToProps = state => {
   return {
+    isOpen: employeesSelectors.isEditModalOpen(state),
     currentId: employeesSelectors.getEditModalEmployeeId(state)
   };
 };

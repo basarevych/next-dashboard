@@ -5,6 +5,7 @@ import EditUserModalComponent, { styles } from "./EditUserModal";
 
 const mapStateToProps = state => {
   return {
+    isOpen: usersSelectors.isEditModalOpen(state),
     currentId: usersSelectors.getEditModalUserId(state)
   };
 };

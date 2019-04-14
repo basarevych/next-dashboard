@@ -13,7 +13,6 @@ import EmployeeListComponent, {
 
 const mapStateToProps = state => {
   return {
-    isEditing: employeesSelectors.isEditModalOpen(state),
     selected: employeesSelectors.getSelected(state)
   };
 };

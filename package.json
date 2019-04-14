@@ -78,7 +78,6 @@
     "react-virtualized": "~9.21.0",
     "redux": "~4.0.1",
     "redux-devtools-extension": "~2.13.8",
-    "redux-form": "~8.2.0",
     "redux-immutable": "~4.0.0",
     "redux-thunk": "~2.3.0",
     "relay-compiler": "~3.0.0",

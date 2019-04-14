@@ -3148,6 +3148,13 @@ function (_React$Component) {
   }
 
   (0, _createClass2.default)(EditEmployeeModal, [{
+    key: "componentDidUpdate",
+    value: function componentDidUpdate(prevProps) {
+      if (!this.props.isOpen && prevProps.isOpen) this.setState({
+        initialValues: null
+      });
+    }
+  }, {
     key: "submit",
     value: function () {
       var _submit = (0, _asyncToGenerator2.default)(
@@ -3386,6 +3393,7 @@ function (_React$Component) {
     value: function render() {
       var _this3 = this;
 
+      if (!this.props.isOpen) return null;
       if (!this.props.currentId) return this.renderForm();
       return _react.default.createElement(_Relay.NextQueryRenderer, {
         query: query,
@@ -6068,7 +6076,6 @@ var _EmployeeList = _interopRequireWildcard(__webpack_require__("e1Aj"));
 
 var mapStateToProps = function mapStateToProps(state) {
   return {
-    isEditing: _state2.employeesSelectors.isEditModalOpen(state),
     selected: _state2.employeesSelectors.getSelected(state)
   };
 };
@@ -7941,7 +7948,7 @@ function (_React$Component) {
         onClick: this.handleDeleteAction
       }, _react.default.createElement(_reactIntl.FormattedMessage, {
         id: "EMPLOYEES_DELETE_BUTTON"
-      }))), this.renderTable(), this.props.isEditing && _react.default.createElement(_EditEmployeeModalContainer.default, null), _react.default.createElement(_ConfirmModalContainer.default, {
+      }))), this.renderTable(), _react.default.createElement(_EditEmployeeModalContainer.default, null), _react.default.createElement(_ConfirmModalContainer.default, {
         isOpen: this.state.isConfirmOpen,
         title: "DELETE_EMPLOYEE_TITLE",
         text: "DELETE_EMPLOYEE_TEXT",
@@ -8031,6 +8038,7 @@ var _EditEmployeeModal = _interopRequireWildcard(__webpack_require__("Bsfg"));
 
 var mapStateToProps = function mapStateToProps(state) {
   return {
+    isOpen: _state.employeesSelectors.isEditModalOpen(state),
     currentId: _state.employeesSelectors.getEditModalEmployeeId(state)
   };
 };

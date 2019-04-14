@@ -149,12 +149,14 @@ class AppAuthModal extends React.Component {
   }
 
   render() {
+    if (!this.props.isOpen) return null;
+
     return (
       <Form
         fields={fields}
         onSubmit={this.submit}
         render={({ submitting, submitError, handleSubmit }) => (
-          <Dialog maxWidth="sm" open={this.props.isOpen} onClose={_.noop}>
+          <Dialog maxWidth="sm" open onClose={_.noop}>
             <DialogTitle>
               <FormattedMessage id="APP_AUTH_TITLE" />
             </DialogTitle>

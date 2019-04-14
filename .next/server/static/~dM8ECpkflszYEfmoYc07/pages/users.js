@@ -1247,6 +1247,13 @@ function (_Form) {
   }
 
   (0, _createClass2.default)(EditUserModal, [{
+    key: "componentDidUpdate",
+    value: function componentDidUpdate(prevProps) {
+      if (!this.props.isOpen && prevProps.isOpen) this.setState({
+        initialValues: null
+      });
+    }
+  }, {
     key: "submit",
     value: function () {
       var _submit = (0, _asyncToGenerator2.default)(
@@ -1431,6 +1438,7 @@ function (_Form) {
     value: function render() {
       var _this3 = this;
 
+      if (!this.props.isOpen) return null;
       if (!this.props.currentId) return this.renderForm();
       return _react.default.createElement(_Relay.NextQueryRenderer, {
         query: query,
@@ -1454,6 +1462,7 @@ function (_Form) {
 
 (0, _defineProperty2.default)(EditUserModal, "propTypes", {
   classes: _propTypes.default.object.isRequired,
+  isOpen: _propTypes.default.bool.isRequired,
   currentId: _propTypes.default.string,
   onCancel: _propTypes.default.func.isRequired,
   onCreate: _propTypes.default.func.isRequired,
@@ -4625,6 +4634,7 @@ var _EditUserModal = _interopRequireWildcard(__webpack_require__("1SWC"));
 
 var mapStateToProps = function mapStateToProps(state) {
   return {
+    isOpen: _state.usersSelectors.isEditModalOpen(state),
     currentId: _state.usersSelectors.getEditModalUserId(state)
   };
 };
@@ -6120,7 +6130,6 @@ var _UserList = _interopRequireWildcard(__webpack_require__("i1Ni"));
 
 var mapStateToProps = function mapStateToProps(state) {
   return {
-    isEditing: _state2.usersSelectors.isEditModalOpen(state),
     selected: _state2.usersSelectors.getSelected(state)
   };
 };
@@ -8592,7 +8601,7 @@ function (_React$Component) {
         onClick: this.handleDeleteAction
       }, _react.default.createElement(_reactIntl.FormattedMessage, {
         id: "USERS_DELETE_BUTTON"
-      }))), this.renderTable(), this.props.isEditing && _react.default.createElement(_EditUserModalContainer.default, null), _react.default.createElement(_ConfirmModalContainer.default, {
+      }))), this.renderTable(), _react.default.createElement(_EditUserModalContainer.default, null), _react.default.createElement(_ConfirmModalContainer.default, {
         isOpen: this.state.isConfirmOpen,
         title: "DELETE_USER_TITLE",
         text: "DELETE_USER_TEXT",

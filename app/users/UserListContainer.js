@@ -13,7 +13,6 @@ import UserListComponent, {
 
 const mapStateToProps = state => {
   return {
-    isEditing: usersSelectors.isEditModalOpen(state),
     selected: usersSelectors.getSelected(state)
   };
 };
