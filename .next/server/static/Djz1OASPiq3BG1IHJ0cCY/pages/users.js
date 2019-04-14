@@ -1,7 +1,7 @@
 module.exports =
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
-/******/ 	var installedModules = require('../../../../ssr-module-cache.js');
+/******/ 	var installedModules = require('../../../ssr-module-cache.js');
 /******/
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
@@ -88,7 +88,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "a223");
+/******/ 	return __webpack_require__(__webpack_require__.s = "1eb6");
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -890,6 +890,590 @@ module.exports = require("@material-ui/core/List");
 
 /***/ }),
 
+/***/ "0Yqw":
+/***/ (function(module, exports) {
+
+module.exports = require("relay-query-lookup-renderer");
+
+/***/ }),
+
+/***/ "1Pmw":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(_) {
+
+var _interopRequireWildcard = __webpack_require__("5Uuq");
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.remove = exports.edit = exports.create = exports.editFirstSelected = exports.deselectAll = exports.selectAll = exports.setSelected = exports.hideEditModal = exports.showEditModal = void 0;
+
+var _regenerator = _interopRequireDefault(__webpack_require__("ln6h"));
+
+var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__("+oT+"));
+
+var actions = _interopRequireWildcard(__webpack_require__("fcv4"));
+
+var selectors = _interopRequireWildcard(__webpack_require__("smpn"));
+
+var _constants = _interopRequireDefault(__webpack_require__("o4p3"));
+
+var _getFormErrors = _interopRequireDefault(__webpack_require__("EUet"));
+
+var _CreateUser = _interopRequireDefault(__webpack_require__("2e9F"));
+
+var _EditUser = _interopRequireDefault(__webpack_require__("8hF4"));
+
+var _DeleteUser = _interopRequireDefault(__webpack_require__("faI2"));
+
+var showEditModal = actions.showEditModal;
+exports.showEditModal = showEditModal;
+var hideEditModal = actions.hideEditModal;
+exports.hideEditModal = hideEditModal;
+var setSelected = actions.setSelected;
+exports.setSelected = setSelected;
+var selectAll = actions.selectAll;
+exports.selectAll = selectAll;
+var deselectAll = actions.deselectAll;
+exports.deselectAll = deselectAll;
+
+var editFirstSelected = function editFirstSelected() {
+  return (
+    /*#__PURE__*/
+    function () {
+      var _ref = (0, _asyncToGenerator2.default)(
+      /*#__PURE__*/
+      _regenerator.default.mark(function _callee(dispatch, getState) {
+        var selected;
+        return _regenerator.default.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                selected = selectors.getSelected(getState());
+
+                if (!selected.length) {
+                  _context.next = 3;
+                  break;
+                }
+
+                return _context.abrupt("return", dispatch(actions.showEditModal({
+                  userId: selected[0]
+                })));
+
+              case 3:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }));
+
+      return function (_x, _x2) {
+        return _ref.apply(this, arguments);
+      };
+    }()
+  );
+};
+
+exports.editFirstSelected = editFirstSelected;
+
+var create = function create(_ref2) {
+  var name = _ref2.name,
+      email = _ref2.email,
+      password = _ref2.password,
+      isAdmin = _ref2.isAdmin;
+  return (
+    /*#__PURE__*/
+    function () {
+      var _ref3 = (0, _asyncToGenerator2.default)(
+      /*#__PURE__*/
+      _regenerator.default.mark(function _callee2(dispatch, getState, di) {
+        var data;
+        return _regenerator.default.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.next = 2;
+                return (0, _CreateUser.default)(di, {
+                  name: name,
+                  email: email,
+                  password: password,
+                  roles: _.compact([isAdmin && _constants.default.roles.ADMIN])
+                });
+
+              case 2:
+                data = _context2.sent;
+
+                if (!_.get(data, "data.createUser.user.id", null)) {
+                  _context2.next = 7;
+                  break;
+                }
+
+                _context2.next = 6;
+                return dispatch(actions.hideEditModal());
+
+              case 6:
+                return _context2.abrupt("return", true);
+
+              case 7:
+                return _context2.abrupt("return", (0, _getFormErrors.default)(data));
+
+              case 8:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2);
+      }));
+
+      return function (_x3, _x4, _x5) {
+        return _ref3.apply(this, arguments);
+      };
+    }()
+  );
+};
+
+exports.create = create;
+
+var edit = function edit(_ref4) {
+  var id = _ref4.id,
+      name = _ref4.name,
+      email = _ref4.email,
+      password = _ref4.password,
+      isAdmin = _ref4.isAdmin;
+  return (
+    /*#__PURE__*/
+    function () {
+      var _ref5 = (0, _asyncToGenerator2.default)(
+      /*#__PURE__*/
+      _regenerator.default.mark(function _callee3(dispatch, getState, di) {
+        var data;
+        return _regenerator.default.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                _context3.next = 2;
+                return (0, _EditUser.default)(di, {
+                  id: id,
+                  name: name,
+                  email: email,
+                  password: password,
+                  roles: _.compact([isAdmin && _constants.default.roles.ADMIN])
+                });
+
+              case 2:
+                data = _context3.sent;
+
+                if (!_.get(data, "data.editUser.user.id", null)) {
+                  _context3.next = 7;
+                  break;
+                }
+
+                _context3.next = 6;
+                return dispatch(actions.hideEditModal());
+
+              case 6:
+                return _context3.abrupt("return", true);
+
+              case 7:
+                return _context3.abrupt("return", (0, _getFormErrors.default)(data));
+
+              case 8:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3);
+      }));
+
+      return function (_x6, _x7, _x8) {
+        return _ref5.apply(this, arguments);
+      };
+    }()
+  );
+};
+
+exports.edit = edit;
+
+var remove = function remove(_ref6) {
+  var id = _ref6.id;
+  return (
+    /*#__PURE__*/
+    function () {
+      var _ref7 = (0, _asyncToGenerator2.default)(
+      /*#__PURE__*/
+      _regenerator.default.mark(function _callee4(dispatch, getState, di) {
+        var data;
+        return _regenerator.default.wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                _context4.next = 2;
+                return (0, _DeleteUser.default)(di, {
+                  id: id
+                });
+
+              case 2:
+                data = _context4.sent;
+                return _context4.abrupt("return", !!_.get(data, "data.deleteUser.user.id", null));
+
+              case 4:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4);
+      }));
+
+      return function (_x9, _x10, _x11) {
+        return _ref7.apply(this, arguments);
+      };
+    }()
+  );
+};
+
+exports.remove = remove;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("YLtl")))
+
+/***/ }),
+
+/***/ "1SWC":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(_) {
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = exports.query = exports.styles = void 0;
+
+var _promise = _interopRequireDefault(__webpack_require__("eVuF"));
+
+var _regenerator = _interopRequireDefault(__webpack_require__("ln6h"));
+
+var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__("+oT+"));
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
+
+var _assertThisInitialized2 = _interopRequireDefault(__webpack_require__("K47E"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
+
+var _defineProperty2 = _interopRequireDefault(__webpack_require__("xHqa"));
+
+var _react = _interopRequireDefault(__webpack_require__("cDcd"));
+
+var _propTypes = _interopRequireDefault(__webpack_require__("rf6O"));
+
+var _reactIntl = __webpack_require__("k004");
+
+var _reactRelay = __webpack_require__("iuEU");
+
+var _Dialog = _interopRequireDefault(__webpack_require__("fEgT"));
+
+var _DialogActions = _interopRequireDefault(__webpack_require__("1gBk"));
+
+var _DialogContent = _interopRequireDefault(__webpack_require__("iTUb"));
+
+var _DialogContentText = _interopRequireDefault(__webpack_require__("MbIc"));
+
+var _DialogTitle = _interopRequireDefault(__webpack_require__("0Jp5"));
+
+var _Grid = _interopRequireDefault(__webpack_require__("JQ2V"));
+
+var _Button = _interopRequireDefault(__webpack_require__("Wh1t"));
+
+var _red = _interopRequireDefault(__webpack_require__("RpH3"));
+
+var _Relay = __webpack_require__("JyB7");
+
+var _forms = __webpack_require__("h7lg");
+
+var _constants = _interopRequireDefault(__webpack_require__("o4p3"));
+
+var _editUser = _interopRequireDefault(__webpack_require__("EffS"));
+
+var _createUser = _interopRequireDefault(__webpack_require__("NWIk"));
+
+var styles = function styles() {
+  return {
+    error: {
+      color: _red.default[500]
+    },
+    actions: {
+      paddingLeft: "1rem",
+      paddingRight: "1rem",
+      paddingBottom: "1rem"
+    }
+  };
+};
+
+exports.styles = styles;
+
+var query = function query() {
+  return __webpack_require__("z+c5");
+};
+
+exports.query = query;
+
+var EditUserModal =
+/*#__PURE__*/
+function (_Form) {
+  (0, _inherits2.default)(EditUserModal, _Form);
+
+  function EditUserModal(props) {
+    var _this;
+
+    (0, _classCallCheck2.default)(this, EditUserModal);
+    _this = (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(EditUserModal).call(this, props));
+    _this.state = {
+      initialValues: null
+    };
+    _this.submit = _this.submit.bind((0, _assertThisInitialized2.default)(_this));
+    return _this;
+  }
+
+  (0, _createClass2.default)(EditUserModal, [{
+    key: "componentDidUpdate",
+    value: function componentDidUpdate(prevProps) {
+      if (!this.props.isOpen && prevProps.isOpen) this.setState({
+        initialValues: null
+      });
+    }
+  }, {
+    key: "submit",
+    value: function () {
+      var _submit = (0, _asyncToGenerator2.default)(
+      /*#__PURE__*/
+      _regenerator.default.mark(function _callee(_ref) {
+        var name, email, password, isAdmin, result;
+        return _regenerator.default.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                name = _ref.name, email = _ref.email, password = _ref.password, isAdmin = _ref.isAdmin;
+
+                if (!this.props.currentId) {
+                  _context.next = 7;
+                  break;
+                }
+
+                _context.next = 4;
+                return this.props.onEdit(this.props.currentId, name || null, email, password, isAdmin);
+
+              case 4:
+                result = _context.sent;
+                _context.next = 10;
+                break;
+
+              case 7:
+                _context.next = 9;
+                return this.props.onCreate(name || null, email, password, isAdmin);
+
+              case 9:
+                result = _context.sent;
+
+              case 10:
+                return _context.abrupt("return", result === true ? {} : result);
+
+              case 11:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function submit(_x) {
+        return _submit.apply(this, arguments);
+      }
+
+      return submit;
+    }()
+  }, {
+    key: "renderForm",
+    value: function renderForm() {
+      var _this2 = this;
+
+      return _react.default.createElement(_forms.Form, {
+        fields: this.props.currentId ? _editUser.default : _createUser.default,
+        initialValues: this.state.initialValues,
+        onSubmit: this.submit,
+        render: function render(_ref2) {
+          var submitting = _ref2.submitting,
+              submitError = _ref2.submitError,
+              handleSubmit = _ref2.handleSubmit;
+          return _react.default.createElement(_Dialog.default, {
+            maxWidth: "xs",
+            classes: {
+              paper: _this2.props.classes.paper
+            },
+            open: true,
+            onClose: _this2.props.onCancel
+          }, _react.default.createElement(_DialogTitle.default, null, _react.default.createElement(_reactIntl.FormattedMessage, {
+            id: _this2.props.currentId ? "EDIT_USER_TITLE_EDIT" : "EDIT_USER_TITLE_CREATE"
+          })), !!submitError && _react.default.createElement(_DialogContent.default, null, _.map(_.isArray(submitError) ? submitError : [submitError], function (error, index) {
+            return _react.default.createElement(_DialogContentText.default, {
+              key: "error-".concat(index),
+              classes: {
+                root: _this2.props.classes.error
+              }
+            }, _.isArray(error) ? _react.default.createElement(_reactIntl.FormattedMessage, {
+              id: error[0],
+              values: error[1]
+            }) : _react.default.createElement(_reactIntl.FormattedMessage, {
+              id: error
+            }));
+          })), _react.default.createElement(_DialogContent.default, null, _react.default.createElement(_Grid.default, {
+            container: true,
+            spacing: 16
+          }, _react.default.createElement(_Grid.default, {
+            item: true,
+            xs: 12
+          }, _react.default.createElement(_forms.Field, {
+            name: "name",
+            type: "text"
+          })), _react.default.createElement(_Grid.default, {
+            item: true,
+            xs: 12
+          }, _react.default.createElement(_forms.Field, {
+            name: "email",
+            type: "text"
+          })), _react.default.createElement(_Grid.default, {
+            item: true,
+            xs: 12
+          }, _react.default.createElement(_forms.Field, {
+            name: "password",
+            type: "password"
+          })), _react.default.createElement(_Grid.default, {
+            item: true,
+            xs: 12
+          }, _react.default.createElement(_forms.Field, {
+            name: "isAdmin",
+            type: "checkbox"
+          })))), _react.default.createElement(_DialogActions.default, {
+            classes: {
+              root: _this2.props.classes.actions
+            }
+          }, _react.default.createElement(_Button.default, {
+            variant: "contained",
+            color: "primary",
+            disabled: submitting,
+            onClick: _this2.props.onCancel
+          }, _react.default.createElement(_reactIntl.FormattedMessage, {
+            id: "EDIT_USER_CANCEL"
+          })), _react.default.createElement(_Button.default, {
+            variant: "contained",
+            color: "secondary",
+            disabled: submitting,
+            onClick: handleSubmit
+          }, _react.default.createElement(_reactIntl.FormattedMessage, {
+            id: "EDIT_USER_SUBMIT"
+          }))));
+        }
+      });
+    }
+  }, {
+    key: "loadData",
+    value: function () {
+      var _loadData = (0, _asyncToGenerator2.default)(
+      /*#__PURE__*/
+      _regenerator.default.mark(function _callee2(viewer) {
+        return _regenerator.default.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.next = 2;
+                return new _promise.default(function (resolve) {
+                  return setTimeout(resolve);
+                });
+
+              case 2:
+                if (!this.state.initialValues) {
+                  _context2.next = 4;
+                  break;
+                }
+
+                return _context2.abrupt("return");
+
+              case 4:
+                this.setState({
+                  initialValues: {
+                    name: _.get(viewer, "user.name", ""),
+                    email: _.get(viewer, "user.email", ""),
+                    password: "",
+                    isAdmin: _.includes(_.get(viewer, "user.roles", []), _constants.default.roles.ADMIN)
+                  }
+                });
+
+              case 5:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this);
+      }));
+
+      function loadData(_x2) {
+        return _loadData.apply(this, arguments);
+      }
+
+      return loadData;
+    }()
+  }, {
+    key: "render",
+    value: function render() {
+      var _this3 = this;
+
+      if (!this.props.isOpen) return null;
+      if (!this.props.currentId) return this.renderForm();
+      return _react.default.createElement(_Relay.NextQueryRenderer, {
+        query: query,
+        variables: {
+          currentId: this.props.currentId
+        },
+        render: function render(_ref3) {
+          var error = _ref3.error,
+              props = _ref3.props;
+          if (error || !props) return null;
+
+          _this3.loadData(props.viewer);
+
+          return _this3.renderForm();
+        }
+      });
+    }
+  }]);
+  return EditUserModal;
+}(_forms.Form);
+
+(0, _defineProperty2.default)(EditUserModal, "propTypes", {
+  classes: _propTypes.default.object.isRequired,
+  isOpen: _propTypes.default.bool.isRequired,
+  currentId: _propTypes.default.string,
+  onCancel: _propTypes.default.func.isRequired,
+  onCreate: _propTypes.default.func.isRequired,
+  onEdit: _propTypes.default.func.isRequired
+});
+var _default = EditUserModal;
+exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("YLtl")))
+
+/***/ }),
+
 /***/ "1eZf":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -955,6 +1539,14 @@ function () {
 }();
 
 exports.default = _default;
+
+/***/ }),
+
+/***/ "1eb6":
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__("NhoZ");
+
 
 /***/ }),
 
@@ -1078,659 +1670,78 @@ module.exports = node;
 
 /***/ }),
 
-/***/ "2Ro0":
+/***/ "2e9F":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(_) {
+
 
 var _interopRequireDefault = __webpack_require__("KI45");
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = exports.styles = void 0;
+exports.default = void 0;
 
 var _regenerator = _interopRequireDefault(__webpack_require__("ln6h"));
 
+var _promise = _interopRequireDefault(__webpack_require__("eVuF"));
+
 var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__("+oT+"));
 
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
+var _reactRelay = __webpack_require__("iuEU");
 
-var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
-
-var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
-
-var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
-
-var _assertThisInitialized2 = _interopRequireDefault(__webpack_require__("K47E"));
-
-var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
-
-var _react = _interopRequireDefault(__webpack_require__("cDcd"));
-
-var _router = _interopRequireDefault(__webpack_require__("4Q3z"));
-
-var _reactIntl = __webpack_require__("k004");
-
-var _Paper = _interopRequireDefault(__webpack_require__("qt1I"));
-
-var _Grow = _interopRequireDefault(__webpack_require__("mf1M"));
-
-var _Hidden = _interopRequireDefault(__webpack_require__("Y8uC"));
-
-var _Typography = _interopRequireDefault(__webpack_require__("UVoM"));
-
-var _Grid = _interopRequireDefault(__webpack_require__("JQ2V"));
-
-var _Button = _interopRequireDefault(__webpack_require__("Wh1t"));
-
-var _red = _interopRequireDefault(__webpack_require__("RpH3"));
-
-var _forms = __webpack_require__("h7lg");
-
-var _profile = _interopRequireDefault(__webpack_require__("KinM"));
-
-var _isRouteAllowed = _interopRequireDefault(__webpack_require__("jRAA"));
-
-var _ConfirmModalContainer = _interopRequireDefault(__webpack_require__("+fmV"));
-
-var _constants = _interopRequireDefault(__webpack_require__("o4p3"));
-
-var _facebook = _interopRequireDefault(__webpack_require__("MmNR"));
-
-var _google = _interopRequireDefault(__webpack_require__("yh8l"));
-
-var _twitter = _interopRequireDefault(__webpack_require__("w1vu"));
-
-var styles = function styles(theme) {
-  return {
-    layout: {
-      width: "100%",
-      flex: 1,
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center"
-    },
-    profile: {
-      padding: theme.main.spacing,
-      width: "100%",
-      maxWidth: 700
-    },
-    destroyButton: {
-      background: _red.default[500]
-    },
-    title: {
-      borderBottom: "1px dotted ".concat(theme.palette.text.secondary)
-    },
-    error: theme.main.error,
-    info: theme.main.info,
-    serviceLogo: {
-      marginLeft: "0.5em",
-      marginRight: "0.5em",
-      verticalAlign: "middle",
-      "& svg": {
-        height: "1.8em",
-        fill: "currentColor",
-        verticalAlign: "middle"
-      }
-    },
-    facebook: {
-      margin: "1rem",
-      color: theme.palette.primary.contrastText,
-      background: ["#3b5998", "!important"],
-      "&:hover": {
-        background: ["#1b3978", "!important"]
-      }
-    },
-    google: {
-      margin: "1rem",
-      color: theme.palette.primary.contrastText,
-      background: ["#dd4b39", "!important"],
-      "&:hover": {
-        background: ["#bd2b19", "!important"]
-      }
-    },
-    twitter: {
-      margin: "1rem",
-      color: theme.palette.primary.contrastText,
-      background: ["#38A1F3", "!important"],
-      "&:hover": {
-        background: ["#1881d3", "!important"]
-      }
-    }
-  };
+var mutation = function mutation() {
+  return __webpack_require__("gEav");
 };
 
-exports.styles = styles;
-
-var ProfilePage =
+var _default =
 /*#__PURE__*/
-function (_React$Component) {
-  (0, _inherits2.default)(ProfilePage, _React$Component);
-
-  function ProfilePage(props) {
-    var _this;
-
-    (0, _classCallCheck2.default)(this, ProfilePage);
-    _this = (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(ProfilePage).call(this, props));
-    _this.state = {
-      initialValues: null,
-      animating: false,
-      message: null,
-      isConfirmOpen: false
-    };
-    _this.messageTimer = null;
-    _this.save = _this.save.bind((0, _assertThisInitialized2.default)(_this));
-    _this.verify = _this.verify.bind((0, _assertThisInitialized2.default)(_this));
-    _this.destroy = _this.destroy.bind((0, _assertThisInitialized2.default)(_this));
-    _this.handleConfirmDelete = _this.handleConfirmDelete.bind((0, _assertThisInitialized2.default)(_this));
-    _this.handleCancelDelete = _this.handleCancelDelete.bind((0, _assertThisInitialized2.default)(_this));
-    return _this;
-  }
-
-  (0, _createClass2.default)(ProfilePage, [{
-    key: "componentDidMount",
-    value: function () {
-      var _componentDidMount = (0, _asyncToGenerator2.default)(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee() {
-        var _ref, name, email;
-
-        return _regenerator.default.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                _context.next = 2;
-                return this.props.onLoad();
-
-              case 2:
-                _ref = _context.sent;
-                name = _ref.name;
-                email = _ref.email;
-                this.setState({
-                  initialValues: {
-                    name: name,
-                    email: email,
-                    password1: "",
-                    password2: ""
-                  }
-                });
-
-              case 6:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee, this);
-      }));
-
-      function componentDidMount() {
-        return _componentDidMount.apply(this, arguments);
-      }
-
-      return componentDidMount;
-    }()
-  }, {
-    key: "save",
-    value: function () {
-      var _save = (0, _asyncToGenerator2.default)(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee2(_ref2, form) {
-        var name, email, password1, result, update;
-        return _regenerator.default.wrap(function _callee2$(_context2) {
-          while (1) {
-            switch (_context2.prev = _context2.next) {
-              case 0:
-                name = _ref2.name, email = _ref2.email, password1 = _ref2.password1;
-                _context2.next = 3;
-                return this.props.onSave(name || null, email, password1);
-
-              case 3:
-                result = _context2.sent;
-
-                if (!(result !== true)) {
-                  _context2.next = 6;
-                  break;
-                }
-
-                return _context2.abrupt("return", result);
-
-              case 6:
-                _context2.next = 8;
-                return this.props.onLoad();
-
-              case 8:
-                update = _context2.sent;
-                form.batch(function () {
-                  form.change("email", update.email);
-                  form.change("name", update.name);
-                });
-                this.showMessage("PROFILE_SAVE_SUCCESS");
-
-              case 11:
-              case "end":
-                return _context2.stop();
-            }
-          }
-        }, _callee2, this);
-      }));
-
-      function save(_x, _x2) {
-        return _save.apply(this, arguments);
-      }
-
-      return save;
-    }()
-  }, {
-    key: "verify",
-    value: function () {
-      var _verify = (0, _asyncToGenerator2.default)(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee3() {
-        var success;
-        return _regenerator.default.wrap(function _callee3$(_context3) {
-          while (1) {
-            switch (_context3.prev = _context3.next) {
-              case 0:
-                _context3.next = 2;
-                return this.props.onVerify();
-
-              case 2:
-                success = _context3.sent;
-                this.showMessage(success ? "PROFILE_VERIFY_SUCCESS" : "OPERATION_FAILED");
-
-              case 4:
-              case "end":
-                return _context3.stop();
-            }
-          }
-        }, _callee3, this);
-      }));
-
-      function verify() {
-        return _verify.apply(this, arguments);
-      }
-
-      return verify;
-    }()
-  }, {
-    key: "link",
-    value: function () {
-      var _link = (0, _asyncToGenerator2.default)(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee4(provider) {
-        var success;
-        return _regenerator.default.wrap(function _callee4$(_context4) {
-          while (1) {
-            switch (_context4.prev = _context4.next) {
-              case 0:
-                _context4.next = 2;
-                return this.props.onLink(provider);
-
-              case 2:
-                success = _context4.sent;
-                this.showMessage(success ? "PROFILE_LINK_SUCCESS" : "OPERATION_FAILED");
-
-              case 4:
-              case "end":
-                return _context4.stop();
-            }
-          }
-        }, _callee4, this);
-      }));
-
-      function link(_x3) {
-        return _link.apply(this, arguments);
-      }
-
-      return link;
-    }()
-  }, {
-    key: "unlink",
-    value: function () {
-      var _unlink = (0, _asyncToGenerator2.default)(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee5(provider) {
-        var success;
-        return _regenerator.default.wrap(function _callee5$(_context5) {
-          while (1) {
-            switch (_context5.prev = _context5.next) {
-              case 0:
-                _context5.next = 2;
-                return this.props.onUnlink(provider);
-
-              case 2:
-                success = _context5.sent;
-                this.showMessage(success ? "PROFILE_UNLINK_SUCCESS" : "OPERATION_FAILED");
-
-              case 4:
-              case "end":
-                return _context5.stop();
-            }
-          }
-        }, _callee5, this);
-      }));
-
-      function unlink(_x4) {
-        return _unlink.apply(this, arguments);
-      }
-
-      return unlink;
-    }()
-  }, {
-    key: "destroy",
-    value: function () {
-      var _destroy = (0, _asyncToGenerator2.default)(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee6() {
-        return _regenerator.default.wrap(function _callee6$(_context6) {
-          while (1) {
-            switch (_context6.prev = _context6.next) {
-              case 0:
-                this.setState({
-                  isConfirmOpen: true
-                });
-
-              case 1:
-              case "end":
-                return _context6.stop();
-            }
-          }
-        }, _callee6, this);
-      }));
-
-      function destroy() {
-        return _destroy.apply(this, arguments);
-      }
-
-      return destroy;
-    }()
-  }, {
-    key: "handleCancelDelete",
-    value: function handleCancelDelete() {
-      this.setState({
-        isConfirmOpen: false
-      });
-    }
-  }, {
-    key: "handleConfirmDelete",
-    value: function () {
-      var _handleConfirmDelete = (0, _asyncToGenerator2.default)(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee7() {
-        return _regenerator.default.wrap(function _callee7$(_context7) {
-          while (1) {
-            switch (_context7.prev = _context7.next) {
-              case 0:
-                this.setState({
-                  isConfirmOpen: false
-                });
-                _context7.next = 3;
-                return this.props.onDestroy();
-
-              case 3:
-                if (!_context7.sent) {
-                  _context7.next = 5;
-                  break;
-                }
-
-                _router.default.push("/");
-
-              case 5:
-              case "end":
-                return _context7.stop();
-            }
-          }
-        }, _callee7, this);
-      }));
-
-      function handleConfirmDelete() {
-        return _handleConfirmDelete.apply(this, arguments);
-      }
-
-      return handleConfirmDelete;
-    }()
-  }, {
-    key: "showMessage",
-    value: function showMessage(message) {
-      var _this2 = this;
-
-      if (this.messageTimer) clearTimeout(this.messageTimer);
-      this.messageTimer = setTimeout(function () {
-        _this2.messageTimer = null;
-
-        _this2.setState({
-          animating: false
-        }, function () {
-          _this2.messageTimer = setTimeout(function () {
-            _this2.messageTimer = null;
-
-            _this2.setState({
-              message: null
-            });
-          }, _this2.props.theme.transitions.duration.leavingScreen);
-        });
-      }, 5000);
-      this.setState({
-        message: message,
-        animating: true
-      });
-    }
-  }, {
-    key: "renderButton",
-    value: function renderButton(provider, submitting) {
-      var _this3 = this;
-
-      provider = _.toLower(provider);
-      var isLinked = this.props.userProviders[provider];
-      return _react.default.createElement(_Button.default, {
-        variant: "contained",
-        color: "default",
-        classes: {
-          contained: this.props.classes[provider]
-        },
-        disabled: submitting || !_.includes(_.keys(this.props.userProviders), provider),
-        onClick: function onClick() {
-          return isLinked ? _this3.unlink(provider) : _this3.link(provider);
-        }
-      }, _react.default.createElement(_Hidden.default, {
-        xsDown: true
-      }, _react.default.createElement(_reactIntl.FormattedMessage, {
-        id: isLinked ? "PROFILE_UNLINK_BUTTON" : "PROFILE_LINK_BUTTON"
-      })), provider === "facebook" && _react.default.createElement("span", {
-        dangerouslySetInnerHTML: {
-          __html: _facebook.default
-        },
-        className: this.props.classes.serviceLogo
-      }), provider === "google" && _react.default.createElement("span", {
-        dangerouslySetInnerHTML: {
-          __html: _google.default
-        },
-        className: this.props.classes.serviceLogo
-      }), provider === "twitter" && _react.default.createElement("span", {
-        dangerouslySetInnerHTML: {
-          __html: _twitter.default
-        },
-        className: this.props.classes.serviceLogo
-      }), _.upperFirst(provider));
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      var _this4 = this;
-
-      if (!this.state.initialValues || !(0, _isRouteAllowed.default)("/auth/profile", this.props.userRoles)) {
-        return null;
-      }
-
-      return _react.default.createElement("div", {
-        className: this.props.classes.layout
-      }, _react.default.createElement(_Paper.default, {
-        className: this.props.classes.profile
-      }, _react.default.createElement(_forms.Form, {
-        fields: _profile.default,
-        initialValues: this.state.initialValues,
-        onSubmit: this.save,
-        render: function render(_ref3) {
-          var submitting = _ref3.submitting,
-              submitError = _ref3.submitError,
-              handleSubmit = _ref3.handleSubmit;
-
-          var services = _react.default.createElement(_react.default.Fragment, null, _this4.renderButton(_constants.default.oauthProviders.FACEBOOK, submitting), _this4.renderButton(_constants.default.oauthProviders.GOOGLE, submitting), _this4.renderButton(_constants.default.oauthProviders.TWITTER, submitting));
-
-          return _react.default.createElement(_Grid.default, {
-            container: true,
-            spacing: _this4.props.theme.main.spacing
-          }, _react.default.createElement(_Grid.default, {
-            item: true,
-            xs: 12
-          }, _react.default.createElement(_Typography.default, {
-            variant: "h4",
-            classes: {
-              root: _this4.props.classes.title
-            }
-          }, _react.default.createElement(_reactIntl.FormattedMessage, {
-            id: "TITLE_PROFILE"
-          }))), _react.default.createElement(_Hidden.default, {
-            xsDown: true
-          }, _react.default.createElement(_Grid.default, {
-            item: true,
-            xs: 12,
-            container: true,
-            justify: "space-between"
-          }, services)), _react.default.createElement(_Hidden.default, {
-            smUp: true
-          }, _react.default.createElement(_Grid.default, {
-            item: true,
-            xs: 12,
-            container: true,
-            justify: "center"
-          }, services)), !!submitError && _react.default.createElement(_Grid.default, {
-            item: true,
-            xs: 12
-          }, _.map(_.isArray(submitError) ? submitError : [submitError], function (error, index) {
-            return _react.default.createElement("div", {
-              key: "error-".concat(index),
-              className: _this4.props.classes.error
-            }, _.isArray(error) ? _react.default.createElement(_reactIntl.FormattedMessage, {
-              id: error[0],
-              values: error[1]
-            }) : _react.default.createElement(_reactIntl.FormattedMessage, {
-              id: error
+function () {
+  var _ref = (0, _asyncToGenerator2.default)(
+  /*#__PURE__*/
+  _regenerator.default.mark(function _callee(di, input) {
+    return _regenerator.default.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            return _context.abrupt("return", new _promise.default(function (resolve, reject) {
+              (0, _reactRelay.commitMutation)(di.get("env"), {
+                mutation: mutation,
+                variables: {
+                  input: input || {}
+                },
+                onCompleted: function onCompleted(data, errors) {
+                  return resolve({
+                    data: data,
+                    errors: errors
+                  });
+                },
+                onError: reject
+              });
             }));
-          })), _this4.state.message && _react.default.createElement(_Grid.default, {
-            item: true,
-            xs: 12
-          }, _react.default.createElement(_Grow.default, {
-            in: _this4.state.animating
-          }, _react.default.createElement("div", {
-            className: _this4.props.classes.info
-          }, _react.default.createElement(_reactIntl.FormattedMessage, {
-            id: _this4.state.message
-          })))), _react.default.createElement(_Hidden.default, {
-            xsDown: true
-          }, _react.default.createElement(_Grid.default, {
-            item: true,
-            sm: 6
-          }, _react.default.createElement(_forms.Field, {
-            name: "name",
-            type: "text"
-          })), _react.default.createElement(_Grid.default, {
-            item: true,
-            sm: 6
-          }, _react.default.createElement(_forms.Field, {
-            name: "password1",
-            type: "password"
-          })), _react.default.createElement(_Grid.default, {
-            item: true,
-            sm: 6
-          }, _react.default.createElement(_forms.Field, {
-            name: "email",
-            type: "text"
-          })), _react.default.createElement(_Grid.default, {
-            item: true,
-            sm: 6
-          }, _react.default.createElement(_forms.Field, {
-            name: "password2",
-            type: "password"
-          }))), _react.default.createElement(_Hidden.default, {
-            smUp: true
-          }, _react.default.createElement(_Grid.default, {
-            item: true,
-            xs: 12
-          }, _react.default.createElement(_forms.Field, {
-            name: "name",
-            type: "text"
-          })), _react.default.createElement(_Grid.default, {
-            item: true,
-            xs: 12
-          }, _react.default.createElement(_forms.Field, {
-            name: "email",
-            type: "text"
-          })), _react.default.createElement(_Grid.default, {
-            item: true,
-            xs: 12
-          }, _react.default.createElement(_forms.Field, {
-            name: "password1",
-            type: "password"
-          })), _react.default.createElement(_Grid.default, {
-            item: true,
-            xs: 12
-          }, _react.default.createElement(_forms.Field, {
-            name: "password2",
-            type: "password"
-          }))), _react.default.createElement(_Grid.default, {
-            item: true,
-            xs: 12,
-            container: true,
-            justify: "space-between"
-          }, _react.default.createElement(_Button.default, {
-            variant: "contained",
-            color: "primary",
-            disabled: submitting,
-            onClick: handleSubmit
-          }, _react.default.createElement(_reactIntl.FormattedMessage, {
-            id: "PROFILE_SAVE_BUTTON"
-          })), _react.default.createElement(_Button.default, {
-            variant: "contained",
-            color: "inherit",
-            className: _this4.props.classes.destroyButton,
-            disabled: submitting,
-            onClick: _this4.destroy
-          }, _react.default.createElement(_reactIntl.FormattedMessage, {
-            id: "PROFILE_DESTROY_BUTTON"
-          }))), !_this4.props.userVerified && _react.default.createElement(_Grid.default, {
-            item: true,
-            xs: 12,
-            container: true,
-            justify: "flex-start"
-          }, _react.default.createElement(_Button.default, {
-            variant: "contained",
-            color: "primary",
-            disabled: submitting,
-            onClick: _this4.verify
-          }, _react.default.createElement(_reactIntl.FormattedMessage, {
-            id: "PROFILE_VERIFY_BUTTON"
-          }))));
-        }
-      }), _react.default.createElement(_ConfirmModalContainer.default, {
-        isOpen: this.state.isConfirmOpen,
-        title: "DELETE_PROFILE_TITLE",
-        text: "DELETE_PROFILE_TEXT",
-        cancel: "DELETE_PROFILE_CANCEL",
-        submit: "DELETE_PROFILE_SUBMIT",
-        onCancel: this.handleCancelDelete,
-        onSubmit: this.handleConfirmDelete
-      })));
-    }
-  }]);
-  return ProfilePage;
-}(_react.default.Component);
 
-var _default = ProfilePage;
+          case 1:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee);
+  }));
+
+  return function (_x, _x2) {
+    return _ref.apply(this, arguments);
+  };
+}();
+
 exports.default = _default;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("YLtl")))
+
+/***/ }),
+
+/***/ "30mr":
+/***/ (function(module, exports) {
+
+module.exports = require("@material-ui/core/TableBody");
 
 /***/ }),
 
@@ -1955,6 +1966,137 @@ exports.isConnected = isConnected;
 /***/ (function(module, exports) {
 
 module.exports = require("@material-ui/core/FormControlLabel");
+
+/***/ }),
+
+/***/ "8Ey4":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @flow
+ * @relayHash 463d966646e9cc3b3c4590139323f115
+ */
+
+/* eslint-disable */
+
+/*::
+import type { ConcreteRequest } from 'relay-runtime';
+export type UserRole = "ADMIN" | "ANONYMOUS" | "AUTHENTICATED" | "%future added value";
+export type EditUserInput = {|
+  id: string,
+  email?: ?string,
+  name?: ?string,
+  password?: ?string,
+  roles?: ?$ReadOnlyArray<?UserRole>,
+  clientMutationId?: ?string,
+|};
+export type EditUserMutationVariables = {|
+  input: EditUserInput
+|};
+export type EditUserMutationResponse = {|
+  +editUser: ?{|
+    +user: ?{|
+      +id: string
+    |}
+  |}
+|};
+export type EditUserMutation = {|
+  variables: EditUserMutationVariables,
+  response: EditUserMutationResponse,
+|};
+*/
+
+/*
+mutation EditUserMutation(
+  $input: EditUserInput!
+) {
+  editUser(input: $input) {
+    user {
+      id
+    }
+  }
+}
+*/
+
+var node
+/*: ConcreteRequest*/
+= function () {
+  var v0 = [{
+    "kind": "LocalArgument",
+    "name": "input",
+    "type": "EditUserInput!",
+    "defaultValue": null
+  }],
+      v1 = [{
+    "kind": "LinkedField",
+    "alias": null,
+    "name": "editUser",
+    "storageKey": null,
+    "args": [{
+      "kind": "Variable",
+      "name": "input",
+      "variableName": "input",
+      "type": "EditUserInput!"
+    }],
+    "concreteType": "EditUserPayload",
+    "plural": false,
+    "selections": [{
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "user",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "User",
+      "plural": false,
+      "selections": [{
+        "kind": "ScalarField",
+        "alias": null,
+        "name": "id",
+        "args": null,
+        "storageKey": null
+      }]
+    }]
+  }];
+  return {
+    "kind": "Request",
+    "fragment": {
+      "kind": "Fragment",
+      "name": "EditUserMutation",
+      "type": "Mutation",
+      "metadata": null,
+      "argumentDefinitions": v0
+      /*: any*/
+      ,
+      "selections": v1
+      /*: any*/
+
+    },
+    "operation": {
+      "kind": "Operation",
+      "name": "EditUserMutation",
+      "argumentDefinitions": v0
+      /*: any*/
+      ,
+      "selections": v1
+      /*: any*/
+
+    },
+    "params": {
+      "operationKind": "mutation",
+      "name": "EditUserMutation",
+      "id": null,
+      "text": "mutation EditUserMutation(\n  $input: EditUserInput!\n) {\n  editUser(input: $input) {\n    user {\n      id\n    }\n  }\n}\n",
+      "metadata": {}
+    }
+  };
+}(); // prettier-ignore
+
+
+node
+/*: any*/
+.hash = '3e6c36e4a9a4bce4d918bd7dea47edbc';
+module.exports = node;
 
 /***/ }),
 
@@ -2269,6 +2411,74 @@ exports.sendToast = sendToast;
 
 /***/ }),
 
+/***/ "8hF4":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _regenerator = _interopRequireDefault(__webpack_require__("ln6h"));
+
+var _promise = _interopRequireDefault(__webpack_require__("eVuF"));
+
+var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__("+oT+"));
+
+var _reactRelay = __webpack_require__("iuEU");
+
+var mutation = function mutation() {
+  return __webpack_require__("8Ey4");
+};
+
+var _default =
+/*#__PURE__*/
+function () {
+  var _ref = (0, _asyncToGenerator2.default)(
+  /*#__PURE__*/
+  _regenerator.default.mark(function _callee(di, input) {
+    return _regenerator.default.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            return _context.abrupt("return", new _promise.default(function (resolve, reject) {
+              (0, _reactRelay.commitMutation)(di.get("env"), {
+                mutation: mutation,
+                variables: {
+                  input: input || {}
+                },
+                onCompleted: function onCompleted(data, errors) {
+                  return resolve({
+                    data: data,
+                    errors: errors
+                  });
+                },
+                onError: reject
+              });
+            }));
+
+          case 1:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee);
+  }));
+
+  return function (_x, _x2) {
+    return _ref.apply(this, arguments);
+  };
+}();
+
+exports.default = _default;
+
+/***/ }),
+
 /***/ "9HlK":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2296,6 +2506,20 @@ exports.default = _default;
 /***/ (function(module, exports) {
 
 module.exports = require("@material-ui/core/styles");
+
+/***/ }),
+
+/***/ "AV/6":
+/***/ (function(module, exports) {
+
+module.exports = require("relay-runtime");
+
+/***/ }),
+
+/***/ "Ai9N":
+/***/ (function(module, exports) {
+
+module.exports = require("@material-ui/core/TableCell");
 
 /***/ }),
 
@@ -2341,10 +2565,24 @@ module.exports = __webpack_require__("/+oN");
 
 /***/ }),
 
+/***/ "BjFw":
+/***/ (function(module, exports) {
+
+module.exports = require("@material-ui/core/Table");
+
+/***/ }),
+
 /***/ "BlHF":
 /***/ (function(module, exports) {
 
 module.exports = require("react-intl/locale-data/en.js");
+
+/***/ }),
+
+/***/ "CSXW":
+/***/ (function(module, exports) {
+
+module.exports = require("@material-ui/icons/CheckCircleOutline");
 
 /***/ }),
 
@@ -2806,6 +3044,40 @@ module.exports = _objectWithoutProperties;
 
 /***/ }),
 
+/***/ "EffS":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = {
+  name: {
+    label: "EDIT_USER_NAME_LABEL"
+  },
+  email: {
+    normalize: "rows:1|remove:spaces",
+    transform: "trim",
+    validate: "required|email",
+    label: "EDIT_USER_EMAIL_LABEL"
+  },
+  password: {
+    label: "EDIT_USER_PASSWORD_LABEL",
+    validate: "password"
+  },
+  isAdmin: {
+    label: "EDIT_USER_ADMIN_LABEL"
+  }
+};
+
+/***/ }),
+
+/***/ "EmCc":
+/***/ (function(module, exports) {
+
+module.exports = require("@material-ui/core/IconButton");
+
+/***/ }),
+
 /***/ "FE/x":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -3048,6 +3320,110 @@ exports.default = _default;
 /***/ (function(module, exports) {
 
 module.exports = require("@material-ui/core/ListItemIcon");
+
+/***/ }),
+
+/***/ "H+JB":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(_) {
+
+var _interopRequireWildcard = __webpack_require__("5Uuq");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+Object.defineProperty(exports, "styles", {
+  enumerable: true,
+  get: function get() {
+    return _UserItem.styles;
+  }
+});
+exports.default = void 0;
+
+var _reactRedux = __webpack_require__("h74D");
+
+var _reactIntl = __webpack_require__("k004");
+
+var _styles = __webpack_require__("9Pu4");
+
+var _reactRelay = __webpack_require__("iuEU");
+
+var _state = __webpack_require__("rdLC");
+
+var _UserItem = _interopRequireWildcard(__webpack_require__("JFrd"));
+
+var mapStateToProps = function mapStateToProps(state, props) {
+  return {
+    isSelected: _.includes(_state.usersSelectors.getSelected(state), props.node.id)
+  };
+};
+
+var UserItem = (0, _reactRelay.createFragmentContainer)((0, _styles.withStyles)(_UserItem.styles)((0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(_UserItem.default))), {
+  node: function node() {
+    return __webpack_require__("dLP/");
+  }
+});
+var _default = UserItem;
+exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("YLtl")))
+
+/***/ }),
+
+/***/ "HSb4":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _default = function _default() {
+  return (
+    /* theme */
+    {
+      "& table": {
+        display: ["block", "!important"]
+      },
+      "& thead": {
+        display: ["block", "!important"]
+      },
+      "& tbody": {
+        display: ["block", "!important"]
+      },
+      "& th": {
+        display: ["block", "!important"],
+        width: "100%",
+        paddingLeft: ["1rem", "!important"],
+        paddingRight: ["1rem", "!important"],
+        "&:not(:last-child)": {
+          borderColor: "transparent"
+        }
+      },
+      "& td": {
+        display: ["block", "!important"],
+        width: "100%",
+        paddingLeft: ["1rem", "!important"],
+        paddingRight: ["1rem", "!important"],
+        "&:not(:last-child)": {
+          borderColor: "transparent"
+        }
+      },
+      "& tr": {
+        height: ["100%", "!important"],
+        display: ["block", "!important"],
+        marginTop: ["0.25rem", "!important"],
+        marginBottom: ["0.25rem", "!important"]
+      }
+    }
+  );
+};
+
+exports.default = _default;
 
 /***/ }),
 
@@ -3430,7 +3806,7 @@ function (_React$PureComponent) {
 
       var errors = null;
 
-      if (this.props.meta.touched && !this.props.meta.active && (this.props.meta.error || this.props.meta.submitError)) {
+      if (this.props.meta.touched && !this.props.meta.active && !this.props.meta.submitting && (this.props.meta.error || this.props.meta.submitError && !this.props.meta.dirtySinceLastSubmit)) {
         errors = [];
         if (this.props.meta.error) errors = errors.concat(this.props.meta.error);
         if (this.props.meta.submitError) errors = errors.concat(this.props.meta.submitError);
@@ -3500,6 +3876,114 @@ module.exports = require("@material-ui/core/TextField");
 /***/ (function(module, exports) {
 
 module.exports = require("core-js/library/fn/get-iterator");
+
+/***/ }),
+
+/***/ "JFrd":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(_) {
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = exports.styles = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
+
+var _react = _interopRequireDefault(__webpack_require__("cDcd"));
+
+var _classnames = _interopRequireDefault(__webpack_require__("K2gz"));
+
+var _reactIntl = __webpack_require__("k004");
+
+var _TableCell = _interopRequireDefault(__webpack_require__("Ai9N"));
+
+var _TableRow = _interopRequireDefault(__webpack_require__("iDDF"));
+
+var _Checkbox = _interopRequireDefault(__webpack_require__("r6Lb"));
+
+var _CheckCircleOutline = _interopRequireDefault(__webpack_require__("CSXW"));
+
+var _HelpOutline = _interopRequireDefault(__webpack_require__("aYOr"));
+
+var styles = function styles() {
+  return {
+    checkboxField: {
+      width: 1
+    },
+    checkbox: {
+      padding: 0
+    }
+  };
+};
+
+exports.styles = styles;
+
+var UserItem =
+/*#__PURE__*/
+function (_React$Component) {
+  (0, _inherits2.default)(UserItem, _React$Component);
+
+  function UserItem() {
+    (0, _classCallCheck2.default)(this, UserItem);
+    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(UserItem).apply(this, arguments));
+  }
+
+  (0, _createClass2.default)(UserItem, [{
+    key: "render",
+    value: function render() {
+      var _this = this;
+
+      return _react.default.createElement(_TableRow.default, null, _react.default.createElement(_TableCell.default, {
+        padding: "checkbox",
+        className: (0, _classnames.default)(this.props.isSelected && "selected"),
+        classes: {
+          root: this.props.classes.checkboxField
+        }
+      }, _react.default.createElement(_Checkbox.default, {
+        checked: this.props.isSelected,
+        classes: {
+          root: this.props.classes.checkbox
+        },
+        onChange: function onChange() {
+          return _this.props.onToggle(_this.props.node.id);
+        },
+        value: "on"
+      })), _react.default.createElement(_TableCell.default, {
+        className: (0, _classnames.default)(this.props.isSelected && "selected"),
+        component: "th",
+        scope: "row"
+      }, this.props.node.email), _react.default.createElement(_TableCell.default, {
+        className: (0, _classnames.default)(this.props.isSelected && "selected")
+      }, this.props.node.isEmailVerified ? _react.default.createElement(_CheckCircleOutline.default, null) : _react.default.createElement(_HelpOutline.default, null)), _react.default.createElement(_TableCell.default, {
+        className: (0, _classnames.default)(this.props.isSelected && "selected")
+      }, this.props.node.name), _react.default.createElement(_TableCell.default, {
+        className: (0, _classnames.default)(this.props.isSelected && "selected")
+      }, _.map(this.props.node.roles, function (item) {
+        return _this.props.intl.formatMessage({
+          id: "EDIT_USER_".concat(item, "_LABEL")
+        });
+      }).join(", ")));
+    }
+  }]);
+  return UserItem;
+}(_react.default.Component);
+
+var _default = UserItem;
+exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("YLtl")))
 
 /***/ }),
 
@@ -3582,6 +4066,219 @@ exports.default = _default;
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__("Z6Kq");
+
+/***/ }),
+
+/***/ "JyB7":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(_) {
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.subscribe = subscribe;
+exports.fetchQuery = exports.NextQueryRenderer = exports.RelayProvider = exports.RelayContext = void 0;
+
+var _regenerator = _interopRequireDefault(__webpack_require__("ln6h"));
+
+var _now = _interopRequireDefault(__webpack_require__("Cg2A"));
+
+var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__("+oT+"));
+
+var _extends2 = _interopRequireDefault(__webpack_require__("htGi"));
+
+var _objectWithoutProperties2 = _interopRequireDefault(__webpack_require__("EY6e"));
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
+
+var _react = _interopRequireDefault(__webpack_require__("cDcd"));
+
+var _reactRelay = _interopRequireDefault(__webpack_require__("iuEU"));
+
+var _relayRuntime = __webpack_require__("AV/6");
+
+var _relayQueryLookupRenderer = _interopRequireDefault(__webpack_require__("0Yqw"));
+
+var RelayContext = _react.default.createContext({});
+
+exports.RelayContext = RelayContext;
+
+var RelayProvider =
+/*#__PURE__*/
+function (_React$Component) {
+  (0, _inherits2.default)(RelayProvider, _React$Component);
+
+  function RelayProvider() {
+    (0, _classCallCheck2.default)(this, RelayProvider);
+    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(RelayProvider).apply(this, arguments));
+  }
+
+  (0, _createClass2.default)(RelayProvider, [{
+    key: "render",
+    value: function render() {
+      return _react.default.createElement(RelayContext.Provider, {
+        value: this.props.environment
+      }, this.props.children);
+    }
+  }]);
+  return RelayProvider;
+}(_react.default.Component);
+
+exports.RelayProvider = RelayProvider;
+
+var NextQueryRenderer =
+/*#__PURE__*/
+function (_React$Component2) {
+  (0, _inherits2.default)(NextQueryRenderer, _React$Component2);
+
+  function NextQueryRenderer() {
+    (0, _classCallCheck2.default)(this, NextQueryRenderer);
+    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(NextQueryRenderer).apply(this, arguments));
+  }
+
+  (0, _createClass2.default)(NextQueryRenderer, [{
+    key: "render",
+    value: function render() {
+      var _this$props = this.props,
+          children = _this$props.children,
+          props = (0, _objectWithoutProperties2.default)(_this$props, ["children"]);
+      return _react.default.createElement(RelayContext.Consumer, null, function (environment) {
+        return _react.default.createElement(_relayQueryLookupRenderer.default, (0, _extends2.default)({
+          lookup: true,
+          environment: environment
+        }, props), children);
+      });
+    }
+  }]);
+  return NextQueryRenderer;
+}(_react.default.Component);
+
+exports.NextQueryRenderer = NextQueryRenderer;
+
+var fetchQuery = function fetchQuery(environment) {
+  return function (query, variables) {
+    return (0, _relayRuntime.fetchQuery)(environment, query, variables);
+  };
+};
+
+exports.fetchQuery = fetchQuery;
+
+function subscribe(_ref) {
+  var environment = _ref.environment,
+      subscription = _ref.subscription,
+      variables = _ref.variables,
+      getToken = _ref.getToken,
+      minInterval = _ref.minInterval,
+      callback = _ref.callback;
+  var request = null;
+  var isDestroyed = false;
+  var callbackTime = 0;
+  var callbackTimer = null;
+  if (_.isUndefined(variables)) variables = {};
+  if (_.isUndefined(minInterval)) minInterval = 1000;
+
+  var doSubscribe =
+  /*#__PURE__*/
+  function () {
+    var _ref2 = (0, _asyncToGenerator2.default)(
+    /*#__PURE__*/
+    _regenerator.default.mark(function _callee() {
+      return _regenerator.default.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              if (!getToken) {
+                _context.next = 4;
+                break;
+              }
+
+              _context.next = 3;
+              return getToken();
+
+            case 3:
+              variables.token = _context.sent;
+
+            case 4:
+              if (!isDestroyed) {
+                _context.next = 6;
+                break;
+              }
+
+              return _context.abrupt("return");
+
+            case 6:
+              request = _reactRelay.default.requestSubscription(environment, {
+                subscription: subscription,
+                variables: variables,
+                onCompleted: function onCompleted() {
+                  request = null;
+                  setTimeout(function () {
+                    return doSubscribe().catch(console.error);
+                  }, 1000);
+                },
+                onError: function onError(error) {
+                  console.error(error);
+                  request = null;
+                  setTimeout(function () {
+                    return doSubscribe().catch(console.error);
+                  }, 1000);
+                },
+                onNext: function onNext() {
+                  for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+                    args[_key] = arguments[_key];
+                  }
+
+                  if (isDestroyed || callbackTimer) return;
+                  var delta = (0, _now.default)() - callbackTime;
+                  callbackTimer = setTimeout(function () {
+                    callbackTime = (0, _now.default)();
+                    callbackTimer = null;
+                    if (!isDestroyed) callback.apply(void 0, args);
+                  }, delta < minInterval ? delta : 0);
+                }
+              });
+
+            case 7:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }));
+
+    return function doSubscribe() {
+      return _ref2.apply(this, arguments);
+    };
+  }();
+
+  doSubscribe().catch(console.error);
+  return function () {
+    isDestroyed = true;
+
+    if (callbackTimer) {
+      clearTimeout(callbackTimer);
+      callbackTimer = null;
+    }
+
+    if (request) {
+      request.dispose();
+      request = null;
+    }
+  };
+}
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("YLtl")))
 
 /***/ }),
 
@@ -3766,6 +4463,13 @@ exports.default = _default;
 
 /***/ }),
 
+/***/ "K2gz":
+/***/ (function(module, exports) {
+
+module.exports = require("classnames");
+
+/***/ }),
+
 /***/ "K47E":
 /***/ (function(module, exports) {
 
@@ -3781,6 +4485,191 @@ module.exports = _assertThisInitialized;
 
 /***/ }),
 
+/***/ "KAMz":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @flow
+ * @relayHash a99c35aeb1f7ea4d967aaa99bc4afee5
+ */
+
+/* eslint-disable */
+
+/*::
+import type { ConcreteRequest } from 'relay-runtime';
+export type DeleteUserInput = {|
+  id: string,
+  clientMutationId?: ?string,
+|};
+export type DeleteUserMutationVariables = {|
+  input: DeleteUserInput
+|};
+export type DeleteUserMutationResponse = {|
+  +deleteUser: ?{|
+    +user: ?{|
+      +id: string
+    |}
+  |}
+|};
+export type DeleteUserMutation = {|
+  variables: DeleteUserMutationVariables,
+  response: DeleteUserMutationResponse,
+|};
+*/
+
+/*
+mutation DeleteUserMutation(
+  $input: DeleteUserInput!
+) {
+  deleteUser(input: $input) {
+    user {
+      id
+    }
+  }
+}
+*/
+
+var node
+/*: ConcreteRequest*/
+= function () {
+  var v0 = [{
+    "kind": "LocalArgument",
+    "name": "input",
+    "type": "DeleteUserInput!",
+    "defaultValue": null
+  }],
+      v1 = [{
+    "kind": "LinkedField",
+    "alias": null,
+    "name": "deleteUser",
+    "storageKey": null,
+    "args": [{
+      "kind": "Variable",
+      "name": "input",
+      "variableName": "input",
+      "type": "DeleteUserInput!"
+    }],
+    "concreteType": "DeleteUserPayload",
+    "plural": false,
+    "selections": [{
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "user",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "User",
+      "plural": false,
+      "selections": [{
+        "kind": "ScalarField",
+        "alias": null,
+        "name": "id",
+        "args": null,
+        "storageKey": null
+      }]
+    }]
+  }];
+  return {
+    "kind": "Request",
+    "fragment": {
+      "kind": "Fragment",
+      "name": "DeleteUserMutation",
+      "type": "Mutation",
+      "metadata": null,
+      "argumentDefinitions": v0
+      /*: any*/
+      ,
+      "selections": v1
+      /*: any*/
+
+    },
+    "operation": {
+      "kind": "Operation",
+      "name": "DeleteUserMutation",
+      "argumentDefinitions": v0
+      /*: any*/
+      ,
+      "selections": v1
+      /*: any*/
+
+    },
+    "params": {
+      "operationKind": "mutation",
+      "name": "DeleteUserMutation",
+      "id": null,
+      "text": "mutation DeleteUserMutation(\n  $input: DeleteUserInput!\n) {\n  deleteUser(input: $input) {\n    user {\n      id\n    }\n  }\n}\n",
+      "metadata": {}
+    }
+  };
+}(); // prettier-ignore
+
+
+node
+/*: any*/
+.hash = 'c41c3a031a3a3c187abf4960c8697c73';
+module.exports = node;
+
+/***/ }),
+
+/***/ "KDWy":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireWildcard = __webpack_require__("5Uuq");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _reactRedux = __webpack_require__("h74D");
+
+var _styles = __webpack_require__("9Pu4");
+
+var _state = __webpack_require__("rdLC");
+
+var _EditUserModal = _interopRequireWildcard(__webpack_require__("1SWC"));
+
+var mapStateToProps = function mapStateToProps(state) {
+  return {
+    isOpen: _state.usersSelectors.isEditModalOpen(state),
+    currentId: _state.usersSelectors.getEditModalUserId(state)
+  };
+};
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+  return {
+    onCancel: function onCancel() {
+      return dispatch(_state.usersOperations.hideEditModal());
+    },
+    onCreate: function onCreate(name, email, password, isAdmin) {
+      return dispatch(_state.usersOperations.create({
+        name: name,
+        email: email,
+        password: password,
+        isAdmin: isAdmin
+      }));
+    },
+    onEdit: function onEdit(id, name, email, password, isAdmin) {
+      return dispatch(_state.usersOperations.edit({
+        id: id,
+        name: name,
+        email: email,
+        password: password,
+        isAdmin: isAdmin
+      }));
+    }
+  };
+};
+
+var EditUserModal = (0, _styles.withStyles)(_EditUserModal.styles)((0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_EditUserModal.default));
+var _default = EditUserModal;
+exports.default = _default;
+
+/***/ }),
+
 /***/ "KI45":
 /***/ (function(module, exports) {
 
@@ -3791,35 +4680,6 @@ function _interopRequireDefault(obj) {
 }
 
 module.exports = _interopRequireDefault;
-
-/***/ }),
-
-/***/ "KinM":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-module.exports = {
-  name: {
-    label: "PROFILE_NAME_LABEL",
-    transform: "trim"
-  },
-  email: {
-    normalize: "rows:1|remove:spaces",
-    transform: "trim",
-    validate: "required|email",
-    label: "PROFILE_EMAIL_LABEL"
-  },
-  password1: {
-    label: "PROFILE_PASSWORD1_LABEL",
-    validate: "password"
-  },
-  password2: {
-    label: "PROFILE_PASSWORD2_LABEL",
-    validate: "password|required:password1|match:password1"
-  }
-};
 
 /***/ }),
 
@@ -3871,6 +4731,13 @@ var _FieldMessages = _interopRequireWildcard(__webpack_require__("EGUq"));
 var FieldMessages = (0, _styles.withStyles)(_FieldMessages.styles)((0, _reactIntl.injectIntl)(_FieldMessages.default));
 var _default = FieldMessages;
 exports.default = _default;
+
+/***/ }),
+
+/***/ "LZqe":
+/***/ (function(module, exports) {
+
+module.exports = require("http-status-codes");
 
 /***/ }),
 
@@ -3953,13 +4820,6 @@ function () {
 }();
 
 exports.default = _default;
-
-/***/ }),
-
-/***/ "MmNR":
-/***/ (function(module, exports) {
-
-module.exports = "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><path d=\"M19 3.998v3h-2a1 1 0 0 0-1 1v2h3v3h-3v7h-3v-7h-2v-3h2v-2.5a3.5 3.5 0 0 1 3.5-3.5H19zm1-2H4c-1.105 0-1.99.895-1.99 2l-.01 16c0 1.104.895 2 2 2h16c1.103 0 2-.896 2-2v-16a2 2 0 0 0-2-2z\"></path></svg>"
 
 /***/ }),
 
@@ -4068,6 +4928,33 @@ function _inherits(subClass, superClass) {
 }
 
 module.exports = _inherits;
+
+/***/ }),
+
+/***/ "NWIk":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = {
+  name: {
+    label: "EDIT_USER_NAME_LABEL"
+  },
+  email: {
+    normalize: "rows:1|remove:spaces",
+    transform: "trim",
+    validate: "required|email",
+    label: "EDIT_USER_EMAIL_LABEL"
+  },
+  password: {
+    label: "EDIT_USER_PASSWORD_LABEL",
+    validate: "required|password"
+  },
+  isAdmin: {
+    label: "EDIT_USER_ADMIN_LABEL"
+  }
+};
 
 /***/ }),
 
@@ -4184,6 +5071,28 @@ module.exports = node;
 
 /***/ }),
 
+/***/ "NhoZ":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+Object.defineProperty(exports, "default", {
+  enumerable: true,
+  get: function get() {
+    return _UsersPage.default;
+  }
+});
+
+var _UsersPage = _interopRequireDefault(__webpack_require__("P51Y"));
+
+/***/ }),
+
 /***/ "OFRV":
 /***/ (function(module, exports) {
 
@@ -4195,6 +5104,130 @@ module.exports = require("@material-ui/icons/ErrorOutlined");
 /***/ (function(module, exports) {
 
 module.exports = require("@material-ui/core/Select");
+
+/***/ }),
+
+/***/ "P51Y":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireWildcard = __webpack_require__("5Uuq");
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = exports.query = void 0;
+
+var _regenerator = _interopRequireDefault(__webpack_require__("ln6h"));
+
+var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__("+oT+"));
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
+
+var _react = _interopRequireDefault(__webpack_require__("cDcd"));
+
+var _reactRelay = __webpack_require__("iuEU");
+
+var _Relay = __webpack_require__("JyB7");
+
+var _UserListContainer = _interopRequireWildcard(__webpack_require__("Xbou"));
+
+var _ErrorMessageContainer = _interopRequireDefault(__webpack_require__("Y3Ay"));
+
+var defaultVariables = {
+  first: _UserListContainer.pageSize,
+  sortBy: _UserListContainer.sortBy,
+  sortDir: _UserListContainer.sortDir
+};
+
+var query = function query() {
+  return __webpack_require__("Zn37");
+};
+
+exports.query = query;
+
+var UsersPage =
+/*#__PURE__*/
+function (_React$Component) {
+  (0, _inherits2.default)(UsersPage, _React$Component);
+
+  function UsersPage() {
+    (0, _classCallCheck2.default)(this, UsersPage);
+    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(UsersPage).apply(this, arguments));
+  }
+
+  (0, _createClass2.default)(UsersPage, [{
+    key: "render",
+    value: function render() {
+      return _react.default.createElement(_Relay.NextQueryRenderer, {
+        query: query,
+        variables: defaultVariables,
+        render: function render(_ref) {
+          var error = _ref.error,
+              props = _ref.props;
+          if (error) return _react.default.createElement(_ErrorMessageContainer.default, {
+            error: error
+          });
+          if (!props) return null;
+          return _react.default.createElement(_UserListContainer.default, {
+            viewer: props.viewer
+          });
+        }
+      });
+    }
+  }], [{
+    key: "getInitialProps",
+    value: function () {
+      var _getInitialProps = (0, _asyncToGenerator2.default)(
+      /*#__PURE__*/
+      _regenerator.default.mark(function _callee(_ref2) {
+        var statusCode, fetchQuery;
+        return _regenerator.default.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                statusCode = _ref2.statusCode, fetchQuery = _ref2.fetchQuery;
+
+                if (!(statusCode === 200)) {
+                  _context.next = 4;
+                  break;
+                }
+
+                _context.next = 4;
+                return fetchQuery(query, defaultVariables);
+
+              case 4:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }));
+
+      function getInitialProps(_x) {
+        return _getInitialProps.apply(this, arguments);
+      }
+
+      return getInitialProps;
+    }()
+  }]);
+  return UsersPage;
+}(_react.default.Component);
+
+var _default = UsersPage;
+exports.default = _default;
 
 /***/ }),
 
@@ -4436,6 +5469,13 @@ module.exports = require("core-js/library/fn/object/define-property");
 
 /***/ }),
 
+/***/ "TWtx":
+/***/ (function(module, exports) {
+
+module.exports = require("@material-ui/core/TableHead");
+
+/***/ }),
+
 /***/ "Ty80":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -4580,6 +5620,333 @@ module.exports = node;
 
 /***/ }),
 
+/***/ "V0Tl":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @flow
+ * @relayHash efdd2abeb3fbf4bcef9bc0f61036aa11
+ */
+
+/* eslint-disable */
+
+/*::
+import type { ConcreteRequest } from 'relay-runtime';
+type UserListContainer_viewer$ref = any;
+export type UserSortBy = "email" | "name" | "%future added value";
+export type UserSortDir = "asc" | "desc" | "%future added value";
+export type UserListContainerQueryVariables = {|
+  sortBy?: ?UserSortBy,
+  sortDir?: ?UserSortDir,
+  first?: ?number,
+  after?: ?string,
+  last?: ?number,
+  before?: ?string,
+|};
+export type UserListContainerQueryResponse = {|
+  +viewer: ?{|
+    +$fragmentRefs: UserListContainer_viewer$ref
+  |}
+|};
+export type UserListContainerQuery = {|
+  variables: UserListContainerQueryVariables,
+  response: UserListContainerQueryResponse,
+|};
+*/
+
+/*
+query UserListContainerQuery(
+  $sortBy: UserSortBy
+  $sortDir: UserSortDir
+  $first: Int
+  $after: String
+  $last: Int
+  $before: String
+) {
+  viewer {
+    ...UserListContainer_viewer_3WF44T
+  }
+}
+
+fragment UserListContainer_viewer_3WF44T on Viewer {
+  users(sortBy: $sortBy, sortDir: $sortDir, first: $first, after: $after, last: $last, before: $before) {
+    edges {
+      cursor
+      node {
+        id
+        ...UserItemContainer_node
+      }
+    }
+    pageInfo {
+      startCursor
+      endCursor
+    }
+    totalCount
+  }
+}
+
+fragment UserItemContainer_node on User {
+  id
+  email
+  isEmailVerified
+  name
+  roles
+}
+*/
+
+var node
+/*: ConcreteRequest*/
+= function () {
+  var v0 = [{
+    "kind": "LocalArgument",
+    "name": "sortBy",
+    "type": "UserSortBy",
+    "defaultValue": null
+  }, {
+    "kind": "LocalArgument",
+    "name": "sortDir",
+    "type": "UserSortDir",
+    "defaultValue": null
+  }, {
+    "kind": "LocalArgument",
+    "name": "first",
+    "type": "Int",
+    "defaultValue": null
+  }, {
+    "kind": "LocalArgument",
+    "name": "after",
+    "type": "String",
+    "defaultValue": null
+  }, {
+    "kind": "LocalArgument",
+    "name": "last",
+    "type": "Int",
+    "defaultValue": null
+  }, {
+    "kind": "LocalArgument",
+    "name": "before",
+    "type": "String",
+    "defaultValue": null
+  }];
+  return {
+    "kind": "Request",
+    "fragment": {
+      "kind": "Fragment",
+      "name": "UserListContainerQuery",
+      "type": "Query",
+      "metadata": null,
+      "argumentDefinitions": v0
+      /*: any*/
+      ,
+      "selections": [{
+        "kind": "LinkedField",
+        "alias": "viewer",
+        "name": "__viewer_viewer",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "Viewer",
+        "plural": false,
+        "selections": [{
+          "kind": "FragmentSpread",
+          "name": "UserListContainer_viewer",
+          "args": [{
+            "kind": "Variable",
+            "name": "after",
+            "variableName": "after",
+            "type": null
+          }, {
+            "kind": "Variable",
+            "name": "before",
+            "variableName": "before",
+            "type": null
+          }, {
+            "kind": "Variable",
+            "name": "first",
+            "variableName": "first",
+            "type": null
+          }, {
+            "kind": "Variable",
+            "name": "last",
+            "variableName": "last",
+            "type": null
+          }, {
+            "kind": "Variable",
+            "name": "sortBy",
+            "variableName": "sortBy",
+            "type": null
+          }, {
+            "kind": "Variable",
+            "name": "sortDir",
+            "variableName": "sortDir",
+            "type": null
+          }]
+        }]
+      }]
+    },
+    "operation": {
+      "kind": "Operation",
+      "name": "UserListContainerQuery",
+      "argumentDefinitions": v0
+      /*: any*/
+      ,
+      "selections": [{
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "viewer",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "Viewer",
+        "plural": false,
+        "selections": [{
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "users",
+          "storageKey": null,
+          "args": [{
+            "kind": "Variable",
+            "name": "after",
+            "variableName": "after",
+            "type": "String"
+          }, {
+            "kind": "Variable",
+            "name": "before",
+            "variableName": "before",
+            "type": "String"
+          }, {
+            "kind": "Variable",
+            "name": "first",
+            "variableName": "first",
+            "type": "Int"
+          }, {
+            "kind": "Variable",
+            "name": "last",
+            "variableName": "last",
+            "type": "Int"
+          }, {
+            "kind": "Variable",
+            "name": "sortBy",
+            "variableName": "sortBy",
+            "type": "UserSortBy"
+          }, {
+            "kind": "Variable",
+            "name": "sortDir",
+            "variableName": "sortDir",
+            "type": "UserSortDir"
+          }],
+          "concreteType": "UserConnection",
+          "plural": false,
+          "selections": [{
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "edges",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "UserEdge",
+            "plural": true,
+            "selections": [{
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "cursor",
+              "args": null,
+              "storageKey": null
+            }, {
+              "kind": "LinkedField",
+              "alias": null,
+              "name": "node",
+              "storageKey": null,
+              "args": null,
+              "concreteType": "User",
+              "plural": false,
+              "selections": [{
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "id",
+                "args": null,
+                "storageKey": null
+              }, {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "email",
+                "args": null,
+                "storageKey": null
+              }, {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "isEmailVerified",
+                "args": null,
+                "storageKey": null
+              }, {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "name",
+                "args": null,
+                "storageKey": null
+              }, {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "roles",
+                "args": null,
+                "storageKey": null
+              }]
+            }]
+          }, {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "pageInfo",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "PageInfo",
+            "plural": false,
+            "selections": [{
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "startCursor",
+              "args": null,
+              "storageKey": null
+            }, {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "endCursor",
+              "args": null,
+              "storageKey": null
+            }]
+          }, {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "totalCount",
+            "args": null,
+            "storageKey": null
+          }]
+        }]
+      }, {
+        "kind": "LinkedHandle",
+        "alias": null,
+        "name": "viewer",
+        "args": null,
+        "handle": "viewer",
+        "key": "",
+        "filters": null
+      }]
+    },
+    "params": {
+      "operationKind": "query",
+      "name": "UserListContainerQuery",
+      "id": null,
+      "text": "query UserListContainerQuery(\n  $sortBy: UserSortBy\n  $sortDir: UserSortDir\n  $first: Int\n  $after: String\n  $last: Int\n  $before: String\n) {\n  viewer {\n    ...UserListContainer_viewer_3WF44T\n  }\n}\n\nfragment UserListContainer_viewer_3WF44T on Viewer {\n  users(sortBy: $sortBy, sortDir: $sortDir, first: $first, after: $after, last: $last, before: $before) {\n    edges {\n      cursor\n      node {\n        id\n        ...UserItemContainer_node\n      }\n    }\n    pageInfo {\n      startCursor\n      endCursor\n    }\n    totalCount\n  }\n}\n\nfragment UserItemContainer_node on User {\n  id\n  email\n  isEmailVerified\n  name\n  roles\n}\n",
+      "metadata": {}
+    }
+  };
+}(); // prettier-ignore
+
+
+node
+/*: any*/
+.hash = '7d5f34ebab7751bbcbe7d37e29a48ef1';
+module.exports = node;
+
+/***/ }),
+
 /***/ "Vc6o":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -4716,10 +6083,126 @@ module.exports = __webpack_require__("J3/a");
 
 /***/ }),
 
-/***/ "Y8uC":
-/***/ (function(module, exports) {
+/***/ "Xbou":
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = require("@material-ui/core/Hidden");
+"use strict";
+
+
+var _interopRequireWildcard = __webpack_require__("5Uuq");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+Object.defineProperty(exports, "pageSize", {
+  enumerable: true,
+  get: function get() {
+    return _UserList.pageSize;
+  }
+});
+Object.defineProperty(exports, "sortBy", {
+  enumerable: true,
+  get: function get() {
+    return _UserList.sortBy;
+  }
+});
+Object.defineProperty(exports, "sortDir", {
+  enumerable: true,
+  get: function get() {
+    return _UserList.sortDir;
+  }
+});
+exports.default = void 0;
+
+var _reactRedux = __webpack_require__("h74D");
+
+var _reactRelay = __webpack_require__("iuEU");
+
+var _reactIntl = __webpack_require__("k004");
+
+var _styles = __webpack_require__("9Pu4");
+
+var _state = __webpack_require__("E4eY");
+
+var _state2 = __webpack_require__("rdLC");
+
+var _UserList = _interopRequireWildcard(__webpack_require__("i1Ni"));
+
+var mapStateToProps = function mapStateToProps(state) {
+  return {
+    selected: _state2.usersSelectors.getSelected(state)
+  };
+};
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+  return {
+    getToken: function getToken() {
+      return dispatch(_state.appOperations.getToken());
+    },
+    onCreate: function onCreate() {
+      return dispatch(_state2.usersOperations.showEditModal());
+    },
+    onEdit: function onEdit() {
+      return dispatch(_state2.usersOperations.editFirstSelected());
+    },
+    onDelete: function onDelete(userId) {
+      return dispatch(_state2.usersOperations.remove({
+        id: userId
+      }));
+    },
+    onSetSelected: function onSetSelected(userId, isSelected) {
+      return dispatch(_state2.usersOperations.setSelected({
+        userId: userId,
+        isSelected: isSelected
+      }));
+    },
+    onSelectAll: function onSelectAll(userIds) {
+      return dispatch(_state2.usersOperations.selectAll({
+        userIds: userIds
+      }));
+    },
+    onDeselectAll: function onDeselectAll(exceptUserIds) {
+      return dispatch(_state2.usersOperations.deselectAll({
+        exceptUserIds: exceptUserIds
+      }));
+    }
+  };
+};
+
+var UserList = (0, _reactRelay.createRefetchContainer)((0, _styles.withStyles)(_UserList.styles)((0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_UserList.default))), {
+  viewer: function viewer() {
+    return __webpack_require__("iooE");
+  }
+}, function () {
+  return __webpack_require__("V0Tl");
+});
+var _default = UserList;
+exports.default = _default;
+
+/***/ }),
+
+/***/ "Y3Ay":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireWildcard = __webpack_require__("5Uuq");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _reactIntl = __webpack_require__("k004");
+
+var _styles = __webpack_require__("9Pu4");
+
+var _ErrorMessage = _interopRequireWildcard(__webpack_require__("p198"));
+
+var ErrorMessage = (0, _styles.withStyles)(_ErrorMessage.styles)((0, _reactIntl.injectIntl)(_ErrorMessage.default));
+var _default = ErrorMessage;
+exports.default = _default;
 
 /***/ }),
 
@@ -4796,11 +6279,330 @@ module.exports = _possibleConstructorReturn;
 
 /***/ }),
 
-/***/ "a223":
+/***/ "Zn37":
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__("t6mg");
+"use strict";
+/**
+ * @flow
+ * @relayHash c8a6514a851c3c5a788b0768cf822ede
+ */
 
+/* eslint-disable */
+
+/*::
+import type { ConcreteRequest } from 'relay-runtime';
+type UserListContainer_viewer$ref = any;
+export type UserSortBy = "email" | "name" | "%future added value";
+export type UserSortDir = "asc" | "desc" | "%future added value";
+export type UsersPageQueryVariables = {|
+  sortBy?: ?UserSortBy,
+  sortDir?: ?UserSortDir,
+  first?: ?number,
+  after?: ?string,
+  last?: ?number,
+  before?: ?string,
+|};
+export type UsersPageQueryResponse = {|
+  +viewer: ?{|
+    +$fragmentRefs: UserListContainer_viewer$ref
+  |}
+|};
+export type UsersPageQuery = {|
+  variables: UsersPageQueryVariables,
+  response: UsersPageQueryResponse,
+|};
+*/
+
+/*
+query UsersPageQuery(
+  $sortBy: UserSortBy
+  $sortDir: UserSortDir
+  $first: Int
+  $after: String
+  $last: Int
+  $before: String
+) {
+  viewer {
+    ...UserListContainer_viewer_3WF44T
+  }
+}
+
+fragment UserListContainer_viewer_3WF44T on Viewer {
+  users(sortBy: $sortBy, sortDir: $sortDir, first: $first, after: $after, last: $last, before: $before) {
+    edges {
+      cursor
+      node {
+        id
+        ...UserItemContainer_node
+      }
+    }
+    pageInfo {
+      startCursor
+      endCursor
+    }
+    totalCount
+  }
+}
+
+fragment UserItemContainer_node on User {
+  id
+  email
+  isEmailVerified
+  name
+  roles
+}
+*/
+
+var node
+/*: ConcreteRequest*/
+= function () {
+  var v0 = [{
+    "kind": "LocalArgument",
+    "name": "sortBy",
+    "type": "UserSortBy",
+    "defaultValue": null
+  }, {
+    "kind": "LocalArgument",
+    "name": "sortDir",
+    "type": "UserSortDir",
+    "defaultValue": null
+  }, {
+    "kind": "LocalArgument",
+    "name": "first",
+    "type": "Int",
+    "defaultValue": null
+  }, {
+    "kind": "LocalArgument",
+    "name": "after",
+    "type": "String",
+    "defaultValue": null
+  }, {
+    "kind": "LocalArgument",
+    "name": "last",
+    "type": "Int",
+    "defaultValue": null
+  }, {
+    "kind": "LocalArgument",
+    "name": "before",
+    "type": "String",
+    "defaultValue": null
+  }];
+  return {
+    "kind": "Request",
+    "fragment": {
+      "kind": "Fragment",
+      "name": "UsersPageQuery",
+      "type": "Query",
+      "metadata": null,
+      "argumentDefinitions": v0
+      /*: any*/
+      ,
+      "selections": [{
+        "kind": "LinkedField",
+        "alias": "viewer",
+        "name": "__viewer_viewer",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "Viewer",
+        "plural": false,
+        "selections": [{
+          "kind": "FragmentSpread",
+          "name": "UserListContainer_viewer",
+          "args": [{
+            "kind": "Variable",
+            "name": "after",
+            "variableName": "after",
+            "type": null
+          }, {
+            "kind": "Variable",
+            "name": "before",
+            "variableName": "before",
+            "type": null
+          }, {
+            "kind": "Variable",
+            "name": "first",
+            "variableName": "first",
+            "type": null
+          }, {
+            "kind": "Variable",
+            "name": "last",
+            "variableName": "last",
+            "type": null
+          }, {
+            "kind": "Variable",
+            "name": "sortBy",
+            "variableName": "sortBy",
+            "type": null
+          }, {
+            "kind": "Variable",
+            "name": "sortDir",
+            "variableName": "sortDir",
+            "type": null
+          }]
+        }]
+      }]
+    },
+    "operation": {
+      "kind": "Operation",
+      "name": "UsersPageQuery",
+      "argumentDefinitions": v0
+      /*: any*/
+      ,
+      "selections": [{
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "viewer",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "Viewer",
+        "plural": false,
+        "selections": [{
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "users",
+          "storageKey": null,
+          "args": [{
+            "kind": "Variable",
+            "name": "after",
+            "variableName": "after",
+            "type": "String"
+          }, {
+            "kind": "Variable",
+            "name": "before",
+            "variableName": "before",
+            "type": "String"
+          }, {
+            "kind": "Variable",
+            "name": "first",
+            "variableName": "first",
+            "type": "Int"
+          }, {
+            "kind": "Variable",
+            "name": "last",
+            "variableName": "last",
+            "type": "Int"
+          }, {
+            "kind": "Variable",
+            "name": "sortBy",
+            "variableName": "sortBy",
+            "type": "UserSortBy"
+          }, {
+            "kind": "Variable",
+            "name": "sortDir",
+            "variableName": "sortDir",
+            "type": "UserSortDir"
+          }],
+          "concreteType": "UserConnection",
+          "plural": false,
+          "selections": [{
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "edges",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "UserEdge",
+            "plural": true,
+            "selections": [{
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "cursor",
+              "args": null,
+              "storageKey": null
+            }, {
+              "kind": "LinkedField",
+              "alias": null,
+              "name": "node",
+              "storageKey": null,
+              "args": null,
+              "concreteType": "User",
+              "plural": false,
+              "selections": [{
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "id",
+                "args": null,
+                "storageKey": null
+              }, {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "email",
+                "args": null,
+                "storageKey": null
+              }, {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "isEmailVerified",
+                "args": null,
+                "storageKey": null
+              }, {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "name",
+                "args": null,
+                "storageKey": null
+              }, {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "roles",
+                "args": null,
+                "storageKey": null
+              }]
+            }]
+          }, {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "pageInfo",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "PageInfo",
+            "plural": false,
+            "selections": [{
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "startCursor",
+              "args": null,
+              "storageKey": null
+            }, {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "endCursor",
+              "args": null,
+              "storageKey": null
+            }]
+          }, {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "totalCount",
+            "args": null,
+            "storageKey": null
+          }]
+        }]
+      }, {
+        "kind": "LinkedHandle",
+        "alias": null,
+        "name": "viewer",
+        "args": null,
+        "handle": "viewer",
+        "key": "",
+        "filters": null
+      }]
+    },
+    "params": {
+      "operationKind": "query",
+      "name": "UsersPageQuery",
+      "id": null,
+      "text": "query UsersPageQuery(\n  $sortBy: UserSortBy\n  $sortDir: UserSortDir\n  $first: Int\n  $after: String\n  $last: Int\n  $before: String\n) {\n  viewer {\n    ...UserListContainer_viewer_3WF44T\n  }\n}\n\nfragment UserListContainer_viewer_3WF44T on Viewer {\n  users(sortBy: $sortBy, sortDir: $sortDir, first: $first, after: $after, last: $last, before: $before) {\n    edges {\n      cursor\n      node {\n        id\n        ...UserItemContainer_node\n      }\n    }\n    pageInfo {\n      startCursor\n      endCursor\n    }\n    totalCount\n  }\n}\n\nfragment UserItemContainer_node on User {\n  id\n  email\n  isEmailVerified\n  name\n  roles\n}\n",
+      "metadata": {}
+    }
+  };
+}(); // prettier-ignore
+
+
+node
+/*: any*/
+.hash = '19719a0e7f3130420d97c776b3c6a633';
+module.exports = node;
 
 /***/ }),
 
@@ -4869,7 +6671,7 @@ function (_React$PureComponent) {
 
       var errors = null;
 
-      if (this.props.meta.touched && !this.props.meta.active && (this.props.meta.error || this.props.meta.submitError)) {
+      if (this.props.meta.touched && !this.props.meta.active && !this.props.meta.submitting && (this.props.meta.error || this.props.meta.submitError && !this.props.meta.dirtySinceLastSubmit)) {
         errors = [];
         if (this.props.meta.error) errors = errors.concat(this.props.meta.error);
         if (this.props.meta.submitError) errors = errors.concat(this.props.meta.submitError);
@@ -4933,6 +6735,13 @@ exports.default = _default;
 /***/ (function(module, exports) {
 
 module.exports = require("core-js/library/fn/promise");
+
+/***/ }),
+
+/***/ "aYOr":
+/***/ (function(module, exports) {
+
+module.exports = require("@material-ui/icons/HelpOutline");
 
 /***/ }),
 
@@ -5057,6 +6866,122 @@ module.exports = node;
 
 /***/ }),
 
+/***/ "bign":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @flow
+ * @relayHash 0127336e72ce26088ca1a2e38be6f39c
+ */
+
+/* eslint-disable */
+
+/*::
+import type { ConcreteRequest } from 'relay-runtime';
+export type UserListSubscriptionVariables = {|
+  token?: ?string
+|};
+export type UserListSubscriptionResponse = {|
+  +userEvent: ?{|
+    +id: string
+  |}
+|};
+export type UserListSubscription = {|
+  variables: UserListSubscriptionVariables,
+  response: UserListSubscriptionResponse,
+|};
+*/
+
+/*
+subscription UserListSubscription(
+  $token: String
+) {
+  userEvent(token: $token) {
+    id
+  }
+}
+*/
+
+var node
+/*: ConcreteRequest*/
+= function () {
+  var v0 = [{
+    "kind": "LocalArgument",
+    "name": "token",
+    "type": "String",
+    "defaultValue": null
+  }],
+      v1 = [{
+    "kind": "LinkedField",
+    "alias": null,
+    "name": "userEvent",
+    "storageKey": null,
+    "args": [{
+      "kind": "Variable",
+      "name": "token",
+      "variableName": "token",
+      "type": "String"
+    }],
+    "concreteType": "User",
+    "plural": false,
+    "selections": [{
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "id",
+      "args": null,
+      "storageKey": null
+    }]
+  }];
+  return {
+    "kind": "Request",
+    "fragment": {
+      "kind": "Fragment",
+      "name": "UserListSubscription",
+      "type": "Subscription",
+      "metadata": null,
+      "argumentDefinitions": v0
+      /*: any*/
+      ,
+      "selections": v1
+      /*: any*/
+
+    },
+    "operation": {
+      "kind": "Operation",
+      "name": "UserListSubscription",
+      "argumentDefinitions": v0
+      /*: any*/
+      ,
+      "selections": v1
+      /*: any*/
+
+    },
+    "params": {
+      "operationKind": "subscription",
+      "name": "UserListSubscription",
+      "id": null,
+      "text": "subscription UserListSubscription(\n  $token: String\n) {\n  userEvent(token: $token) {\n    id\n  }\n}\n",
+      "metadata": {}
+    }
+  };
+}(); // prettier-ignore
+
+
+node
+/*: any*/
+.hash = 'd6b2e28f11d158c6939fc06a57c861cd';
+module.exports = node;
+
+/***/ }),
+
+/***/ "bzUq":
+/***/ (function(module, exports) {
+
+module.exports = require("@material-ui/core/TablePagination");
+
+/***/ }),
+
 /***/ "c25J":
 /***/ (function(module, exports) {
 
@@ -5089,6 +7014,79 @@ module.exports = __webpack_require__("r7XW");
 /***/ (function(module, exports) {
 
 module.exports = require("core-js/library/fn/object/assign");
+
+/***/ }),
+
+/***/ "dLP/":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @flow
+ */
+
+/* eslint-disable */
+
+/*::
+import type { ReaderFragment } from 'relay-runtime';
+export type UserRole = "ADMIN" | "ANONYMOUS" | "AUTHENTICATED" | "%future added value";
+import type { FragmentReference } from "relay-runtime";
+declare export opaque type UserItemContainer_node$ref: FragmentReference;
+export type UserItemContainer_node = {|
+  +id: string,
+  +email: string,
+  +isEmailVerified: boolean,
+  +name: ?string,
+  +roles: $ReadOnlyArray<?UserRole>,
+  +$refType: UserItemContainer_node$ref,
+|};
+*/
+
+var node
+/*: ReaderFragment*/
+= {
+  "kind": "Fragment",
+  "name": "UserItemContainer_node",
+  "type": "User",
+  "metadata": null,
+  "argumentDefinitions": [],
+  "selections": [{
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "id",
+    "args": null,
+    "storageKey": null
+  }, {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "email",
+    "args": null,
+    "storageKey": null
+  }, {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "isEmailVerified",
+    "args": null,
+    "storageKey": null
+  }, {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "name",
+    "args": null,
+    "storageKey": null
+  }, {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "roles",
+    "args": null,
+    "storageKey": null
+  }]
+}; // prettier-ignore
+
+node
+/*: any*/
+.hash = '86fe38e2f3470d742a23559d0e039347';
+module.exports = node;
 
 /***/ }),
 
@@ -5376,6 +7374,145 @@ module.exports = {
 
 /***/ }),
 
+/***/ "faI2":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _regenerator = _interopRequireDefault(__webpack_require__("ln6h"));
+
+var _promise = _interopRequireDefault(__webpack_require__("eVuF"));
+
+var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__("+oT+"));
+
+var _reactRelay = __webpack_require__("iuEU");
+
+var mutation = function mutation() {
+  return __webpack_require__("KAMz");
+};
+
+var _default =
+/*#__PURE__*/
+function () {
+  var _ref = (0, _asyncToGenerator2.default)(
+  /*#__PURE__*/
+  _regenerator.default.mark(function _callee(di, input) {
+    return _regenerator.default.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            return _context.abrupt("return", new _promise.default(function (resolve, reject) {
+              (0, _reactRelay.commitMutation)(di.get("env"), {
+                mutation: mutation,
+                variables: {
+                  input: input || {}
+                },
+                onCompleted: function onCompleted(data, errors) {
+                  return resolve({
+                    data: data,
+                    errors: errors
+                  });
+                },
+                onError: reject
+              });
+            }));
+
+          case 1:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee);
+  }));
+
+  return function (_x, _x2) {
+    return _ref.apply(this, arguments);
+  };
+}();
+
+exports.default = _default;
+
+/***/ }),
+
+/***/ "fcv4":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireWildcard = __webpack_require__("5Uuq");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.hideEditModal = exports.showEditModal = exports.deselectAll = exports.selectAll = exports.setSelected = void 0;
+
+var types = _interopRequireWildcard(__webpack_require__("sTFT"));
+
+var setSelected = function setSelected(_ref) {
+  var userId = _ref.userId,
+      isSelected = _ref.isSelected;
+  return {
+    type: types.SET_SELECTED,
+    userId: userId,
+    isSelected: isSelected
+  };
+};
+
+exports.setSelected = setSelected;
+
+var selectAll = function selectAll(_ref2) {
+  var userIds = _ref2.userIds;
+  return {
+    type: types.SELECT_ALL,
+    userIds: userIds
+  };
+};
+
+exports.selectAll = selectAll;
+
+var deselectAll = function deselectAll() {
+  var _ref3 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+      exceptUserIds = _ref3.exceptUserIds;
+
+  return {
+    type: types.DESELECT_ALL,
+    exceptUserIds: exceptUserIds
+  };
+};
+
+exports.deselectAll = deselectAll;
+
+var showEditModal = function showEditModal() {
+  var _ref4 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+      userId = _ref4.userId;
+
+  return {
+    type: types.SHOW_EDIT_MODAL,
+    userId: userId
+  };
+};
+
+exports.showEditModal = showEditModal;
+
+var hideEditModal = function hideEditModal() {
+  return {
+    type: types.HIDE_EDIT_MODAL
+  };
+};
+
+exports.hideEditModal = hideEditModal;
+
+/***/ }),
+
 /***/ "fmY8":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -5486,6 +7623,136 @@ var node
 node
 /*: any*/
 .hash = '8d27fab1ea3de67cd05b843a4fb0c3b4';
+module.exports = node;
+
+/***/ }),
+
+/***/ "gEav":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @flow
+ * @relayHash ac03752c0dc8526e333189e1b48e374e
+ */
+
+/* eslint-disable */
+
+/*::
+import type { ConcreteRequest } from 'relay-runtime';
+export type UserRole = "ADMIN" | "ANONYMOUS" | "AUTHENTICATED" | "%future added value";
+export type CreateUserInput = {|
+  email?: ?string,
+  name?: ?string,
+  password?: ?string,
+  roles?: ?$ReadOnlyArray<?UserRole>,
+  clientMutationId?: ?string,
+|};
+export type CreateUserMutationVariables = {|
+  input: CreateUserInput
+|};
+export type CreateUserMutationResponse = {|
+  +createUser: ?{|
+    +user: ?{|
+      +id: string
+    |}
+  |}
+|};
+export type CreateUserMutation = {|
+  variables: CreateUserMutationVariables,
+  response: CreateUserMutationResponse,
+|};
+*/
+
+/*
+mutation CreateUserMutation(
+  $input: CreateUserInput!
+) {
+  createUser(input: $input) {
+    user {
+      id
+    }
+  }
+}
+*/
+
+var node
+/*: ConcreteRequest*/
+= function () {
+  var v0 = [{
+    "kind": "LocalArgument",
+    "name": "input",
+    "type": "CreateUserInput!",
+    "defaultValue": null
+  }],
+      v1 = [{
+    "kind": "LinkedField",
+    "alias": null,
+    "name": "createUser",
+    "storageKey": null,
+    "args": [{
+      "kind": "Variable",
+      "name": "input",
+      "variableName": "input",
+      "type": "CreateUserInput!"
+    }],
+    "concreteType": "CreateUserPayload",
+    "plural": false,
+    "selections": [{
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "user",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "User",
+      "plural": false,
+      "selections": [{
+        "kind": "ScalarField",
+        "alias": null,
+        "name": "id",
+        "args": null,
+        "storageKey": null
+      }]
+    }]
+  }];
+  return {
+    "kind": "Request",
+    "fragment": {
+      "kind": "Fragment",
+      "name": "CreateUserMutation",
+      "type": "Mutation",
+      "metadata": null,
+      "argumentDefinitions": v0
+      /*: any*/
+      ,
+      "selections": v1
+      /*: any*/
+
+    },
+    "operation": {
+      "kind": "Operation",
+      "name": "CreateUserMutation",
+      "argumentDefinitions": v0
+      /*: any*/
+      ,
+      "selections": v1
+      /*: any*/
+
+    },
+    "params": {
+      "operationKind": "mutation",
+      "name": "CreateUserMutation",
+      "id": null,
+      "text": "mutation CreateUserMutation(\n  $input: CreateUserInput!\n) {\n  createUser(input: $input) {\n    user {\n      id\n    }\n  }\n}\n",
+      "metadata": {}
+    }
+  };
+}(); // prettier-ignore
+
+
+node
+/*: any*/
+.hash = 'e10e0a2a6b930a44cda50e71a629c8f3';
 module.exports = node;
 
 /***/ }),
@@ -5789,6 +8056,579 @@ module.exports = _extends;
 
 /***/ }),
 
+/***/ "i1Ni":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(_) {
+
+var _interopRequireWildcard = __webpack_require__("5Uuq");
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = exports.styles = exports.sortDir = exports.sortBy = exports.pageSize = void 0;
+
+var _promise = _interopRequireDefault(__webpack_require__("eVuF"));
+
+var _regenerator = _interopRequireDefault(__webpack_require__("ln6h"));
+
+var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__("+oT+"));
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
+
+var _assertThisInitialized2 = _interopRequireDefault(__webpack_require__("K47E"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
+
+var _defineProperty2 = _interopRequireDefault(__webpack_require__("xHqa"));
+
+var _objectSpread2 = _interopRequireDefault(__webpack_require__("Avpf"));
+
+var _react = _interopRequireDefault(__webpack_require__("cDcd"));
+
+var _reactIntl = __webpack_require__("k004");
+
+var _reactRelay = __webpack_require__("iuEU");
+
+var _Typography = _interopRequireDefault(__webpack_require__("UVoM"));
+
+var _Button = _interopRequireDefault(__webpack_require__("Wh1t"));
+
+var _IconButton = _interopRequireDefault(__webpack_require__("EmCc"));
+
+var _Table = _interopRequireDefault(__webpack_require__("BjFw"));
+
+var _TableBody = _interopRequireDefault(__webpack_require__("30mr"));
+
+var _TableCell = _interopRequireDefault(__webpack_require__("Ai9N"));
+
+var _TableHead = _interopRequireDefault(__webpack_require__("TWtx"));
+
+var _TableRow = _interopRequireDefault(__webpack_require__("iDDF"));
+
+var _TablePagination = _interopRequireDefault(__webpack_require__("bzUq"));
+
+var _TableSortLabel = _interopRequireDefault(__webpack_require__("jOOh"));
+
+var _Paper = _interopRequireDefault(__webpack_require__("qt1I"));
+
+var _Checkbox = _interopRequireDefault(__webpack_require__("r6Lb"));
+
+var _Refresh = _interopRequireDefault(__webpack_require__("uQSa"));
+
+var _responsiveTable = _interopRequireDefault(__webpack_require__("HSb4"));
+
+var _UserItemContainer = _interopRequireWildcard(__webpack_require__("H+JB"));
+
+var _EditUserModalContainer = _interopRequireDefault(__webpack_require__("KDWy"));
+
+var _ConfirmModalContainer = _interopRequireDefault(__webpack_require__("+fmV"));
+
+var _Relay = __webpack_require__("JyB7");
+
+var pageSize = 10;
+exports.pageSize = pageSize;
+var sortBy = "email";
+exports.sortBy = sortBy;
+var sortDir = "asc";
+exports.sortDir = sortDir;
+
+var styles = function styles(theme) {
+  return (0, _objectSpread2.default)({
+    layout: {
+      width: "100%",
+      flex: 1,
+      padding: theme.main.spacing
+    },
+    header: {
+      marginTop: "3rem",
+      display: "flex",
+      justifyContent: "space-between"
+    },
+    buttons: {
+      width: "100%",
+      display: "flex",
+      flexDirection: "row",
+      justifyContent: "flex-start",
+      alignContent: "stretch"
+    },
+    button: {
+      margin: "0.5rem"
+    },
+    paper: {
+      background: theme.main.paper
+    },
+    table: (0, _defineProperty2.default)({}, theme.breakpoints.down("sm"), (0, _responsiveTable.default)(theme)),
+    grow: {
+      flex: 1
+    }
+  }, (0, _UserItemContainer.styles)(theme));
+};
+
+exports.styles = styles;
+
+var subscription = function subscription() {
+  return __webpack_require__("bign");
+};
+
+var UserList =
+/*#__PURE__*/
+function (_React$Component) {
+  (0, _inherits2.default)(UserList, _React$Component);
+
+  function UserList(props) {
+    var _this;
+
+    (0, _classCallCheck2.default)(this, UserList);
+    _this = (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(UserList).call(this, props));
+    _this.state = {
+      pageSize: pageSize,
+      pageNumber: 0,
+      variables: {
+        sortBy: sortBy,
+        sortDir: sortDir,
+        first: pageSize
+      },
+      isConfirmOpen: false
+    };
+    _this.handleToggle = _this.handleToggle.bind((0, _assertThisInitialized2.default)(_this));
+    _this.handleCreateAction = _this.handleCreateAction.bind((0, _assertThisInitialized2.default)(_this));
+    _this.handleEditAction = _this.handleEditAction.bind((0, _assertThisInitialized2.default)(_this));
+    _this.handleDeleteAction = _this.handleDeleteAction.bind((0, _assertThisInitialized2.default)(_this));
+    _this.handleCancelDelete = _this.handleCancelDelete.bind((0, _assertThisInitialized2.default)(_this));
+    _this.handleConfirmDelete = _this.handleConfirmDelete.bind((0, _assertThisInitialized2.default)(_this));
+    _this.handleRefreshAction = _this.handleRefreshAction.bind((0, _assertThisInitialized2.default)(_this));
+    _this.handleChangePage = _this.handleChangePage.bind((0, _assertThisInitialized2.default)(_this));
+    _this.handleChangeRowsPerPage = _this.handleChangeRowsPerPage.bind((0, _assertThisInitialized2.default)(_this));
+    return _this;
+  }
+
+  (0, _createClass2.default)(UserList, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      this.unsubscribe = (0, _Relay.subscribe)({
+        subscription: subscription,
+        getToken: this.props.getToken,
+        environment: this.context,
+        callback: this.handleRefreshAction
+      });
+    }
+  }, {
+    key: "componentDidUpdate",
+    value: function componentDidUpdate() {
+      var _this2 = this;
+
+      var total = _.get(this.props.viewer, "users.totalCount", 0);
+
+      if (total && this.state.pageNumber * this.state.pageSize >= total) {
+        // we fell off the list - reset to the beginning
+        var variables = {
+          sortBy: sortBy,
+          sortDir: sortDir,
+          first: this.state.pageSize
+        };
+        setTimeout(function () {
+          _this2.setState({
+            pageNumber: 0,
+            variables: variables
+          }, function () {
+            return _this2.props.relay.refetch(variables, null, null, {
+              force: true
+            });
+          });
+        });
+      }
+
+      this.props.onDeselectAll(_.map(_.get(this.props.viewer, "users.edges", []), "node.id"));
+    }
+  }, {
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      if (this.unsubscribe) {
+        this.unsubscribe();
+        this.unsubscribe = null;
+      }
+    }
+  }, {
+    key: "hasRecords",
+    value: function hasRecords() {
+      return _.get(this.props.viewer, "users.edges", []).length > 0;
+    }
+  }, {
+    key: "isAllSelected",
+    value: function isAllSelected() {
+      var list = _.map(_.get(this.props.viewer, "users.edges", []), "node.id");
+
+      return _.difference(list, this.props.selected).length === 0;
+    }
+  }, {
+    key: "isAllDeselected",
+    value: function isAllDeselected() {
+      return this.props.selected.length === 0;
+    }
+  }, {
+    key: "isSelected",
+    value: function isSelected(userId) {
+      return _.includes(this.props.selected, userId);
+    }
+  }, {
+    key: "handleToggleAll",
+    value: function handleToggleAll() {
+      var forceOff = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+
+      if (forceOff || this.isAllSelected()) {
+        this.props.onDeselectAll();
+      } else {
+        this.props.onSelectAll(_.map(_.get(this.props.viewer, "users.edges", []), "node.id"));
+      }
+    }
+  }, {
+    key: "handleToggle",
+    value: function handleToggle(userId) {
+      this.props.onSetSelected(userId, !this.isSelected(userId));
+    }
+  }, {
+    key: "handleCreateAction",
+    value: function () {
+      var _handleCreateAction = (0, _asyncToGenerator2.default)(
+      /*#__PURE__*/
+      _regenerator.default.mark(function _callee() {
+        return _regenerator.default.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.next = 2;
+                return this.props.onCreate();
+
+              case 2:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function handleCreateAction() {
+        return _handleCreateAction.apply(this, arguments);
+      }
+
+      return handleCreateAction;
+    }()
+  }, {
+    key: "handleEditAction",
+    value: function () {
+      var _handleEditAction = (0, _asyncToGenerator2.default)(
+      /*#__PURE__*/
+      _regenerator.default.mark(function _callee2() {
+        return _regenerator.default.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.next = 2;
+                return this.props.onEdit();
+
+              case 2:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this);
+      }));
+
+      function handleEditAction() {
+        return _handleEditAction.apply(this, arguments);
+      }
+
+      return handleEditAction;
+    }()
+  }, {
+    key: "handleDeleteAction",
+    value: function handleDeleteAction() {
+      this.setState({
+        isConfirmOpen: true
+      });
+    }
+  }, {
+    key: "handleCancelDelete",
+    value: function handleCancelDelete() {
+      this.setState({
+        isConfirmOpen: false
+      });
+    }
+  }, {
+    key: "handleConfirmDelete",
+    value: function () {
+      var _handleConfirmDelete = (0, _asyncToGenerator2.default)(
+      /*#__PURE__*/
+      _regenerator.default.mark(function _callee3() {
+        var _this3 = this;
+
+        return _regenerator.default.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                this.setState({
+                  isConfirmOpen: false
+                });
+                _context3.next = 3;
+                return _promise.default.all(_.map(this.props.selected, function (userId) {
+                  return _this3.props.onDelete(userId);
+                }));
+
+              case 3:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3, this);
+      }));
+
+      function handleConfirmDelete() {
+        return _handleConfirmDelete.apply(this, arguments);
+      }
+
+      return handleConfirmDelete;
+    }()
+  }, {
+    key: "handleRefreshAction",
+    value: function handleRefreshAction() {
+      this.props.relay.refetch(this.state.variables, null, null, {
+        force: true
+      });
+    }
+  }, {
+    key: "handleSort",
+    value: function handleSort(sortBy) {
+      var _this4 = this;
+
+      var sortDir = "asc";
+      if (this.state.variables.sortBy === sortBy) sortDir = this.state.variables.sortDir === "asc" ? "desc" : "asc";
+      var variables = {
+        sortBy: sortBy,
+        sortDir: sortDir,
+        first: this.state.pageSize
+      };
+      this.setState({
+        pageNumber: 0,
+        variables: variables
+      }, function () {
+        return _this4.props.relay.refetch(variables, null, null, {
+          force: true
+        });
+      });
+    }
+  }, {
+    key: "handleChangeRowsPerPage",
+    value: function handleChangeRowsPerPage(evt) {
+      var _this5 = this;
+
+      var pageSize = evt.target.value;
+      var variables = {
+        sortBy: this.state.variables.sortBy,
+        sortDir: this.state.variables.sortDir,
+        first: pageSize
+      };
+      this.setState({
+        pageSize: pageSize,
+        pageNumber: 0,
+        variables: variables
+      }, function () {
+        return _this5.props.relay.refetch(variables, null, null, {
+          force: true
+        });
+      });
+    }
+  }, {
+    key: "handleChangePage",
+    value: function handleChangePage(evt, pageNumber) {
+      var _this6 = this;
+
+      if (this.state.pageNumber === pageNumber) return;
+      var variables = {
+        sortBy: this.state.variables.sortBy,
+        sortDir: this.state.variables.sortDir
+      };
+
+      if (pageNumber === 0) {
+        variables.first = this.state.pageSize;
+      } else if (pageNumber > this.state.pageNumber) {
+        if (pageNumber + 1 > Math.ceil(_.get(this.props.viewer, "users.totalCount", 0) / this.state.pageSize)) {
+          return;
+        }
+
+        variables.first = this.state.pageSize;
+        variables.after = _.get(this.props.viewer, "users.pageInfo.endCursor", null);
+      } else {
+        if (this.state.pageNumber <= 0) return;
+        variables.last = this.state.pageSize;
+        variables.before = _.get(this.props.viewer, "users.pageInfo.startCursor", null);
+      }
+
+      this.setState({
+        pageNumber: pageNumber,
+        variables: variables
+      }, function () {
+        return _this6.props.relay.refetch(variables, null, null, {
+          force: true
+        });
+      });
+    }
+  }, {
+    key: "renderTable",
+    value: function renderTable() {
+      var _this7 = this;
+
+      return _react.default.createElement(_Paper.default, {
+        className: this.props.classes.paper
+      }, _react.default.createElement(_Table.default, {
+        padding: "dense",
+        className: this.props.classes.table
+      }, _react.default.createElement(_TableHead.default, null, _react.default.createElement(_TableRow.default, null, _react.default.createElement(_TableCell.default, {
+        padding: "checkbox",
+        classes: {
+          root: this.props.classes.checkboxField
+        }
+      }, _react.default.createElement(_Checkbox.default, {
+        checked: !!this.hasRecords() && this.isAllSelected(),
+        classes: {
+          root: this.props.classes.checkbox
+        },
+        indeterminate: !this.isAllSelected() && !this.isAllDeselected(),
+        onChange: function onChange() {
+          return _this7.handleToggleAll();
+        },
+        value: "on"
+      })), _react.default.createElement(_TableCell.default, {
+        sortDirection: this.state.variables.sortBy === "email" ? this.state.variables.sortDir : false
+      }, _react.default.createElement(_TableSortLabel.default, {
+        active: this.state.variables.sortBy === "email",
+        direction: this.state.variables.sortDir,
+        onClick: function onClick() {
+          return _this7.handleSort("email");
+        }
+      }, _react.default.createElement(_reactIntl.FormattedMessage, {
+        id: "USERS_EMAIL_COLUMN"
+      }))), _react.default.createElement(_TableCell.default, {
+        sortDirection: this.state.variables.sortBy === "isEmailVerified" ? this.state.variables.sortDir : false
+      }, _react.default.createElement(_TableSortLabel.default, {
+        active: this.state.variables.sortBy === "isEmailVerified",
+        direction: this.state.variables.sortDir,
+        onClick: function onClick() {
+          return _this7.handleSort("isEmailVerified");
+        }
+      }, _react.default.createElement(_reactIntl.FormattedMessage, {
+        id: "USERS_EMAIL_VERIFIED_COLUMN"
+      }))), _react.default.createElement(_TableCell.default, {
+        sortDirection: this.state.variables.sortBy === "name" ? this.state.variables.sortDir : false
+      }, _react.default.createElement(_TableSortLabel.default, {
+        active: this.state.variables.sortBy === "name",
+        direction: this.state.variables.sortDir,
+        onClick: function onClick() {
+          return _this7.handleSort("name");
+        }
+      }, _react.default.createElement(_reactIntl.FormattedMessage, {
+        id: "USERS_NAME_COLUMN"
+      }))), _react.default.createElement(_TableCell.default, null, _react.default.createElement(_reactIntl.FormattedMessage, {
+        id: "USERS_ROLES_COLUMN"
+      })))), _react.default.createElement(_TableBody.default, null, _.map(_.get(this.props.viewer, "users.edges", []), function (edge) {
+        return _react.default.createElement(_UserItemContainer.default, {
+          key: edge.cursor,
+          node: edge.node,
+          onToggle: _this7.handleToggle
+        });
+      }))), _react.default.createElement(_TablePagination.default, {
+        rowsPerPageOptions: [10, 20, 30, 50, 100],
+        component: "div",
+        count: _.get(this.props.viewer, "users.totalCount", 0),
+        rowsPerPage: this.state.pageSize,
+        labelRowsPerPage: "",
+        page: this.state.pageNumber,
+        onChangeRowsPerPage: this.handleChangeRowsPerPage,
+        onChangePage: this.handleChangePage
+      }));
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      return _react.default.createElement("div", {
+        className: this.props.classes.layout
+      }, _react.default.createElement("div", {
+        className: this.props.classes.header
+      }, _react.default.createElement(_Typography.default, {
+        variant: "h3"
+      }, _react.default.createElement(_reactIntl.FormattedMessage, {
+        id: "TITLE_USERS"
+      })), _react.default.createElement(_IconButton.default, {
+        color: "inherit",
+        onClick: this.handleRefreshAction
+      }, _react.default.createElement(_Refresh.default, null))), _react.default.createElement("div", {
+        className: this.props.classes.buttons
+      }, _react.default.createElement(_Button.default, {
+        variant: "contained",
+        color: "secondary",
+        classes: {
+          root: this.props.classes.button
+        },
+        onClick: this.handleCreateAction
+      }, _react.default.createElement(_reactIntl.FormattedMessage, {
+        id: "USERS_CREATE_BUTTON"
+      })), _react.default.createElement(_Button.default, {
+        variant: "contained",
+        color: "primary",
+        disabled: this.props.selected.length === 0,
+        classes: {
+          root: this.props.classes.button
+        },
+        onClick: this.handleEditAction
+      }, _react.default.createElement(_reactIntl.FormattedMessage, {
+        id: "USERS_EDIT_BUTTON"
+      })), _react.default.createElement(_Button.default, {
+        variant: "contained",
+        color: "primary",
+        disabled: this.props.selected.length === 0,
+        classes: {
+          root: this.props.classes.button
+        },
+        onClick: this.handleDeleteAction
+      }, _react.default.createElement(_reactIntl.FormattedMessage, {
+        id: "USERS_DELETE_BUTTON"
+      }))), this.renderTable(), _react.default.createElement(_EditUserModalContainer.default, null), _react.default.createElement(_ConfirmModalContainer.default, {
+        isOpen: this.state.isConfirmOpen,
+        title: "DELETE_USER_TITLE",
+        text: "DELETE_USER_TEXT",
+        cancel: "DELETE_USER_CANCEL",
+        submit: "DELETE_USER_SUBMIT",
+        onCancel: this.handleCancelDelete,
+        onSubmit: this.handleConfirmDelete
+      }));
+    }
+  }]);
+  return UserList;
+}(_react.default.Component);
+
+(0, _defineProperty2.default)(UserList, "contextType", _Relay.RelayContext);
+var _default = UserList;
+exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("YLtl")))
+
+/***/ }),
+
+/***/ "iDDF":
+/***/ (function(module, exports) {
+
+module.exports = require("@material-ui/core/TableRow");
+
+/***/ }),
+
 /***/ "iTUb":
 /***/ (function(module, exports) {
 
@@ -5857,7 +8697,7 @@ function (_React$PureComponent) {
 
       var errors = null;
 
-      if (this.props.meta.touched && !this.props.meta.active && (this.props.meta.error || this.props.meta.submitError)) {
+      if (this.props.meta.touched && !this.props.meta.active && !this.props.meta.submitting && (this.props.meta.error || this.props.meta.submitError && !this.props.meta.dirtySinceLastSubmit)) {
         errors = [];
         if (this.props.meta.error) errors = errors.concat(this.props.meta.error);
         if (this.props.meta.submitError) errors = errors.concat(this.props.meta.submitError);
@@ -5936,6 +8776,188 @@ module.exports = _typeof;
 
 /***/ }),
 
+/***/ "iooE":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @flow
+ */
+
+/* eslint-disable */
+
+/*::
+import type { ReaderFragment } from 'relay-runtime';
+type UserItemContainer_node$ref = any;
+import type { FragmentReference } from "relay-runtime";
+declare export opaque type UserListContainer_viewer$ref: FragmentReference;
+export type UserListContainer_viewer = {|
+  +users: ?{|
+    +edges: ?$ReadOnlyArray<?{|
+      +cursor: string,
+      +node: ?{|
+        +id: string,
+        +$fragmentRefs: UserItemContainer_node$ref,
+      |},
+    |}>,
+    +pageInfo: {|
+      +startCursor: ?string,
+      +endCursor: ?string,
+    |},
+    +totalCount: ?number,
+  |},
+  +$refType: UserListContainer_viewer$ref,
+|};
+*/
+
+var node
+/*: ReaderFragment*/
+= {
+  "kind": "Fragment",
+  "name": "UserListContainer_viewer",
+  "type": "Viewer",
+  "metadata": null,
+  "argumentDefinitions": [{
+    "kind": "LocalArgument",
+    "name": "sortBy",
+    "type": "UserSortBy",
+    "defaultValue": null
+  }, {
+    "kind": "LocalArgument",
+    "name": "sortDir",
+    "type": "UserSortDir",
+    "defaultValue": null
+  }, {
+    "kind": "LocalArgument",
+    "name": "first",
+    "type": "Int",
+    "defaultValue": null
+  }, {
+    "kind": "LocalArgument",
+    "name": "after",
+    "type": "String",
+    "defaultValue": null
+  }, {
+    "kind": "LocalArgument",
+    "name": "last",
+    "type": "Int",
+    "defaultValue": null
+  }, {
+    "kind": "LocalArgument",
+    "name": "before",
+    "type": "String",
+    "defaultValue": null
+  }],
+  "selections": [{
+    "kind": "LinkedField",
+    "alias": null,
+    "name": "users",
+    "storageKey": null,
+    "args": [{
+      "kind": "Variable",
+      "name": "after",
+      "variableName": "after",
+      "type": "String"
+    }, {
+      "kind": "Variable",
+      "name": "before",
+      "variableName": "before",
+      "type": "String"
+    }, {
+      "kind": "Variable",
+      "name": "first",
+      "variableName": "first",
+      "type": "Int"
+    }, {
+      "kind": "Variable",
+      "name": "last",
+      "variableName": "last",
+      "type": "Int"
+    }, {
+      "kind": "Variable",
+      "name": "sortBy",
+      "variableName": "sortBy",
+      "type": "UserSortBy"
+    }, {
+      "kind": "Variable",
+      "name": "sortDir",
+      "variableName": "sortDir",
+      "type": "UserSortDir"
+    }],
+    "concreteType": "UserConnection",
+    "plural": false,
+    "selections": [{
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "edges",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "UserEdge",
+      "plural": true,
+      "selections": [{
+        "kind": "ScalarField",
+        "alias": null,
+        "name": "cursor",
+        "args": null,
+        "storageKey": null
+      }, {
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "node",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "User",
+        "plural": false,
+        "selections": [{
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "id",
+          "args": null,
+          "storageKey": null
+        }, {
+          "kind": "FragmentSpread",
+          "name": "UserItemContainer_node",
+          "args": null
+        }]
+      }]
+    }, {
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "pageInfo",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "PageInfo",
+      "plural": false,
+      "selections": [{
+        "kind": "ScalarField",
+        "alias": null,
+        "name": "startCursor",
+        "args": null,
+        "storageKey": null
+      }, {
+        "kind": "ScalarField",
+        "alias": null,
+        "name": "endCursor",
+        "args": null,
+        "storageKey": null
+      }]
+    }, {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "totalCount",
+      "args": null,
+      "storageKey": null
+    }]
+  }]
+}; // prettier-ignore
+
+node
+/*: any*/
+.hash = 'aadba9545eb9a4f3aeb02eb7ef07ae48';
+module.exports = node;
+
+/***/ }),
+
 /***/ "ir66":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -5995,7 +9017,7 @@ function (_React$PureComponent) {
     value: function render() {
       var errors = null;
 
-      if (this.props.meta.touched && !this.props.meta.active && (this.props.meta.error || this.props.meta.submitError)) {
+      if (this.props.meta.touched && !this.props.meta.active && !this.props.meta.submitting && (this.props.meta.error || this.props.meta.submitError && !this.props.meta.dirtySinceLastSubmit)) {
         errors = [];
         if (this.props.meta.error) errors = errors.concat(this.props.meta.error);
         if (this.props.meta.submitError) errors = errors.concat(this.props.meta.submitError);
@@ -6034,20 +9056,10 @@ module.exports = require("react-relay");
 
 /***/ }),
 
-/***/ "jRAA":
-/***/ (function(module, exports, __webpack_require__) {
+/***/ "jOOh":
+/***/ (function(module, exports) {
 
-"use strict";
-
-
-var constants = __webpack_require__("o4p3");
-
-module.exports = function isRouteAllowed(path) {
-  var userRoles = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
-  var isAllowed = !!constants.pages[path] && constants.pages[path].isAllowed;
-  if (!isAllowed) return true;
-  return isAllowed(userRoles);
-};
+module.exports = require("@material-ui/core/TableSortLabel");
 
 /***/ }),
 
@@ -6099,13 +9111,6 @@ var FormContext = _react.default.createContext({});
 
 var _default = FormContext;
 exports.default = _default;
-
-/***/ }),
-
-/***/ "mf1M":
-/***/ (function(module, exports) {
-
-module.exports = require("@material-ui/core/Grow");
 
 /***/ }),
 
@@ -6370,6 +9375,136 @@ exports.getUserProviders = getUserProviders;
 
 /***/ }),
 
+/***/ "p198":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = exports.styles = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
+
+var _defineProperty2 = _interopRequireDefault(__webpack_require__("xHqa"));
+
+var _react = _interopRequireDefault(__webpack_require__("cDcd"));
+
+var _reactIntl = __webpack_require__("k004");
+
+var _httpStatusCodes = _interopRequireDefault(__webpack_require__("LZqe"));
+
+var styles = function styles(theme) {
+  return {
+    layout: (0, _defineProperty2.default)({
+      width: "100%",
+      maxWidth: 1300 + 2 * theme.main.spacing,
+      flex: 1,
+      display: "flex",
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "center",
+      padding: theme.main.spacing
+    }, theme.breakpoints.down("md"), {
+      flexDirection: "column",
+      padding: theme.main.spacing / 2,
+      maxWidth: 1300 + theme.main.spacing
+    }),
+    code: (0, _defineProperty2.default)({
+      fontSize: "300%",
+      textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)",
+      padding: "0.5rem 2rem",
+      color: "1px solid ".concat(theme.palette.text.primary),
+      borderRight: "1px solid ".concat(theme.palette.text.disabled)
+    }, theme.breakpoints.down("md"), {
+      borderRight: "none"
+    }),
+    text: {
+      fontSize: "200%",
+      textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)",
+      padding: "0.5rem 2rem",
+      color: "1px solid ".concat(theme.palette.text.secondary)
+    },
+    linkWrapper: {
+      fontSize: "1rem",
+      marginTop: "1rem"
+    },
+    link: {
+      color: theme.palette.text.primary,
+      textDecoration: "none",
+      "&:hover": {
+        color: "#ffffff"
+      }
+    }
+  };
+};
+
+exports.styles = styles;
+
+var ErrorMessage =
+/*#__PURE__*/
+function (_React$Component) {
+  (0, _inherits2.default)(ErrorMessage, _React$Component);
+
+  function ErrorMessage() {
+    (0, _classCallCheck2.default)(this, ErrorMessage);
+    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(ErrorMessage).apply(this, arguments));
+  }
+
+  (0, _createClass2.default)(ErrorMessage, [{
+    key: "getCode",
+    value: function getCode() {
+      if (this.props.error) return this.props.intl.formatMessage({
+        id: "ERROR"
+      });
+      if (!this.props.statusCode || this.props.statusCode === 200) return 500;
+      return this.props.statusCode;
+    }
+  }, {
+    key: "getText",
+    value: function getText() {
+      if (this.props.error) return this.props.error.message;
+      return _httpStatusCodes.default.getStatusText(this.getCode());
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      return _react.default.createElement("div", {
+        className: this.props.classes.layout
+      }, _react.default.createElement("div", {
+        className: this.props.classes.code
+      }, this.getCode()), _react.default.createElement("div", {
+        className: this.props.classes.text
+      }, this.getText(), _react.default.createElement("div", {
+        className: this.props.classes.linkWrapper
+      }, ">\xA0\xA0", _react.default.createElement("a", {
+        href: "/",
+        className: this.props.classes.link
+      }, _react.default.createElement(_reactIntl.FormattedMessage, {
+        id: "ERROR_GO_HOME_LINK"
+      })))));
+    }
+  }]);
+  return ErrorMessage;
+}(_react.default.Component);
+
+var _default = ErrorMessage;
+exports.default = _default;
+
+/***/ }),
+
 /***/ "p8rN":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -6480,6 +9615,127 @@ module.exports = require("core-js/library/fn/array/from");
 
 /***/ }),
 
+/***/ "rLaN":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(_) {
+
+var _interopRequireWildcard = __webpack_require__("5Uuq");
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _getIterator2 = _interopRequireDefault(__webpack_require__("XXOK"));
+
+var _immutable = __webpack_require__("nuGg");
+
+var _reduxImmutable = __webpack_require__("RGyf");
+
+var types = _interopRequireWildcard(__webpack_require__("sTFT"));
+
+/* State Shape
+Map({
+  selected: Set([String]), // IDs
+  editModalUserId: String, // null when creating a new user
+  isEditModalOpen: false,
+})
+*/
+var selectedReducer = function selectedReducer() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : (0, _immutable.Set)([]);
+  var action = arguments.length > 1 ? arguments[1] : undefined;
+
+  switch (action.type) {
+    case types.SET_SELECTED:
+      if (!_.isUndefined(action.userId) && !_.isUndefined(action.isSelected)) {
+        // eslint-disable-next-line lodash/prefer-lodash-method
+        if (state.includes(action.userId)) return state.delete(action.userId);else return state.add(action.userId);
+      }
+
+      break;
+
+    case types.SELECT_ALL:
+      if (!_.isUndefined(action.userIds)) return (0, _immutable.Set)(action.userIds);
+      break;
+
+    case types.DESELECT_ALL:
+      if (_.isUndefined(action.exceptUserIds)) {
+        return (0, _immutable.Set)([]);
+      } else {
+        return state.withMutations(function (set) {
+          var _iteratorNormalCompletion = true;
+          var _didIteratorError = false;
+          var _iteratorError = undefined;
+
+          try {
+            for (var _iterator = (0, _getIterator2.default)(set.values()), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+              var item = _step.value;
+              if (!_.includes(action.exceptUserIds, item)) set.delete(item);
+            }
+          } catch (err) {
+            _didIteratorError = true;
+            _iteratorError = err;
+          } finally {
+            try {
+              if (!_iteratorNormalCompletion && _iterator.return != null) {
+                _iterator.return();
+              }
+            } finally {
+              if (_didIteratorError) {
+                throw _iteratorError;
+              }
+            }
+          }
+        });
+      }
+
+  }
+
+  return state;
+};
+
+var editModalUserIdReducer = function editModalUserIdReducer() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+  var action = arguments.length > 1 ? arguments[1] : undefined;
+
+  switch (action.type) {
+    case types.SHOW_EDIT_MODAL:
+      return action.userId || null;
+  }
+
+  return state;
+};
+
+var isEditModalOpenReducer = function isEditModalOpenReducer() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+  var action = arguments.length > 1 ? arguments[1] : undefined;
+
+  switch (action.type) {
+    case types.SHOW_EDIT_MODAL:
+      return true;
+
+    case types.HIDE_EDIT_MODAL:
+      return false;
+  }
+
+  return state;
+};
+
+var reducer = (0, _reduxImmutable.combineReducers)({
+  selected: selectedReducer,
+  editModalUserId: editModalUserIdReducer,
+  isEditModalOpen: isEditModalOpenReducer
+});
+var _default = reducer;
+exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("YLtl")))
+
+/***/ }),
+
 /***/ "ra+8":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -6548,7 +9804,7 @@ function (_React$PureComponent) {
 
       var errors = null;
 
-      if (this.props.meta.touched && !this.props.meta.active && (this.props.meta.error || this.props.meta.submitError)) {
+      if (this.props.meta.touched && !this.props.meta.active && !this.props.meta.submitting && (this.props.meta.error || this.props.meta.submitError && !this.props.meta.dirtySinceLastSubmit)) {
         errors = [];
         if (this.props.meta.error) errors = errors.concat(this.props.meta.error);
         if (this.props.meta.submitError) errors = errors.concat(this.props.meta.submitError);
@@ -6613,6 +9869,46 @@ exports.default = _default;
 
 /***/ }),
 
+/***/ "rdLC":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireWildcard = __webpack_require__("5Uuq");
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.usersSelectors = exports.usersOperations = exports.usersTypes = exports.default = void 0;
+
+var _reducers = _interopRequireDefault(__webpack_require__("rLaN"));
+
+var usersTypes = _interopRequireWildcard(__webpack_require__("sTFT"));
+
+exports.usersTypes = usersTypes;
+
+var usersOperations = _interopRequireWildcard(__webpack_require__("1Pmw"));
+
+exports.usersOperations = usersOperations;
+
+var usersSelectors = _interopRequireWildcard(__webpack_require__("smpn"));
+
+exports.usersSelectors = usersSelectors;
+var _default = _reducers.default;
+exports.default = _default;
+
+/***/ }),
+
+/***/ "rf6O":
+/***/ (function(module, exports) {
+
+module.exports = require("prop-types");
+
+/***/ }),
+
 /***/ "rtrS":
 /***/ (function(module, exports) {
 
@@ -6645,25 +9941,60 @@ exports.SET_LOCALE = SET_LOCALE;
 
 /***/ }),
 
-/***/ "t6mg":
+/***/ "sTFT":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _interopRequireDefault = __webpack_require__("KI45");
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.HIDE_EDIT_MODAL = exports.SHOW_EDIT_MODAL = exports.DESELECT_ALL = exports.SELECT_ALL = exports.SET_SELECTED = void 0;
+var SET_SELECTED = "app/users/SET_SELECTED";
+exports.SET_SELECTED = SET_SELECTED;
+var SELECT_ALL = "app/users/SELECT_ALL";
+exports.SELECT_ALL = SELECT_ALL;
+var DESELECT_ALL = "app/users/DESELECT_ALL";
+exports.DESELECT_ALL = DESELECT_ALL;
+var SHOW_EDIT_MODAL = "app/users/SHOW_EDIT_MODAL";
+exports.SHOW_EDIT_MODAL = SHOW_EDIT_MODAL;
+var HIDE_EDIT_MODAL = "app/users/HIDE_EDIT_MODAL";
+exports.HIDE_EDIT_MODAL = HIDE_EDIT_MODAL;
+
+/***/ }),
+
+/***/ "smpn":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-Object.defineProperty(exports, "default", {
-  enumerable: true,
-  get: function get() {
-    return _ProfilePageContainer.default;
-  }
-});
+exports.getEditModalUserId = exports.isEditModalOpen = exports.getSelected = void 0;
 
-var _ProfilePageContainer = _interopRequireDefault(__webpack_require__("tYdJ"));
+var _reselect = __webpack_require__("MWqi");
+
+var getSelected = (0, _reselect.createSelector)(function (state) {
+  return state.getIn(["users", "selected"]);
+}, function (selected) {
+  return selected.toJS();
+});
+exports.getSelected = getSelected;
+
+var isEditModalOpen = function isEditModalOpen(state) {
+  return state.getIn(["users", "isEditModalOpen"]);
+};
+
+exports.isEditModalOpen = isEditModalOpen;
+
+var getEditModalUserId = function getEditModalUserId(state) {
+  return state.getIn(["users", "editModalUserId"]);
+};
+
+exports.getEditModalUserId = getEditModalUserId;
 
 /***/ }),
 
@@ -6671,75 +10002,6 @@ var _ProfilePageContainer = _interopRequireDefault(__webpack_require__("tYdJ"));
 /***/ (function(module, exports) {
 
 module.exports = require("@material-ui/core/Input");
-
-/***/ }),
-
-/***/ "tYdJ":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireWildcard = __webpack_require__("5Uuq");
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _reactRedux = __webpack_require__("h74D");
-
-var _styles = __webpack_require__("9Pu4");
-
-var _state = __webpack_require__("Yoxy");
-
-var _ProfilePage = _interopRequireWildcard(__webpack_require__("2Ro0"));
-
-var mapStateToProps = function mapStateToProps(state) {
-  return {
-    userRoles: _state.authSelectors.getRoles(state),
-    userVerified: _state.authSelectors.getIsEmailVerified(state),
-    userProviders: _state.authSelectors.getUserProviders(state)
-  };
-};
-
-var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-  return {
-    onLoad: function onLoad() {
-      return dispatch(_state.authOperations.getStatus());
-    },
-    onSave: function onSave(name, email, password) {
-      return dispatch(_state.authOperations.updateProfile({
-        name: name,
-        email: email,
-        password: password
-      }));
-    },
-    onLink: function onLink(provider) {
-      return dispatch(_state.authOperations.linkProvider({
-        provider: provider
-      }));
-    },
-    onUnlink: function onUnlink(provider) {
-      return dispatch(_state.authOperations.unlinkProvider({
-        provider: provider
-      }));
-    },
-    onVerify: function onVerify() {
-      return dispatch(_state.authOperations.requestEmailVerification());
-    },
-    onDestroy: function onDestroy() {
-      return dispatch(_state.authOperations.deleteProfile());
-    }
-  };
-};
-
-var ProfilePage = (0, _styles.withStyles)(_ProfilePage.styles, {
-  withTheme: true
-})((0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_ProfilePage.default));
-ProfilePage.getInitialProps = _ProfilePage.default.getInitialProps;
-var _default = ProfilePage;
-exports.default = _default;
 
 /***/ }),
 
@@ -6763,6 +10025,13 @@ var _Select = _interopRequireWildcard(__webpack_require__("ra+8"));
 var Select = (0, _styles.withStyles)(_Select.styles)(_Select.default);
 var _default = Select;
 exports.default = _default;
+
+/***/ }),
+
+/***/ "uQSa":
+/***/ (function(module, exports) {
+
+module.exports = require("@material-ui/icons/Refresh");
 
 /***/ }),
 
@@ -6802,13 +10071,6 @@ module.exports = {"MENU_DASHBOARD":"Dashboard","TITLE_DASHBOARD":"Dashboard","ME
 /***/ (function(module, exports) {
 
 module.exports = require("core-js/library/fn/symbol");
-
-/***/ }),
-
-/***/ "w1vu":
-/***/ (function(module, exports) {
-
-module.exports = "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><path d=\"M22 5.894a8.304 8.304 0 0 1-2.357.636 4.064 4.064 0 0 0 1.804-2.235c-.792.463-1.67.8-2.605.98A4.128 4.128 0 0 0 15.847 4c-2.266 0-4.104 1.808-4.104 4.04 0 .316.037.624.107.92a11.711 11.711 0 0 1-8.458-4.22 3.972 3.972 0 0 0-.555 2.03c0 1.401.724 2.638 1.825 3.362a4.138 4.138 0 0 1-1.858-.505v.05c0 1.958 1.414 3.59 3.29 3.961a4.169 4.169 0 0 1-1.852.07c.522 1.604 2.037 2.772 3.833 2.804a8.315 8.315 0 0 1-5.096 1.73c-.331 0-.658-.02-.979-.057A11.748 11.748 0 0 0 8.29 20c7.547 0 11.674-6.155 11.674-11.493 0-.175-.004-.349-.011-.522A8.265 8.265 0 0 0 22 5.894z\"></path></svg>"
 
 /***/ }),
 
@@ -7017,13 +10279,6 @@ module.exports = require("core-js/library/fn/date/now");
 
 /***/ }),
 
-/***/ "yh8l":
-/***/ (function(module, exports) {
-
-module.exports = "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><path d=\"M22 11h-2V9h-2v2h-2v2h2v2h2v-2h2v-2zm-13.869.143V13.2h3.504c-.175.857-1.051 2.571-3.504 2.571A3.771 3.771 0 0 1 4.365 12a3.771 3.771 0 0 1 3.766-3.771c1.227 0 2.015.514 2.453.942l1.664-1.542C11.198 6.6 9.796 6 8.131 6 4.715 6 2 8.657 2 12s2.715 6 6.131 6C11.635 18 14 15.6 14 12.171c0-.428 0-.685-.088-1.028h-5.78z\"></path></svg>"
-
-/***/ }),
-
 /***/ "z+7x":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -7070,6 +10325,170 @@ var setGoogleMapsKey = function setGoogleMapsKey(_ref2) {
 };
 
 exports.setGoogleMapsKey = setGoogleMapsKey;
+
+/***/ }),
+
+/***/ "z+c5":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @flow
+ * @relayHash ba008d0b8e9f510bf17a4c208e627f54
+ */
+
+/* eslint-disable */
+
+/*::
+import type { ConcreteRequest } from 'relay-runtime';
+export type UserRole = "ADMIN" | "ANONYMOUS" | "AUTHENTICATED" | "%future added value";
+export type EditUserModalQueryVariables = {|
+  currentId?: ?string
+|};
+export type EditUserModalQueryResponse = {|
+  +viewer: ?{|
+    +user: ?{|
+      +id: string,
+      +name: ?string,
+      +email: string,
+      +roles: $ReadOnlyArray<?UserRole>,
+    |}
+  |}
+|};
+export type EditUserModalQuery = {|
+  variables: EditUserModalQueryVariables,
+  response: EditUserModalQueryResponse,
+|};
+*/
+
+/*
+query EditUserModalQuery(
+  $currentId: ID
+) {
+  viewer {
+    user(id: $currentId) {
+      id
+      name
+      email
+      roles
+    }
+  }
+}
+*/
+
+var node
+/*: ConcreteRequest*/
+= function () {
+  var v0 = [{
+    "kind": "LocalArgument",
+    "name": "currentId",
+    "type": "ID",
+    "defaultValue": null
+  }],
+      v1 = [{
+    "kind": "LinkedField",
+    "alias": null,
+    "name": "user",
+    "storageKey": null,
+    "args": [{
+      "kind": "Variable",
+      "name": "id",
+      "variableName": "currentId",
+      "type": "ID"
+    }],
+    "concreteType": "User",
+    "plural": false,
+    "selections": [{
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "id",
+      "args": null,
+      "storageKey": null
+    }, {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "name",
+      "args": null,
+      "storageKey": null
+    }, {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "email",
+      "args": null,
+      "storageKey": null
+    }, {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "roles",
+      "args": null,
+      "storageKey": null
+    }]
+  }];
+  return {
+    "kind": "Request",
+    "fragment": {
+      "kind": "Fragment",
+      "name": "EditUserModalQuery",
+      "type": "Query",
+      "metadata": null,
+      "argumentDefinitions": v0
+      /*: any*/
+      ,
+      "selections": [{
+        "kind": "LinkedField",
+        "alias": "viewer",
+        "name": "__viewer_viewer",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "Viewer",
+        "plural": false,
+        "selections": v1
+        /*: any*/
+
+      }]
+    },
+    "operation": {
+      "kind": "Operation",
+      "name": "EditUserModalQuery",
+      "argumentDefinitions": v0
+      /*: any*/
+      ,
+      "selections": [{
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "viewer",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "Viewer",
+        "plural": false,
+        "selections": v1
+        /*: any*/
+
+      }, {
+        "kind": "LinkedHandle",
+        "alias": null,
+        "name": "viewer",
+        "args": null,
+        "handle": "viewer",
+        "key": "",
+        "filters": null
+      }]
+    },
+    "params": {
+      "operationKind": "query",
+      "name": "EditUserModalQuery",
+      "id": null,
+      "text": "query EditUserModalQuery(\n  $currentId: ID\n) {\n  viewer {\n    user(id: $currentId) {\n      id\n      name\n      email\n      roles\n    }\n  }\n}\n",
+      "metadata": {}
+    }
+  };
+}(); // prettier-ignore
+
+
+node
+/*: any*/
+.hash = 'e83115080e2a1951947cf942d4cf520c';
+module.exports = node;
 
 /***/ }),
 

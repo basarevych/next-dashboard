@@ -4803,7 +4803,7 @@ function (_React$PureComponent) {
 
       var errors = null;
 
-      if (this.props.meta.touched && !this.props.meta.active && (this.props.meta.error || this.props.meta.submitError)) {
+      if (this.props.meta.touched && !this.props.meta.active && !this.props.meta.submitting && (this.props.meta.error || this.props.meta.submitError && !this.props.meta.dirtySinceLastSubmit)) {
         errors = [];
         if (this.props.meta.error) errors = errors.concat(this.props.meta.error);
         if (this.props.meta.submitError) errors = errors.concat(this.props.meta.submitError);
@@ -7040,7 +7040,7 @@ function (_React$PureComponent) {
 
       var errors = null;
 
-      if (this.props.meta.touched && !this.props.meta.active && (this.props.meta.error || this.props.meta.submitError)) {
+      if (this.props.meta.touched && !this.props.meta.active && !this.props.meta.submitting && (this.props.meta.error || this.props.meta.submitError && !this.props.meta.dirtySinceLastSubmit)) {
         errors = [];
         if (this.props.meta.error) errors = errors.concat(this.props.meta.error);
         if (this.props.meta.submitError) errors = errors.concat(this.props.meta.submitError);
@@ -9321,7 +9321,7 @@ function (_React$PureComponent) {
 
       var errors = null;
 
-      if (this.props.meta.touched && !this.props.meta.active && (this.props.meta.error || this.props.meta.submitError)) {
+      if (this.props.meta.touched && !this.props.meta.active && !this.props.meta.submitting && (this.props.meta.error || this.props.meta.submitError && !this.props.meta.dirtySinceLastSubmit)) {
         errors = [];
         if (this.props.meta.error) errors = errors.concat(this.props.meta.error);
         if (this.props.meta.submitError) errors = errors.concat(this.props.meta.submitError);
@@ -9459,7 +9459,7 @@ function (_React$PureComponent) {
     value: function render() {
       var errors = null;
 
-      if (this.props.meta.touched && !this.props.meta.active && (this.props.meta.error || this.props.meta.submitError)) {
+      if (this.props.meta.touched && !this.props.meta.active && !this.props.meta.submitting && (this.props.meta.error || this.props.meta.submitError && !this.props.meta.dirtySinceLastSubmit)) {
         errors = [];
         if (this.props.meta.error) errors = errors.concat(this.props.meta.error);
         if (this.props.meta.submitError) errors = errors.concat(this.props.meta.submitError);
@@ -10385,7 +10385,7 @@ function (_React$PureComponent) {
 
       var errors = null;
 
-      if (this.props.meta.touched && !this.props.meta.active && (this.props.meta.error || this.props.meta.submitError)) {
+      if (this.props.meta.touched && !this.props.meta.active && !this.props.meta.submitting && (this.props.meta.error || this.props.meta.submitError && !this.props.meta.dirtySinceLastSubmit)) {
         errors = [];
         if (this.props.meta.error) errors = errors.concat(this.props.meta.error);
         if (this.props.meta.submitError) errors = errors.concat(this.props.meta.submitError);
