@@ -34,9 +34,6 @@ class Auth extends EventEmitter {
     return "singleton";
   }
 
-  /**
-   * Facebook OAuth provider
-   */
   get facebookProvider() {
     if (!this.config.facebookAuthId || !this.config.facebookAuthSecret)
       return null;
@@ -54,9 +51,6 @@ class Auth extends EventEmitter {
     };
   }
 
-  /**
-   * Google OAuth provider
-   */
   get googleProvider() {
     if (!this.config.googleAuthId || !this.config.googleAuthSecret) return null;
 
@@ -73,9 +67,6 @@ class Auth extends EventEmitter {
     };
   }
 
-  /**
-   * Twitter OAuth provider
-   */
   get twitterProvider() {
     if (!this.config.twitterAuthKey || !this.config.twitterAuthSecret)
       return null;
@@ -95,9 +86,6 @@ class Auth extends EventEmitter {
     };
   }
 
-  /**
-   * NextAuth providers
-   */
   get providers() {
     return _.compact([
       this.facebookProvider,
