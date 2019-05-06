@@ -27,12 +27,10 @@ class Users extends EventEmitter {
     this.usersRepo = usersRepo;
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $provides() {
     return "graphql.users";
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $requires() {
     return ["di", "model.user", "repository.users"];
   }

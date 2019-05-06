@@ -4,7 +4,6 @@ const EventEmitter = require("events");
  * Late middleware
  */
 class Late extends EventEmitter {
-  // eslint-disable-next-line lodash/prefer-constant
   static get $provides() {
     return "middleware.late";
   }

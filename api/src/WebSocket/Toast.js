@@ -9,17 +9,14 @@ class Toast extends EventEmitter {
     this.pubsub = pubsub;
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $provides() {
     return "ws.toast";
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $requires() {
     return ["ws", "pubsub"];
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $lifecycle() {
     return "singleton";
   }

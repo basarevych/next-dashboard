@@ -48,12 +48,10 @@ class GraphQL extends EventEmitter {
     );
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $provides() {
     return "graphql";
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $requires() {
     return [
       "app",
@@ -65,7 +63,6 @@ class GraphQL extends EventEmitter {
     ];
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $lifecycle() {
     return "singleton";
   }

@@ -6,7 +6,6 @@ const EventEmitter = require("events");
  * Parse request
  */
 class Parse extends EventEmitter {
-  // eslint-disable-next-line lodash/prefer-constant
   static get $provides() {
     return "middleware.parse";
   }

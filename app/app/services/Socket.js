@@ -22,17 +22,14 @@ class Socket {
     this.socket.on("disconnect", this.onDisconnect.bind(this));
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $provides() {
     return "socket";
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $requires() {
     return ["getState", "dispatch"];
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $lifecycle() {
     return "singleton";
   }

@@ -6,7 +6,6 @@ class EntityNotFoundError extends GraphQLError {
     this.code = "E_NOTFOUND";
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $provides() {
     return "error.entityNotFound";
   }

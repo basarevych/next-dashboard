@@ -83,12 +83,10 @@ class Dashboard extends EventEmitter {
     this.MarketShareValueModel = MarketShareValueModel;
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $provides() {
     return "model.dashboard";
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $lifecycle() {
     return "singleton";
   }

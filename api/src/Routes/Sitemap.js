@@ -14,12 +14,10 @@ class SitemapRoute extends EventEmitter {
     this.router = Router();
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $provides() {
     return "route.sitemap";
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $requires() {
     return ["config"];
   }

@@ -18,17 +18,14 @@ class DashboardRepository extends EventEmitter {
     this.marketSharesTime = 0;
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $provides() {
     return "repository.dashboard";
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $requires() {
     return ["di", "model.dashboard", "fake"];
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $lifecycle() {
     return "singleton";
   }

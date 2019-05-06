@@ -11,17 +11,14 @@ class I18n extends EventEmitter {
     this.formatters = new Map();
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $provides() {
     return "i18n";
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $requires() {
     return [];
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $lifecycle() {
     return "singleton";
   }

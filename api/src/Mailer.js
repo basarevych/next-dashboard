@@ -36,17 +36,14 @@ class Mailer extends EventEmitter {
     }
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $provides() {
     return "mailer";
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $requires() {
     return ["config"];
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $lifecycle() {
     return "singleton";
   }

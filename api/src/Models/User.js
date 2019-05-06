@@ -87,17 +87,14 @@ class User extends BaseModel {
     this.model = this.db.mongoose.model("User", this.schema);
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $provides() {
     return "model.user";
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $requires() {
     return ["db", "model.provider"];
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $lifecycle() {
     return "singleton";
   }

@@ -19,12 +19,10 @@ class Routes extends EventEmitter {
     };
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $provides() {
     return "middleware.routes";
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $requires() {
     return [
       "route.csrf",

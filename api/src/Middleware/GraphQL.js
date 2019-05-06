@@ -13,12 +13,10 @@ class GraphQL extends EventEmitter {
     this.graphql = graphql;
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $provides() {
     return "middleware.graphql";
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $requires() {
     return ["di", "graphql"];
   }
@@ -40,40 +38,45 @@ class GraphQL extends EventEmitter {
     return graphqlHTTP({
       schema: this.graphql.schema,
       graphiql,
-      formatError: error => {
-        let parsed;
+      customFormatErrorFn: error => {
+        let message = error.message || "An unknown error occurred.";
+        let code = error.code;
+        let details = error.details;
+        let locations = error.locations;
+        let path = error.path;
+        let extensions = error.extensions;
+
+        let parsed = {};
         if (error.originalError) {
           if (
             error.originalError.name === "ValidationError" &&
             error.originalError.errors
           ) {
-            // mongoose error
+            // mongoose validation error, extract messages as details field
             parsed = this.di.get("error.validation", error.originalError);
           } else if (
             error.originalError.stack &&
             !error.originalError.details &&
             process.env.NODE_ENV !== "production"
           ) {
+            // generic error, extract stack trace as details field
             parsed = { details: _.split(error.originalError.stack, "\n") };
           }
         }
+        if (parsed.message) message = parsed.message;
+        if (parsed.code) code = parsed.code;
+        if (parsed.details) details = parsed.details;
+
+        if (process.env.NODE_ENV === "production")
+          return { message, code, details };
 
         return {
-          message:
-            (parsed && parsed.message) ||
-            (error.originalError && error.originalError.message) ||
-            error.message ||
-            "Error",
-          code:
-            (parsed && parsed.code) ||
-            (error.originalError && error.originalError.code) ||
-            error.code ||
-            undefined,
-          details:
-            (parsed && parsed.details) ||
-            (error.originalError && error.originalError.details) ||
-            error.details ||
-            undefined
+          message,
+          code,
+          details,
+          locations,
+          path,
+          extensions
         };
       }
     });

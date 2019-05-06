@@ -16,12 +16,10 @@ class EmployeesRepository extends EventEmitter {
     this.pubsub = pubsub;
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $provides() {
     return "repository.employees";
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $requires() {
     return [
       "di",

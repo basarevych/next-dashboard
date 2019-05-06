@@ -4,7 +4,6 @@ const EventEmitter = require("events");
  * Error handler
  */
 class Error extends EventEmitter {
-  // eslint-disable-next-line lodash/prefer-constant
   static get $provides() {
     return "middleware.error";
   }

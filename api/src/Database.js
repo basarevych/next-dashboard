@@ -16,17 +16,14 @@ class Database extends EventEmitter {
     this.ObjectId = mongoose.Types.ObjectId;
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $provides() {
     return "db";
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $requires() {
     return ["app", "config", "di", "fake"];
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $lifecycle() {
     return "singleton";
   }

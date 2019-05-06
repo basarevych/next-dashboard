@@ -17,12 +17,10 @@ class Early extends EventEmitter {
     this.cors = null;
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $provides() {
     return "middleware.early";
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $requires() {
     return ["config"];
   }

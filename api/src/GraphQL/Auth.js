@@ -10,22 +10,18 @@ class Auth extends EventEmitter {
     this.authRepo = authRepo;
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $provides() {
     return "graphql.auth";
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $requires() {
     return ["di", "repository.auth"];
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   idFetcher() {
     return null;
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   typeResolver() {
     return null;
   }

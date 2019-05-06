@@ -19,17 +19,14 @@ class Auth extends EventEmitter {
     this.passport = passport;
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $provides() {
     return "auth";
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $requires() {
     return ["config", "i18n", "db", "ws", "mailer", "pubsub", "fake"];
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $lifecycle() {
     return "singleton";
   }

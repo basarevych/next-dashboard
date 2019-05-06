@@ -19,12 +19,10 @@ class UsersRepository extends EventEmitter {
     this.pubsub = pubsub;
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $provides() {
     return "repository.users";
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $requires() {
     return ["di", "db", "auth", "config", "model.user", "pubsub"];
   }

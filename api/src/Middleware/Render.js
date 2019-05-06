@@ -13,17 +13,14 @@ class Render extends EventEmitter {
     this.renderer = renderer;
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $provides() {
     return "middleware.render";
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $requires() {
     return ["app", "middleware.render.cachingProxy"];
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $lifecycle() {
     return "singleton";
   }

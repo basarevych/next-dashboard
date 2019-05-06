@@ -8,17 +8,14 @@ class Fetcher {
     this.cookie = null;
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $provides() {
     return "fetcher";
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $requires() {
     return ["getState", "dispatch"];
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $lifecycle() {
     return "singleton";
   }

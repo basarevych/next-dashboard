@@ -6,7 +6,6 @@ class AccessError extends GraphQLError {
     this.code = "E_FORBIDDEN";
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $provides() {
     return "error.access";
   }

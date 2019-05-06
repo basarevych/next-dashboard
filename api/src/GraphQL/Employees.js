@@ -27,12 +27,10 @@ class Employees extends EventEmitter {
     this.dashboardRepo = dashboardRepo;
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $provides() {
     return "graphql.employees";
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $requires() {
     return [
       "di",

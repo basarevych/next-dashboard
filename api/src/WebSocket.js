@@ -16,17 +16,14 @@ class WebSocket extends EventEmitter {
     this.commands = {};
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $provides() {
     return "ws";
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $requires() {
     return ["di", "app", "config", "pubsub"];
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $lifecycle() {
     return "singleton";
   }

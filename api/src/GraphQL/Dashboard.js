@@ -27,12 +27,10 @@ class Dashboard extends EventEmitter {
     this.employeesRepo = employeesRepo;
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $provides() {
     return "graphql.dashboard";
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $requires() {
     return [
       "di",
@@ -62,7 +60,6 @@ class Dashboard extends EventEmitter {
     return null;
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   typeResolver(obj) {
     if (obj instanceof this.dashboardModel.CountryModel) return this.Country;
     if (obj instanceof this.dashboardModel.ProfitValueModel)

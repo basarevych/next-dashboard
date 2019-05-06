@@ -6,17 +6,14 @@ class Storage {
     this.dispatch = dispatch;
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $provides() {
     return "storage";
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $requires() {
     return ["getState", "dispatch"];
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $lifecycle() {
     return "singleton";
   }

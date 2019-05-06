@@ -10,12 +10,10 @@ class NextRenderer extends EventEmitter {
     this.app = app;
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $provides() {
     return "middleware.render.nextRenderer";
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $requires() {
     return ["app"];
   }

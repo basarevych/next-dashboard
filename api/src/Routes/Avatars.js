@@ -36,7 +36,6 @@ class AvatarsRoute extends EventEmitter {
     );
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $provides() {
     return "route.avatars";
   }

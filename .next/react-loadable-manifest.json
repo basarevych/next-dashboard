@@ -1,74 +1,10 @@
 {
-  "./": [
-    {
-      "id": "xEkU",
-      "name": "./node_modules/raf/index.js",
-      "file": "static/chunks/polyfills.5e4a517e1313304574b3.js",
-      "publicPath": "/_next/static/chunks/polyfills.5e4a517e1313304574b3.js"
-    }
-  ],
-  "./../../process/browser.js": [
+  "null": [
     {
       "id": "8oxB",
       "name": "./node_modules/process/browser.js",
-      "file": "static/chunks/polyfills.5e4a517e1313304574b3.js",
-      "publicPath": "/_next/static/chunks/polyfills.5e4a517e1313304574b3.js"
-    }
-  ],
-  "./en.js": [
-    {
-      "id": "x+wt",
-      "name": "./node_modules/intl/locale-data/jsonp/en.js",
-      "file": "static/chunks/polyfills.5e4a517e1313304574b3.js",
-      "publicPath": "/_next/static/chunks/polyfills.5e4a517e1313304574b3.js"
-    }
-  ],
-  "./lib/core.js": [
-    {
-      "id": "fL0r",
-      "name": "./node_modules/intl/lib/core.js",
-      "file": "static/chunks/polyfills.5e4a517e1313304574b3.js",
-      "publicPath": "/_next/static/chunks/polyfills.5e4a517e1313304574b3.js"
-    }
-  ],
-  "./ru.js": [
-    {
-      "id": "jASH",
-      "name": "./node_modules/intl/locale-data/jsonp/ru.js",
-      "file": "static/chunks/polyfills.5e4a517e1313304574b3.js",
-      "publicPath": "/_next/static/chunks/polyfills.5e4a517e1313304574b3.js"
-    }
-  ],
-  "intl": [
-    {
-      "id": "FoZm",
-      "name": "./node_modules/intl/index.js",
-      "file": "static/chunks/polyfills.5e4a517e1313304574b3.js",
-      "publicPath": "/_next/static/chunks/polyfills.5e4a517e1313304574b3.js"
-    }
-  ],
-  "performance-now": [
-    {
-      "id": "bQgK",
-      "name": "./node_modules/performance-now/lib/performance-now.js",
-      "file": "static/chunks/polyfills.5e4a517e1313304574b3.js",
-      "publicPath": "/_next/static/chunks/polyfills.5e4a517e1313304574b3.js"
-    }
-  ],
-  "raf/polyfill": [
-    {
-      "id": "DpIS",
-      "name": "./node_modules/raf/polyfill.js",
-      "file": "static/chunks/polyfills.5e4a517e1313304574b3.js",
-      "publicPath": "/_next/static/chunks/polyfills.5e4a517e1313304574b3.js"
-    }
-  ],
-  "undefined": [
-    {
-      "id": "24d6",
-      "name": null,
-      "file": "static/chunks/polyfills.5e4a517e1313304574b3.js",
-      "publicPath": "/_next/static/chunks/polyfills.5e4a517e1313304574b3.js"
+      "file": "static/chunks/polyfills.fb4a1a66b5bf251764c5.js",
+      "publicPath": "/_next/static/chunks/polyfills.fb4a1a66b5bf251764c5.js"
     }
   ]
 }

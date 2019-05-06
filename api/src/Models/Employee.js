@@ -99,17 +99,14 @@ class Employee extends BaseModel {
     this.model = this.db.mongoose.model("Employee", this.schema);
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $provides() {
     return "model.employee";
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $requires() {
     return ["db"];
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $lifecycle() {
     return "singleton";
   }

@@ -13,12 +13,10 @@ class Helpers extends EventEmitter {
     this.i18n = i18n;
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $provides() {
     return "middleware.helpers";
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $requires() {
     return ["app", "auth", "i18n"];
   }

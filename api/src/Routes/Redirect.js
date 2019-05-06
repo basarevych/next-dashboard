@@ -13,7 +13,6 @@ class RedirectRoute extends EventEmitter {
     this.router = Router();
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $provides() {
     return "route.redirect";
   }

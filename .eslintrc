@@ -38,6 +38,7 @@
     "no-unused-vars": [
       "error",
       { "varsIgnorePattern": "[iI]gnored", "argsIgnorePattern": "^next$" }
-    ]
+    ],
+    "lodash/prefer-constant": "off"
   }
 }

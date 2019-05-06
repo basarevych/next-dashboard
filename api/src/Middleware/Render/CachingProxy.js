@@ -23,12 +23,10 @@ class CachingProxy extends EventEmitter {
     this.caches = new LRU(_.get(app, "config.appOnlineUsers") || 50);
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $provides() {
     return "middleware.render.cachingProxy";
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $requires() {
     return ["app", "middleware.helpers", "middleware.render.nextRenderer"];
   }

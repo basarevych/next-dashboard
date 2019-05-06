@@ -59,17 +59,14 @@ class Provider extends BaseModel {
     this.model = this.db.mongoose.model("Provider", this.schema);
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $provides() {
     return "model.provider";
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $requires() {
     return ["db"];
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $lifecycle() {
     return "singleton";
   }

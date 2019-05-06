@@ -21,7 +21,6 @@ class ValidationError extends GraphQLError {
     }
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $provides() {
     return "error.validation";
   }

@@ -6,7 +6,6 @@ class EntityExistsError extends GraphQLError {
     this.code = "E_EXISTS";
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $provides() {
     return "error.entityExists";
   }

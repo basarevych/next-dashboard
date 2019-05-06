@@ -15,12 +15,10 @@ class AuthRepository extends EventEmitter {
     this.chance = new Chance();
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $provides() {
     return "repository.auth";
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $requires() {
     return ["auth", "di", "model.user", "pubsub"];
   }

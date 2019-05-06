@@ -1,10 +1,8 @@
 class Cookie {
-  // eslint-disable-next-line lodash/prefer-constant
   static get $provides() {
     return "cookie";
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $lifecycle() {
     return "singleton";
   }

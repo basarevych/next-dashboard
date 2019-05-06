@@ -10,7 +10,6 @@ class Fake extends EventEmitter {
     this.chance = new Chance();
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $provides() {
     return "fake";
   }

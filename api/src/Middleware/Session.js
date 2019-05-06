@@ -17,17 +17,14 @@ class Session extends EventEmitter {
     this.session = null;
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $provides() {
     return "middleware.session";
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $requires() {
     return ["config", "db"];
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get collection() {
     return "frontSessions";
   }

@@ -5,7 +5,7 @@ module.exports = {
   email: {
     normalize: "rows:1|remove:spaces",
     transform: "trim",
-    validate: "required",
+    validate: "required|email",
     label: "APP_AUTH_EMAIL_LABEL"
   },
   password: {

@@ -14,12 +14,10 @@ class TokenRoute extends EventEmitter {
     this.router = Router();
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $provides() {
     return "route.token";
   }
 
-  // eslint-disable-next-line lodash/prefer-constant
   static get $requires() {
     return ["config"];
   }
