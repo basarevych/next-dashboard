@@ -1,10 +1,8 @@
-const EventEmitter = require("events");
 const IntlMessageFormat = require("intl-messageformat");
-const l10n = require("../../common/locales");
+const l10n = require("../common/locales");
 
-class I18n extends EventEmitter {
+class I18n {
   constructor() {
-    super();
     this.defaultLocale = l10n.defaultLocale;
     this.locales = l10n.locales;
     this.messages = l10n.messages;

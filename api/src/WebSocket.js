@@ -1,19 +1,11 @@
-const debug = require("debug")("app:ws");
-const pkg = require("../../package.json");
 const IO = require("socket.io");
-const EventEmitter = require("events");
 const constants = require("../../common/constants");
+const frontPackage = require("../../web/package.json");
 
-class WebSocket extends EventEmitter {
-  constructor(di, app, config, pubsub) {
-    super();
-
-    this.di = di;
+class WebSocket {
+  constructor(app, di) {
     this.app = app;
-    this.config = config;
-    this.pubsub = pubsub;
-
-    this.commands = {};
+    this.di = di;
   }
 
   static get $provides() {
@@ -21,7 +13,7 @@ class WebSocket extends EventEmitter {
   }
 
   static get $requires() {
-    return ["di", "app", "config", "pubsub"];
+    return ["app", "di"];
   }
 
   static get $lifecycle() {
@@ -30,7 +22,6 @@ class WebSocket extends EventEmitter {
 
   async init() {
     if (this.promise) return this.promise;
-
     this.promise = Promise.resolve();
 
     if (this.app.server) {
@@ -40,86 +31,33 @@ class WebSocket extends EventEmitter {
       this.io.on("connection", this.onConnection.bind(this));
     }
 
-    this.pubsub.subscribe("signOut", ({ signOut }) =>
-      this.onSessionDestroyed({ sessionId: signOut.sessionId })
-    );
-    this.pubsub.subscribe("userDeleted", ({ userDeleted }) =>
-      this.onUserDestroyed({ userId: userDeleted.id })
-    );
-
-    this.commands.toast = this.di.get("ws.toast");
-
-    await Promise.all(_.invokeMap(_.values(this.commands), "init"));
+    return this.promise;
   }
 
-  async checkUser(socket) {
-    let user = await socket.request.getUser();
-    if (user) return user;
-
-    debug("Unauthorized socket dropped");
-    socket.emit(
-      constants.messages.SET_STATUS,
-      this.di.get("auth").getStatus(null)
-    );
-    process.nextTick(() => socket.disconnect(true));
-    return false;
+  emitAll(message, data) {
+    this.io.emit(message, data);
   }
 
   emitUser(userId, message, data) {
     this.io.to(`user:${userId.toString()}`).emit(message, data);
   }
 
-  emitSession(sessionId, message, data) {
-    this.io.to(`session:${sessionId.toString()}`).emit(message, data);
+  emitClient(clientId, message, data) {
+    this.io.to(`client:${clientId.toString()}`).emit(message, data);
   }
 
   async onConnection(socket) {
     try {
-      let user = await this.checkUser(socket);
-      if (!user) return;
-
-      const userId = user.id.toString();
-      const sessionId = _.get(socket, "request.session.id");
-
-      debug(`Socket of user ${userId} connected`);
-      if (userId) socket.join(`user:${userId}`);
-      if (sessionId) socket.join(`session:${sessionId}`);
-      socket.on("disconnect", this.onDisconnect.bind(this, userId, socket));
-
-      _.forEach(_.values(this.commands), command =>
-        command.accept({ userId, sessionId, socket })
-      );
-
-      socket.emit(constants.messages.HELLO, { version: pkg.version });
+      const commands = this.di.get(/^ws\..+$/); // names starting with "ws."
+      const inst = Array.from(commands.values());
+      await Promise.all(_.invokeMap(inst, "init"));
+      _.forEach(inst, command => command.accept({ socket }));
+      socket.emit(constants.messages.HELLO, {
+        version: frontPackage.version
+      });
     } catch (error) {
       console.error(error);
     }
-  }
-
-  async onDisconnect(userId) {
-    try {
-      debug(`Socket of user ${userId} disconnected`);
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  async onSessionDestroyed({ sessionId }) {
-    debug(`Session ${sessionId} destroyed`);
-    return this.emitSession(
-      sessionId,
-      constants.messages.SET_STATUS,
-      this.di.get("auth").getStatus(null)
-    );
-  }
-
-  async onUserDestroyed({ userId }) {
-    debug(`User ${userId} destroyed`);
-    return this.emitUser(
-      userId,
-      constants.messages.SET_STATUS,
-      this.di.get("auth").getStatus(null)
-    );
   }
 }
 

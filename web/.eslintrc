@@ -1,0 +1,44 @@
+{
+  "extends": [
+    "eslint:recommended",
+    "plugin:lodash/canonical",
+    "plugin:react/recommended"
+  ],
+
+  "env": {
+    "es6": true,
+    "node": true,
+    "browser": true,
+    "jest": true
+  },
+
+  "plugins": ["lodash", "react"],
+
+  "globals": {
+    "_": true
+  },
+
+  "parser": "babel-eslint",
+
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "sourceType": "module"
+  },
+
+  "settings": {
+    "react": {
+      "version": "16.8"
+    }
+  },
+
+  "rules": {
+    "no-console": "off",
+    "no-unused-vars": [
+      "error",
+      { "varsIgnorePattern": "[iI]gnored", "argsIgnorePattern": "^next$" }
+    ],
+    "lodash/prefer-constant": "off"
+  }
+}

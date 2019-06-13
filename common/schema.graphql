@@ -1,0 +1,542 @@
+type AvgTimeValue implements Node {
+  """The ID of an object"""
+  id: ID!
+  date: Date!
+  avgTime: Float!
+}
+
+"""A connection to a list of items."""
+type AvgTimeValueConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [AvgTimeValueEdge]
+}
+
+"""An edge in a connection."""
+type AvgTimeValueEdge {
+  """The item at the end of the edge"""
+  node: AvgTimeValue
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+type ClientsValue implements Node {
+  """The ID of an object"""
+  id: ID!
+  date: Date!
+  clients: Int!
+}
+
+"""A connection to a list of items."""
+type ClientsValueConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [ClientsValueEdge]
+}
+
+"""An edge in a connection."""
+type ClientsValueEdge {
+  """The item at the end of the edge"""
+  node: ClientsValue
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+type Country implements Node {
+  """The ID of an object"""
+  id: ID!
+  name: String!
+  callingCode: String!
+  employees(dept: EmployeeDept, after: String, first: Int, before: String, last: Int): EmployeeConnection
+}
+
+"""A connection to a list of items."""
+type CountryConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [CountryEdge]
+}
+
+"""An edge in a connection."""
+type CountryEdge {
+  """The item at the end of the edge"""
+  node: Country
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+input CreateEmployeeInput {
+  uid: ID
+  checked: Boolean
+  name: String
+  dept: EmployeeDept
+  title: String
+  country: ID
+  salary: Int
+  clientMutationId: String
+}
+
+type CreateEmployeePayload {
+  employee: Employee
+  clientMutationId: String
+}
+
+input CreateUserInput {
+  email: String
+  name: String
+  password: String
+  roles: [UserRole]
+  clientMutationId: String
+}
+
+type CreateUserPayload {
+  user: User
+  clientMutationId: String
+}
+
+scalar Date
+
+input DeleteEmployeeInput {
+  id: ID!
+  clientMutationId: String
+}
+
+type DeleteEmployeePayload {
+  employee: Employee
+  clientMutationId: String
+}
+
+input DeleteProfileInput {
+  clientMutationId: String
+}
+
+type DeleteProfilePayload {
+  success: Boolean
+  clientMutationId: String
+}
+
+input DeleteUserInput {
+  id: ID!
+  clientMutationId: String
+}
+
+type DeleteUserPayload {
+  user: User
+  clientMutationId: String
+}
+
+input EditEmployeeInput {
+  id: ID!
+  uid: ID
+  checked: Boolean
+  name: String
+  dept: EmployeeDept
+  title: String
+  country: ID
+  salary: Int
+  clientMutationId: String
+}
+
+type EditEmployeePayload {
+  employee: Employee
+  clientMutationId: String
+}
+
+input EditUserInput {
+  id: ID!
+  email: String
+  name: String
+  password: String
+  roles: [UserRole]
+  clientMutationId: String
+}
+
+type EditUserPayload {
+  user: User
+  clientMutationId: String
+}
+
+type Employee implements Node {
+  """The ID of an object"""
+  id: ID!
+  whenCreated: Date!
+  whenUpdated: Date!
+  uid: ID!
+  checked: Boolean!
+  name: String!
+  dept: EmployeeDept!
+  title: String!
+  country: Country!
+  salary: Int!
+}
+
+"""A connection to a list of items."""
+type EmployeeConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [EmployeeEdge]
+  totalCount: Int
+}
+
+enum EmployeeDept {
+  PRODUCTION
+  RD
+  PURCHASING
+  MARKETING
+  HR
+  ACCOUNTING
+}
+
+"""An edge in a connection."""
+type EmployeeEdge {
+  """The item at the end of the edge"""
+  node: Employee
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+enum EmployeeSortBy {
+  uid
+  checked
+  name
+  dept
+  title
+  country
+  salary
+}
+
+enum EmployeeSortDir {
+  asc
+  desc
+}
+
+input GetTokenInput {
+  type: String
+  token: String
+  clientMutationId: String
+}
+
+type GetTokenPayload {
+  success: Boolean
+  token: String
+  refreshToken: String
+  clientMutationId: String
+}
+
+type MarketShare implements Node {
+  """The ID of an object"""
+  id: ID!
+  country: Country
+  shares: [MarketShareValue]!
+}
+
+"""A connection to a list of items."""
+type MarketShareConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [MarketShareEdge]
+}
+
+"""An edge in a connection."""
+type MarketShareEdge {
+  """The item at the end of the edge"""
+  node: MarketShare
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+type MarketShareValue implements Node {
+  """The ID of an object"""
+  id: ID!
+  vendor: String!
+  name: String!
+  values: [Float]!
+}
+
+type Mutation {
+  signIn(input: SignInInput!): SignInPayload
+  signUp(input: SignUpInput!): SignUpPayload
+  signOut(input: SignOutInput!): SignOutPayload
+  getToken(input: GetTokenInput!): GetTokenPayload
+  requestEmailVerification(input: RequestEmailVerificationInput!): RequestEmailVerificationPayload
+  verifyEmail(input: VerifyEmailInput!): VerifyEmailPayload
+  unlinkProvider(input: UnlinkProviderInput!): UnlinkProviderPayload
+  updateProfile(input: UpdateProfileInput!): UpdateProfilePayload
+  deleteProfile(input: DeleteProfileInput!): DeleteProfilePayload
+  createUser(input: CreateUserInput!): CreateUserPayload
+  editUser(input: EditUserInput!): EditUserPayload
+  deleteUser(input: DeleteUserInput!): DeleteUserPayload
+  createEmployee(input: CreateEmployeeInput!): CreateEmployeePayload
+  editEmployee(input: EditEmployeeInput!): EditEmployeePayload
+  deleteEmployee(input: DeleteEmployeeInput!): DeleteEmployeePayload
+}
+
+"""An object with an ID"""
+interface Node {
+  """The id of the object."""
+  id: ID!
+}
+
+"""Information about pagination in a connection."""
+type PageInfo {
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean!
+
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean!
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: String
+
+  """When paginating forwards, the cursor to continue."""
+  endCursor: String
+}
+
+type ProfitValue implements Node {
+  """The ID of an object"""
+  id: ID!
+  date: Date!
+  revenues: Int!
+  expenses: Int!
+  profit: Int!
+}
+
+"""A connection to a list of items."""
+type ProfitValueConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [ProfitValueEdge]
+}
+
+"""An edge in a connection."""
+type ProfitValueEdge {
+  """The item at the end of the edge"""
+  node: ProfitValue
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+type ProviderStatus {
+  name: String!
+  isLinked: Boolean!
+}
+
+type Query {
+  viewer: Viewer
+
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+}
+
+input RequestEmailVerificationInput {
+  locale: String
+  clientMutationId: String
+}
+
+type RequestEmailVerificationPayload {
+  success: Boolean
+  clientMutationId: String
+}
+
+type SalesValue implements Node {
+  """The ID of an object"""
+  id: ID!
+  date: Date!
+  sales: Int!
+}
+
+"""A connection to a list of items."""
+type SalesValueConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [SalesValueEdge]
+}
+
+"""An edge in a connection."""
+type SalesValueEdge {
+  """The item at the end of the edge"""
+  node: SalesValue
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+input SignInInput {
+  email: String
+  password: String
+  clientMutationId: String
+}
+
+type SignInPayload {
+  success: Boolean
+  accessToken: String
+  refreshToken: String
+  clientMutationId: String
+}
+
+input SignOutInput {
+  clientMutationId: String
+}
+
+type SignOutPayload {
+  success: Boolean
+  clientMutationId: String
+}
+
+input SignUpInput {
+  email: String
+  password: String
+  locale: String
+  clientMutationId: String
+}
+
+type SignUpPayload {
+  success: Boolean
+  accessToken: String
+  refreshToken: String
+  clientMutationId: String
+}
+
+type Status {
+  isAuthenticated: Boolean!
+  userId: String
+  email: String
+  isEmailVerified: Boolean!
+  name: String
+  roles: [UserRole]!
+  providers: [ProviderStatus]!
+}
+
+type Subscription {
+  userCreated: User
+  userUpdated: User
+  userDeleted: User
+  userEvent: User
+  employeeCreated: Employee
+  employeeUpdated: Employee
+  employeeDeleted: Employee
+  employeeEvent: Employee
+}
+
+input UnlinkProviderInput {
+  provider: String
+  clientMutationId: String
+}
+
+type UnlinkProviderPayload {
+  success: Boolean
+  clientMutationId: String
+}
+
+input UpdateProfileInput {
+  name: String
+  email: String
+  password: String
+  clientMutationId: String
+}
+
+type UpdateProfilePayload {
+  success: Boolean
+  clientMutationId: String
+}
+
+type User implements Node {
+  """The ID of an object"""
+  id: ID!
+  whenCreated: Date!
+  whenUpdated: Date!
+  email: String!
+  isEmailVerified: Boolean!
+  name: String
+  roles: [UserRole]!
+}
+
+"""A connection to a list of items."""
+type UserConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [UserEdge]
+  totalCount: Int
+}
+
+"""An edge in a connection."""
+type UserEdge {
+  """The item at the end of the edge"""
+  node: User
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+enum UserRole {
+  AUTHENTICATED
+  ADMIN
+}
+
+enum UserSortBy {
+  email
+  name
+}
+
+enum UserSortDir {
+  asc
+  desc
+}
+
+input VerifyEmailInput {
+  token: String
+  clientMutationId: String
+}
+
+type VerifyEmailPayload {
+  success: Boolean
+  accessToken: String
+  refreshToken: String
+  clientMutationId: String
+}
+
+type Viewer {
+  me: Status
+  user(id: ID): User
+  users(sortBy: UserSortBy, sortDir: UserSortDir, after: String, first: Int, before: String, last: Int): UserConnection
+  employee(id: ID): Employee
+  employees(dept: EmployeeDept, sortBy: EmployeeSortBy, sortDir: EmployeeSortDir, after: String, first: Int, before: String, last: Int): EmployeeConnection
+  countries(after: String, first: Int, before: String, last: Int): CountryConnection
+  profitValues(after: String, first: Int, before: String, last: Int): ProfitValueConnection
+  salesValues(after: String, first: Int, before: String, last: Int): SalesValueConnection
+  clientsValues(after: String, first: Int, before: String, last: Int): ClientsValueConnection
+  avgTimeValues(after: String, first: Int, before: String, last: Int): AvgTimeValueConnection
+  marketSharesByCountry(country: ID): MarketShare
+  marketShares(after: String, first: Int, before: String, last: Int): MarketShareConnection
+
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+}

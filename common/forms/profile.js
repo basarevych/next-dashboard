@@ -1,5 +1,6 @@
 module.exports = {
   name: {
+    normalize: "rows:1|compact:spaces",
     label: "PROFILE_NAME_LABEL",
     transform: "trim"
   },

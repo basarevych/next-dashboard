@@ -1,0 +1,5 @@
+vendor/
+node_modules/
+coverage/
+**/__mocks__/
+*.config.js

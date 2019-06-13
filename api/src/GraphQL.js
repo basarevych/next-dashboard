@@ -1,4 +1,3 @@
-const EventEmitter = require("events");
 const {
   execute,
   subscribe,
@@ -9,13 +8,13 @@ const { nodeDefinitions } = require("graphql-relay");
 const { SubscriptionServer } = require("subscriptions-transport-ws");
 const constants = require("../../common/constants");
 
-class GraphQL extends EventEmitter {
-  constructor(app, ws, auth, users, employees, dashboard) {
-    super();
-
+class GraphQL {
+  constructor(app, ws, authService, cache, auth, users, employees, dashboard) {
     this.app = app;
     this.ws = ws;
+    this.authService = authService;
     this.auth = auth;
+    this.cache = cache;
     this.users = users;
     this.employees = employees;
     this.dashboard = dashboard;
@@ -56,6 +55,8 @@ class GraphQL extends EventEmitter {
     return [
       "app",
       "ws",
+      "auth",
+      "cache",
       "graphql.auth",
       "graphql.users",
       "graphql.employees",
@@ -133,7 +134,24 @@ class GraphQL extends EventEmitter {
             {
               schema: this.schema,
               execute,
-              subscribe
+              subscribe,
+              onConnect: async connectionParams => {
+                // context.token equals to:
+                //    undefined - when no token was provided (anonymous),
+                //    payload - token payload when token is valid
+
+                // if provided token is invalid reject the connection
+
+                if (connectionParams.token) {
+                  let token = await this.authService.useToken(
+                    connectionParams.token
+                  );
+                  if (token === false) return false;
+                  return { token };
+                }
+
+                return true;
+              }
             },
             {
               server: this.app.server,

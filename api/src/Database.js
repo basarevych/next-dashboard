@@ -1,12 +1,8 @@
 const mongoose = require("mongoose");
-const EventEmitter = require("events");
 const constants = require("../../common/constants");
 
-class Database extends EventEmitter {
-  constructor(app, config, di, fake) {
-    super();
-
-    this.app = app;
+class Database {
+  constructor(config, di, fake) {
     this.config = config;
     this.di = di;
     this.fake = fake;
@@ -21,7 +17,7 @@ class Database extends EventEmitter {
   }
 
   static get $requires() {
-    return ["app", "config", "di", "fake"];
+    return ["config", "di", "fake"];
   }
 
   static get $lifecycle() {
@@ -33,9 +29,13 @@ class Database extends EventEmitter {
 
     this.promise = new Promise(async (resolve, reject) => {
       try {
-        const Provider = this.di.get("model.provider");
-        this.ProviderSchema = Provider.schema;
-        this.ProviderModel = Provider.model;
+        const UserClient = this.di.get("model.user.client");
+        this.UserClientSchema = UserClient.schema;
+        this.UserClientModel = UserClient.model;
+
+        const UserProvider = this.di.get("model.user.provider");
+        this.UserProviderSchema = UserProvider.schema;
+        this.UserProviderModel = UserProvider.model;
 
         const User = this.di.get("model.user");
         this.UserSchema = User.schema;
@@ -45,19 +45,18 @@ class Database extends EventEmitter {
         this.EmployeeSchema = Employee.schema;
         this.EmployeeModel = Employee.model;
 
-        this.mongoose.connect(this.app.config.mongoUrl, {
-          useNewUrlParser: true
-        });
-        this.mongoose.connection
-          .on("error", (...args) => {
-            console.error("MongoDB error:", ...args);
-            reject(args);
-          })
-          .once("open", () => {
+        this.mongoose.connect(
+          this.config.mongoUrl,
+          {
+            useNewUrlParser: true
+          },
+          error => {
+            if (error) return reject(error);
             if (process.env.NODE_ENV !== "test")
               console.log("> MongoDB is online");
             resolve();
-          });
+          }
+        );
       } catch (error) {
         reject(error);
       }
@@ -66,7 +65,15 @@ class Database extends EventEmitter {
         let user = await this.UserModel.findOne({
           email: this.config.rootLogin
         }); // eslint-disable-line lodash/prefer-lodash-method
-        if (!user) {
+        let msg;
+        if (user) {
+          user.email = this.config.rootLogin;
+          user.password = await this.di
+            .get("auth")
+            .encryptPassword(this.config.rootPassword);
+          user.roles = [constants.roles.ADMIN];
+          msg = "> Admin user updated";
+        } else {
           user = new this.UserModel({
             name: "Charlie Root",
             email: this.config.rootLogin,
@@ -75,25 +82,11 @@ class Database extends EventEmitter {
               .encryptPassword(this.config.rootPassword),
             roles: [constants.roles.ADMIN]
           });
-          await user.validate();
-          await user.save();
-          console.log("> Admin user created");
+          msg = "> Admin user created";
         }
-      }
-
-      this.anonymous = await this.UserModel.findOne({
-        roles: constants.roles.ANONYMOUS
-      });
-      if (!this.anonymous) {
-        this.anonymous = new this.UserModel({
-          name: "Anonymous",
-          email: "anonymous@example.com",
-          password: this.fake.getString(64),
-          roles: [constants.roles.ANONYMOUS]
-        });
-        await this.anonymous.validate();
-        await this.anonymous.save();
-        console.log("> Anonymous user created");
+        await user.validate();
+        await user.save();
+        console.log(msg);
       }
 
       // eslint-disable-next-line lodash/prefer-lodash-method

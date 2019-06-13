@@ -1,5 +1,20 @@
 "use strict";
 
+/**
+ * Convert this:
+ * {
+ *    "KEY": [
+ *      "string",
+ *      "another",
+ *      "..."
+ *    ]
+ * }
+ *
+ * Into this:
+ * {
+ *    "KEY": "stringanother..."
+ * }
+ */
 function parse(source) {
   const messages = {};
   for (let key of _.keys(source))

@@ -1,0 +1,17 @@
+{
+  "name": "next-dashboard-common",
+  "version": "0.3.0",
+  "private": true,
+  "dependencies": {
+    "base64util": "~2.0.0",
+    "country-telephone-data": "~0.6.0",
+    "immutable": "^4.0.0-rc.12",
+    "json-immutable": "~0.4.0",
+    "moment": "~2.24.0",
+    "moment-timezone": "~0.5.25",
+    "pako": "~1.0.10",
+    "react-intl": "~2.9.0",
+    "utf8": "~3.0.0",
+    "validator": "~11.0.0"
+  }
+}

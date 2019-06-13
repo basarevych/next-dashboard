@@ -1,0 +1,23 @@
+#!/usr/bin/env node
+
+/**
+ * Clear the cache
+ */
+
+"use strict";
+
+const App = require("../src/App");
+const app = new App();
+
+async function flushCache() {
+  const cache = app.di.get("cache");
+  await cache.init();
+  await cache.destroy();
+  console.log("> Cache cleared");
+  process.exit(0);
+}
+
+flushCache().catch(error => {
+  console.error(error);
+  process.exit(1);
+});

@@ -1,12 +1,9 @@
 const Chance = require("chance");
-const EventEmitter = require("events");
-const constants = require("../../common/constants");
-const { allCountries, iso2Lookup } = require("../../common/countries");
+const constants = require("../common/constants");
+const { allCountries, iso2Lookup } = require("../common/src/countries");
 
-class Fake extends EventEmitter {
+class Fake {
   constructor() {
-    super();
-
     this.chance = new Chance();
   }
 

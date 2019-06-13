@@ -1,13 +1,10 @@
 const nodemailer = require("nodemailer");
-const EventEmitter = require("events");
 
 /**
  * Mailer service
  */
-class Mailer extends EventEmitter {
+class Mailer {
   constructor(config) {
-    super();
-
     this.config = config;
 
     if (this.config.emailServer) {
@@ -59,6 +56,8 @@ class Mailer extends EventEmitter {
 
       this.transport.verify((error, success) => {
         if (error || !success) return reject(error);
+
+        if (process.env.NODE_ENV !== "test") console.log("> Mailer is online");
 
         resolve();
       });

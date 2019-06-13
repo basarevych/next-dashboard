@@ -1,0 +1,10 @@
+{
+  "null": [
+    {
+      "id": "8oxB",
+      "name": "./node_modules/process/browser.js",
+      "file": "static/chunks/polyfills.da467b2f3a2938b2ddab.js",
+      "publicPath": "/_next/static/chunks/polyfills.da467b2f3a2938b2ddab.js"
+    }
+  ]
+}

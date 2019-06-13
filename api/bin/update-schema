@@ -1,0 +1,31 @@
+#!/usr/bin/env node
+
+/**
+ * Generate .graphql file form JS schema
+ */
+
+"use strict";
+
+const fs = require("fs-extra");
+const path = require("path");
+const { printSchema } = require("graphql");
+const App = require("../src/App");
+
+const app = new App();
+const root = path.join.bind(path, path.resolve(__dirname, ".."));
+
+async function updateSchema() {
+  const graphql = app.di.get("graphql");
+  await graphql.init();
+  await fs.writeFile(
+    root("common/schema.graphql"),
+    printSchema(graphql.schema)
+  );
+  console.log("> Schema updated");
+  process.exit(0);
+}
+
+updateSchema().catch(error => {
+  console.error(error);
+  process.exit(1);
+});

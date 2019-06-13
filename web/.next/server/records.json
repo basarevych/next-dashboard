@@ -1,0 +1,45 @@
+{
+  "modules": {
+    "byIdentifier": {
+      "multi private-next-pages/_app.js": 0,
+      "multi private-next-pages/_document.js": 1,
+      "multi private-next-pages/_error.js": 2,
+      "multi private-next-pages/charts.js": 3,
+      "multi private-next-pages/forms.js": 4,
+      "multi private-next-pages/icons.js": 5,
+      "multi private-next-pages/index.js": 6,
+      "multi private-next-pages/maps.js": 7,
+      "multi private-next-pages/notifications.js": 8,
+      "multi private-next-pages/tables.js": 9,
+      "multi private-next-pages/typography.js": 10,
+      "multi private-next-pages/users.js": 11,
+      "multi private-next-pages/auth/error.js": 12,
+      "multi private-next-pages/auth/profile.js": 13,
+      "multi private-next-pages/auth/return.js": 14,
+      "multi private-next-pages/auth/verify.js": 15
+    },
+    "usedIds": {
+      "0": 0,
+      "1": 1,
+      "2": 2,
+      "3": 3,
+      "4": 4,
+      "5": 5,
+      "6": 6,
+      "7": 7,
+      "8": 8,
+      "9": 9,
+      "10": 10,
+      "11": 11,
+      "12": 12,
+      "13": 13,
+      "14": 14,
+      "15": 15
+    }
+  },
+  "chunks": {
+    "byName": {},
+    "bySource": {},
+    "usedIds": []
+  }
+}

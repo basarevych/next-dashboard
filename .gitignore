@@ -1,7 +1,0 @@
-node_modules/
-.tmp/
-out/
-coverage/
-**/__generated__/
-api/schema.graphql
-.env

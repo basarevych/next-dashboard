@@ -1,0 +1,13 @@
+[Unit]
+Description=Next Dashboard Web Server
+After=network.target
+
+[Service]
+Environment=NODE_ENV=production
+Type=simple
+User=root
+ExecStart=/usr/bin/node /root/next-dashboard/web/bin/www
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
