@@ -1,7 +1,7 @@
 "use strict";
 
-require("@babel/polyfill");
-require("core-js/es6");
+require("core-js/stable");
+require("regenerator-runtime/runtime");
 require("isomorphic-unfetch");
 
 const WebFont = require("webfontloader");

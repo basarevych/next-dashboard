@@ -10,5 +10,4 @@ if (!require.ensure) {
 }
 
 // Polyfills
-require("@babel/polyfill/noConflict");
 require("isomorphic-unfetch");

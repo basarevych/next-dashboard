@@ -1,15 +1,15 @@
 const {
-  GraphQLNonNull,
   GraphQLID,
+  GraphQLNonNull,
   GraphQLInt,
   GraphQLFloat,
   GraphQLString,
-  GraphQLObjectType,
-  GraphQLList
+  GraphQLObjectType
 } = require("graphql");
 const {
   connectionArgs,
   connectionDefinitions,
+  connectionFromArray,
   connectionFromPromisedArray,
   fromGlobalId,
   globalIdField
@@ -41,6 +41,7 @@ class Dashboard {
     const { type, id } = fromGlobalId(globalId);
     if (type === "Country")
       return this.dashboardRepo.getCountry(context, { id });
+    if (type === "USCity") return this.dashboardRepo.getUSCity(context, { id });
     if (type === "ProfitValue")
       return this.dashboardRepo.getProfitValue(context, { id });
     if (type === "SalesValue")
@@ -49,16 +50,12 @@ class Dashboard {
       return this.dashboardRepo.getClientsValue(context, { id });
     if (type === "AvgTimeValue")
       return this.dashboardRepo.getAvgTimeValue(context, { id });
-    if (type === "MarketShareValue")
-      return this.dashboardRepo.getMarketSharesValue(context, { id });
-    if (type === "MarketShare") {
-      return this.dashboardRepo.getMarketShareByCountry(context, { id });
-    }
     return null;
   }
 
   typeResolver(obj) {
     if (obj instanceof this.dashboardModel.CountryModel) return this.Country;
+    if (obj instanceof this.dashboardModel.USCityModel) return this.USCity;
     if (obj instanceof this.dashboardModel.ProfitValueModel)
       return this.ProfitValue;
     if (obj instanceof this.dashboardModel.SalesValueModel)
@@ -67,10 +64,6 @@ class Dashboard {
       return this.ClientsValue;
     if (obj instanceof this.dashboardModel.AvgTimeValueModel)
       return this.AvgTimeValue;
-    if (obj instanceof this.dashboardModel.MarketShareValueModel)
-      return this.MarketShareValue;
-    if (obj instanceof this.dashboardModel.MarketShareModel)
-      return this.MarketShare;
     return null;
   }
 
@@ -112,6 +105,35 @@ class Dashboard {
     });
     this.CountryConnection = CountryConnection;
     this.CountryEdge = CountryEdge;
+
+    this.USCity = new GraphQLObjectType({
+      name: "USCity",
+      fields: () => ({
+        id: globalIdField("USCity"),
+        name: { type: new GraphQLNonNull(GraphQLString) },
+        stateId: { type: new GraphQLNonNull(GraphQLString) },
+        stateName: { type: new GraphQLNonNull(GraphQLString) },
+        lat: { type: new GraphQLNonNull(GraphQLFloat) },
+        lng: { type: new GraphQLNonNull(GraphQLFloat) },
+        population: { type: new GraphQLNonNull(GraphQLInt) }
+      }),
+      interfaces: [nodeInterface]
+    });
+
+    const {
+      connectionType: USCityConnection,
+      edgeType: USCityEdge
+    } = connectionDefinitions({
+      name: "USCity",
+      nodeType: this.USCity,
+      connectionFields: () => ({
+        otherPopulation: {
+          type: GraphQLInt
+        }
+      })
+    });
+    this.USCityConnection = USCityConnection;
+    this.USCityEdge = USCityEdge;
 
     this.ProfitValue = new GraphQLObjectType({
       name: "ProfitValue",
@@ -195,61 +217,18 @@ class Dashboard {
     this.AvgTimeValueConnection = AvgTimeValueConnection;
     this.AvgTimeValueEdge = AvgTimeValueEdge;
 
-    this.MarketShareValue = new GraphQLObjectType({
-      name: "MarketShareValue",
-      fields: () => ({
-        id: globalIdField("MarketShareValue"),
-        vendor: { type: new GraphQLNonNull(GraphQLString) },
-        name: { type: new GraphQLNonNull(GraphQLString) },
-        values: { type: new GraphQLNonNull(new GraphQLList(GraphQLFloat)) }
-      }),
-      interfaces: [nodeInterface]
-    });
-
-    const {
-      connectionType: MarketShareValueConnection,
-      edgeType: MarketShareValueEdge
-    } = connectionDefinitions({
-      name: "MarketShareValue",
-      nodeType: this.MarketShareValue
-    });
-    this.MarketShareValueConnection = MarketShareValueConnection;
-    this.MarketShareValueEdge = MarketShareValueEdge;
-
-    this.MarketShare = new GraphQLObjectType({
-      name: "MarketShare",
-      fields: () => ({
-        id: globalIdField("MarketShare"),
-        country: {
-          type: this.Country,
-          resolve: (source, args, context) =>
-            source.id === "WORLD"
-              ? null
-              : this.dashboardRepo.getCountry(
-                  context,
-                  _.assign({}, args, {
-                    id: source.id
-                  })
-                )
-        },
-        shares: {
-          type: new GraphQLNonNull(new GraphQLList(this.MarketShareValue))
-        }
-      }),
-      interfaces: [nodeInterface]
-    });
-
-    const {
-      connectionType: MarketShareConnection,
-      edgeType: MarketShareEdge
-    } = connectionDefinitions({
-      name: "MarketShare",
-      nodeType: this.MarketShare
-    });
-    this.MarketShareConnection = MarketShareConnection;
-    this.MarketShareEdge = MarketShareEdge;
-
     this.query = {
+      country: {
+        type: this.Country,
+        args: {
+          id: { type: GraphQLID }
+        },
+        resolve: (source, args, context) =>
+          this.dashboardRepo.getCountry(
+            context,
+            _.assign({}, args, { id: args.id && fromGlobalId(args.id).id })
+          )
+      },
       countries: {
         type: this.CountryConnection,
         args: connectionArgs,
@@ -258,6 +237,32 @@ class Dashboard {
             this.dashboardRepo.getCountries(context, args),
             args
           )
+      },
+      usCity: {
+        type: this.USCity,
+        args: {
+          id: { type: GraphQLID }
+        },
+        resolve: (source, args, context) =>
+          this.dashboardRepo.getUSCity(
+            context,
+            _.assign({}, args, { id: args.id && fromGlobalId(args.id).id })
+          )
+      },
+      usCities: {
+        type: this.USCityConnection,
+        args: {
+          ...connectionArgs,
+          stateId: { type: GraphQLString },
+          stateName: { type: GraphQLString },
+          limit: { type: GraphQLInt }
+        },
+        resolve: async (source, args, context) => {
+          const cities = await this.dashboardRepo.getUSCities(context, args);
+          const conn = await connectionFromArray(cities, args);
+          conn.otherPopulation = cities.otherPopulation;
+          return conn;
+        }
       },
       profitValues: {
         type: this.ProfitValueConnection,
@@ -292,23 +297,6 @@ class Dashboard {
         resolve: (source, args, context) =>
           connectionFromPromisedArray(
             this.dashboardRepo.getAvgTimeValues(context, args),
-            args
-          )
-      },
-      marketSharesByCountry: {
-        type: this.MarketShare,
-        args: {
-          country: { type: GraphQLID }
-        },
-        resolve: (source, args, context) =>
-          this.dashboardRepo.getMarketSharesByCountry(context, args)
-      },
-      marketShares: {
-        type: this.MarketShareConnection,
-        args: connectionArgs,
-        resolve: (source, args, context) =>
-          connectionFromPromisedArray(
-            this.dashboardRepo.getMarketShares(context, args),
             args
           )
       }

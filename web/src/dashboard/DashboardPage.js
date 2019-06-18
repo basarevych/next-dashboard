@@ -2,7 +2,7 @@ import React from "react";
 import { graphql } from "react-relay";
 import { QueryRenderer } from "../app/providers/Relay";
 import Dashboard, {
-  defaultCountry,
+  defaultState,
   defaultDept,
   pageSize,
   sortBy,
@@ -12,7 +12,7 @@ import Layout from "../app/layout/LayoutContainer";
 import Spinner from "../app/layout/SpinnerContainer";
 
 const defaultVariables = {
-  country: defaultCountry,
+  stateName: defaultState,
   dept: defaultDept,
   first: pageSize,
   sortBy,
@@ -21,7 +21,7 @@ const defaultVariables = {
 
 export const query = graphql`
   query DashboardPageQuery(
-    $country: ID
+    $stateName: String
     $dept: EmployeeDept
     $sortBy: EmployeeSortBy
     $sortDir: EmployeeSortDir
@@ -44,7 +44,7 @@ export const query = graphql`
       avgTimeValues {
         ...AvgTimeStatContainer_data
       }
-      ...MarketShareContainer_viewer @arguments(country: $country)
+      ...StateSalesContainer_viewer @arguments(stateName: $stateName)
       ...DeptEmployeesContainer_viewer
         @arguments(
           dept: $dept

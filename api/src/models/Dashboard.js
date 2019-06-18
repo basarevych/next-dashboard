@@ -19,6 +19,18 @@ class CountryModel {
   }
 }
 
+class USCityModel {
+  constructor({ id, name, stateId, stateName, lat, lng, population }) {
+    this.id = id;
+    this.name = name;
+    this.stateId = stateId;
+    this.stateName = stateName;
+    this.lat = lat;
+    this.lng = lng;
+    this.population = population;
+  }
+}
+
 class ProfitValueModel {
   constructor({ date, revenues, expenses, profit }) {
     this.id = dateToID(date);
@@ -53,31 +65,14 @@ class AvgTimeValueModel {
   }
 }
 
-class MarketShareValueModel {
-  constructor({ id, vendor, name, values }) {
-    this.id = id;
-    this.vendor = vendor;
-    this.name = name;
-    this.values = values;
-  }
-}
-
-class MarketShareModel {
-  constructor({ id, shares }) {
-    this.id = id;
-    this.shares = shares;
-  }
-}
-
 class Dashboard {
   constructor() {
     this.CountryModel = CountryModel;
+    this.USCityModel = USCityModel;
     this.ProfitValueModel = ProfitValueModel;
     this.SalesValueModel = SalesValueModel;
     this.ClientsValueModel = ClientsValueModel;
     this.AvgTimeValueModel = AvgTimeValueModel;
-    this.MarketShareModel = MarketShareModel;
-    this.MarketShareValueModel = MarketShareValueModel;
   }
 
   static get $provides() {

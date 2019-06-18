@@ -12,7 +12,7 @@ export const getLocale = state => state.getIn(["app", "locale"]);
 
 export const getTheme = state => state.getIn(["app", "theme"]);
 
-export const getGoogleMapsKey = state => state.getIn(["app", "googleMapsKey"]);
+export const getMapboxToken = state => state.getIn(["app", "mapboxToken"]);
 
 export const isStarted = state => state.getIn(["app", "isStarted"]);
 

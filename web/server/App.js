@@ -1,6 +1,5 @@
 "use strict";
 
-require("@babel/polyfill");
 require("isomorphic-unfetch");
 if (!global._) global._ = require("lodash");
 
@@ -29,7 +28,7 @@ let appSslCa = process.env.APP_SSL_CA;
 let sessionSecret = process.env.SESSION_SECRET;
 let sessionMaxAge = 1000 * 60 * 60 * 24 * 7;
 let redisUrl = process.env.REDIS_URL || "redis://localhost:6379";
-let googleMapsKey = process.env.GOOGLE_MAPS_KEY;
+let mapboxToken = process.env.MAPBOX_TOKEN;
 
 /**
  * The application
@@ -63,7 +62,7 @@ class App {
       sessionSecret,
       sessionMaxAge,
       redisUrl,
-      googleMapsKey
+      mapboxToken
     };
 
     // Express
@@ -146,7 +145,7 @@ class App {
         wsServer: this.config.appWsServer,
         locale: locale || l10n.defaultLocale || null,
         theme: theme || styles.defaultTheme || null,
-        googleMapsKey: this.config.googleMapsKey || null
+        mapboxToken: this.config.mapboxToken || null
       })
     });
   }

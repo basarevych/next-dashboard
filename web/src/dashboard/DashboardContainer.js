@@ -1,6 +1,8 @@
+import { connect } from "react-redux";
 import { withStyles, withTheme } from "@material-ui/styles";
+import { appOperations } from "../app/state";
 import DashboardComponent, {
-  defaultCountry,
+  defaultState,
   defaultDept,
   pageSize,
   sortBy,
@@ -8,7 +10,16 @@ import DashboardComponent, {
   styles
 } from "./Dashboard";
 
-const Dashboard = withStyles(styles)(withTheme(DashboardComponent));
+const mapDispatchToProps = dispatch => {
+  return {
+    fetchCities: () => dispatch(appOperations.fetchCities())
+  };
+};
 
-export { defaultCountry, defaultDept, pageSize, sortBy, sortDir };
+const Dashboard = connect(
+  null,
+  mapDispatchToProps
+)(withStyles(styles)(withTheme(DashboardComponent)));
+
+export { defaultState, defaultDept, pageSize, sortBy, sortDir };
 export default Dashboard;

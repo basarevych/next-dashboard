@@ -35,10 +35,10 @@ class EmployeesTable extends React.Component {
   constructor(props) {
     super(props);
 
-    this.handleToggle = this.handleToggle.bind(this)
-    this.handleToggleAll = this.handleToggleAll.bind(this)
+    this.handleToggle = this.handleToggle.bind(this);
+    this.handleToggleAll = this.handleToggleAll.bind(this);
   }
-  
+
   hasRecords() {
     return this.props.employees.length > 0;
   }

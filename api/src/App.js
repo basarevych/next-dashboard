@@ -1,6 +1,6 @@
 "use strict";
 
-require("@babel/polyfill");
+require("regenerator-runtime/runtime");
 require("isomorphic-unfetch");
 if (!global._) global._ = require("lodash");
 

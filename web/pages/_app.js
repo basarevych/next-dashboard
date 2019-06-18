@@ -35,7 +35,7 @@ class MyApp extends App {
         appServer: query && query.appServer,
         apiServer: query && query.apiServer,
         wsServer: query && query.wsServer,
-        googleMapsKey: query && query.googleMapsKey
+        mapboxToken: query && query.mapboxToken
       })
     );
 

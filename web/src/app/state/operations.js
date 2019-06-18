@@ -29,7 +29,7 @@ export const create = ({
   appServer,
   apiServer,
   wsServer,
-  googleMapsKey
+  mapboxToken
 }) => async dispatch => {
   return dispatch(
     actions.create({
@@ -40,7 +40,7 @@ export const create = ({
       appServer,
       apiServer,
       wsServer,
-      googleMapsKey
+      mapboxToken
     })
   );
 };
@@ -233,5 +233,19 @@ export const sendToast = ({ position, title, content }) => {
 export const setCookie = ({ name, value, days }) => {
   return async (dispatch, getState, di) => {
     return di.get("cookie").set(name, value, days);
+  };
+};
+
+export const fetchCities = () => {
+  return async (dispatch, getState, di) => {
+    return di
+      .get("fetcher")
+      .fetch({
+        method: "GET",
+        resource:
+          selectors.getApiServer(getState()) +
+          constants.apiBase +
+          "/data/us-cities"
+      });
   };
 };

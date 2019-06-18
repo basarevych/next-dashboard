@@ -10,7 +10,7 @@ Map({
   isStaticSite: Boolean,
   appServer: String,
   apiServer: String,
-  googleMapsKey: null,
+  mapboxToken: null,
   locale: String,
   theme: String,
   isStarted: Boolean,
@@ -78,10 +78,10 @@ const wsServerReducer = (state = "", action) => {
   return state;
 };
 
-const googleMapsKeyReducer = (state = "", action) => {
+const mapboxTokenReducer = (state = "", action) => {
   switch (action.type) {
     case types.CREATE:
-      if (!_.isUndefined(action.googleMapsKey)) return action.googleMapsKey;
+      if (!_.isUndefined(action.mapboxToken)) return action.mapboxToken;
       break;
   }
   return state;
@@ -151,7 +151,7 @@ const reducer = combineReducers({
   wsServer: wsServerReducer,
   locale: localeReducer,
   theme: themeReducer,
-  googleMapsKey: googleMapsKeyReducer,
+  mapboxToken: mapboxTokenReducer,
   isStarted: isStartedReducer,
   isStopped: isStoppedReducer,
   isConnected: isConnectedReducer,

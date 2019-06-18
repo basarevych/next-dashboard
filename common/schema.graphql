@@ -235,39 +235,6 @@ type GetTokenPayload {
   clientMutationId: String
 }
 
-type MarketShare implements Node {
-  """The ID of an object"""
-  id: ID!
-  country: Country
-  shares: [MarketShareValue]!
-}
-
-"""A connection to a list of items."""
-type MarketShareConnection {
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """A list of edges."""
-  edges: [MarketShareEdge]
-}
-
-"""An edge in a connection."""
-type MarketShareEdge {
-  """The item at the end of the edge"""
-  node: MarketShare
-
-  """A cursor for use in pagination"""
-  cursor: String!
-}
-
-type MarketShareValue implements Node {
-  """The ID of an object"""
-  id: ID!
-  vendor: String!
-  name: String!
-  values: [Float]!
-}
-
 type Mutation {
   signIn(input: SignInInput!): SignInPayload
   signUp(input: SignUpInput!): SignUpPayload
@@ -463,6 +430,36 @@ type UpdateProfilePayload {
   clientMutationId: String
 }
 
+type USCity implements Node {
+  """The ID of an object"""
+  id: ID!
+  name: String!
+  stateId: String!
+  stateName: String!
+  lat: Float!
+  lng: Float!
+  population: Int!
+}
+
+"""A connection to a list of items."""
+type USCityConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [USCityEdge]
+  otherPopulation: Int
+}
+
+"""An edge in a connection."""
+type USCityEdge {
+  """The item at the end of the edge"""
+  node: USCity
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
 type User implements Node {
   """The ID of an object"""
   id: ID!
@@ -526,13 +523,14 @@ type Viewer {
   users(sortBy: UserSortBy, sortDir: UserSortDir, after: String, first: Int, before: String, last: Int): UserConnection
   employee(id: ID): Employee
   employees(dept: EmployeeDept, sortBy: EmployeeSortBy, sortDir: EmployeeSortDir, after: String, first: Int, before: String, last: Int): EmployeeConnection
+  country(id: ID): Country
   countries(after: String, first: Int, before: String, last: Int): CountryConnection
+  usCity(id: ID): USCity
+  usCities(after: String, first: Int, before: String, last: Int, stateId: String, stateName: String, limit: Int): USCityConnection
   profitValues(after: String, first: Int, before: String, last: Int): ProfitValueConnection
   salesValues(after: String, first: Int, before: String, last: Int): SalesValueConnection
   clientsValues(after: String, first: Int, before: String, last: Int): ClientsValueConnection
   avgTimeValues(after: String, first: Int, before: String, last: Int): AvgTimeValueConnection
-  marketSharesByCountry(country: ID): MarketShare
-  marketShares(after: String, first: Int, before: String, last: Int): MarketShareConnection
 
   """Fetches an object given its ID"""
   node(

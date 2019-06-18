@@ -1,6 +1,9 @@
 const debug = require("debug")("app:dashboard");
+const path = require("path");
+const fs = require("fs-extra");
+const parse = require("csv-parse");
 const moment = require("../../common/src/moment");
-const { allCountries, iso2Lookup } = require("../../common/src/countries");
+const { allCountries } = require("../../common/src/countries");
 
 class DashboardRepository {
   constructor(di, dashboard, fake) {
@@ -23,13 +26,85 @@ class DashboardRepository {
 
   async init() {
     if (this.promise) return this.promise;
-    this.promise = Promise.resolve();
+    this.promise = new Promise(async (resolve, reject) => {
+      try {
+        this.generateProfits();
+        this.generateSales();
+        this.generateClients();
+        this.generateAvgTimes();
 
-    this.generateProfits();
-    this.generateSales();
-    this.generateClients();
-    this.generateAvgTimes();
-    this.generateMarketShares();
+        this.countries = {};
+        for (let country of allCountries) {
+          const id = _.toUpper(country.iso2);
+          this.countries[id] = new this.dashboard.CountryModel({
+            id,
+            name: country.name,
+            callingCode: country.dialCode
+          });
+        }
+
+        const text = await fs.readFile(
+          path.join(__dirname, "..", "..", "data", "uscitiesv1.5.csv"),
+          "utf8"
+        );
+
+        const data = await new Promise((resolve, reject) =>
+          parse(
+            text,
+            {
+              columns: true,
+              skip_empty_lines: true
+            },
+            (error, output) => {
+              if (error) return reject(error);
+              resolve(output);
+            }
+          )
+        );
+
+        this.usStatesById = {};
+        this.usStatesByName = {};
+        this.usCities = {};
+        for (let line of data) {
+          const id = line.id.toString();
+          const stateId = _.toUpper(line.state_id);
+          const stateName = line.state_name;
+          const lat = Number(line.lat);
+          const lng = Number(line.lng);
+          if (isNaN(lat) || isNaN(lng)) {
+            console.log("Garbage data for: " + line.city);
+            continue;
+          }
+          const model = new this.dashboard.USCityModel({
+            id,
+            name: line.city,
+            stateId,
+            stateName,
+            lat,
+            lng,
+            population: Number(line.population)
+          });
+          this.usCities[id] = model;
+          if (!this.usStatesById[stateId]) this.usStatesById[stateId] = [];
+          this.usStatesById[stateId].push(model);
+          if (!this.usStatesByName[stateName])
+            this.usStatesByName[stateName] = [];
+          this.usStatesByName[stateName].push(model);
+        }
+
+        for (let state of _.keys(this.usStatesById))
+          this.usStatesById[state].sort((a, b) => b.population - a.population);
+        for (let state of _.keys(this.usStatesByName))
+          this.usStatesByName[state].sort(
+            (a, b) => b.population - a.population
+          );
+
+        resolve();
+      } catch (error) {
+        reject(error);
+      }
+    });
+    return this.promise;
   }
 
   generateProfits() {
@@ -107,60 +182,6 @@ class DashboardRepository {
     }
   }
 
-  generateMarketShares() {
-    const vendors = [
-      "Apple",
-      "Samsung",
-      "IBM",
-      "Foxconn",
-      "Sony",
-      "HP",
-      "Dell",
-      "Fujitsu"
-    ];
-
-    const getRandomData = country => {
-      country = _.toUpper(country);
-
-      let shares = [];
-      let variants = _.shuffle(vendors);
-      let maxVendors = this.fake.getInt(5, vendors.length - 1);
-
-      for (let i = 0; i < maxVendors; i++) {
-        let name = variants.shift();
-        let vendor = _.toUpper(name);
-
-        let values = [];
-        for (let j = 0; j < 4; j++) values.push(this.fake.getFloat(10, 30));
-
-        shares.push(
-          new this.dashboard.MarketShareValueModel({
-            id: `${country}:${vendor}`,
-            vendor,
-            name,
-            values
-          })
-        );
-      }
-
-      shares.sort(
-        (a, b) =>
-          _.reduce(a.values, (acc, cur) => acc + cur, 0) -
-          _.reduce(b.values, (acc, cur) => acc + cur, 0)
-      );
-
-      return new this.dashboard.MarketShareModel({
-        id: country,
-        shares
-      });
-    };
-
-    this.marketShares = _.map(allCountries, country =>
-      getRandomData(country.iso2)
-    );
-    this.marketShares.unshift(getRandomData("WORLD"));
-  }
-
   isValid(context) {
     return context.token !== false;
   }
@@ -172,16 +193,14 @@ class DashboardRepository {
   async getCountry(context, { id }) {
     debug("getCountry");
 
+    if (!id) return null;
+
     if (!this.isValid(context)) throw this.di.get("error.unauthorized");
     if (!this.isAllowed(context)) throw this.di.get("error.forbidden");
 
-    const country = allCountries[iso2Lookup[_.toLower(id)]];
+    const country = this.countries[_.toUpper(id)];
     if (!country) throw this.di.get("error.notFound");
-    return new this.dashboard.CountryModel({
-      id: _.toUpper(country.iso2),
-      name: country.name,
-      callingCode: country.dialCode
-    });
+    return country;
   }
 
   async getCountries(context) {
@@ -190,15 +209,43 @@ class DashboardRepository {
     if (!this.isValid(context)) throw this.di.get("error.unauthorized");
     if (!this.isAllowed(context)) throw this.di.get("error.forbidden");
 
-    return _.map(
-      allCountries,
-      country =>
-        new this.dashboard.CountryModel({
-          id: _.toUpper(country.iso2),
-          name: country.name,
-          callingCode: country.dialCode
-        })
+    return _.map(_.keys(this.countries), id => this.countries[id]);
+  }
+
+  async getUSCity(context, { id }) {
+    debug("getUSCity");
+
+    if (!id) return null;
+
+    if (!this.isValid(context)) throw this.di.get("error.unauthorized");
+    if (!this.isAllowed(context)) throw this.di.get("error.forbidden");
+
+    const city = this.usCities[id];
+    if (!city) throw this.di.get("error.notFound");
+    return city;
+  }
+
+  async getUSCities(context, { stateId, stateName, limit }) {
+    debug("getUSCities");
+
+    if (!stateId && !stateName) return [];
+    if (!limit) limit = 10;
+
+    if (!this.isValid(context)) throw this.di.get("error.unauthorized");
+    if (!this.isAllowed(context)) throw this.di.get("error.forbidden");
+
+    let cities = stateId
+      ? this.usStatesById[stateId]
+      : this.usStatesByName[stateName];
+    if (!cities) throw this.di.get("error.notFound");
+
+    let result = cities.slice(0, limit);
+    result.otherPopulation = _.reduce(
+      cities.slice(limit),
+      (acc, cur) => acc + cur.population,
+      0
     );
+    return result;
   }
 
   async getProfitValue(context, { id }) {
@@ -279,45 +326,6 @@ class DashboardRepository {
     if (!this.isAllowed(context)) throw this.di.get("error.forbidden");
 
     return this.avgTimes;
-  }
-
-  async getMarketSharesByCountry(context, { id, country }) {
-    debug("getMarketShare");
-
-    if (!this.isValid(context)) throw this.di.get("error.unauthorized");
-    if (!this.isAllowed(context)) throw this.di.get("error.forbidden");
-
-    if (!country) country = id;
-
-    const countryData = _.find(this.marketShares, ["id", _.toUpper(country)]);
-    if (!countryData) throw this.di.get("error.notFound");
-
-    return countryData;
-  }
-
-  async getMarketSharesValue(context, { id }) {
-    debug("getMarketShareValue");
-
-    if (!this.isValid(context)) throw this.di.get("error.unauthorized");
-    if (!this.isAllowed(context)) throw this.di.get("error.forbidden");
-
-    const [country, vendor] = _.split(id, ":");
-    const countryData = await this.getMarketSharesByCountry(context, {
-      country
-    });
-    const vendorData = _.find(countryData.shares, ["id", _.toUpper(vendor)]);
-    if (!vendorData) throw this.di.get("error.notFound");
-
-    return vendorData;
-  }
-
-  async getMarketShares(context) {
-    debug("getMarketShares");
-
-    if (!this.isValid(context)) throw this.di.get("error.unauthorized");
-    if (!this.isAllowed(context)) throw this.di.get("error.forbidden");
-
-    return this.marketShares;
   }
 }
 
