@@ -11,8 +11,8 @@ class Error {
   accept({ express }) {
     express.use((err, req, res, next) => {
       let details;
-      if (process.env.NODE_ENV === "development")
-        details = _.split(err.stack, "\n");
+      //if (process.env.NODE_ENV === "development")
+      details = _.split(err.stack, "\n");
 
       if (!res.headersSent) {
         res.status(err.statusCode || 500);
