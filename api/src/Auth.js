@@ -194,7 +194,7 @@ class Auth {
             try {
               // Token bearer
               let curUser, curClient;
-              if (req.cookie.token) {
+              if (req.cookie && req.cookie.token) {
                 const { type, user, client } =
                   (await this.useToken(req.cookie.token)) || {};
                 if (type === "oneTime") {
