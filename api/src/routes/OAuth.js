@@ -64,7 +64,7 @@ class OAuthRoute {
         path: constants.apiBase + "/oauth"
       });
 
-      res.redirect(`/oauth/${provider}/start`);
+      res.redirect(constants.apiBase + `/oauth/${provider}/start`);
     };
   }
 
