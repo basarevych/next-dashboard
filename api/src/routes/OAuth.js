@@ -79,7 +79,7 @@ class OAuthRoute {
 
   successRedirect(/* provider */) {
     return async (req, res, next) => {
-      let redirect = req.cookie.redirect || "";
+      let redirect = (req.cookie && req.cookie.redirect) || "";
 
       res.clearCookie("token", { path: constants.apiBase + "/oauth" });
       res.clearCookie("redirect", { path: constants.apiBase + "/oauth" });
