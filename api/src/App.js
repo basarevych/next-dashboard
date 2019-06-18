@@ -21,6 +21,8 @@ let apiSslCert = process.env.API_SSL_CERT;
 let apiSslCa = process.env.API_SSL_CA;
 let apiAppServer = process.env.API_APP_SERVER;
 let jwtSecret = process.env.JWT_SECRET;
+let sessionSecret = process.env.SESSION_SECRET;
+let sessionMaxAge = 1000 * 60 * 60 * 24 * 7;
 let redisUrl = process.env.REDIS_URL || "redis://localhost:6379";
 let mongoUrl =
   process.env.MONGO_URL || "mongodb://localhost:27017/next-dashboard";
@@ -65,6 +67,8 @@ class App {
       apiSslCert,
       apiSslCa,
       jwtSecret,
+      sessionSecret,
+      sessionMaxAge,
       redisUrl,
       mongoUrl,
       rootLogin,
@@ -137,6 +141,7 @@ class App {
         // Order matters
         "early",
         "parse",
+        "session",
         "routes",
         "graphql",
         "late",

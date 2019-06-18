@@ -1,7 +1,7 @@
 module.exports =
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
-/******/ 	var installedModules = require('../../../../ssr-module-cache.js');
+/******/ 	var installedModules = require('../../../ssr-module-cache.js');
 /******/
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
@@ -88,7 +88,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 15);
+/******/ 	return __webpack_require__(__webpack_require__.s = 10);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -859,40 +859,11 @@ module.exports.default = exports.default;
 
 /***/ }),
 
-/***/ "0uHx":
+/***/ 10:
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
+module.exports = __webpack_require__("C4at");
 
-
-var _interopRequireWildcard = __webpack_require__("5Uuq");
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _reactRedux = __webpack_require__("h74D");
-
-var _styles = __webpack_require__("Bjmp");
-
-var _state = __webpack_require__("XiiD");
-
-var _VerifyEmail = _interopRequireWildcard(__webpack_require__("9P4a"));
-
-var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-  return {
-    onVerify: function onVerify(token) {
-      return dispatch(_state.appOperations.finishEmailVerification({
-        token: token
-      }));
-    }
-  };
-};
-
-var VerifyEmail = (0, _reactRedux.connect)(null, mapDispatchToProps)((0, _styles.withStyles)(_VerifyEmail.styles)(_VerifyEmail.default));
-var _default = VerifyEmail;
-exports.default = _default;
 
 /***/ }),
 
@@ -914,14 +885,6 @@ module.exports = function (exec) {
     return true;
   }
 };
-
-
-/***/ }),
-
-/***/ 15:
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__("H1It");
 
 
 /***/ }),
@@ -2226,165 +2189,6 @@ module.exports = require("@material-ui/core/Avatar");
 
 /***/ }),
 
-/***/ "4kRp":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @flow
- * @relayHash 56134f516517e454b58807c7ed63e0ec
- */
-
-/* eslint-disable */
-
-/*::
-import type { ConcreteRequest } from 'relay-runtime';
-type LayoutContainer_viewer$ref = any;
-export type VerifyEmailPageQueryVariables = {||};
-export type VerifyEmailPageQueryResponse = {|
-  +viewer: ?{|
-    +$fragmentRefs: LayoutContainer_viewer$ref
-  |}
-|};
-export type VerifyEmailPageQuery = {|
-  variables: VerifyEmailPageQueryVariables,
-  response: VerifyEmailPageQueryResponse,
-|};
-*/
-
-/*
-query VerifyEmailPageQuery {
-  viewer {
-    ...LayoutContainer_viewer
-  }
-}
-
-fragment LayoutContainer_viewer on Viewer {
-  me {
-    isAuthenticated
-    userId
-    name
-    email
-    roles
-    providers {
-      name
-    }
-  }
-}
-*/
-
-var node
-/*: ConcreteRequest*/
-= function () {
-  var v0 = {
-    "kind": "ScalarField",
-    "alias": null,
-    "name": "name",
-    "args": null,
-    "storageKey": null
-  };
-  return {
-    "kind": "Request",
-    "fragment": {
-      "kind": "Fragment",
-      "name": "VerifyEmailPageQuery",
-      "type": "Query",
-      "metadata": null,
-      "argumentDefinitions": [],
-      "selections": [{
-        "kind": "LinkedField",
-        "alias": null,
-        "name": "viewer",
-        "storageKey": null,
-        "args": null,
-        "concreteType": "Viewer",
-        "plural": false,
-        "selections": [{
-          "kind": "FragmentSpread",
-          "name": "LayoutContainer_viewer",
-          "args": null
-        }]
-      }]
-    },
-    "operation": {
-      "kind": "Operation",
-      "name": "VerifyEmailPageQuery",
-      "argumentDefinitions": [],
-      "selections": [{
-        "kind": "LinkedField",
-        "alias": null,
-        "name": "viewer",
-        "storageKey": null,
-        "args": null,
-        "concreteType": "Viewer",
-        "plural": false,
-        "selections": [{
-          "kind": "LinkedField",
-          "alias": null,
-          "name": "me",
-          "storageKey": null,
-          "args": null,
-          "concreteType": "Status",
-          "plural": false,
-          "selections": [{
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "isAuthenticated",
-            "args": null,
-            "storageKey": null
-          }, {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "userId",
-            "args": null,
-            "storageKey": null
-          }, v0
-          /*: any*/
-          , {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "email",
-            "args": null,
-            "storageKey": null
-          }, {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "roles",
-            "args": null,
-            "storageKey": null
-          }, {
-            "kind": "LinkedField",
-            "alias": null,
-            "name": "providers",
-            "storageKey": null,
-            "args": null,
-            "concreteType": "ProviderStatus",
-            "plural": true,
-            "selections": [v0
-            /*: any*/
-            ]
-          }]
-        }]
-      }]
-    },
-    "params": {
-      "operationKind": "query",
-      "name": "VerifyEmailPageQuery",
-      "id": null,
-      "text": "query VerifyEmailPageQuery {\n  viewer {\n    ...LayoutContainer_viewer\n  }\n}\n\nfragment LayoutContainer_viewer on Viewer {\n  me {\n    isAuthenticated\n    userId\n    name\n    email\n    roles\n    providers {\n      name\n    }\n  }\n}\n",
-      "metadata": {}
-    }
-  };
-}(); // prettier-ignore
-
-
-node
-/*: any*/
-.hash = '246b45bd93dbbca4bc61a68c271316cb';
-module.exports = node;
-
-/***/ }),
-
 /***/ "4mXO":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2905,168 +2709,6 @@ module.exports = function (it) {
   return it;
 };
 
-
-/***/ }),
-
-/***/ "9P4a":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__("KI45");
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = exports.styles = void 0;
-
-var _regenerator = _interopRequireDefault(__webpack_require__("ln6h"));
-
-var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__("+oT+"));
-
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
-
-var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
-
-var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
-
-var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
-
-var _assertThisInitialized2 = _interopRequireDefault(__webpack_require__("K47E"));
-
-var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
-
-var _react = _interopRequireDefault(__webpack_require__("cDcd"));
-
-var _router = _interopRequireDefault(__webpack_require__("4Q3z"));
-
-var _reactIntl = __webpack_require__("k004");
-
-var _Typography = _interopRequireDefault(__webpack_require__("UVoM"));
-
-var _Button = _interopRequireDefault(__webpack_require__("Wh1t"));
-
-var styles = function styles(theme) {
-  return {
-    layout: {
-      width: "100%",
-      flex: 1,
-      padding: theme.spacing(1),
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center"
-    },
-    form: {
-      width: "100%",
-      maxWidth: 700
-    },
-    title: {
-      borderBottom: "1px dotted ".concat(theme.palette.text.primary)
-    },
-    error: theme.main.error
-  };
-};
-
-exports.styles = styles;
-
-var VerifyEmail =
-/*#__PURE__*/
-function (_React$Component) {
-  (0, _inherits2.default)(VerifyEmail, _React$Component);
-
-  function VerifyEmail(props) {
-    var _this;
-
-    (0, _classCallCheck2.default)(this, VerifyEmail);
-    _this = (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(VerifyEmail).call(this, props));
-    _this.state = {
-      message: null
-    };
-    _this.handleSubmit = _this.handleSubmit.bind((0, _assertThisInitialized2.default)(_this));
-    return _this;
-  }
-
-  (0, _createClass2.default)(VerifyEmail, [{
-    key: "handleSubmit",
-    value: function () {
-      var _handleSubmit = (0, _asyncToGenerator2.default)(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee() {
-        var success;
-        return _regenerator.default.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                this.setState({
-                  message: null
-                });
-                _context.next = 3;
-                return this.props.onVerify(this.props.token);
-
-              case 3:
-                success = _context.sent;
-
-                if (!success) {
-                  _context.next = 6;
-                  break;
-                }
-
-                return _context.abrupt("return", _router.default.push("/auth/profile"));
-
-              case 6:
-                this.setState({
-                  message: "VERIFY_FAILED_MESSAGE"
-                });
-
-              case 7:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee, this);
-      }));
-
-      function handleSubmit() {
-        return _handleSubmit.apply(this, arguments);
-      }
-
-      return handleSubmit;
-    }()
-  }, {
-    key: "render",
-    value: function render() {
-      return _react.default.createElement("div", {
-        className: this.props.classes.layout
-      }, _react.default.createElement("div", {
-        className: this.props.classes.form
-      }, _react.default.createElement(_Typography.default, {
-        variant: "h4",
-        classes: {
-          root: this.props.classes.title
-        }
-      }, _react.default.createElement(_reactIntl.FormattedMessage, {
-        id: "TITLE_VERIFY"
-      })), this.state.message && _react.default.createElement("p", {
-        className: this.props.classes.error
-      }, _react.default.createElement(_reactIntl.FormattedMessage, {
-        id: this.state.message
-      })), _react.default.createElement("p", null, _react.default.createElement(_reactIntl.FormattedMessage, {
-        id: "VERIFY_INTRO_MESSAGE"
-      })), _react.default.createElement(_Button.default, {
-        variant: "contained",
-        color: "primary",
-        onClick: this.handleSubmit
-      }, _react.default.createElement(_reactIntl.FormattedMessage, {
-        id: "VERIFY_ACTION_BUTTON"
-      }))));
-    }
-  }]);
-  return VerifyEmail;
-}(_react.default.Component);
-
-var _default = VerifyEmail;
-exports.default = _default;
 
 /***/ }),
 
@@ -3639,6 +3281,28 @@ module.exports = require("react-intl/locale-data/en.js");
 /***/ (function(module, exports) {
 
 module.exports = require("@material-ui/icons/InsertChart");
+
+/***/ }),
+
+/***/ "C4at":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+Object.defineProperty(exports, "default", {
+  enumerable: true,
+  get: function get() {
+    return _TypographyPage.default;
+  }
+});
+
+var _TypographyPage = _interopRequireDefault(__webpack_require__("yOcD"));
 
 /***/ }),
 
@@ -4339,28 +4003,6 @@ module.exports = function (fn, args, that) {
 /***/ (function(module, exports) {
 
 module.exports = require("@material-ui/core/Menu");
-
-/***/ }),
-
-/***/ "H1It":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__("KI45");
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-Object.defineProperty(exports, "default", {
-  enumerable: true,
-  get: function get() {
-    return _VerifyEmailPage.default;
-  }
-});
-
-var _VerifyEmailPage = _interopRequireDefault(__webpack_require__("VJ0V"));
 
 /***/ }),
 
@@ -6102,6 +5744,165 @@ module.exports = node;
 /***/ (function(module, exports) {
 
 module.exports = require("@material-ui/core/Grid");
+
+/***/ }),
+
+/***/ "JZwh":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @flow
+ * @relayHash b1220d923d5e3219a6437864c282b270
+ */
+
+/* eslint-disable */
+
+/*::
+import type { ConcreteRequest } from 'relay-runtime';
+type LayoutContainer_viewer$ref = any;
+export type TypographyPageQueryVariables = {||};
+export type TypographyPageQueryResponse = {|
+  +viewer: ?{|
+    +$fragmentRefs: LayoutContainer_viewer$ref
+  |}
+|};
+export type TypographyPageQuery = {|
+  variables: TypographyPageQueryVariables,
+  response: TypographyPageQueryResponse,
+|};
+*/
+
+/*
+query TypographyPageQuery {
+  viewer {
+    ...LayoutContainer_viewer
+  }
+}
+
+fragment LayoutContainer_viewer on Viewer {
+  me {
+    isAuthenticated
+    userId
+    name
+    email
+    roles
+    providers {
+      name
+    }
+  }
+}
+*/
+
+var node
+/*: ConcreteRequest*/
+= function () {
+  var v0 = {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "name",
+    "args": null,
+    "storageKey": null
+  };
+  return {
+    "kind": "Request",
+    "fragment": {
+      "kind": "Fragment",
+      "name": "TypographyPageQuery",
+      "type": "Query",
+      "metadata": null,
+      "argumentDefinitions": [],
+      "selections": [{
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "viewer",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "Viewer",
+        "plural": false,
+        "selections": [{
+          "kind": "FragmentSpread",
+          "name": "LayoutContainer_viewer",
+          "args": null
+        }]
+      }]
+    },
+    "operation": {
+      "kind": "Operation",
+      "name": "TypographyPageQuery",
+      "argumentDefinitions": [],
+      "selections": [{
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "viewer",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "Viewer",
+        "plural": false,
+        "selections": [{
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "me",
+          "storageKey": null,
+          "args": null,
+          "concreteType": "Status",
+          "plural": false,
+          "selections": [{
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "isAuthenticated",
+            "args": null,
+            "storageKey": null
+          }, {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "userId",
+            "args": null,
+            "storageKey": null
+          }, v0
+          /*: any*/
+          , {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "email",
+            "args": null,
+            "storageKey": null
+          }, {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "roles",
+            "args": null,
+            "storageKey": null
+          }, {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "providers",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "ProviderStatus",
+            "plural": true,
+            "selections": [v0
+            /*: any*/
+            ]
+          }]
+        }]
+      }]
+    },
+    "params": {
+      "operationKind": "query",
+      "name": "TypographyPageQuery",
+      "id": null,
+      "text": "query TypographyPageQuery {\n  viewer {\n    ...LayoutContainer_viewer\n  }\n}\n\nfragment LayoutContainer_viewer on Viewer {\n  me {\n    isAuthenticated\n    userId\n    name\n    email\n    roles\n    providers {\n      name\n    }\n  }\n}\n",
+      "metadata": {}
+    }
+  };
+}(); // prettier-ignore
+
+
+node
+/*: any*/
+.hash = 'fb28b1df81a99274c110ddd14c957fcd';
+module.exports = node;
 
 /***/ }),
 
@@ -7888,8 +7689,9 @@ var linkProvider = function linkProvider(_ref15) {
 
               case 9:
                 window.location.href = selectors.getApiServer(getState()) + _constants.default.apiBase + "/oauth/" + _.lowerCase(provider) + "?redirect=" + encodeURIComponent(window.location.href) + (oneTimeToken ? "?token=" + encodeURIComponent(oneTimeToken) : "");
+                return _context10.abrupt("return", refreshToken ? !!oneTimeToken : true);
 
-              case 10:
+              case 11:
               case "end":
                 return _context10.stop();
             }
@@ -9030,128 +8832,6 @@ exports.default = _default;
 
 /***/ }),
 
-/***/ "VJ0V":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__("KI45");
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = exports.query = void 0;
-
-var _regenerator = _interopRequireDefault(__webpack_require__("ln6h"));
-
-var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__("+oT+"));
-
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
-
-var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
-
-var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
-
-var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
-
-var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
-
-var _react = _interopRequireDefault(__webpack_require__("cDcd"));
-
-var _reactRelay = __webpack_require__("iuEU");
-
-var _Relay = __webpack_require__("5upH");
-
-var _VerifyEmailContainer = _interopRequireDefault(__webpack_require__("0uHx"));
-
-var _LayoutContainer = _interopRequireDefault(__webpack_require__("hl3i"));
-
-var _SpinnerContainer = _interopRequireDefault(__webpack_require__("wkow"));
-
-var defaultVariables = {};
-
-var query = function query() {
-  return __webpack_require__("4kRp");
-};
-
-exports.query = query;
-
-var VerifyEmailPage =
-/*#__PURE__*/
-function (_React$Component) {
-  (0, _inherits2.default)(VerifyEmailPage, _React$Component);
-
-  function VerifyEmailPage() {
-    (0, _classCallCheck2.default)(this, VerifyEmailPage);
-    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(VerifyEmailPage).apply(this, arguments));
-  }
-
-  (0, _createClass2.default)(VerifyEmailPage, [{
-    key: "render",
-    value: function render() {
-      var _this = this;
-
-      return _react.default.createElement(_Relay.QueryRenderer, {
-        query: query,
-        variables: defaultVariables,
-        render: function render(_ref) {
-          var error = _ref.error,
-              props = _ref.props;
-          return _react.default.createElement(_LayoutContainer.default, {
-            page: "/auth/verify",
-            viewer: props ? props.viewer : null,
-            error: error
-          }, !error && !props && _react.default.createElement(_SpinnerContainer.default, null), !error && props && _react.default.createElement(_VerifyEmailContainer.default, {
-            viewer: props.viewer,
-            token: _this.props.token
-          }));
-        }
-      });
-    }
-  }], [{
-    key: "getInitialProps",
-    value: function () {
-      var _getInitialProps = (0, _asyncToGenerator2.default)(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee(_ref2) {
-        var urlQuery, fetchQuery;
-        return _regenerator.default.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                urlQuery = _ref2.query, fetchQuery = _ref2.fetchQuery;
-                _context.next = 3;
-                return fetchQuery(query, defaultVariables);
-
-              case 3:
-                return _context.abrupt("return", {
-                  token: urlQuery.token
-                });
-
-              case 4:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee);
-      }));
-
-      function getInitialProps(_x) {
-        return _getInitialProps.apply(this, arguments);
-      }
-
-      return getInitialProps;
-    }()
-  }]);
-  return VerifyEmailPage;
-}(_react.default.Component);
-
-var _default = VerifyEmailPage;
-exports.default = _default;
-
-/***/ }),
-
 /***/ "VOgL":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9608,6 +9288,29 @@ $export($export.S + $export.F * !(USE_NATIVE && __webpack_require__("Q2zc")(func
   }
 });
 
+
+/***/ }),
+
+/***/ "W8Wa":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireWildcard = __webpack_require__("5Uuq");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _styles = __webpack_require__("Bjmp");
+
+var _TypographyDemo = _interopRequireWildcard(__webpack_require__("u/d+"));
+
+var TypographyDemo = (0, _styles.withStyles)(_TypographyDemo.styles)(_TypographyDemo.default);
+var _default = TypographyDemo;
+exports.default = _default;
 
 /***/ }),
 
@@ -16676,6 +16379,243 @@ exports.default = _default;
 
 /***/ }),
 
+/***/ "u/d+":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = exports.styles = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
+
+var _defineProperty2 = _interopRequireDefault(__webpack_require__("xHqa"));
+
+var _react = _interopRequireDefault(__webpack_require__("cDcd"));
+
+var _Typography = _interopRequireDefault(__webpack_require__("UVoM"));
+
+var _Paper = _interopRequireDefault(__webpack_require__("qt1I"));
+
+var styles = function styles(theme) {
+  return {
+    layout: {
+      width: "100%",
+      flex: 1,
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "stretch",
+      flexDirection: "column"
+    },
+    row: (0, _defineProperty2.default)({
+      display: "flex",
+      justifyContent: "stretch",
+      alignItems: "center",
+      margin: "2rem"
+    }, theme.breakpoints.down("sm"), {
+      flexDirection: "column",
+      margin: "2rem 0"
+    }),
+    label: (0, _defineProperty2.default)({
+      width: 350,
+      padding: "0 2rem 1rem 2rem",
+      textAlign: "right",
+      fontFamily: "Roboto Mono",
+      fontWeight: "bold"
+    }, theme.breakpoints.down("sm"), {
+      textAlign: "center"
+    }),
+    item: {
+      padding: "2rem",
+      flex: 1
+    }
+  };
+};
+
+exports.styles = styles;
+
+var TypographyDemo =
+/*#__PURE__*/
+function (_React$Component) {
+  (0, _inherits2.default)(TypographyDemo, _React$Component);
+
+  function TypographyDemo() {
+    (0, _classCallCheck2.default)(this, TypographyDemo);
+    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(TypographyDemo).apply(this, arguments));
+  }
+
+  (0, _createClass2.default)(TypographyDemo, [{
+    key: "render",
+    value: function render() {
+      return _react.default.createElement("div", {
+        className: this.props.classes.layout
+      }, _react.default.createElement("div", {
+        className: this.props.classes.row
+      }, _react.default.createElement(_Typography.default, {
+        className: this.props.classes.label,
+        variant: "body1",
+        color: "inherit"
+      }, "<Typography variant=\"h1\">"), _react.default.createElement(_Paper.default, {
+        className: this.props.classes.item
+      }, _react.default.createElement(_Typography.default, {
+        variant: "h1",
+        color: "inherit"
+      }, "h1. Heading"))), _react.default.createElement("div", {
+        className: this.props.classes.row
+      }, _react.default.createElement(_Typography.default, {
+        className: this.props.classes.label,
+        variant: "body1",
+        color: "inherit"
+      }, "<Typography variant=\"h2\">"), _react.default.createElement(_Paper.default, {
+        className: this.props.classes.item
+      }, _react.default.createElement(_Typography.default, {
+        variant: "h2",
+        color: "inherit"
+      }, "h2. Heading"))), _react.default.createElement("div", {
+        className: this.props.classes.row
+      }, _react.default.createElement(_Typography.default, {
+        className: this.props.classes.label,
+        variant: "body1",
+        color: "inherit"
+      }, "<Typography variant=\"h3\">"), _react.default.createElement(_Paper.default, {
+        className: this.props.classes.item
+      }, _react.default.createElement(_Typography.default, {
+        variant: "h3",
+        color: "inherit"
+      }, "h3. Heading"))), _react.default.createElement("div", {
+        className: this.props.classes.row
+      }, _react.default.createElement(_Typography.default, {
+        className: this.props.classes.label,
+        variant: "body1",
+        color: "inherit"
+      }, "<Typography variant=\"h4\">"), _react.default.createElement(_Paper.default, {
+        className: this.props.classes.item
+      }, _react.default.createElement(_Typography.default, {
+        variant: "h4",
+        color: "inherit"
+      }, "h4. Heading"))), _react.default.createElement("div", {
+        className: this.props.classes.row
+      }, _react.default.createElement(_Typography.default, {
+        className: this.props.classes.label,
+        variant: "body1",
+        color: "inherit"
+      }, "<Typography variant=\"h5\">"), _react.default.createElement(_Paper.default, {
+        className: this.props.classes.item
+      }, _react.default.createElement(_Typography.default, {
+        variant: "h5",
+        color: "inherit"
+      }, "h5. Heading"))), _react.default.createElement("div", {
+        className: this.props.classes.row
+      }, _react.default.createElement(_Typography.default, {
+        className: this.props.classes.label,
+        variant: "body1",
+        color: "inherit"
+      }, "<Typography variant=\"h6\">"), _react.default.createElement(_Paper.default, {
+        className: this.props.classes.item
+      }, _react.default.createElement(_Typography.default, {
+        variant: "h6",
+        color: "inherit"
+      }, "h6. Heading"))), _react.default.createElement("div", {
+        className: this.props.classes.row
+      }, _react.default.createElement(_Typography.default, {
+        className: this.props.classes.label,
+        variant: "body1",
+        color: "inherit"
+      }, "<Typography variant=\"subtitle1\">"), _react.default.createElement(_Paper.default, {
+        className: this.props.classes.item
+      }, _react.default.createElement(_Typography.default, {
+        variant: "subtitle1",
+        color: "inherit"
+      }, "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos blanditiis tenetur"))), _react.default.createElement("div", {
+        className: this.props.classes.row
+      }, _react.default.createElement(_Typography.default, {
+        className: this.props.classes.label,
+        variant: "body1",
+        color: "inherit"
+      }, "<Typography variant=\"subtitle2\">"), _react.default.createElement(_Paper.default, {
+        className: this.props.classes.item
+      }, _react.default.createElement(_Typography.default, {
+        variant: "subtitle2",
+        color: "inherit"
+      }, "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos blanditiis tenetur"))), _react.default.createElement("div", {
+        className: this.props.classes.row
+      }, _react.default.createElement(_Typography.default, {
+        className: this.props.classes.label,
+        variant: "body1",
+        color: "inherit"
+      }, "<Typography variant=\"body1\">"), _react.default.createElement(_Paper.default, {
+        className: this.props.classes.item
+      }, _react.default.createElement(_Typography.default, {
+        variant: "body1",
+        color: "inherit"
+      }, "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos blanditiis tenetur unde suscipit, quam beatae rerum inventore consectetur, neque doloribus, cupiditate numquam dignissimos laborum fugiat deleniti? Eum quasi quidem quibusdam."))), _react.default.createElement("div", {
+        className: this.props.classes.row
+      }, _react.default.createElement(_Typography.default, {
+        className: this.props.classes.label,
+        variant: "body1",
+        color: "inherit"
+      }, "<Typography variant=\"body2\">"), _react.default.createElement(_Paper.default, {
+        className: this.props.classes.item
+      }, _react.default.createElement(_Typography.default, {
+        variant: "body2",
+        color: "inherit"
+      }, "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos blanditiis tenetur unde suscipit, quam beatae rerum inventore consectetur, neque doloribus, cupiditate numquam dignissimos laborum fugiat deleniti? Eum quasi quidem quibusdam."))), _react.default.createElement("div", {
+        className: this.props.classes.row
+      }, _react.default.createElement(_Typography.default, {
+        className: this.props.classes.label,
+        variant: "body1",
+        color: "inherit"
+      }, "<Typography variant=\"button\">"), _react.default.createElement(_Paper.default, {
+        className: this.props.classes.item
+      }, _react.default.createElement(_Typography.default, {
+        variant: "button",
+        color: "inherit"
+      }, "Button text"))), _react.default.createElement("div", {
+        className: this.props.classes.row
+      }, _react.default.createElement(_Typography.default, {
+        className: this.props.classes.label,
+        variant: "body1",
+        color: "inherit"
+      }, "<Typography variant=\"caption\">"), _react.default.createElement(_Paper.default, {
+        className: this.props.classes.item
+      }, _react.default.createElement(_Typography.default, {
+        variant: "caption",
+        color: "inherit"
+      }, "Caption text"))), _react.default.createElement("div", {
+        className: this.props.classes.row
+      }, _react.default.createElement(_Typography.default, {
+        className: this.props.classes.label,
+        variant: "body1",
+        color: "inherit"
+      }, "<Typography variant=\"overline\">"), _react.default.createElement(_Paper.default, {
+        className: this.props.classes.item
+      }, _react.default.createElement(_Typography.default, {
+        variant: "overline",
+        color: "inherit"
+      }, "Overline text"))));
+    }
+  }]);
+  return TypographyDemo;
+}(_react.default.Component);
+
+var _default = TypographyDemo;
+exports.default = _default;
+
+/***/ }),
+
 /***/ "uXag":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -18282,6 +18222,120 @@ module.exports = function validate(options, value, allValues) {
 };
 
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("YLtl")))
+
+/***/ }),
+
+/***/ "yOcD":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = exports.query = void 0;
+
+var _regenerator = _interopRequireDefault(__webpack_require__("ln6h"));
+
+var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__("+oT+"));
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
+
+var _react = _interopRequireDefault(__webpack_require__("cDcd"));
+
+var _reactRelay = __webpack_require__("iuEU");
+
+var _Relay = __webpack_require__("5upH");
+
+var _TypographyDemoContainer = _interopRequireDefault(__webpack_require__("W8Wa"));
+
+var _LayoutContainer = _interopRequireDefault(__webpack_require__("hl3i"));
+
+var _SpinnerContainer = _interopRequireDefault(__webpack_require__("wkow"));
+
+var defaultVariables = {};
+
+var query = function query() {
+  return __webpack_require__("JZwh");
+};
+
+exports.query = query;
+
+var TypographyPage =
+/*#__PURE__*/
+function (_React$Component) {
+  (0, _inherits2.default)(TypographyPage, _React$Component);
+
+  function TypographyPage() {
+    (0, _classCallCheck2.default)(this, TypographyPage);
+    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(TypographyPage).apply(this, arguments));
+  }
+
+  (0, _createClass2.default)(TypographyPage, [{
+    key: "render",
+    value: function render() {
+      return _react.default.createElement(_Relay.QueryRenderer, {
+        query: query,
+        variables: defaultVariables,
+        render: function render(_ref) {
+          var error = _ref.error,
+              props = _ref.props;
+          return _react.default.createElement(_LayoutContainer.default, {
+            page: "/typography",
+            viewer: props ? props.viewer : null,
+            error: error
+          }, !error && !props && _react.default.createElement(_SpinnerContainer.default, null), !error && props && _react.default.createElement(_TypographyDemoContainer.default, {
+            viewer: props.viewer
+          }));
+        }
+      });
+    }
+  }], [{
+    key: "getInitialProps",
+    value: function () {
+      var _getInitialProps = (0, _asyncToGenerator2.default)(
+      /*#__PURE__*/
+      _regenerator.default.mark(function _callee(_ref2) {
+        var fetchQuery;
+        return _regenerator.default.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                fetchQuery = _ref2.fetchQuery;
+                _context.next = 3;
+                return fetchQuery(query, defaultVariables);
+
+              case 3:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }));
+
+      function getInitialProps(_x) {
+        return _getInitialProps.apply(this, arguments);
+      }
+
+      return getInitialProps;
+    }()
+  }]);
+  return TypographyPage;
+}(_react.default.Component);
+
+var _default = TypographyPage;
+exports.default = _default;
 
 /***/ }),
 

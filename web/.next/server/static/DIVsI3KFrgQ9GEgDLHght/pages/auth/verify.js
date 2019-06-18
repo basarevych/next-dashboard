@@ -88,7 +88,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 12);
+/******/ 	return __webpack_require__(__webpack_require__.s = 15);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -859,18 +859,47 @@ module.exports.default = exports.default;
 
 /***/ }),
 
+/***/ "0uHx":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireWildcard = __webpack_require__("5Uuq");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _reactRedux = __webpack_require__("h74D");
+
+var _styles = __webpack_require__("Bjmp");
+
+var _state = __webpack_require__("XiiD");
+
+var _VerifyEmail = _interopRequireWildcard(__webpack_require__("9P4a"));
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+  return {
+    onVerify: function onVerify(token) {
+      return dispatch(_state.appOperations.finishEmailVerification({
+        token: token
+      }));
+    }
+  };
+};
+
+var VerifyEmail = (0, _reactRedux.connect)(null, mapDispatchToProps)((0, _styles.withStyles)(_VerifyEmail.styles)(_VerifyEmail.default));
+var _default = VerifyEmail;
+exports.default = _default;
+
+/***/ }),
+
 /***/ "1077":
 /***/ (function(module, exports) {
 
 exports.f = {}.propertyIsEnumerable;
-
-
-/***/ }),
-
-/***/ 12:
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__("H5iX");
 
 
 /***/ }),
@@ -885,6 +914,14 @@ module.exports = function (exec) {
     return true;
   }
 };
+
+
+/***/ }),
+
+/***/ 15:
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__("H1It");
 
 
 /***/ }),
@@ -2132,129 +2169,6 @@ module.exports = require("@material-ui/icons/Menu");
 
 /***/ }),
 
-/***/ "4DS7":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(_) {
-
-var _interopRequireDefault = __webpack_require__("KI45");
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = exports.styles = void 0;
-
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
-
-var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
-
-var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
-
-var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
-
-var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
-
-var _react = _interopRequireDefault(__webpack_require__("cDcd"));
-
-var _reactIntl = __webpack_require__("k004");
-
-var _Typography = _interopRequireDefault(__webpack_require__("UVoM"));
-
-var styles = function styles(theme) {
-  return {
-    layout: {
-      width: "100%",
-      flex: 1,
-      padding: theme.spacing(1),
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center"
-    },
-    form: {
-      width: "100%",
-      maxWidth: 700
-    },
-    title: {
-      borderBottom: "1px dotted ".concat(theme.palette.text.primary)
-    },
-    hint: {
-      marginTop: "4rem",
-      marginLeft: "5rem"
-    }
-  };
-};
-
-exports.styles = styles;
-
-var AuthError =
-/*#__PURE__*/
-function (_React$Component) {
-  (0, _inherits2.default)(AuthError, _React$Component);
-
-  function AuthError() {
-    (0, _classCallCheck2.default)(this, AuthError);
-    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(AuthError).apply(this, arguments));
-  }
-
-  (0, _createClass2.default)(AuthError, [{
-    key: "render",
-    value: function render() {
-      var _this = this;
-
-      var msg = "OAUTH_ERROR_GENERIC";
-      var hints = [];
-
-      if (this.props.type === "oauth") {
-        msg = "OAUTH_ERROR_ACCOUNT_EXISTS";
-        hints.push({
-          title: "OAUTH_ERROR_ACCOUNT_EXISTS_TITLE1",
-          body: "OAUTH_ERROR_ACCOUNT_EXISTS_MESSAGE1"
-        });
-        hints.push({
-          title: "OAUTH_ERROR_ACCOUNT_EXISTS_TITLE2",
-          body: "OAUTH_ERROR_ACCOUNT_EXISTS_MESSAGE2"
-        });
-      }
-
-      return _react.default.createElement("div", {
-        className: this.props.classes.layout
-      }, _react.default.createElement("div", {
-        className: this.props.classes.form
-      }, _react.default.createElement(_Typography.default, {
-        variant: "h4",
-        classes: {
-          root: this.props.classes.title
-        }
-      }, _react.default.createElement(_reactIntl.FormattedMessage, {
-        id: "TITLE_OAUTH_ERROR"
-      })), _react.default.createElement("p", null, _react.default.createElement(_reactIntl.FormattedMessage, {
-        id: msg
-      })), _.map(hints, function (hint, index) {
-        return _react.default.createElement("div", {
-          key: "hint-".concat(index),
-          className: _this.props.classes.hint
-        }, _react.default.createElement(_Typography.default, {
-          variant: "h5"
-        }, _react.default.createElement(_reactIntl.FormattedMessage, {
-          id: hint.title
-        })), _react.default.createElement(_Typography.default, {
-          variant: "body1"
-        }, _react.default.createElement(_reactIntl.FormattedMessage, {
-          id: hint.body
-        })));
-      })));
-    }
-  }]);
-  return AuthError;
-}(_react.default.Component);
-
-var _default = AuthError;
-exports.default = _default;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("YLtl")))
-
-/***/ }),
-
 /***/ "4N2y":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2309,6 +2223,165 @@ module.exports = require("@material-ui/core/FilledInput");
 /***/ (function(module, exports) {
 
 module.exports = require("@material-ui/core/Avatar");
+
+/***/ }),
+
+/***/ "4kRp":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @flow
+ * @relayHash 56134f516517e454b58807c7ed63e0ec
+ */
+
+/* eslint-disable */
+
+/*::
+import type { ConcreteRequest } from 'relay-runtime';
+type LayoutContainer_viewer$ref = any;
+export type VerifyEmailPageQueryVariables = {||};
+export type VerifyEmailPageQueryResponse = {|
+  +viewer: ?{|
+    +$fragmentRefs: LayoutContainer_viewer$ref
+  |}
+|};
+export type VerifyEmailPageQuery = {|
+  variables: VerifyEmailPageQueryVariables,
+  response: VerifyEmailPageQueryResponse,
+|};
+*/
+
+/*
+query VerifyEmailPageQuery {
+  viewer {
+    ...LayoutContainer_viewer
+  }
+}
+
+fragment LayoutContainer_viewer on Viewer {
+  me {
+    isAuthenticated
+    userId
+    name
+    email
+    roles
+    providers {
+      name
+    }
+  }
+}
+*/
+
+var node
+/*: ConcreteRequest*/
+= function () {
+  var v0 = {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "name",
+    "args": null,
+    "storageKey": null
+  };
+  return {
+    "kind": "Request",
+    "fragment": {
+      "kind": "Fragment",
+      "name": "VerifyEmailPageQuery",
+      "type": "Query",
+      "metadata": null,
+      "argumentDefinitions": [],
+      "selections": [{
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "viewer",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "Viewer",
+        "plural": false,
+        "selections": [{
+          "kind": "FragmentSpread",
+          "name": "LayoutContainer_viewer",
+          "args": null
+        }]
+      }]
+    },
+    "operation": {
+      "kind": "Operation",
+      "name": "VerifyEmailPageQuery",
+      "argumentDefinitions": [],
+      "selections": [{
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "viewer",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "Viewer",
+        "plural": false,
+        "selections": [{
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "me",
+          "storageKey": null,
+          "args": null,
+          "concreteType": "Status",
+          "plural": false,
+          "selections": [{
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "isAuthenticated",
+            "args": null,
+            "storageKey": null
+          }, {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "userId",
+            "args": null,
+            "storageKey": null
+          }, v0
+          /*: any*/
+          , {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "email",
+            "args": null,
+            "storageKey": null
+          }, {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "roles",
+            "args": null,
+            "storageKey": null
+          }, {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "providers",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "ProviderStatus",
+            "plural": true,
+            "selections": [v0
+            /*: any*/
+            ]
+          }]
+        }]
+      }]
+    },
+    "params": {
+      "operationKind": "query",
+      "name": "VerifyEmailPageQuery",
+      "id": null,
+      "text": "query VerifyEmailPageQuery {\n  viewer {\n    ...LayoutContainer_viewer\n  }\n}\n\nfragment LayoutContainer_viewer on Viewer {\n  me {\n    isAuthenticated\n    userId\n    name\n    email\n    roles\n    providers {\n      name\n    }\n  }\n}\n",
+      "metadata": {}
+    }
+  };
+}(); // prettier-ignore
+
+
+node
+/*: any*/
+.hash = '246b45bd93dbbca4bc61a68c271316cb';
+module.exports = node;
 
 /***/ }),
 
@@ -2832,6 +2905,168 @@ module.exports = function (it) {
   return it;
 };
 
+
+/***/ }),
+
+/***/ "9P4a":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = exports.styles = void 0;
+
+var _regenerator = _interopRequireDefault(__webpack_require__("ln6h"));
+
+var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__("+oT+"));
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
+
+var _assertThisInitialized2 = _interopRequireDefault(__webpack_require__("K47E"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
+
+var _react = _interopRequireDefault(__webpack_require__("cDcd"));
+
+var _router = _interopRequireDefault(__webpack_require__("4Q3z"));
+
+var _reactIntl = __webpack_require__("k004");
+
+var _Typography = _interopRequireDefault(__webpack_require__("UVoM"));
+
+var _Button = _interopRequireDefault(__webpack_require__("Wh1t"));
+
+var styles = function styles(theme) {
+  return {
+    layout: {
+      width: "100%",
+      flex: 1,
+      padding: theme.spacing(1),
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center"
+    },
+    form: {
+      width: "100%",
+      maxWidth: 700
+    },
+    title: {
+      borderBottom: "1px dotted ".concat(theme.palette.text.primary)
+    },
+    error: theme.main.error
+  };
+};
+
+exports.styles = styles;
+
+var VerifyEmail =
+/*#__PURE__*/
+function (_React$Component) {
+  (0, _inherits2.default)(VerifyEmail, _React$Component);
+
+  function VerifyEmail(props) {
+    var _this;
+
+    (0, _classCallCheck2.default)(this, VerifyEmail);
+    _this = (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(VerifyEmail).call(this, props));
+    _this.state = {
+      message: null
+    };
+    _this.handleSubmit = _this.handleSubmit.bind((0, _assertThisInitialized2.default)(_this));
+    return _this;
+  }
+
+  (0, _createClass2.default)(VerifyEmail, [{
+    key: "handleSubmit",
+    value: function () {
+      var _handleSubmit = (0, _asyncToGenerator2.default)(
+      /*#__PURE__*/
+      _regenerator.default.mark(function _callee() {
+        var success;
+        return _regenerator.default.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                this.setState({
+                  message: null
+                });
+                _context.next = 3;
+                return this.props.onVerify(this.props.token);
+
+              case 3:
+                success = _context.sent;
+
+                if (!success) {
+                  _context.next = 6;
+                  break;
+                }
+
+                return _context.abrupt("return", _router.default.push("/auth/profile"));
+
+              case 6:
+                this.setState({
+                  message: "VERIFY_FAILED_MESSAGE"
+                });
+
+              case 7:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function handleSubmit() {
+        return _handleSubmit.apply(this, arguments);
+      }
+
+      return handleSubmit;
+    }()
+  }, {
+    key: "render",
+    value: function render() {
+      return _react.default.createElement("div", {
+        className: this.props.classes.layout
+      }, _react.default.createElement("div", {
+        className: this.props.classes.form
+      }, _react.default.createElement(_Typography.default, {
+        variant: "h4",
+        classes: {
+          root: this.props.classes.title
+        }
+      }, _react.default.createElement(_reactIntl.FormattedMessage, {
+        id: "TITLE_VERIFY"
+      })), this.state.message && _react.default.createElement("p", {
+        className: this.props.classes.error
+      }, _react.default.createElement(_reactIntl.FormattedMessage, {
+        id: this.state.message
+      })), _react.default.createElement("p", null, _react.default.createElement(_reactIntl.FormattedMessage, {
+        id: "VERIFY_INTRO_MESSAGE"
+      })), _react.default.createElement(_Button.default, {
+        variant: "contained",
+        color: "primary",
+        onClick: this.handleSubmit
+      }, _react.default.createElement(_reactIntl.FormattedMessage, {
+        id: "VERIFY_ACTION_BUTTON"
+      }))));
+    }
+  }]);
+  return VerifyEmail;
+}(_react.default.Component);
+
+var _default = VerifyEmail;
+exports.default = _default;
 
 /***/ }),
 
@@ -4107,7 +4342,7 @@ module.exports = require("@material-ui/core/Menu");
 
 /***/ }),
 
-/***/ "H5iX":
+/***/ "H1It":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4121,11 +4356,11 @@ Object.defineProperty(exports, "__esModule", {
 Object.defineProperty(exports, "default", {
   enumerable: true,
   get: function get() {
-    return _AuthErrorPage.default;
+    return _VerifyEmailPage.default;
   }
 });
 
-var _AuthErrorPage = _interopRequireDefault(__webpack_require__("rEps"));
+var _VerifyEmailPage = _interopRequireDefault(__webpack_require__("VJ0V"));
 
 /***/ }),
 
@@ -4264,29 +4499,6 @@ function (_React$Component) {
 }(_react.default.Component);
 
 var _default = Header;
-exports.default = _default;
-
-/***/ }),
-
-/***/ "HA6i":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireWildcard = __webpack_require__("5Uuq");
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _styles = __webpack_require__("Bjmp");
-
-var _AuthError = _interopRequireWildcard(__webpack_require__("4DS7"));
-
-var AuthError = (0, _styles.withStyles)(_AuthError.styles)(_AuthError.default);
-var _default = AuthError;
 exports.default = _default;
 
 /***/ }),
@@ -7676,8 +7888,9 @@ var linkProvider = function linkProvider(_ref15) {
 
               case 9:
                 window.location.href = selectors.getApiServer(getState()) + _constants.default.apiBase + "/oauth/" + _.lowerCase(provider) + "?redirect=" + encodeURIComponent(window.location.href) + (oneTimeToken ? "?token=" + encodeURIComponent(oneTimeToken) : "");
+                return _context10.abrupt("return", refreshToken ? !!oneTimeToken : true);
 
-              case 10:
+              case 11:
               case "end":
                 return _context10.stop();
             }
@@ -8814,6 +9027,128 @@ var _Header = _interopRequireWildcard(__webpack_require__("H7v7"));
 
 var Header = (0, _styles.withStyles)(_Header.styles)(_Header.default);
 var _default = Header;
+exports.default = _default;
+
+/***/ }),
+
+/***/ "VJ0V":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = exports.query = void 0;
+
+var _regenerator = _interopRequireDefault(__webpack_require__("ln6h"));
+
+var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__("+oT+"));
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
+
+var _react = _interopRequireDefault(__webpack_require__("cDcd"));
+
+var _reactRelay = __webpack_require__("iuEU");
+
+var _Relay = __webpack_require__("5upH");
+
+var _VerifyEmailContainer = _interopRequireDefault(__webpack_require__("0uHx"));
+
+var _LayoutContainer = _interopRequireDefault(__webpack_require__("hl3i"));
+
+var _SpinnerContainer = _interopRequireDefault(__webpack_require__("wkow"));
+
+var defaultVariables = {};
+
+var query = function query() {
+  return __webpack_require__("4kRp");
+};
+
+exports.query = query;
+
+var VerifyEmailPage =
+/*#__PURE__*/
+function (_React$Component) {
+  (0, _inherits2.default)(VerifyEmailPage, _React$Component);
+
+  function VerifyEmailPage() {
+    (0, _classCallCheck2.default)(this, VerifyEmailPage);
+    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(VerifyEmailPage).apply(this, arguments));
+  }
+
+  (0, _createClass2.default)(VerifyEmailPage, [{
+    key: "render",
+    value: function render() {
+      var _this = this;
+
+      return _react.default.createElement(_Relay.QueryRenderer, {
+        query: query,
+        variables: defaultVariables,
+        render: function render(_ref) {
+          var error = _ref.error,
+              props = _ref.props;
+          return _react.default.createElement(_LayoutContainer.default, {
+            page: "/auth/verify",
+            viewer: props ? props.viewer : null,
+            error: error
+          }, !error && !props && _react.default.createElement(_SpinnerContainer.default, null), !error && props && _react.default.createElement(_VerifyEmailContainer.default, {
+            viewer: props.viewer,
+            token: _this.props.token
+          }));
+        }
+      });
+    }
+  }], [{
+    key: "getInitialProps",
+    value: function () {
+      var _getInitialProps = (0, _asyncToGenerator2.default)(
+      /*#__PURE__*/
+      _regenerator.default.mark(function _callee(_ref2) {
+        var urlQuery, fetchQuery;
+        return _regenerator.default.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                urlQuery = _ref2.query, fetchQuery = _ref2.fetchQuery;
+                _context.next = 3;
+                return fetchQuery(query, defaultVariables);
+
+              case 3:
+                return _context.abrupt("return", {
+                  token: urlQuery.token
+                });
+
+              case 4:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }));
+
+      function getInitialProps(_x) {
+        return _getInitialProps.apply(this, arguments);
+      }
+
+      return getInitialProps;
+    }()
+  }]);
+  return VerifyEmailPage;
+}(_react.default.Component);
+
+var _default = VerifyEmailPage;
 exports.default = _default;
 
 /***/ }),
@@ -15807,128 +16142,6 @@ module.exports = require("@material-ui/core/Checkbox");
 
 /***/ }),
 
-/***/ "rEps":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__("KI45");
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = exports.query = void 0;
-
-var _regenerator = _interopRequireDefault(__webpack_require__("ln6h"));
-
-var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__("+oT+"));
-
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
-
-var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
-
-var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
-
-var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
-
-var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
-
-var _react = _interopRequireDefault(__webpack_require__("cDcd"));
-
-var _reactRelay = __webpack_require__("iuEU");
-
-var _Relay = __webpack_require__("5upH");
-
-var _AuthErrorContainer = _interopRequireDefault(__webpack_require__("HA6i"));
-
-var _LayoutContainer = _interopRequireDefault(__webpack_require__("hl3i"));
-
-var _SpinnerContainer = _interopRequireDefault(__webpack_require__("wkow"));
-
-var defaultVariables = {};
-
-var query = function query() {
-  return __webpack_require__("wdw8");
-};
-
-exports.query = query;
-
-var AuthErrorPage =
-/*#__PURE__*/
-function (_React$Component) {
-  (0, _inherits2.default)(AuthErrorPage, _React$Component);
-
-  function AuthErrorPage() {
-    (0, _classCallCheck2.default)(this, AuthErrorPage);
-    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(AuthErrorPage).apply(this, arguments));
-  }
-
-  (0, _createClass2.default)(AuthErrorPage, [{
-    key: "render",
-    value: function render() {
-      var _this = this;
-
-      return _react.default.createElement(_Relay.QueryRenderer, {
-        query: query,
-        variables: defaultVariables,
-        render: function render(_ref) {
-          var error = _ref.error,
-              props = _ref.props;
-          return _react.default.createElement(_LayoutContainer.default, {
-            page: "/auth/error",
-            viewer: props ? props.viewer : null,
-            error: error
-          }, !error && !props && _react.default.createElement(_SpinnerContainer.default, null), !error && props && _react.default.createElement(_AuthErrorContainer.default, {
-            viewer: props.viewer,
-            type: _this.props.type
-          }));
-        }
-      });
-    }
-  }], [{
-    key: "getInitialProps",
-    value: function () {
-      var _getInitialProps = (0, _asyncToGenerator2.default)(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee(_ref2) {
-        var urlQuery, fetchQuery;
-        return _regenerator.default.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                urlQuery = _ref2.query, fetchQuery = _ref2.fetchQuery;
-                _context.next = 3;
-                return fetchQuery(query, defaultVariables);
-
-              case 3:
-                return _context.abrupt("return", {
-                  type: urlQuery.type
-                });
-
-              case 4:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee);
-      }));
-
-      function getInitialProps(_x) {
-        return _getInitialProps.apply(this, arguments);
-      }
-
-      return getInitialProps;
-    }()
-  }]);
-  return AuthErrorPage;
-}(_react.default.Component);
-
-var _default = AuthErrorPage;
-exports.default = _default;
-
-/***/ }),
-
 /***/ "rG3h":
 /***/ (function(module, exports) {
 
@@ -17219,165 +17432,6 @@ function isURL(url, options) {
 
 module.exports = exports.default;
 module.exports.default = exports.default;
-
-/***/ }),
-
-/***/ "wdw8":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @flow
- * @relayHash 77569dcdffd4b4bd188908f293cef61e
- */
-
-/* eslint-disable */
-
-/*::
-import type { ConcreteRequest } from 'relay-runtime';
-type LayoutContainer_viewer$ref = any;
-export type AuthErrorPageQueryVariables = {||};
-export type AuthErrorPageQueryResponse = {|
-  +viewer: ?{|
-    +$fragmentRefs: LayoutContainer_viewer$ref
-  |}
-|};
-export type AuthErrorPageQuery = {|
-  variables: AuthErrorPageQueryVariables,
-  response: AuthErrorPageQueryResponse,
-|};
-*/
-
-/*
-query AuthErrorPageQuery {
-  viewer {
-    ...LayoutContainer_viewer
-  }
-}
-
-fragment LayoutContainer_viewer on Viewer {
-  me {
-    isAuthenticated
-    userId
-    name
-    email
-    roles
-    providers {
-      name
-    }
-  }
-}
-*/
-
-var node
-/*: ConcreteRequest*/
-= function () {
-  var v0 = {
-    "kind": "ScalarField",
-    "alias": null,
-    "name": "name",
-    "args": null,
-    "storageKey": null
-  };
-  return {
-    "kind": "Request",
-    "fragment": {
-      "kind": "Fragment",
-      "name": "AuthErrorPageQuery",
-      "type": "Query",
-      "metadata": null,
-      "argumentDefinitions": [],
-      "selections": [{
-        "kind": "LinkedField",
-        "alias": null,
-        "name": "viewer",
-        "storageKey": null,
-        "args": null,
-        "concreteType": "Viewer",
-        "plural": false,
-        "selections": [{
-          "kind": "FragmentSpread",
-          "name": "LayoutContainer_viewer",
-          "args": null
-        }]
-      }]
-    },
-    "operation": {
-      "kind": "Operation",
-      "name": "AuthErrorPageQuery",
-      "argumentDefinitions": [],
-      "selections": [{
-        "kind": "LinkedField",
-        "alias": null,
-        "name": "viewer",
-        "storageKey": null,
-        "args": null,
-        "concreteType": "Viewer",
-        "plural": false,
-        "selections": [{
-          "kind": "LinkedField",
-          "alias": null,
-          "name": "me",
-          "storageKey": null,
-          "args": null,
-          "concreteType": "Status",
-          "plural": false,
-          "selections": [{
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "isAuthenticated",
-            "args": null,
-            "storageKey": null
-          }, {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "userId",
-            "args": null,
-            "storageKey": null
-          }, v0
-          /*: any*/
-          , {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "email",
-            "args": null,
-            "storageKey": null
-          }, {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "roles",
-            "args": null,
-            "storageKey": null
-          }, {
-            "kind": "LinkedField",
-            "alias": null,
-            "name": "providers",
-            "storageKey": null,
-            "args": null,
-            "concreteType": "ProviderStatus",
-            "plural": true,
-            "selections": [v0
-            /*: any*/
-            ]
-          }]
-        }]
-      }]
-    },
-    "params": {
-      "operationKind": "query",
-      "name": "AuthErrorPageQuery",
-      "id": null,
-      "text": "query AuthErrorPageQuery {\n  viewer {\n    ...LayoutContainer_viewer\n  }\n}\n\nfragment LayoutContainer_viewer on Viewer {\n  me {\n    isAuthenticated\n    userId\n    name\n    email\n    roles\n    providers {\n      name\n    }\n  }\n}\n",
-      "metadata": {}
-    }
-  };
-}(); // prettier-ignore
-
-
-node
-/*: any*/
-.hash = '88ba45de177ae6f48b4e9c1ed466ab6c';
-module.exports = node;
 
 /***/ }),
 

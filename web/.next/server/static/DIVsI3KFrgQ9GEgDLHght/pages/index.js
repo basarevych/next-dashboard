@@ -10583,8 +10583,9 @@ var linkProvider = function linkProvider(_ref15) {
 
               case 9:
                 window.location.href = selectors.getApiServer(getState()) + _constants.default.apiBase + "/oauth/" + _.lowerCase(provider) + "?redirect=" + encodeURIComponent(window.location.href) + (oneTimeToken ? "?token=" + encodeURIComponent(oneTimeToken) : "");
+                return _context10.abrupt("return", refreshToken ? !!oneTimeToken : true);
 
-              case 10:
+              case 11:
               case "end":
                 return _context10.stop();
             }

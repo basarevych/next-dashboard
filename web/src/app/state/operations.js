@@ -181,6 +181,8 @@ export const linkProvider = ({ provider }) => async (
     "?redirect=" +
     encodeURIComponent(window.location.href) +
     (oneTimeToken ? "?token=" + encodeURIComponent(oneTimeToken) : "");
+
+  return refreshToken ? !!oneTimeToken : true;
 };
 
 export const finishLinkingProvider = ({ token, redirect }) => async (
