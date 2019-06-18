@@ -26,7 +26,12 @@ class OAuthRoute {
       // Route to start sign in
       this.router.get(
         `/oauth/${provider.providerName}`,
-        this.saveToken(provider.providerName),
+        this.saveToken(provider.providerName)
+      );
+
+      // Route to start sign in
+      this.router.get(
+        `/oauth/${provider.providerName}/start`,
         this.authenticate(
           provider.providerName,
           _.assign({ sesion: false }, provider.providerOptions)
@@ -45,25 +50,21 @@ class OAuthRoute {
     }
   }
 
-  saveToken(/* provider */) {
+  saveToken(provider) {
     return (req, res, next) => {
-      let token = req.query.token;
-      if (!token) return res.redirect(this.config.apiAppServer + "/auth/error");
-
+      let token = req.query.token || "";
       res.cookie("token", token, {
         expires: new Date(Date.now() + 60 * 60 * 1000),
         path: constants.apiBase + "/oauth"
       });
 
-      let redirect = req.query.redirect;
-      if (redirect) {
-        res.cookie("redirect", redirect, {
-          expires: new Date(Date.now() + 60 * 60 * 1000),
-          path: constants.apiBase + "/oauth"
-        });
-      }
+      let redirect = req.query.redirect || "";
+      res.cookie("redirect", redirect, {
+        expires: new Date(Date.now() + 60 * 60 * 1000),
+        path: constants.apiBase + "/oauth"
+      });
 
-      next();
+      res.redirect(`/oauth/${provider.providerName}/start`);
     };
   }
 

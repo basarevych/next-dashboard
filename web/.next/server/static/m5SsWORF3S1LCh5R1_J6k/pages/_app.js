@@ -5618,7 +5618,7 @@ var linkProvider = function linkProvider(_ref15) {
       var _ref16 = (0, _asyncToGenerator2.default)(
       /*#__PURE__*/
       _regenerator.default.mark(function _callee10(dispatch, getState, di) {
-        var refreshToken, data, result, oneTimeToken;
+        var refreshToken, oneTimeToken, data, result;
         return _regenerator.default.wrap(function _callee10$(_context10) {
           while (1) {
             switch (_context10.prev = _context10.next) {
@@ -5628,22 +5628,27 @@ var linkProvider = function linkProvider(_ref15) {
 
               case 2:
                 refreshToken = _context10.sent;
-                _context10.next = 5;
+
+                if (!refreshToken) {
+                  _context10.next = 9;
+                  break;
+                }
+
+                _context10.next = 6;
                 return (0, _GetToken.default)(di, {
                   type: "oneTime",
                   token: refreshToken
                 });
 
-              case 5:
+              case 6:
                 data = _context10.sent;
                 result = _.get(data, "data.getToken.success", null);
+                if (result === true) oneTimeToken = _.get(data, "data.getToken.token", null);
 
-                if (result === true) {
-                  oneTimeToken = _.get(data, "data.getToken.token", null);
-                  window.location.href = selectors.getApiServer(getState()) + _constants.default.apiBase + "/oauth/" + _.lowerCase(provider) + "?token=" + encodeURIComponent(oneTimeToken) + "&redirect=" + encodeURIComponent(window.location.href);
-                }
+              case 9:
+                window.location.href = selectors.getApiServer(getState()) + _constants.default.apiBase + "/oauth/" + _.lowerCase(provider) + "?redirect=" + encodeURIComponent(window.location.href) + (oneTimeToken ? "?token=" + encodeURIComponent(oneTimeToken) : "");
 
-              case 8:
+              case 10:
               case "end":
                 return _context10.stop();
             }

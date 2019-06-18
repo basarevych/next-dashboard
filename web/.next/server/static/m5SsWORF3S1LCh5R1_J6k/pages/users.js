@@ -88,7 +88,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 3);
+/******/ 	return __webpack_require__(__webpack_require__.s = 11);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -427,165 +427,6 @@ module.exports = __webpack_require__("p9MR").Object.keys;
 
 /***/ }),
 
-/***/ "/kPW":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @flow
- * @relayHash 35361ee6822f22d12e23dc92418b8376
- */
-
-/* eslint-disable */
-
-/*::
-import type { ConcreteRequest } from 'relay-runtime';
-type LayoutContainer_viewer$ref = any;
-export type ChartsPageQueryVariables = {||};
-export type ChartsPageQueryResponse = {|
-  +viewer: ?{|
-    +$fragmentRefs: LayoutContainer_viewer$ref
-  |}
-|};
-export type ChartsPageQuery = {|
-  variables: ChartsPageQueryVariables,
-  response: ChartsPageQueryResponse,
-|};
-*/
-
-/*
-query ChartsPageQuery {
-  viewer {
-    ...LayoutContainer_viewer
-  }
-}
-
-fragment LayoutContainer_viewer on Viewer {
-  me {
-    isAuthenticated
-    userId
-    name
-    email
-    roles
-    providers {
-      name
-    }
-  }
-}
-*/
-
-var node
-/*: ConcreteRequest*/
-= function () {
-  var v0 = {
-    "kind": "ScalarField",
-    "alias": null,
-    "name": "name",
-    "args": null,
-    "storageKey": null
-  };
-  return {
-    "kind": "Request",
-    "fragment": {
-      "kind": "Fragment",
-      "name": "ChartsPageQuery",
-      "type": "Query",
-      "metadata": null,
-      "argumentDefinitions": [],
-      "selections": [{
-        "kind": "LinkedField",
-        "alias": null,
-        "name": "viewer",
-        "storageKey": null,
-        "args": null,
-        "concreteType": "Viewer",
-        "plural": false,
-        "selections": [{
-          "kind": "FragmentSpread",
-          "name": "LayoutContainer_viewer",
-          "args": null
-        }]
-      }]
-    },
-    "operation": {
-      "kind": "Operation",
-      "name": "ChartsPageQuery",
-      "argumentDefinitions": [],
-      "selections": [{
-        "kind": "LinkedField",
-        "alias": null,
-        "name": "viewer",
-        "storageKey": null,
-        "args": null,
-        "concreteType": "Viewer",
-        "plural": false,
-        "selections": [{
-          "kind": "LinkedField",
-          "alias": null,
-          "name": "me",
-          "storageKey": null,
-          "args": null,
-          "concreteType": "Status",
-          "plural": false,
-          "selections": [{
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "isAuthenticated",
-            "args": null,
-            "storageKey": null
-          }, {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "userId",
-            "args": null,
-            "storageKey": null
-          }, v0
-          /*: any*/
-          , {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "email",
-            "args": null,
-            "storageKey": null
-          }, {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "roles",
-            "args": null,
-            "storageKey": null
-          }, {
-            "kind": "LinkedField",
-            "alias": null,
-            "name": "providers",
-            "storageKey": null,
-            "args": null,
-            "concreteType": "ProviderStatus",
-            "plural": true,
-            "selections": [v0
-            /*: any*/
-            ]
-          }]
-        }]
-      }]
-    },
-    "params": {
-      "operationKind": "query",
-      "name": "ChartsPageQuery",
-      "id": null,
-      "text": "query ChartsPageQuery {\n  viewer {\n    ...LayoutContainer_viewer\n  }\n}\n\nfragment LayoutContainer_viewer on Viewer {\n  me {\n    isAuthenticated\n    userId\n    name\n    email\n    roles\n    providers {\n      name\n    }\n  }\n}\n",
-      "metadata": {}
-    }
-  };
-}(); // prettier-ignore
-
-
-node
-/*: any*/
-.hash = 'b8a0757bd55f42bc8295064f58ba24b6';
-module.exports = node;
-
-/***/ }),
-
 /***/ "/wxW":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -601,23 +442,6 @@ module.exports = Object.getPrototypeOf || function (O) {
   if (typeof O.constructor == 'function' && O instanceof O.constructor) {
     return O.constructor.prototype;
   } return O instanceof Object ? ObjectProto : null;
-};
-
-
-/***/ }),
-
-/***/ "04/V":
-/***/ (function(module, exports, __webpack_require__) {
-
-var classof = __webpack_require__("fYqa");
-var ITERATOR = __webpack_require__("G1Wo")('iterator');
-var Iterators = __webpack_require__("sipE");
-module.exports = __webpack_require__("p9MR").isIterable = function (it) {
-  var O = Object(it);
-  return O[ITERATOR] !== undefined
-    || '@@iterator' in O
-    // eslint-disable-next-line no-prototype-builtins
-    || Iterators.hasOwnProperty(classof(O));
 };
 
 
@@ -983,6 +807,64 @@ setToStringTag(global.JSON, 'JSON', true);
 
 /***/ }),
 
+/***/ "0ndX":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireWildcard = __webpack_require__("5Uuq");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _reactRedux = __webpack_require__("h74D");
+
+var _styles = __webpack_require__("Bjmp");
+
+var _state = __webpack_require__("g1gh");
+
+var _EditUserModal = _interopRequireWildcard(__webpack_require__("AhvV"));
+
+var mapStateToProps = function mapStateToProps(state) {
+  return {
+    currentId: _state.usersSelectors.getEditModalUserId(state)
+  };
+};
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+  return {
+    onClose: function onClose() {
+      return dispatch(_state.usersOperations.hideEditModal());
+    },
+    onCreate: function onCreate(name, email, password, isAdmin) {
+      return dispatch(_state.usersOperations.create({
+        name: name,
+        email: email,
+        password: password,
+        isAdmin: isAdmin
+      }));
+    },
+    onEdit: function onEdit(id, name, email, password, isAdmin) {
+      return dispatch(_state.usersOperations.edit({
+        id: id,
+        name: name,
+        email: email,
+        password: password,
+        isAdmin: isAdmin
+      }));
+    }
+  };
+};
+
+var EditUserModal = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)((0, _styles.withStyles)(_EditUserModal.styles)(_EditUserModal.default));
+var _default = EditUserModal;
+exports.default = _default;
+
+/***/ }),
+
 /***/ "0tY/":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1039,6 +921,14 @@ module.exports.default = exports.default;
 /***/ (function(module, exports) {
 
 exports.f = {}.propertyIsEnumerable;
+
+
+/***/ }),
+
+/***/ 11:
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__("NhoZ");
 
 
 /***/ }),
@@ -1322,15 +1212,6 @@ module.exports = require("@material-ui/core/DialogActions");
 
 /***/ }),
 
-/***/ "1gQu":
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__("GTiD");
-module.exports = __webpack_require__("p9MR").Array.isArray;
-
-
-/***/ }),
-
 /***/ "1imS":
 /***/ (function(module, exports) {
 
@@ -1349,17 +1230,6 @@ exports.f = Object.getOwnPropertyNames || function getOwnPropertyNames(O) {
   return $keys(O, hiddenKeys);
 };
 
-
-/***/ }),
-
-/***/ "2PDY":
-/***/ (function(module, exports) {
-
-function _nonIterableSpread() {
-  throw new TypeError("Invalid attempt to spread non-iterable instance");
-}
-
-module.exports = _nonIterableSpread;
 
 /***/ }),
 
@@ -1963,11 +1833,10 @@ module.exports = {
 
 /***/ }),
 
-/***/ 3:
-/***/ (function(module, exports, __webpack_require__) {
+/***/ "30mr":
+/***/ (function(module, exports) {
 
-module.exports = __webpack_require__("9KWN");
-
+module.exports = require("@material-ui/core/TableBody");
 
 /***/ }),
 
@@ -2003,99 +1872,6 @@ function isISRC(str) {
 
 module.exports = exports.default;
 module.exports.default = exports.default;
-
-/***/ }),
-
-/***/ "3AO0":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(_) {
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _victory = __webpack_require__("wL32");
-
-var _colorManipulator = __webpack_require__("oOPP");
-
-var _default = function _default() {
-  var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
-      theme = _ref.theme,
-      withAxis = _ref.withAxis,
-      withGrid = _ref.withGrid,
-      withArea = _ref.withArea;
-
-  return _.merge({}, _victory.VictoryTheme.material, {
-    axis: {
-      style: {
-        axis: withAxis ? {
-          stroke: theme.palette.text.primary
-        } : {
-          display: "none"
-        },
-        axisLabel: withAxis || withGrid ? {
-          fill: theme.palette.text.primary
-        } : {
-          display: "none"
-        },
-        ticks: withAxis ? {
-          stroke: (0, _colorManipulator.fade)(theme.palette.text.disabled, 0.25)
-        } : {
-          display: "none"
-        },
-        tickLabels: withAxis || withGrid ? {
-          fill: theme.palette.text.secondary
-        } : {
-          display: "none"
-        },
-        grid: withGrid ? {
-          stroke: (0, _colorManipulator.fade)(theme.palette.text.disabled, 0.25)
-        } : {
-          display: "none"
-        }
-      }
-    },
-    pie: {
-      style: {
-        data: {
-          strokeWidth: 0
-        },
-        labels: {
-          fill: theme.palette.text.primary
-        }
-      }
-    },
-    area: withArea ? {
-      style: {
-        data: {
-          strokeWidth: 1,
-          stroke: theme.palette.text.primary
-        }
-      }
-    } : undefined,
-    candlestick: {
-      style: {
-        data: {
-          stroke: theme.palette.text.primary,
-          strokeWidth: 2
-        },
-        labels: {
-          fill: theme.palette.text.primary
-        }
-      },
-      candleColors: {
-        positive: "#e45a51",
-        negative: "#5ae451"
-      }
-    }
-  });
-};
-
-exports.default = _default;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("YLtl")))
 
 /***/ }),
 
@@ -2421,6 +2197,294 @@ module.exports = require("@material-ui/icons/Menu");
 
 /***/ }),
 
+/***/ "4Lyb":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @flow
+ * @relayHash 3a85605817fcc03cb1463cf28b0b7aa2
+ */
+
+/* eslint-disable */
+
+/*::
+import type { ConcreteRequest } from 'relay-runtime';
+type UsersContainer_viewer$ref = any;
+export type UserSortBy = "email" | "name" | "%future added value";
+export type UserSortDir = "asc" | "desc" | "%future added value";
+export type UsersContainerQueryVariables = {|
+  sortBy?: ?UserSortBy,
+  sortDir?: ?UserSortDir,
+  first?: ?number,
+  after?: ?string,
+  last?: ?number,
+  before?: ?string,
+|};
+export type UsersContainerQueryResponse = {|
+  +viewer: ?{|
+    +$fragmentRefs: UsersContainer_viewer$ref
+  |}
+|};
+export type UsersContainerQuery = {|
+  variables: UsersContainerQueryVariables,
+  response: UsersContainerQueryResponse,
+|};
+*/
+
+/*
+query UsersContainerQuery(
+  $sortBy: UserSortBy
+  $sortDir: UserSortDir
+  $first: Int
+  $after: String
+  $last: Int
+  $before: String
+) {
+  viewer {
+    ...UsersContainer_viewer_3WF44T
+  }
+}
+
+fragment UsersContainer_viewer_3WF44T on Viewer {
+  users(sortBy: $sortBy, sortDir: $sortDir, first: $first, after: $after, last: $last, before: $before) {
+    edges {
+      cursor
+      node {
+        id
+        ...UserRowContainer_node
+      }
+    }
+    pageInfo {
+      startCursor
+      endCursor
+    }
+    totalCount
+  }
+}
+
+fragment UserRowContainer_node on User {
+  id
+  email
+  isEmailVerified
+  name
+  roles
+}
+*/
+
+var node
+/*: ConcreteRequest*/
+= function () {
+  var v0 = [{
+    "kind": "LocalArgument",
+    "name": "sortBy",
+    "type": "UserSortBy",
+    "defaultValue": null
+  }, {
+    "kind": "LocalArgument",
+    "name": "sortDir",
+    "type": "UserSortDir",
+    "defaultValue": null
+  }, {
+    "kind": "LocalArgument",
+    "name": "first",
+    "type": "Int",
+    "defaultValue": null
+  }, {
+    "kind": "LocalArgument",
+    "name": "after",
+    "type": "String",
+    "defaultValue": null
+  }, {
+    "kind": "LocalArgument",
+    "name": "last",
+    "type": "Int",
+    "defaultValue": null
+  }, {
+    "kind": "LocalArgument",
+    "name": "before",
+    "type": "String",
+    "defaultValue": null
+  }],
+      v1 = [{
+    "kind": "Variable",
+    "name": "after",
+    "variableName": "after"
+  }, {
+    "kind": "Variable",
+    "name": "before",
+    "variableName": "before"
+  }, {
+    "kind": "Variable",
+    "name": "first",
+    "variableName": "first"
+  }, {
+    "kind": "Variable",
+    "name": "last",
+    "variableName": "last"
+  }, {
+    "kind": "Variable",
+    "name": "sortBy",
+    "variableName": "sortBy"
+  }, {
+    "kind": "Variable",
+    "name": "sortDir",
+    "variableName": "sortDir"
+  }];
+  return {
+    "kind": "Request",
+    "fragment": {
+      "kind": "Fragment",
+      "name": "UsersContainerQuery",
+      "type": "Query",
+      "metadata": null,
+      "argumentDefinitions": v0
+      /*: any*/
+      ,
+      "selections": [{
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "viewer",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "Viewer",
+        "plural": false,
+        "selections": [{
+          "kind": "FragmentSpread",
+          "name": "UsersContainer_viewer",
+          "args": v1
+          /*: any*/
+
+        }]
+      }]
+    },
+    "operation": {
+      "kind": "Operation",
+      "name": "UsersContainerQuery",
+      "argumentDefinitions": v0
+      /*: any*/
+      ,
+      "selections": [{
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "viewer",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "Viewer",
+        "plural": false,
+        "selections": [{
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "users",
+          "storageKey": null,
+          "args": v1
+          /*: any*/
+          ,
+          "concreteType": "UserConnection",
+          "plural": false,
+          "selections": [{
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "edges",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "UserEdge",
+            "plural": true,
+            "selections": [{
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "cursor",
+              "args": null,
+              "storageKey": null
+            }, {
+              "kind": "LinkedField",
+              "alias": null,
+              "name": "node",
+              "storageKey": null,
+              "args": null,
+              "concreteType": "User",
+              "plural": false,
+              "selections": [{
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "id",
+                "args": null,
+                "storageKey": null
+              }, {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "email",
+                "args": null,
+                "storageKey": null
+              }, {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "isEmailVerified",
+                "args": null,
+                "storageKey": null
+              }, {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "name",
+                "args": null,
+                "storageKey": null
+              }, {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "roles",
+                "args": null,
+                "storageKey": null
+              }]
+            }]
+          }, {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "pageInfo",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "PageInfo",
+            "plural": false,
+            "selections": [{
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "startCursor",
+              "args": null,
+              "storageKey": null
+            }, {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "endCursor",
+              "args": null,
+              "storageKey": null
+            }]
+          }, {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "totalCount",
+            "args": null,
+            "storageKey": null
+          }]
+        }]
+      }]
+    },
+    "params": {
+      "operationKind": "query",
+      "name": "UsersContainerQuery",
+      "id": null,
+      "text": "query UsersContainerQuery(\n  $sortBy: UserSortBy\n  $sortDir: UserSortDir\n  $first: Int\n  $after: String\n  $last: Int\n  $before: String\n) {\n  viewer {\n    ...UsersContainer_viewer_3WF44T\n  }\n}\n\nfragment UsersContainer_viewer_3WF44T on Viewer {\n  users(sortBy: $sortBy, sortDir: $sortDir, first: $first, after: $after, last: $last, before: $before) {\n    edges {\n      cursor\n      node {\n        id\n        ...UserRowContainer_node\n      }\n    }\n    pageInfo {\n      startCursor\n      endCursor\n    }\n    totalCount\n  }\n}\n\nfragment UserRowContainer_node on User {\n  id\n  email\n  isEmailVerified\n  name\n  roles\n}\n",
+      "metadata": {}
+    }
+  };
+}(); // prettier-ignore
+
+
+node
+/*: any*/
+.hash = 'b617725e279027baad2191192bdf785b';
+module.exports = node;
+
+/***/ }),
+
 /***/ "4N2y":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2482,6 +2546,360 @@ module.exports = require("@material-ui/core/Avatar");
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__("Vphk");
+
+/***/ }),
+
+/***/ "4mrW":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @flow
+ * @relayHash 3348ae79c28a14c583b71e3292ad60e3
+ */
+
+/* eslint-disable */
+
+/*::
+import type { ConcreteRequest } from 'relay-runtime';
+type LayoutContainer_viewer$ref = any;
+type UsersContainer_viewer$ref = any;
+export type UserSortBy = "email" | "name" | "%future added value";
+export type UserSortDir = "asc" | "desc" | "%future added value";
+export type UsersPageQueryVariables = {|
+  sortBy?: ?UserSortBy,
+  sortDir?: ?UserSortDir,
+  first?: ?number,
+  after?: ?string,
+  last?: ?number,
+  before?: ?string,
+|};
+export type UsersPageQueryResponse = {|
+  +viewer: ?{|
+    +$fragmentRefs: LayoutContainer_viewer$ref & UsersContainer_viewer$ref
+  |}
+|};
+export type UsersPageQuery = {|
+  variables: UsersPageQueryVariables,
+  response: UsersPageQueryResponse,
+|};
+*/
+
+/*
+query UsersPageQuery(
+  $sortBy: UserSortBy
+  $sortDir: UserSortDir
+  $first: Int
+  $after: String
+  $last: Int
+  $before: String
+) {
+  viewer {
+    ...LayoutContainer_viewer
+    ...UsersContainer_viewer_3WF44T
+  }
+}
+
+fragment LayoutContainer_viewer on Viewer {
+  me {
+    isAuthenticated
+    userId
+    name
+    email
+    roles
+    providers {
+      name
+    }
+  }
+}
+
+fragment UsersContainer_viewer_3WF44T on Viewer {
+  users(sortBy: $sortBy, sortDir: $sortDir, first: $first, after: $after, last: $last, before: $before) {
+    edges {
+      cursor
+      node {
+        id
+        ...UserRowContainer_node
+      }
+    }
+    pageInfo {
+      startCursor
+      endCursor
+    }
+    totalCount
+  }
+}
+
+fragment UserRowContainer_node on User {
+  id
+  email
+  isEmailVerified
+  name
+  roles
+}
+*/
+
+var node
+/*: ConcreteRequest*/
+= function () {
+  var v0 = [{
+    "kind": "LocalArgument",
+    "name": "sortBy",
+    "type": "UserSortBy",
+    "defaultValue": null
+  }, {
+    "kind": "LocalArgument",
+    "name": "sortDir",
+    "type": "UserSortDir",
+    "defaultValue": null
+  }, {
+    "kind": "LocalArgument",
+    "name": "first",
+    "type": "Int",
+    "defaultValue": null
+  }, {
+    "kind": "LocalArgument",
+    "name": "after",
+    "type": "String",
+    "defaultValue": null
+  }, {
+    "kind": "LocalArgument",
+    "name": "last",
+    "type": "Int",
+    "defaultValue": null
+  }, {
+    "kind": "LocalArgument",
+    "name": "before",
+    "type": "String",
+    "defaultValue": null
+  }],
+      v1 = [{
+    "kind": "Variable",
+    "name": "after",
+    "variableName": "after"
+  }, {
+    "kind": "Variable",
+    "name": "before",
+    "variableName": "before"
+  }, {
+    "kind": "Variable",
+    "name": "first",
+    "variableName": "first"
+  }, {
+    "kind": "Variable",
+    "name": "last",
+    "variableName": "last"
+  }, {
+    "kind": "Variable",
+    "name": "sortBy",
+    "variableName": "sortBy"
+  }, {
+    "kind": "Variable",
+    "name": "sortDir",
+    "variableName": "sortDir"
+  }],
+      v2 = {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "name",
+    "args": null,
+    "storageKey": null
+  },
+      v3 = {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "email",
+    "args": null,
+    "storageKey": null
+  },
+      v4 = {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "roles",
+    "args": null,
+    "storageKey": null
+  };
+  return {
+    "kind": "Request",
+    "fragment": {
+      "kind": "Fragment",
+      "name": "UsersPageQuery",
+      "type": "Query",
+      "metadata": null,
+      "argumentDefinitions": v0
+      /*: any*/
+      ,
+      "selections": [{
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "viewer",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "Viewer",
+        "plural": false,
+        "selections": [{
+          "kind": "FragmentSpread",
+          "name": "LayoutContainer_viewer",
+          "args": null
+        }, {
+          "kind": "FragmentSpread",
+          "name": "UsersContainer_viewer",
+          "args": v1
+          /*: any*/
+
+        }]
+      }]
+    },
+    "operation": {
+      "kind": "Operation",
+      "name": "UsersPageQuery",
+      "argumentDefinitions": v0
+      /*: any*/
+      ,
+      "selections": [{
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "viewer",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "Viewer",
+        "plural": false,
+        "selections": [{
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "me",
+          "storageKey": null,
+          "args": null,
+          "concreteType": "Status",
+          "plural": false,
+          "selections": [{
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "isAuthenticated",
+            "args": null,
+            "storageKey": null
+          }, {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "userId",
+            "args": null,
+            "storageKey": null
+          }, v2
+          /*: any*/
+          , v3
+          /*: any*/
+          , v4
+          /*: any*/
+          , {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "providers",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "ProviderStatus",
+            "plural": true,
+            "selections": [v2
+            /*: any*/
+            ]
+          }]
+        }, {
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "users",
+          "storageKey": null,
+          "args": v1
+          /*: any*/
+          ,
+          "concreteType": "UserConnection",
+          "plural": false,
+          "selections": [{
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "edges",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "UserEdge",
+            "plural": true,
+            "selections": [{
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "cursor",
+              "args": null,
+              "storageKey": null
+            }, {
+              "kind": "LinkedField",
+              "alias": null,
+              "name": "node",
+              "storageKey": null,
+              "args": null,
+              "concreteType": "User",
+              "plural": false,
+              "selections": [{
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "id",
+                "args": null,
+                "storageKey": null
+              }, v3
+              /*: any*/
+              , {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "isEmailVerified",
+                "args": null,
+                "storageKey": null
+              }, v2
+              /*: any*/
+              , v4
+              /*: any*/
+              ]
+            }]
+          }, {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "pageInfo",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "PageInfo",
+            "plural": false,
+            "selections": [{
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "startCursor",
+              "args": null,
+              "storageKey": null
+            }, {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "endCursor",
+              "args": null,
+              "storageKey": null
+            }]
+          }, {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "totalCount",
+            "args": null,
+            "storageKey": null
+          }]
+        }]
+      }]
+    },
+    "params": {
+      "operationKind": "query",
+      "name": "UsersPageQuery",
+      "id": null,
+      "text": "query UsersPageQuery(\n  $sortBy: UserSortBy\n  $sortDir: UserSortDir\n  $first: Int\n  $after: String\n  $last: Int\n  $before: String\n) {\n  viewer {\n    ...LayoutContainer_viewer\n    ...UsersContainer_viewer_3WF44T\n  }\n}\n\nfragment LayoutContainer_viewer on Viewer {\n  me {\n    isAuthenticated\n    userId\n    name\n    email\n    roles\n    providers {\n      name\n    }\n  }\n}\n\nfragment UsersContainer_viewer_3WF44T on Viewer {\n  users(sortBy: $sortBy, sortDir: $sortDir, first: $first, after: $after, last: $last, before: $before) {\n    edges {\n      cursor\n      node {\n        id\n        ...UserRowContainer_node\n      }\n    }\n    pageInfo {\n      startCursor\n      endCursor\n    }\n    totalCount\n  }\n}\n\nfragment UserRowContainer_node on User {\n  id\n  email\n  isEmailVerified\n  name\n  roles\n}\n",
+      "metadata": {}
+    }
+  };
+}(); // prettier-ignore
+
+
+node
+/*: any*/
+.hash = '692885c0e28cea3791059143f364bde6';
+module.exports = node;
 
 /***/ }),
 
@@ -2666,6 +3084,126 @@ function isSurrogatePair(str) {
 
 module.exports = exports.default;
 module.exports.default = exports.default;
+
+/***/ }),
+
+/***/ "5sKE":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireWildcard = __webpack_require__("5Uuq");
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = exports.query = void 0;
+
+var _regenerator = _interopRequireDefault(__webpack_require__("ln6h"));
+
+var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__("+oT+"));
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
+
+var _react = _interopRequireDefault(__webpack_require__("cDcd"));
+
+var _reactRelay = __webpack_require__("iuEU");
+
+var _Relay = __webpack_require__("5upH");
+
+var _UsersContainer = _interopRequireWildcard(__webpack_require__("irBH"));
+
+var _LayoutContainer = _interopRequireDefault(__webpack_require__("hl3i"));
+
+var _SpinnerContainer = _interopRequireDefault(__webpack_require__("wkow"));
+
+var defaultVariables = {
+  first: _UsersContainer.pageSize,
+  sortBy: _UsersContainer.sortBy,
+  sortDir: _UsersContainer.sortDir
+};
+
+var query = function query() {
+  return __webpack_require__("4mrW");
+};
+
+exports.query = query;
+
+var UsersPage =
+/*#__PURE__*/
+function (_React$Component) {
+  (0, _inherits2.default)(UsersPage, _React$Component);
+
+  function UsersPage() {
+    (0, _classCallCheck2.default)(this, UsersPage);
+    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(UsersPage).apply(this, arguments));
+  }
+
+  (0, _createClass2.default)(UsersPage, [{
+    key: "render",
+    value: function render() {
+      return _react.default.createElement(_Relay.QueryRenderer, {
+        query: query,
+        variables: defaultVariables,
+        render: function render(_ref) {
+          var error = _ref.error,
+              props = _ref.props;
+          return _react.default.createElement(_LayoutContainer.default, {
+            page: "/users",
+            viewer: props ? props.viewer : null,
+            error: error
+          }, !error && !props && _react.default.createElement(_SpinnerContainer.default, null), !error && props && _react.default.createElement(_UsersContainer.default, {
+            viewer: props.viewer
+          }));
+        }
+      });
+    }
+  }], [{
+    key: "getInitialProps",
+    value: function () {
+      var _getInitialProps = (0, _asyncToGenerator2.default)(
+      /*#__PURE__*/
+      _regenerator.default.mark(function _callee(_ref2) {
+        var fetchQuery;
+        return _regenerator.default.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                fetchQuery = _ref2.fetchQuery;
+                _context.next = 3;
+                return fetchQuery(query, defaultVariables);
+
+              case 3:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }));
+
+      function getInitialProps(_x) {
+        return _getInitialProps.apply(this, arguments);
+      }
+
+      return getInitialProps;
+    }()
+  }]);
+  return UsersPage;
+}(_react.default.Component);
+
+var _default = UsersPage;
+exports.default = _default;
 
 /***/ }),
 
@@ -2865,6 +3403,152 @@ module.exports.default = exports.default;
 
 /***/ }),
 
+/***/ "7/bZ":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @flow
+ * @relayHash de24aeb49ddafaf4eb2eb69d8af451df
+ */
+
+/* eslint-disable */
+
+/*::
+import type { ConcreteRequest } from 'relay-runtime';
+export type UserRole = "ADMIN" | "AUTHENTICATED" | "%future added value";
+export type EditUserModalQueryVariables = {|
+  currentId?: ?string
+|};
+export type EditUserModalQueryResponse = {|
+  +viewer: ?{|
+    +user: ?{|
+      +id: string,
+      +name: ?string,
+      +email: string,
+      +roles: $ReadOnlyArray<?UserRole>,
+    |}
+  |}
+|};
+export type EditUserModalQuery = {|
+  variables: EditUserModalQueryVariables,
+  response: EditUserModalQueryResponse,
+|};
+*/
+
+/*
+query EditUserModalQuery(
+  $currentId: ID
+) {
+  viewer {
+    user(id: $currentId) {
+      id
+      name
+      email
+      roles
+    }
+  }
+}
+*/
+
+var node
+/*: ConcreteRequest*/
+= function () {
+  var v0 = [{
+    "kind": "LocalArgument",
+    "name": "currentId",
+    "type": "ID",
+    "defaultValue": null
+  }],
+      v1 = [{
+    "kind": "LinkedField",
+    "alias": null,
+    "name": "viewer",
+    "storageKey": null,
+    "args": null,
+    "concreteType": "Viewer",
+    "plural": false,
+    "selections": [{
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "user",
+      "storageKey": null,
+      "args": [{
+        "kind": "Variable",
+        "name": "id",
+        "variableName": "currentId"
+      }],
+      "concreteType": "User",
+      "plural": false,
+      "selections": [{
+        "kind": "ScalarField",
+        "alias": null,
+        "name": "id",
+        "args": null,
+        "storageKey": null
+      }, {
+        "kind": "ScalarField",
+        "alias": null,
+        "name": "name",
+        "args": null,
+        "storageKey": null
+      }, {
+        "kind": "ScalarField",
+        "alias": null,
+        "name": "email",
+        "args": null,
+        "storageKey": null
+      }, {
+        "kind": "ScalarField",
+        "alias": null,
+        "name": "roles",
+        "args": null,
+        "storageKey": null
+      }]
+    }]
+  }];
+  return {
+    "kind": "Request",
+    "fragment": {
+      "kind": "Fragment",
+      "name": "EditUserModalQuery",
+      "type": "Query",
+      "metadata": null,
+      "argumentDefinitions": v0
+      /*: any*/
+      ,
+      "selections": v1
+      /*: any*/
+
+    },
+    "operation": {
+      "kind": "Operation",
+      "name": "EditUserModalQuery",
+      "argumentDefinitions": v0
+      /*: any*/
+      ,
+      "selections": v1
+      /*: any*/
+
+    },
+    "params": {
+      "operationKind": "query",
+      "name": "EditUserModalQuery",
+      "id": null,
+      "text": "query EditUserModalQuery(\n  $currentId: ID\n) {\n  viewer {\n    user(id: $currentId) {\n      id\n      name\n      email\n      roles\n    }\n  }\n}\n",
+      "metadata": {}
+    }
+  };
+}(); // prettier-ignore
+
+
+node
+/*: any*/
+.hash = 'e83115080e2a1951947cf942d4cf520c';
+module.exports = node;
+
+/***/ }),
+
 /***/ "7FvJ":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2975,6 +3659,54 @@ __webpack_require__("wWUK")('keys', function () {
 
 /***/ }),
 
+/***/ "8Bav":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(_) {
+
+var _interopRequireWildcard = __webpack_require__("5Uuq");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+Object.defineProperty(exports, "styles", {
+  enumerable: true,
+  get: function get() {
+    return _UserRow.styles;
+  }
+});
+exports.default = void 0;
+
+var _reactRedux = __webpack_require__("h74D");
+
+var _reactIntl = __webpack_require__("k004");
+
+var _styles = __webpack_require__("Bjmp");
+
+var _reactRelay = __webpack_require__("iuEU");
+
+var _state = __webpack_require__("g1gh");
+
+var _UserRow = _interopRequireWildcard(__webpack_require__("G/sG"));
+
+var mapStateToProps = function mapStateToProps(state, props) {
+  return {
+    isSelected: _.includes(_state.usersSelectors.getSelected(state), props.node.id)
+  };
+};
+
+var UserRow = (0, _reactRelay.createFragmentContainer)((0, _reactRedux.connect)(mapStateToProps)((0, _styles.withStyles)(_UserRow.styles)((0, _reactIntl.injectIntl)(_UserRow.default))), {
+  node: function node() {
+    return __webpack_require__("lchf");
+  }
+});
+var _default = UserRow;
+exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("YLtl")))
+
+/***/ }),
+
 /***/ "8Vlj":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2998,28 +3730,6 @@ module.exports = function (it) {
   return it;
 };
 
-
-/***/ }),
-
-/***/ "9KWN":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__("KI45");
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-Object.defineProperty(exports, "default", {
-  enumerable: true,
-  get: function get() {
-    return _ChartsPage.default;
-  }
-});
-
-var _ChartsPage = _interopRequireDefault(__webpack_require__("ON+m"));
 
 /***/ }),
 
@@ -3179,6 +3889,74 @@ module.exports.default = exports.default;
 
 /***/ }),
 
+/***/ "9nAp":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _regenerator = _interopRequireDefault(__webpack_require__("ln6h"));
+
+var _promise = _interopRequireDefault(__webpack_require__("eVuF"));
+
+var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__("+oT+"));
+
+var _reactRelay = __webpack_require__("iuEU");
+
+var mutation = function mutation() {
+  return __webpack_require__("nkzV");
+};
+
+var _default =
+/*#__PURE__*/
+function () {
+  var _ref = (0, _asyncToGenerator2.default)(
+  /*#__PURE__*/
+  _regenerator.default.mark(function _callee(di, input) {
+    return _regenerator.default.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            return _context.abrupt("return", new _promise.default(function (resolve, reject) {
+              (0, _reactRelay.commitMutation)(di.get("env"), {
+                mutation: mutation,
+                variables: {
+                  input: input || {}
+                },
+                onCompleted: function onCompleted(data, errors) {
+                  return resolve({
+                    data: data,
+                    errors: errors
+                  });
+                },
+                onError: reject
+              });
+            }));
+
+          case 1:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee);
+  }));
+
+  return function (_x, _x2) {
+    return _ref.apply(this, arguments);
+  };
+}();
+
+exports.default = _default;
+
+/***/ }),
+
 /***/ "A8op":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -3264,6 +4042,472 @@ module.exports = function (it) {
 
 /***/ }),
 
+/***/ "AYdZ":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @flow
+ * @relayHash 83d6098362c35d5e4c7c1395ae34e61c
+ */
+
+/* eslint-disable */
+
+/*::
+import type { ConcreteRequest } from 'relay-runtime';
+export type UserRole = "ADMIN" | "AUTHENTICATED" | "%future added value";
+export type EditUserInput = {|
+  id: string,
+  email?: ?string,
+  name?: ?string,
+  password?: ?string,
+  roles?: ?$ReadOnlyArray<?UserRole>,
+  clientMutationId?: ?string,
+|};
+export type EditUserMutationVariables = {|
+  input: EditUserInput
+|};
+export type EditUserMutationResponse = {|
+  +editUser: ?{|
+    +user: ?{|
+      +id: string
+    |}
+  |}
+|};
+export type EditUserMutation = {|
+  variables: EditUserMutationVariables,
+  response: EditUserMutationResponse,
+|};
+*/
+
+/*
+mutation EditUserMutation(
+  $input: EditUserInput!
+) {
+  editUser(input: $input) {
+    user {
+      id
+    }
+  }
+}
+*/
+
+var node
+/*: ConcreteRequest*/
+= function () {
+  var v0 = [{
+    "kind": "LocalArgument",
+    "name": "input",
+    "type": "EditUserInput!",
+    "defaultValue": null
+  }],
+      v1 = [{
+    "kind": "LinkedField",
+    "alias": null,
+    "name": "editUser",
+    "storageKey": null,
+    "args": [{
+      "kind": "Variable",
+      "name": "input",
+      "variableName": "input"
+    }],
+    "concreteType": "EditUserPayload",
+    "plural": false,
+    "selections": [{
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "user",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "User",
+      "plural": false,
+      "selections": [{
+        "kind": "ScalarField",
+        "alias": null,
+        "name": "id",
+        "args": null,
+        "storageKey": null
+      }]
+    }]
+  }];
+  return {
+    "kind": "Request",
+    "fragment": {
+      "kind": "Fragment",
+      "name": "EditUserMutation",
+      "type": "Mutation",
+      "metadata": null,
+      "argumentDefinitions": v0
+      /*: any*/
+      ,
+      "selections": v1
+      /*: any*/
+
+    },
+    "operation": {
+      "kind": "Operation",
+      "name": "EditUserMutation",
+      "argumentDefinitions": v0
+      /*: any*/
+      ,
+      "selections": v1
+      /*: any*/
+
+    },
+    "params": {
+      "operationKind": "mutation",
+      "name": "EditUserMutation",
+      "id": null,
+      "text": "mutation EditUserMutation(\n  $input: EditUserInput!\n) {\n  editUser(input: $input) {\n    user {\n      id\n    }\n  }\n}\n",
+      "metadata": {}
+    }
+  };
+}(); // prettier-ignore
+
+
+node
+/*: any*/
+.hash = '3e6c36e4a9a4bce4d918bd7dea47edbc';
+module.exports = node;
+
+/***/ }),
+
+/***/ "AhvV":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(_) {
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = exports.query = exports.styles = void 0;
+
+var _promise = _interopRequireDefault(__webpack_require__("eVuF"));
+
+var _regenerator = _interopRequireDefault(__webpack_require__("ln6h"));
+
+var _objectWithoutProperties2 = _interopRequireDefault(__webpack_require__("EY6e"));
+
+var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__("+oT+"));
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
+
+var _assertThisInitialized2 = _interopRequireDefault(__webpack_require__("K47E"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
+
+var _defineProperty2 = _interopRequireDefault(__webpack_require__("xHqa"));
+
+var _react = _interopRequireDefault(__webpack_require__("cDcd"));
+
+var _propTypes = _interopRequireDefault(__webpack_require__("rf6O"));
+
+var _reactIntl = __webpack_require__("k004");
+
+var _reactRelay = __webpack_require__("iuEU");
+
+var _Dialog = _interopRequireDefault(__webpack_require__("fEgT"));
+
+var _DialogActions = _interopRequireDefault(__webpack_require__("1gBk"));
+
+var _DialogContent = _interopRequireDefault(__webpack_require__("iTUb"));
+
+var _DialogContentText = _interopRequireDefault(__webpack_require__("MbIc"));
+
+var _DialogTitle = _interopRequireDefault(__webpack_require__("0Jp5"));
+
+var _Grid = _interopRequireDefault(__webpack_require__("JQ2V"));
+
+var _Button = _interopRequireDefault(__webpack_require__("Wh1t"));
+
+var _red = _interopRequireDefault(__webpack_require__("RpH3"));
+
+var _Relay = __webpack_require__("5upH");
+
+var _forms = __webpack_require__("KH7Z");
+
+var _constants = _interopRequireDefault(__webpack_require__("QwoZ"));
+
+var _editUser = _interopRequireDefault(__webpack_require__("LWT2"));
+
+var _createUser = _interopRequireDefault(__webpack_require__("r4qH"));
+
+var styles = function styles() {
+  return {
+    error: {
+      color: _red.default[500]
+    },
+    actions: {
+      paddingLeft: "1rem",
+      paddingRight: "1rem",
+      paddingBottom: "1rem"
+    }
+  };
+};
+
+exports.styles = styles;
+
+var query = function query() {
+  return __webpack_require__("7/bZ");
+};
+
+exports.query = query;
+
+var EditUserModal =
+/*#__PURE__*/
+function (_Form) {
+  (0, _inherits2.default)(EditUserModal, _Form);
+
+  function EditUserModal(props) {
+    var _this;
+
+    (0, _classCallCheck2.default)(this, EditUserModal);
+    _this = (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(EditUserModal).call(this, props));
+    _this.state = {
+      initialValues: null
+    };
+    _this.submit = _this.submit.bind((0, _assertThisInitialized2.default)(_this));
+    return _this;
+  }
+
+  (0, _createClass2.default)(EditUserModal, [{
+    key: "submit",
+    value: function () {
+      var _submit = (0, _asyncToGenerator2.default)(
+      /*#__PURE__*/
+      _regenerator.default.mark(function _callee(_ref, _ref2) {
+        var name, email, password, isAdmin, setSubmitting, setErrors, setStatus, result, _result, _status, errors;
+
+        return _regenerator.default.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                name = _ref.name, email = _ref.email, password = _ref.password, isAdmin = _ref.isAdmin;
+                setSubmitting = _ref2.setSubmitting, setErrors = _ref2.setErrors, setStatus = _ref2.setStatus;
+
+                if (!this.props.currentId) {
+                  _context.next = 8;
+                  break;
+                }
+
+                _context.next = 5;
+                return this.props.onEdit(this.props.currentId, name || null, email, password, isAdmin);
+
+              case 5:
+                result = _context.sent;
+                _context.next = 11;
+                break;
+
+              case 8:
+                _context.next = 10;
+                return this.props.onCreate(name || null, email, password, isAdmin);
+
+              case 10:
+                result = _context.sent;
+
+              case 11:
+                if (result === true) {
+                  setSubmitting(false);
+                  this.props.onClose();
+                } else {
+                  _result = result, _status = _result._status, errors = (0, _objectWithoutProperties2.default)(_result, ["_status"]);
+                  setSubmitting(false);
+                  setErrors(errors);
+                  setStatus(_status);
+                }
+
+              case 12:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function submit(_x, _x2) {
+        return _submit.apply(this, arguments);
+      }
+
+      return submit;
+    }()
+  }, {
+    key: "renderForm",
+    value: function renderForm() {
+      var _this2 = this;
+
+      return _react.default.createElement(_forms.Form, {
+        fields: this.props.currentId ? _editUser.default : _createUser.default,
+        initialValues: this.state.initialValues,
+        onSubmit: this.submit,
+        render: function render(_ref3) {
+          var isSubmitting = _ref3.isSubmitting,
+              status = _ref3.status,
+              handleSubmit = _ref3.handleSubmit;
+          return _react.default.createElement(_Dialog.default, {
+            maxWidth: "xs",
+            classes: {
+              paper: _this2.props.classes.paper
+            },
+            open: true,
+            onClose: _this2.props.onClose
+          }, _react.default.createElement(_DialogTitle.default, null, _react.default.createElement(_reactIntl.FormattedMessage, {
+            id: _this2.props.currentId ? "EDIT_USER_TITLE_EDIT" : "EDIT_USER_TITLE_CREATE"
+          })), !!status && _react.default.createElement(_DialogContent.default, null, _.map(_.isArray(status) ? status : [status], function (error, index) {
+            return _react.default.createElement(_DialogContentText.default, {
+              key: "error-".concat(index),
+              classes: {
+                root: _this2.props.classes.error
+              }
+            }, _.isArray(error) ? _react.default.createElement(_reactIntl.FormattedMessage, {
+              id: error[0],
+              values: error[1]
+            }) : _react.default.createElement(_reactIntl.FormattedMessage, {
+              id: error
+            }));
+          })), _react.default.createElement(_DialogContent.default, null, _react.default.createElement(_Grid.default, {
+            container: true,
+            spacing: 1
+          }, _react.default.createElement(_Grid.default, {
+            item: true,
+            xs: 12
+          }, _react.default.createElement(_forms.Field, {
+            name: "name",
+            type: "text"
+          })), _react.default.createElement(_Grid.default, {
+            item: true,
+            xs: 12
+          }, _react.default.createElement(_forms.Field, {
+            name: "email",
+            type: "text"
+          })), _react.default.createElement(_Grid.default, {
+            item: true,
+            xs: 12
+          }, _react.default.createElement(_forms.Field, {
+            name: "password",
+            type: "password"
+          })), _react.default.createElement(_Grid.default, {
+            item: true,
+            xs: 12
+          }, _react.default.createElement(_forms.Field, {
+            name: "isAdmin",
+            type: "checkbox"
+          })))), _react.default.createElement(_DialogActions.default, {
+            classes: {
+              root: _this2.props.classes.actions
+            }
+          }, _react.default.createElement(_Button.default, {
+            variant: "contained",
+            color: "primary",
+            disabled: isSubmitting,
+            onClick: _this2.props.onClose
+          }, _react.default.createElement(_reactIntl.FormattedMessage, {
+            id: "EDIT_USER_CANCEL"
+          })), _react.default.createElement(_Button.default, {
+            variant: "contained",
+            color: "secondary",
+            disabled: isSubmitting,
+            onClick: handleSubmit
+          }, _react.default.createElement(_reactIntl.FormattedMessage, {
+            id: "EDIT_USER_SUBMIT"
+          }))));
+        }
+      });
+    }
+  }, {
+    key: "loadData",
+    value: function () {
+      var _loadData = (0, _asyncToGenerator2.default)(
+      /*#__PURE__*/
+      _regenerator.default.mark(function _callee2(viewer) {
+        return _regenerator.default.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.next = 2;
+                return new _promise.default(function (resolve) {
+                  return setTimeout(resolve);
+                });
+
+              case 2:
+                this.setState({
+                  initialValues: {
+                    name: _.get(viewer, "user.name", ""),
+                    email: _.get(viewer, "user.email", ""),
+                    password: "",
+                    isAdmin: _.includes(_.get(viewer, "user.roles", []), _constants.default.roles.ADMIN)
+                  }
+                });
+
+              case 3:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this);
+      }));
+
+      function loadData(_x3) {
+        return _loadData.apply(this, arguments);
+      }
+
+      return loadData;
+    }()
+  }, {
+    key: "render",
+    value: function render() {
+      var _this3 = this;
+
+      if (!this.props.currentId) return this.renderForm();
+      return _react.default.createElement(_Relay.QueryRenderer, {
+        query: query,
+        variables: {
+          currentId: this.props.currentId
+        },
+        render: function render(_ref4) {
+          var error = _ref4.error,
+              props = _ref4.props;
+          if (error || !props) return null;
+          if (_this3.state.initialValues) return _this3.renderForm();
+
+          _this3.loadData(props.viewer);
+
+          return null;
+        }
+      });
+    }
+  }]);
+  return EditUserModal;
+}(_forms.Form);
+
+(0, _defineProperty2.default)(EditUserModal, "propTypes", {
+  classes: _propTypes.default.object.isRequired,
+  currentId: _propTypes.default.string,
+  onClose: _propTypes.default.func.isRequired,
+  onCreate: _propTypes.default.func.isRequired,
+  onEdit: _propTypes.default.func.isRequired
+});
+var _default = EditUserModal;
+exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("YLtl")))
+
+/***/ }),
+
+/***/ "Ai9N":
+/***/ (function(module, exports) {
+
+module.exports = require("@material-ui/core/TableCell");
+
+/***/ }),
+
 /***/ "Avpf":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -3306,6 +4550,135 @@ module.exports = _objectSpread;
 var $export = __webpack_require__("0T/a");
 $export($export.S, 'Object', { setPrototypeOf: __webpack_require__("ZJRo").set });
 
+
+/***/ }),
+
+/***/ "BZsq":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @flow
+ * @relayHash e61c0b23b3680dc8eecdd74dd339f0da
+ */
+
+/* eslint-disable */
+
+/*::
+import type { ConcreteRequest } from 'relay-runtime';
+export type UserRole = "ADMIN" | "AUTHENTICATED" | "%future added value";
+export type CreateUserInput = {|
+  email?: ?string,
+  name?: ?string,
+  password?: ?string,
+  roles?: ?$ReadOnlyArray<?UserRole>,
+  clientMutationId?: ?string,
+|};
+export type CreateUserMutationVariables = {|
+  input: CreateUserInput
+|};
+export type CreateUserMutationResponse = {|
+  +createUser: ?{|
+    +user: ?{|
+      +id: string
+    |}
+  |}
+|};
+export type CreateUserMutation = {|
+  variables: CreateUserMutationVariables,
+  response: CreateUserMutationResponse,
+|};
+*/
+
+/*
+mutation CreateUserMutation(
+  $input: CreateUserInput!
+) {
+  createUser(input: $input) {
+    user {
+      id
+    }
+  }
+}
+*/
+
+var node
+/*: ConcreteRequest*/
+= function () {
+  var v0 = [{
+    "kind": "LocalArgument",
+    "name": "input",
+    "type": "CreateUserInput!",
+    "defaultValue": null
+  }],
+      v1 = [{
+    "kind": "LinkedField",
+    "alias": null,
+    "name": "createUser",
+    "storageKey": null,
+    "args": [{
+      "kind": "Variable",
+      "name": "input",
+      "variableName": "input"
+    }],
+    "concreteType": "CreateUserPayload",
+    "plural": false,
+    "selections": [{
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "user",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "User",
+      "plural": false,
+      "selections": [{
+        "kind": "ScalarField",
+        "alias": null,
+        "name": "id",
+        "args": null,
+        "storageKey": null
+      }]
+    }]
+  }];
+  return {
+    "kind": "Request",
+    "fragment": {
+      "kind": "Fragment",
+      "name": "CreateUserMutation",
+      "type": "Mutation",
+      "metadata": null,
+      "argumentDefinitions": v0
+      /*: any*/
+      ,
+      "selections": v1
+      /*: any*/
+
+    },
+    "operation": {
+      "kind": "Operation",
+      "name": "CreateUserMutation",
+      "argumentDefinitions": v0
+      /*: any*/
+      ,
+      "selections": v1
+      /*: any*/
+
+    },
+    "params": {
+      "operationKind": "mutation",
+      "name": "CreateUserMutation",
+      "id": null,
+      "text": "mutation CreateUserMutation(\n  $input: CreateUserInput!\n) {\n  createUser(input: $input) {\n    user {\n      id\n    }\n  }\n}\n",
+      "metadata": {}
+    }
+  };
+}(); // prettier-ignore
+
+
+node
+/*: any*/
+.hash = 'e10e0a2a6b930a44cda50e71a629c8f3';
+module.exports = node;
 
 /***/ }),
 
@@ -3574,6 +4947,13 @@ module.exports = __webpack_require__("cBdl");
 
 /***/ }),
 
+/***/ "BjFw":
+/***/ (function(module, exports) {
+
+module.exports = require("@material-ui/core/Table");
+
+/***/ }),
+
 /***/ "Bjmp":
 /***/ (function(module, exports) {
 
@@ -3754,6 +5134,13 @@ module.exports = node;
 
 /***/ }),
 
+/***/ "CSXW":
+/***/ (function(module, exports) {
+
+module.exports = require("@material-ui/icons/CheckCircleOutline");
+
+/***/ }),
+
 /***/ "CUfL":
 /***/ (function(module, exports) {
 
@@ -3781,111 +5168,6 @@ module.exports = function (name) {
   if (name.charAt(0) != '_' && !(name in $Symbol)) defineProperty($Symbol, name, { value: wksExt.f(name) });
 };
 
-
-/***/ }),
-
-/***/ "Ckg0":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__("KI45");
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
-
-var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
-
-var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
-
-var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
-
-var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
-
-var _react = _interopRequireDefault(__webpack_require__("cDcd"));
-
-var _reactVirtualized = __webpack_require__("xvxd");
-
-var _victory = __webpack_require__("wL32");
-
-var _Paper = _interopRequireDefault(__webpack_require__("qt1I"));
-
-var _theme = _interopRequireDefault(__webpack_require__("3AO0"));
-
-var Chart4 =
-/*#__PURE__*/
-function (_React$Component) {
-  (0, _inherits2.default)(Chart4, _React$Component);
-
-  function Chart4() {
-    (0, _classCallCheck2.default)(this, Chart4);
-    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(Chart4).apply(this, arguments));
-  }
-
-  (0, _createClass2.default)(Chart4, [{
-    key: "getData",
-    value: function getData() {
-      return [{
-        x: "Cats",
-        y: 35
-      }, {
-        x: "Dogs",
-        y: 40
-      }, {
-        x: "Birds",
-        y: 55
-      }];
-    }
-  }, {
-    key: "renderChart",
-    value: function renderChart(width, height) {
-      return _react.default.createElement("svg", {
-        width: width,
-        height: height
-      }, _react.default.createElement(_victory.VictoryChart, {
-        domainPadding: {
-          x: 50
-        },
-        width: width,
-        height: height,
-        standalone: false,
-        containerComponent: _react.default.createElement(_victory.VictoryContainer, {
-          responsive: false
-        }),
-        theme: (0, _theme.default)({
-          theme: this.props.theme
-        })
-      }, _react.default.createElement(_victory.VictoryAxis, null), _react.default.createElement(_victory.VictoryAxis, {
-        dependentAxis: true
-      }), _react.default.createElement(_victory.VictoryPie, {
-        data: this.getData()
-      })));
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      var _this = this;
-
-      return _react.default.createElement(_Paper.default, {
-        className: this.props.className
-      }, _react.default.createElement(_reactVirtualized.AutoSizer, {
-        disableHeight: true
-      }, function (_ref) {
-        var width = _ref.width;
-        return !!width && _this.renderChart(width, 0.8 * width);
-      }));
-    }
-  }]);
-  return Chart4;
-}(_react.default.Component);
-
-var _default = Chart4;
-exports.default = _default;
 
 /***/ }),
 
@@ -4016,6 +5298,74 @@ var _FieldMessages = _interopRequireWildcard(__webpack_require__("sVnQ"));
 
 var FieldMessages = (0, _styles.withStyles)(_FieldMessages.styles)((0, _reactIntl.injectIntl)(_FieldMessages.default));
 var _default = FieldMessages;
+exports.default = _default;
+
+/***/ }),
+
+/***/ "DfuF":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _regenerator = _interopRequireDefault(__webpack_require__("ln6h"));
+
+var _promise = _interopRequireDefault(__webpack_require__("eVuF"));
+
+var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__("+oT+"));
+
+var _reactRelay = __webpack_require__("iuEU");
+
+var mutation = function mutation() {
+  return __webpack_require__("BZsq");
+};
+
+var _default =
+/*#__PURE__*/
+function () {
+  var _ref = (0, _asyncToGenerator2.default)(
+  /*#__PURE__*/
+  _regenerator.default.mark(function _callee(di, input) {
+    return _regenerator.default.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            return _context.abrupt("return", new _promise.default(function (resolve, reject) {
+              (0, _reactRelay.commitMutation)(di.get("env"), {
+                mutation: mutation,
+                variables: {
+                  input: input || {}
+                },
+                onCompleted: function onCompleted(data, errors) {
+                  return resolve({
+                    data: data,
+                    errors: errors
+                  });
+                },
+                onError: reject
+              });
+            }));
+
+          case 1:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee);
+  }));
+
+  return function (_x, _x2) {
+    return _ref.apply(this, arguments);
+  };
+}();
+
 exports.default = _default;
 
 /***/ }),
@@ -4201,6 +5551,478 @@ exports.default = _default;
 
 /***/ }),
 
+/***/ "E223":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(_) {
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = exports.styles = exports.sortDir = exports.sortBy = exports.pageSize = void 0;
+
+var _promise = _interopRequireDefault(__webpack_require__("eVuF"));
+
+var _regenerator = _interopRequireDefault(__webpack_require__("ln6h"));
+
+var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__("+oT+"));
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
+
+var _assertThisInitialized2 = _interopRequireDefault(__webpack_require__("K47E"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
+
+var _defineProperty2 = _interopRequireDefault(__webpack_require__("xHqa"));
+
+var _react = _interopRequireDefault(__webpack_require__("cDcd"));
+
+var _reactIntl = __webpack_require__("k004");
+
+var _reactRelay = __webpack_require__("iuEU");
+
+var _Typography = _interopRequireDefault(__webpack_require__("UVoM"));
+
+var _Button = _interopRequireDefault(__webpack_require__("Wh1t"));
+
+var _IconButton = _interopRequireDefault(__webpack_require__("EmCc"));
+
+var _TablePagination = _interopRequireDefault(__webpack_require__("bzUq"));
+
+var _Paper = _interopRequireDefault(__webpack_require__("qt1I"));
+
+var _Refresh = _interopRequireDefault(__webpack_require__("uQSa"));
+
+var _colorManipulator = __webpack_require__("oOPP");
+
+var _UsersTableContainer = _interopRequireDefault(__webpack_require__("eul6"));
+
+var _EditUserModalContainer = _interopRequireDefault(__webpack_require__("0ndX"));
+
+var _ConfirmModalContainer = _interopRequireDefault(__webpack_require__("V5KF"));
+
+var _Relay = __webpack_require__("5upH");
+
+var _constants = _interopRequireDefault(__webpack_require__("QwoZ"));
+
+var pageSize = 10;
+exports.pageSize = pageSize;
+var sortBy = "email";
+exports.sortBy = sortBy;
+var sortDir = "asc";
+exports.sortDir = sortDir;
+
+var styles = function styles(theme) {
+  return {
+    message: (0, _defineProperty2.default)({
+      background: (0, _colorManipulator.lighten)(theme.palette.background.paper, 0.1),
+      width: "100%",
+      marginTop: "-2rem",
+      display: "flex",
+      justifyContent: "stretch",
+      alignItems: "center"
+    }, theme.breakpoints.down("sm"), {
+      flexDirection: "column"
+    }),
+    messageTitle: {
+      fontSize: 26,
+      margin: "3rem 3rem 1rem 3rem"
+    },
+    messageContent: (0, _defineProperty2.default)({
+      flex: 1,
+      maxWidth: "600px",
+      margin: "3rem 1rem 1rem 1rem"
+    }, theme.breakpoints.down("sm"), {
+      marginTop: 0
+    }),
+    layout: {
+      width: "100%",
+      flex: 1,
+      padding: theme.spacing(1)
+    },
+    paper: {
+      background: theme.main.paper
+    },
+    header: {
+      marginTop: "3rem",
+      marginBottom: "1rem",
+      display: "flex",
+      justifyContent: "space-between"
+    },
+    buttons: {
+      width: "100%",
+      display: "flex",
+      flexDirection: "row",
+      justifyContent: "flex-start",
+      alignContent: "stretch"
+    },
+    button: {
+      margin: "0.5rem"
+    }
+  };
+};
+
+exports.styles = styles;
+
+var subscription = function subscription() {
+  return __webpack_require__("UIj7");
+};
+
+var Users =
+/*#__PURE__*/
+function (_React$Component) {
+  (0, _inherits2.default)(Users, _React$Component);
+
+  function Users(props) {
+    var _this;
+
+    (0, _classCallCheck2.default)(this, Users);
+    _this = (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(Users).call(this, props));
+    _this.state = {
+      pageSize: pageSize,
+      pageNumber: 0,
+      variables: {
+        sortBy: sortBy,
+        sortDir: sortDir,
+        first: pageSize
+      },
+      isConfirmOpen: false
+    };
+    _this.handleCreateAction = _this.handleCreateAction.bind((0, _assertThisInitialized2.default)(_this));
+    _this.handleEditAction = _this.handleEditAction.bind((0, _assertThisInitialized2.default)(_this));
+    _this.handleDeleteAction = _this.handleDeleteAction.bind((0, _assertThisInitialized2.default)(_this));
+    _this.handleCancelDelete = _this.handleCancelDelete.bind((0, _assertThisInitialized2.default)(_this));
+    _this.handleConfirmDelete = _this.handleConfirmDelete.bind((0, _assertThisInitialized2.default)(_this));
+    _this.handleRefreshAction = _this.handleRefreshAction.bind((0, _assertThisInitialized2.default)(_this));
+    _this.handleSort = _this.handleSort.bind((0, _assertThisInitialized2.default)(_this));
+    _this.handleChangePage = _this.handleChangePage.bind((0, _assertThisInitialized2.default)(_this));
+    _this.handleChangeRowsPerPage = _this.handleChangeRowsPerPage.bind((0, _assertThisInitialized2.default)(_this));
+    return _this;
+  }
+
+  (0, _createClass2.default)(Users, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      var _this2 = this;
+
+      window.addEventListener(_constants.default.events.AUTH_UPDATED, this.handleRefreshAction);
+      setTimeout(function () {
+        return _this2.handleRefreshAction();
+      });
+    }
+  }, {
+    key: "componentDidUpdate",
+    value: function componentDidUpdate() {
+      var _this3 = this;
+
+      var total = _.get(this.props.viewer, "users.totalCount", 0);
+
+      if (total && this.state.pageNumber * this.state.pageSize >= total) {
+        // we fell off the list - reset to the beginning
+        var variables = {
+          sortBy: sortBy,
+          sortDir: sortDir,
+          first: this.state.pageSize
+        };
+        setTimeout(function () {
+          _this3.setState({
+            pageNumber: 0,
+            variables: variables
+          }, function () {
+            return _this3.props.relay.refetch(variables, null, null, {
+              force: true
+            });
+          });
+        });
+      }
+
+      this.props.onDeselectAll(_.map(_.get(this.props.viewer, "users.edges", []), "node.id"));
+    }
+  }, {
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      window.addEventListener(_constants.default.events.AUTH_UPDATED, this.handleRefreshAction);
+    }
+  }, {
+    key: "handleCreateAction",
+    value: function () {
+      var _handleCreateAction = (0, _asyncToGenerator2.default)(
+      /*#__PURE__*/
+      _regenerator.default.mark(function _callee() {
+        return _regenerator.default.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.next = 2;
+                return this.props.onCreate();
+
+              case 2:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function handleCreateAction() {
+        return _handleCreateAction.apply(this, arguments);
+      }
+
+      return handleCreateAction;
+    }()
+  }, {
+    key: "handleEditAction",
+    value: function () {
+      var _handleEditAction = (0, _asyncToGenerator2.default)(
+      /*#__PURE__*/
+      _regenerator.default.mark(function _callee2() {
+        return _regenerator.default.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.next = 2;
+                return this.props.onEdit();
+
+              case 2:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this);
+      }));
+
+      function handleEditAction() {
+        return _handleEditAction.apply(this, arguments);
+      }
+
+      return handleEditAction;
+    }()
+  }, {
+    key: "handleDeleteAction",
+    value: function handleDeleteAction() {
+      this.setState({
+        isConfirmOpen: true
+      });
+    }
+  }, {
+    key: "handleCancelDelete",
+    value: function handleCancelDelete() {
+      this.setState({
+        isConfirmOpen: false
+      });
+    }
+  }, {
+    key: "handleConfirmDelete",
+    value: function () {
+      var _handleConfirmDelete = (0, _asyncToGenerator2.default)(
+      /*#__PURE__*/
+      _regenerator.default.mark(function _callee3() {
+        var _this4 = this;
+
+        return _regenerator.default.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                this.setState({
+                  isConfirmOpen: false
+                });
+                _context3.next = 3;
+                return _promise.default.all(_.map(this.props.selected, function (userId) {
+                  return _this4.props.onDelete(userId);
+                }));
+
+              case 3:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3, this);
+      }));
+
+      function handleConfirmDelete() {
+        return _handleConfirmDelete.apply(this, arguments);
+      }
+
+      return handleConfirmDelete;
+    }()
+  }, {
+    key: "handleRefreshAction",
+    value: function handleRefreshAction() {
+      this.props.relay.refetch(this.state.variables, null, null, {
+        force: true
+      });
+    }
+  }, {
+    key: "handleSort",
+    value: function handleSort(sortBy) {
+      var _this5 = this;
+
+      var sortDir = "asc";
+      if (this.state.variables.sortBy === sortBy) sortDir = this.state.variables.sortDir === "asc" ? "desc" : "asc";
+      var variables = {
+        sortBy: sortBy,
+        sortDir: sortDir,
+        first: this.state.pageSize
+      };
+      this.setState({
+        pageNumber: 0,
+        variables: variables
+      }, function () {
+        return _this5.props.relay.refetch(variables, null, null, {
+          force: true
+        });
+      });
+    }
+  }, {
+    key: "handleChangeRowsPerPage",
+    value: function handleChangeRowsPerPage(evt) {
+      var _this6 = this;
+
+      var pageSize = evt.target.value;
+      var variables = {
+        sortBy: this.state.variables.sortBy,
+        sortDir: this.state.variables.sortDir,
+        first: pageSize
+      };
+      this.setState({
+        pageSize: pageSize,
+        pageNumber: 0,
+        variables: variables
+      }, function () {
+        return _this6.props.relay.refetch(variables, null, null, {
+          force: true
+        });
+      });
+    }
+  }, {
+    key: "handleChangePage",
+    value: function handleChangePage(evt, pageNumber) {
+      var _this7 = this;
+
+      if (this.state.pageNumber === pageNumber) return;
+      var variables = {
+        sortBy: this.state.variables.sortBy,
+        sortDir: this.state.variables.sortDir
+      };
+
+      if (pageNumber === 0) {
+        variables.first = this.state.pageSize;
+      } else if (pageNumber > this.state.pageNumber) {
+        if (pageNumber + 1 > Math.ceil(_.get(this.props.viewer, "users.totalCount", 0) / this.state.pageSize)) {
+          return;
+        }
+
+        variables.first = this.state.pageSize;
+        variables.after = _.get(this.props.viewer, "users.pageInfo.endCursor", null);
+      } else {
+        if (this.state.pageNumber <= 0) return;
+        variables.last = this.state.pageSize;
+        variables.before = _.get(this.props.viewer, "users.pageInfo.startCursor", null);
+      }
+
+      this.setState({
+        pageNumber: pageNumber,
+        variables: variables
+      }, function () {
+        return _this7.props.relay.refetch(variables, null, null, {
+          force: true
+        });
+      });
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      return _react.default.createElement(_react.default.Fragment, null, _react.default.createElement(_Relay.Subscription, {
+        subscription: subscription,
+        onNext: this.handleRefreshAction
+      }), _react.default.createElement("div", {
+        className: this.props.classes.layout
+      }, _react.default.createElement("div", {
+        className: this.props.classes.header
+      }, _react.default.createElement(_Typography.default, {
+        variant: "h3",
+        color: "inherit"
+      }, _react.default.createElement(_reactIntl.FormattedMessage, {
+        id: "TITLE_USERS"
+      })), _react.default.createElement(_IconButton.default, {
+        color: "inherit",
+        onClick: this.handleRefreshAction
+      }, _react.default.createElement(_Refresh.default, null))), _react.default.createElement("div", {
+        className: this.props.classes.buttons
+      }, _react.default.createElement(_Button.default, {
+        variant: "contained",
+        color: "secondary",
+        classes: {
+          root: this.props.classes.button
+        },
+        onClick: this.handleCreateAction
+      }, _react.default.createElement(_reactIntl.FormattedMessage, {
+        id: "USERS_CREATE_BUTTON"
+      })), _react.default.createElement(_Button.default, {
+        variant: "contained",
+        color: "primary",
+        disabled: this.props.selected.length === 0,
+        classes: {
+          root: this.props.classes.button
+        },
+        onClick: this.handleEditAction
+      }, _react.default.createElement(_reactIntl.FormattedMessage, {
+        id: "USERS_EDIT_BUTTON"
+      })), _react.default.createElement(_Button.default, {
+        variant: "contained",
+        color: "primary",
+        disabled: this.props.selected.length === 0,
+        classes: {
+          root: this.props.classes.button
+        },
+        onClick: this.handleDeleteAction
+      }, _react.default.createElement(_reactIntl.FormattedMessage, {
+        id: "USERS_DELETE_BUTTON"
+      }))), _react.default.createElement(_Paper.default, {
+        className: this.props.classes.paper
+      }, _react.default.createElement(_UsersTableContainer.default, {
+        users: _.get(this.props.viewer, "users.edges", []),
+        selected: this.props.selected,
+        sortBy: this.state.variables.sortBy,
+        sortDir: this.state.variables.sortDir,
+        onSort: this.handleSort
+      }), _react.default.createElement(_TablePagination.default, {
+        rowsPerPageOptions: [10, 20, 30, 50, 100],
+        component: "div",
+        count: _.get(this.props.viewer, "users.totalCount", 0),
+        rowsPerPage: this.state.pageSize,
+        labelRowsPerPage: "",
+        page: this.state.pageNumber,
+        onChangeRowsPerPage: this.handleChangeRowsPerPage,
+        onChangePage: this.handleChangePage
+      })), this.props.isEditModalOpen && _react.default.createElement(_EditUserModalContainer.default, null), this.state.isConfirmOpen && _react.default.createElement(_ConfirmModalContainer.default, {
+        title: "DELETE_EMPLOYEE_TITLE",
+        text: "DELETE_EMPLOYEE_TEXT",
+        cancel: "DELETE_EMPLOYEE_CANCEL",
+        submit: "DELETE_EMPLOYEE_SUBMIT",
+        onCancel: this.handleCancelDelete,
+        onSubmit: this.handleConfirmDelete
+      })));
+    }
+  }]);
+  return Users;
+}(_react.default.Component);
+
+var _default = Users;
+exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("YLtl")))
+
+/***/ }),
+
 /***/ "EDr4":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -4268,11 +6090,33 @@ module.exports = function (it) {
 
 /***/ }),
 
-/***/ "FsgU":
+/***/ "G+Sp":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
+var global = __webpack_require__("2jw7");
+var core = __webpack_require__("p9MR");
+var dP = __webpack_require__("OtwA");
+var DESCRIPTORS = __webpack_require__("fZVS");
+var SPECIES = __webpack_require__("G1Wo")('species');
+
+module.exports = function (KEY) {
+  var C = typeof core[KEY] == 'function' ? core[KEY] : global[KEY];
+  if (DESCRIPTORS && C && !C[SPECIES]) dP.f(C, SPECIES, {
+    configurable: true,
+    get: function () { return this; }
+  });
+};
+
+
+/***/ }),
+
+/***/ "G/sG":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(_) {
 
 var _interopRequireDefault = __webpack_require__("KI45");
 
@@ -4293,145 +6137,86 @@ var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
 
 var _react = _interopRequireDefault(__webpack_require__("cDcd"));
 
+var _classnames = _interopRequireDefault(__webpack_require__("K2gz"));
+
 var _reactIntl = __webpack_require__("k004");
 
-var _Typography = _interopRequireDefault(__webpack_require__("UVoM"));
+var _TableCell = _interopRequireDefault(__webpack_require__("Ai9N"));
 
-var _Grid = _interopRequireDefault(__webpack_require__("JQ2V"));
+var _TableRow = _interopRequireDefault(__webpack_require__("iDDF"));
 
-var _Chart = _interopRequireDefault(__webpack_require__("aN8n"));
+var _Checkbox = _interopRequireDefault(__webpack_require__("r6Lb"));
 
-var _Chart2 = _interopRequireDefault(__webpack_require__("OG1x"));
+var _CheckCircleOutline = _interopRequireDefault(__webpack_require__("CSXW"));
 
-var _Chart3 = _interopRequireDefault(__webpack_require__("cz0s"));
+var _HelpOutline = _interopRequireDefault(__webpack_require__("aYOr"));
 
-var _Chart4 = _interopRequireDefault(__webpack_require__("Ckg0"));
-
-var _Chart5 = _interopRequireDefault(__webpack_require__("uCCn"));
-
-var _Chart6 = _interopRequireDefault(__webpack_require__("t7Ei"));
-
-var styles = function styles(theme) {
+var styles = function styles() {
   return {
-    layout: {
-      width: "100%",
-      flex: 1,
-      padding: theme.spacing(2)
+    checkboxField: {
+      width: 1
     },
-    paper: {
-      background: theme.main.paper
-    },
-    title: {
-      marginTop: "3rem",
-      marginBottom: "1rem"
+    checkbox: {
+      padding: 0
     }
   };
 };
 
 exports.styles = styles;
 
-var ChartsDemo =
+var UserRow =
 /*#__PURE__*/
 function (_React$Component) {
-  (0, _inherits2.default)(ChartsDemo, _React$Component);
+  (0, _inherits2.default)(UserRow, _React$Component);
 
-  function ChartsDemo() {
-    (0, _classCallCheck2.default)(this, ChartsDemo);
-    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(ChartsDemo).apply(this, arguments));
+  function UserRow() {
+    (0, _classCallCheck2.default)(this, UserRow);
+    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(UserRow).apply(this, arguments));
   }
 
-  (0, _createClass2.default)(ChartsDemo, [{
+  (0, _createClass2.default)(UserRow, [{
     key: "render",
     value: function render() {
-      return _react.default.createElement("div", {
-        className: this.props.classes.layout
-      }, _react.default.createElement(_Typography.default, {
-        variant: "h3",
-        color: "inherit",
-        className: this.props.classes.title
-      }, _react.default.createElement(_reactIntl.FormattedMessage, {
-        id: "TITLE_CHARTS"
-      })), _react.default.createElement(_Grid.default, {
-        container: true,
-        spacing: 2
-      }, _react.default.createElement(_Grid.default, {
-        item: true,
-        xs: 12,
-        md: 6,
-        lg: 4
-      }, _react.default.createElement(_Chart.default, {
-        theme: this.props.theme,
-        className: this.props.classes.paper
-      })), _react.default.createElement(_Grid.default, {
-        item: true,
-        xs: 12,
-        md: 6,
-        lg: 4
-      }, _react.default.createElement(_Chart2.default, {
-        theme: this.props.theme,
-        className: this.props.classes.paper
-      })), _react.default.createElement(_Grid.default, {
-        item: true,
-        xs: 12,
-        md: 6,
-        lg: 4
-      }, _react.default.createElement(_Chart3.default, {
-        theme: this.props.theme,
-        className: this.props.classes.paper
-      })), _react.default.createElement(_Grid.default, {
-        item: true,
-        xs: 12,
-        md: 6,
-        lg: 4
-      }, _react.default.createElement(_Chart4.default, {
-        theme: this.props.theme,
-        className: this.props.classes.paper
-      })), _react.default.createElement(_Grid.default, {
-        item: true,
-        xs: 12,
-        md: 6,
-        lg: 4
-      }, _react.default.createElement(_Chart5.default, {
-        theme: this.props.theme,
-        className: this.props.classes.paper
-      })), _react.default.createElement(_Grid.default, {
-        item: true,
-        xs: 12,
-        md: 6,
-        lg: 4
-      }, _react.default.createElement(_Chart6.default, {
-        theme: this.props.theme,
-        className: this.props.classes.paper
-      }))));
+      var _this = this;
+
+      return _react.default.createElement(_TableRow.default, null, _react.default.createElement(_TableCell.default, {
+        padding: "checkbox",
+        className: (0, _classnames.default)(this.props.isSelected && "selected"),
+        classes: {
+          root: this.props.classes.checkboxField
+        }
+      }, _react.default.createElement(_Checkbox.default, {
+        checked: this.props.isSelected,
+        classes: {
+          root: this.props.classes.checkbox
+        },
+        onChange: function onChange() {
+          return _this.props.onToggle(_this.props.node.id);
+        },
+        value: "on"
+      })), _react.default.createElement(_TableCell.default, {
+        className: (0, _classnames.default)(this.props.isSelected && "selected"),
+        component: "th",
+        scope: "row"
+      }, this.props.node.email), _react.default.createElement(_TableCell.default, {
+        className: (0, _classnames.default)(this.props.isSelected && "selected")
+      }, this.props.node.isEmailVerified ? _react.default.createElement(_CheckCircleOutline.default, null) : _react.default.createElement(_HelpOutline.default, null)), _react.default.createElement(_TableCell.default, {
+        className: (0, _classnames.default)(this.props.isSelected && "selected")
+      }, this.props.node.name), _react.default.createElement(_TableCell.default, {
+        className: (0, _classnames.default)(this.props.isSelected && "selected")
+      }, _.map(this.props.node.roles, function (item) {
+        return _this.props.intl.formatMessage({
+          id: "EDIT_USER_".concat(item, "_LABEL")
+        });
+      }).join(", ")));
     }
   }]);
-  return ChartsDemo;
+  return UserRow;
 }(_react.default.Component);
 
-var _default = ChartsDemo;
+var _default = UserRow;
 exports.default = _default;
-
-/***/ }),
-
-/***/ "G+Sp":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var global = __webpack_require__("2jw7");
-var core = __webpack_require__("p9MR");
-var dP = __webpack_require__("OtwA");
-var DESCRIPTORS = __webpack_require__("fZVS");
-var SPECIES = __webpack_require__("G1Wo")('species');
-
-module.exports = function (KEY) {
-  var C = typeof core[KEY] == 'function' ? core[KEY] : global[KEY];
-  if (DESCRIPTORS && C && !C[SPECIES]) dP.f(C, SPECIES, {
-    configurable: true,
-    get: function () { return this; }
-  });
-};
-
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("YLtl")))
 
 /***/ }),
 
@@ -4512,17 +6297,6 @@ module.exports = function (index, length) {
 /***/ (function(module, exports) {
 
 module.exports = require("@material-ui/core/ListItemIcon");
-
-/***/ }),
-
-/***/ "GTiD":
-/***/ (function(module, exports, __webpack_require__) {
-
-// 22.1.2.2 / 15.4.3.2 Array.isArray(arg)
-var $export = __webpack_require__("0T/a");
-
-$export($export.S, 'Array', { isArray: __webpack_require__("taoM") });
-
 
 /***/ }),
 
@@ -4782,6 +6556,188 @@ module.exports.default = exports.default;
 /***/ (function(module, exports) {
 
 module.exports = require("@material-ui/icons/ColorLens");
+
+/***/ }),
+
+/***/ "Hcqa":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(_) {
+
+var _interopRequireWildcard = __webpack_require__("5Uuq");
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = exports.styles = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
+
+var _assertThisInitialized2 = _interopRequireDefault(__webpack_require__("K47E"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
+
+var _defineProperty2 = _interopRequireDefault(__webpack_require__("xHqa"));
+
+var _objectSpread2 = _interopRequireDefault(__webpack_require__("Avpf"));
+
+var _react = _interopRequireDefault(__webpack_require__("cDcd"));
+
+var _reactIntl = __webpack_require__("k004");
+
+var _Table = _interopRequireDefault(__webpack_require__("BjFw"));
+
+var _TableBody = _interopRequireDefault(__webpack_require__("30mr"));
+
+var _TableCell = _interopRequireDefault(__webpack_require__("Ai9N"));
+
+var _TableHead = _interopRequireDefault(__webpack_require__("TWtx"));
+
+var _TableRow = _interopRequireDefault(__webpack_require__("iDDF"));
+
+var _TableSortLabel = _interopRequireDefault(__webpack_require__("jOOh"));
+
+var _Checkbox = _interopRequireDefault(__webpack_require__("r6Lb"));
+
+var _responsiveTable = _interopRequireDefault(__webpack_require__("K1RV"));
+
+var _UserRowContainer = _interopRequireWildcard(__webpack_require__("8Bav"));
+
+var styles = function styles(theme) {
+  return (0, _objectSpread2.default)({
+    table: (0, _defineProperty2.default)({}, theme.breakpoints.down("sm"), (0, _responsiveTable.default)(theme))
+  }, (0, _UserRowContainer.styles)(theme));
+};
+
+exports.styles = styles;
+
+var UsersTable =
+/*#__PURE__*/
+function (_React$Component) {
+  (0, _inherits2.default)(UsersTable, _React$Component);
+
+  function UsersTable(props) {
+    var _this;
+
+    (0, _classCallCheck2.default)(this, UsersTable);
+    _this = (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(UsersTable).call(this, props));
+    _this.handleToggle = _this.handleToggle.bind((0, _assertThisInitialized2.default)(_this));
+    _this.handleToggleAll = _this.handleToggleAll.bind((0, _assertThisInitialized2.default)(_this));
+    return _this;
+  }
+
+  (0, _createClass2.default)(UsersTable, [{
+    key: "hasRecords",
+    value: function hasRecords() {
+      return this.props.users.length > 0;
+    }
+  }, {
+    key: "isAllSelected",
+    value: function isAllSelected() {
+      var list = _.map(this.props.users, "node.id");
+
+      return _.difference(list, this.props.selected).length === 0;
+    }
+  }, {
+    key: "isAllDeselected",
+    value: function isAllDeselected() {
+      return this.props.selected.length === 0;
+    }
+  }, {
+    key: "isSelected",
+    value: function isSelected(userId) {
+      return _.includes(this.props.selected, userId);
+    }
+  }, {
+    key: "handleToggleAll",
+    value: function handleToggleAll() {
+      var forceOff = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+      if (forceOff || this.isAllSelected()) this.props.onDeselectAll();else this.props.onSelectAll(_.map(this.props.users, "node.id"));
+    }
+  }, {
+    key: "handleToggle",
+    value: function handleToggle(userId) {
+      this.props.onSetSelected(userId, !this.isSelected(userId));
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this2 = this;
+
+      return _react.default.createElement(_Table.default, {
+        size: "small",
+        className: this.props.classes.table
+      }, _react.default.createElement(_TableHead.default, null, _react.default.createElement(_TableRow.default, null, _react.default.createElement(_TableCell.default, {
+        padding: "checkbox",
+        classes: {
+          root: this.props.classes.checkboxField
+        }
+      }, _react.default.createElement(_Checkbox.default, {
+        checked: !!this.hasRecords() && this.isAllSelected(),
+        classes: {
+          root: this.props.classes.checkbox
+        },
+        indeterminate: !this.isAllSelected() && !this.isAllDeselected(),
+        onChange: function onChange() {
+          return _this2.handleToggleAll();
+        },
+        value: "on"
+      })), _react.default.createElement(_TableCell.default, {
+        sortDirection: this.props.sortBy === "email" ? this.props.sortDir : false
+      }, _react.default.createElement(_TableSortLabel.default, {
+        active: this.props.sortBy === "email",
+        direction: this.props.sortDir,
+        onClick: function onClick() {
+          return _this2.handleSort("email");
+        }
+      }, _react.default.createElement(_reactIntl.FormattedMessage, {
+        id: "USERS_EMAIL_COLUMN"
+      }))), _react.default.createElement(_TableCell.default, {
+        sortDirection: this.props.sortBy === "isEmailVerified" ? this.props.sortDir : false
+      }, _react.default.createElement(_TableSortLabel.default, {
+        active: this.props.sortBy === "isEmailVerified",
+        direction: this.props.sortDir,
+        onClick: function onClick() {
+          return _this2.handleSort("isEmailVerified");
+        }
+      }, _react.default.createElement(_reactIntl.FormattedMessage, {
+        id: "USERS_EMAIL_VERIFIED_COLUMN"
+      }))), _react.default.createElement(_TableCell.default, {
+        sortDirection: this.props.sortBy === "name" ? this.props.sortDir : false
+      }, _react.default.createElement(_TableSortLabel.default, {
+        active: this.props.sortBy === "name",
+        direction: this.props.sortDir,
+        onClick: function onClick() {
+          return _this2.handleSort("name");
+        }
+      }, _react.default.createElement(_reactIntl.FormattedMessage, {
+        id: "USERS_NAME_COLUMN"
+      }))), _react.default.createElement(_TableCell.default, null, _react.default.createElement(_reactIntl.FormattedMessage, {
+        id: "USERS_ROLES_COLUMN"
+      })))), _react.default.createElement(_TableBody.default, null, _.map(this.props.users, function (edge) {
+        return _react.default.createElement(_UserRowContainer.default, {
+          key: edge.cursor,
+          node: edge.node,
+          onToggle: _this2.handleToggle
+        });
+      })));
+    }
+  }]);
+  return UsersTable;
+}(_react.default.Component);
+
+var _default = UsersTable;
+exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("YLtl")))
 
 /***/ }),
 
@@ -5708,6 +7664,74 @@ function (_React$Component) {
 var _default = AppAuthModal;
 exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("YLtl")))
+
+/***/ }),
+
+/***/ "IIe3":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _regenerator = _interopRequireDefault(__webpack_require__("ln6h"));
+
+var _promise = _interopRequireDefault(__webpack_require__("eVuF"));
+
+var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__("+oT+"));
+
+var _reactRelay = __webpack_require__("iuEU");
+
+var mutation = function mutation() {
+  return __webpack_require__("AYdZ");
+};
+
+var _default =
+/*#__PURE__*/
+function () {
+  var _ref = (0, _asyncToGenerator2.default)(
+  /*#__PURE__*/
+  _regenerator.default.mark(function _callee(di, input) {
+    return _regenerator.default.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            return _context.abrupt("return", new _promise.default(function (resolve, reject) {
+              (0, _reactRelay.commitMutation)(di.get("env"), {
+                mutation: mutation,
+                variables: {
+                  input: input || {}
+                },
+                onCompleted: function onCompleted(data, errors) {
+                  return resolve({
+                    data: data,
+                    errors: errors
+                  });
+                },
+                onError: reject
+              });
+            }));
+
+          case 1:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee);
+  }));
+
+  return function (_x, _x2) {
+    return _ref.apply(this, arguments);
+  };
+}();
+
+exports.default = _default;
 
 /***/ }),
 
@@ -6665,6 +8689,69 @@ module.exports.default = exports.default;
 
 /***/ }),
 
+/***/ "K1RV":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _default = function _default() {
+  return (
+    /* theme */
+    {
+      "& table": {
+        display: ["block", "!important"]
+      },
+      "& thead": {
+        display: ["block", "!important"]
+      },
+      "& tbody": {
+        display: ["block", "!important"]
+      },
+      "& th": {
+        display: ["block", "!important"],
+        width: "100%",
+        paddingLeft: ["1rem", "!important"],
+        paddingRight: ["1rem", "!important"],
+        "&:not(:last-child)": {
+          borderColor: "transparent"
+        }
+      },
+      "& td": {
+        display: ["block", "!important"],
+        width: "100%",
+        paddingLeft: ["1rem", "!important"],
+        paddingRight: ["1rem", "!important"],
+        "&:not(:last-child)": {
+          borderColor: "transparent"
+        }
+      },
+      "& tr": {
+        height: ["100%", "!important"],
+        display: ["block", "!important"],
+        marginTop: ["0.25rem", "!important"],
+        marginBottom: ["0.25rem", "!important"]
+      }
+    }
+  );
+};
+
+exports.default = _default;
+
+/***/ }),
+
+/***/ "K2gz":
+/***/ (function(module, exports) {
+
+module.exports = require("classnames");
+
+/***/ }),
+
 /***/ "K47E":
 /***/ (function(module, exports) {
 
@@ -6753,6 +8840,77 @@ function toInt(str, radix) {
 
 module.exports = exports.default;
 module.exports.default = exports.default;
+
+/***/ }),
+
+/***/ "Kg9H":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireWildcard = __webpack_require__("5Uuq");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.hideEditModal = exports.showEditModal = exports.deselectAll = exports.selectAll = exports.setSelected = void 0;
+
+var types = _interopRequireWildcard(__webpack_require__("dz41"));
+
+var setSelected = function setSelected(_ref) {
+  var userId = _ref.userId,
+      isSelected = _ref.isSelected;
+  return {
+    type: types.SET_SELECTED,
+    userId: userId,
+    isSelected: isSelected
+  };
+};
+
+exports.setSelected = setSelected;
+
+var selectAll = function selectAll(_ref2) {
+  var userIds = _ref2.userIds;
+  return {
+    type: types.SELECT_ALL,
+    userIds: userIds
+  };
+};
+
+exports.selectAll = selectAll;
+
+var deselectAll = function deselectAll() {
+  var _ref3 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+      exceptUserIds = _ref3.exceptUserIds;
+
+  return {
+    type: types.DESELECT_ALL,
+    exceptUserIds: exceptUserIds
+  };
+};
+
+exports.deselectAll = deselectAll;
+
+var showEditModal = function showEditModal() {
+  var _ref4 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+      userId = _ref4.userId;
+
+  return {
+    type: types.SHOW_EDIT_MODAL,
+    userId: userId
+  };
+};
+
+exports.showEditModal = showEditModal;
+
+var hideEditModal = function hideEditModal() {
+  return {
+    type: types.HIDE_EDIT_MODAL
+  };
+};
+
+exports.hideEditModal = hideEditModal;
 
 /***/ }),
 
@@ -6845,6 +9003,31 @@ function _objectWithoutPropertiesLoose(source, excluded) {
 }
 
 module.exports = _objectWithoutPropertiesLoose;
+
+/***/ }),
+
+/***/ "LWT2":
+/***/ (function(module, exports) {
+
+module.exports = {
+  name: {
+    label: "EDIT_USER_NAME_LABEL"
+  },
+  email: {
+    normalize: "rows:1|remove:spaces",
+    transform: "trim",
+    validate: "required|email",
+    label: "EDIT_USER_EMAIL_LABEL"
+  },
+  password: {
+    label: "EDIT_USER_PASSWORD_LABEL",
+    validate: "password"
+  },
+  isAdmin: {
+    label: "EDIT_USER_ADMIN_LABEL"
+  }
+};
+
 
 /***/ }),
 
@@ -7304,6 +9487,20 @@ module.exports = {
 
 /***/ }),
 
+/***/ "MWqi":
+/***/ (function(module, exports) {
+
+module.exports = require("reselect");
+
+/***/ }),
+
+/***/ "MbIc":
+/***/ (function(module, exports) {
+
+module.exports = require("@material-ui/core/DialogContentText");
+
+/***/ }),
+
 /***/ "McIs":
 /***/ (function(module, exports) {
 
@@ -7402,6 +9599,28 @@ __webpack_require__("jDDT");
 __webpack_require__("GCOt");
 
 __webpack_require__("rG3h");
+
+/***/ }),
+
+/***/ "NhoZ":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+Object.defineProperty(exports, "default", {
+  enumerable: true,
+  get: function get() {
+    return _UsersPage.default;
+  }
+});
+
+var _UsersPage = _interopRequireDefault(__webpack_require__("5sKE"));
 
 /***/ }),
 
@@ -7515,249 +9734,6 @@ module.exports = function () {
 /***/ (function(module, exports) {
 
 module.exports = require("@material-ui/icons/ErrorOutlined");
-
-/***/ }),
-
-/***/ "OG1x":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__("KI45");
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
-
-var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
-
-var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
-
-var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
-
-var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
-
-var _react = _interopRequireDefault(__webpack_require__("cDcd"));
-
-var _reactVirtualized = __webpack_require__("xvxd");
-
-var _victory = __webpack_require__("wL32");
-
-var _Paper = _interopRequireDefault(__webpack_require__("qt1I"));
-
-var _theme = _interopRequireDefault(__webpack_require__("3AO0"));
-
-var Chart2 =
-/*#__PURE__*/
-function (_React$Component) {
-  (0, _inherits2.default)(Chart2, _React$Component);
-
-  function Chart2() {
-    (0, _classCallCheck2.default)(this, Chart2);
-    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(Chart2).apply(this, arguments));
-  }
-
-  (0, _createClass2.default)(Chart2, [{
-    key: "getData",
-    value: function getData() {
-      return [{
-        x: 0,
-        y: 0
-      }, {
-        x: 1,
-        y: 2
-      }, {
-        x: 2,
-        y: 1
-      }, {
-        x: 3,
-        y: 4
-      }, {
-        x: 4,
-        y: 3
-      }, {
-        x: 5,
-        y: 5
-      }];
-    }
-  }, {
-    key: "renderChart",
-    value: function renderChart(width, height) {
-      return _react.default.createElement("svg", {
-        width: width,
-        height: height
-      }, _react.default.createElement(_victory.VictoryChart, {
-        domainPadding: {
-          x: 50
-        },
-        width: width,
-        height: height,
-        standalone: false,
-        containerComponent: _react.default.createElement(_victory.VictoryContainer, {
-          responsive: false
-        }),
-        theme: (0, _theme.default)({
-          theme: this.props.theme,
-          withAxis: true
-        })
-      }, _react.default.createElement(_victory.VictoryAxis, null), _react.default.createElement(_victory.VictoryAxis, {
-        dependentAxis: true
-      }), _react.default.createElement(_victory.VictoryLine, {
-        interpolation: "linear",
-        data: this.getData(),
-        style: {
-          data: {
-            stroke: "#e45a51"
-          }
-        }
-      }), _react.default.createElement(_victory.VictoryScatter, {
-        data: this.getData(),
-        size: 5,
-        style: {
-          data: {
-            fill: "#c43a31"
-          }
-        }
-      })));
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      var _this = this;
-
-      return _react.default.createElement(_Paper.default, {
-        className: this.props.className
-      }, _react.default.createElement(_reactVirtualized.AutoSizer, {
-        disableHeight: true
-      }, function (_ref) {
-        var width = _ref.width;
-        return !!width && _this.renderChart(width, 0.8 * width);
-      }));
-    }
-  }]);
-  return Chart2;
-}(_react.default.Component);
-
-var _default = Chart2;
-exports.default = _default;
-
-/***/ }),
-
-/***/ "ON+m":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__("KI45");
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = exports.query = void 0;
-
-var _regenerator = _interopRequireDefault(__webpack_require__("ln6h"));
-
-var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__("+oT+"));
-
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
-
-var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
-
-var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
-
-var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
-
-var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
-
-var _react = _interopRequireDefault(__webpack_require__("cDcd"));
-
-var _reactRelay = __webpack_require__("iuEU");
-
-var _Relay = __webpack_require__("5upH");
-
-var _ChartsDemoContainer = _interopRequireDefault(__webpack_require__("t7Ea"));
-
-var _LayoutContainer = _interopRequireDefault(__webpack_require__("hl3i"));
-
-var _SpinnerContainer = _interopRequireDefault(__webpack_require__("wkow"));
-
-var defaultVariables = {};
-
-var query = function query() {
-  return __webpack_require__("/kPW");
-};
-
-exports.query = query;
-
-var ChartsPage =
-/*#__PURE__*/
-function (_React$Component) {
-  (0, _inherits2.default)(ChartsPage, _React$Component);
-
-  function ChartsPage() {
-    (0, _classCallCheck2.default)(this, ChartsPage);
-    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(ChartsPage).apply(this, arguments));
-  }
-
-  (0, _createClass2.default)(ChartsPage, [{
-    key: "render",
-    value: function render() {
-      return _react.default.createElement(_Relay.QueryRenderer, {
-        query: query,
-        variables: defaultVariables,
-        render: function render(_ref) {
-          var error = _ref.error,
-              props = _ref.props;
-          return _react.default.createElement(_LayoutContainer.default, {
-            page: "/charts",
-            viewer: props ? props.viewer : null,
-            error: error
-          }, !error && !props && _react.default.createElement(_SpinnerContainer.default, null), !error && props && _react.default.createElement(_ChartsDemoContainer.default, {
-            viewer: props.viewer
-          }));
-        }
-      });
-    }
-  }], [{
-    key: "getInitialProps",
-    value: function () {
-      var _getInitialProps = (0, _asyncToGenerator2.default)(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee(_ref2) {
-        var fetchQuery;
-        return _regenerator.default.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                fetchQuery = _ref2.fetchQuery;
-                _context.next = 3;
-                return fetchQuery(query, defaultVariables);
-
-              case 3:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee);
-      }));
-
-      function getInitialProps(_x) {
-        return _getInitialProps.apply(this, arguments);
-      }
-
-      return getInitialProps;
-    }()
-  }]);
-  return ChartsPage;
-}(_react.default.Component);
-
-var _default = ChartsPage;
-exports.default = _default;
 
 /***/ }),
 
@@ -8294,7 +10270,7 @@ var linkProvider = function linkProvider(_ref15) {
       var _ref16 = (0, _asyncToGenerator2.default)(
       /*#__PURE__*/
       _regenerator.default.mark(function _callee10(dispatch, getState, di) {
-        var refreshToken, data, result, oneTimeToken;
+        var refreshToken, oneTimeToken, data, result;
         return _regenerator.default.wrap(function _callee10$(_context10) {
           while (1) {
             switch (_context10.prev = _context10.next) {
@@ -8304,22 +10280,27 @@ var linkProvider = function linkProvider(_ref15) {
 
               case 2:
                 refreshToken = _context10.sent;
-                _context10.next = 5;
+
+                if (!refreshToken) {
+                  _context10.next = 9;
+                  break;
+                }
+
+                _context10.next = 6;
                 return (0, _GetToken.default)(di, {
                   type: "oneTime",
                   token: refreshToken
                 });
 
-              case 5:
+              case 6:
                 data = _context10.sent;
                 result = _.get(data, "data.getToken.success", null);
+                if (result === true) oneTimeToken = _.get(data, "data.getToken.token", null);
 
-                if (result === true) {
-                  oneTimeToken = _.get(data, "data.getToken.token", null);
-                  window.location.href = selectors.getApiServer(getState()) + _constants.default.apiBase + "/oauth/" + _.lowerCase(provider) + "?token=" + encodeURIComponent(oneTimeToken) + "&redirect=" + encodeURIComponent(window.location.href);
-                }
+              case 9:
+                window.location.href = selectors.getApiServer(getState()) + _constants.default.apiBase + "/oauth/" + _.lowerCase(provider) + "?redirect=" + encodeURIComponent(window.location.href) + (oneTimeToken ? "?token=" + encodeURIComponent(oneTimeToken) : "");
 
-              case 8:
+              case 10:
               case "end":
                 return _context10.stop();
             }
@@ -8597,21 +10578,6 @@ var fetchCities = function fetchCities() {
 
 exports.fetchCities = fetchCities;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("YLtl")))
-
-/***/ }),
-
-/***/ "PQJW":
-/***/ (function(module, exports, __webpack_require__) {
-
-var _Array$from = __webpack_require__("d04V");
-
-var _isIterable = __webpack_require__("yLu3");
-
-function _iterableToArray(iter) {
-  if (_isIterable(Object(iter)) || Object.prototype.toString.call(iter) === "[object Arguments]") return _Array$from(iter);
-}
-
-module.exports = _iterableToArray;
 
 /***/ }),
 
@@ -9093,6 +11059,127 @@ exports.default = _default;
 
 /***/ }),
 
+/***/ "QwMX":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(_) {
+
+var _interopRequireWildcard = __webpack_require__("5Uuq");
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _getIterator2 = _interopRequireDefault(__webpack_require__("XXOK"));
+
+var _immutable = __webpack_require__("nuGg");
+
+var _reduxImmutable = __webpack_require__("RGyf");
+
+var types = _interopRequireWildcard(__webpack_require__("dz41"));
+
+/* State Shape
+Map({
+  selected: Set([String]), // IDs
+  editModalUserId: String, // null when creating a new user
+  isEditModalOpen: false,
+})
+*/
+var selectedReducer = function selectedReducer() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : (0, _immutable.Set)([]);
+  var action = arguments.length > 1 ? arguments[1] : undefined;
+
+  switch (action.type) {
+    case types.SET_SELECTED:
+      if (!_.isUndefined(action.userId) && !_.isUndefined(action.isSelected)) {
+        // eslint-disable-next-line lodash/prefer-lodash-method
+        if (state.includes(action.userId)) return state.delete(action.userId);else return state.add(action.userId);
+      }
+
+      break;
+
+    case types.SELECT_ALL:
+      if (!_.isUndefined(action.userIds)) return (0, _immutable.Set)(action.userIds);
+      break;
+
+    case types.DESELECT_ALL:
+      if (_.isUndefined(action.exceptUserIds)) {
+        return (0, _immutable.Set)([]);
+      } else {
+        return state.withMutations(function (set) {
+          var _iteratorNormalCompletion = true;
+          var _didIteratorError = false;
+          var _iteratorError = undefined;
+
+          try {
+            for (var _iterator = (0, _getIterator2.default)(set.values()), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+              var item = _step.value;
+              if (!_.includes(action.exceptUserIds, item)) set.delete(item);
+            }
+          } catch (err) {
+            _didIteratorError = true;
+            _iteratorError = err;
+          } finally {
+            try {
+              if (!_iteratorNormalCompletion && _iterator.return != null) {
+                _iterator.return();
+              }
+            } finally {
+              if (_didIteratorError) {
+                throw _iteratorError;
+              }
+            }
+          }
+        });
+      }
+
+  }
+
+  return state;
+};
+
+var editModalUserIdReducer = function editModalUserIdReducer() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+  var action = arguments.length > 1 ? arguments[1] : undefined;
+
+  switch (action.type) {
+    case types.SHOW_EDIT_MODAL:
+      return action.userId || null;
+  }
+
+  return state;
+};
+
+var isEditModalOpenReducer = function isEditModalOpenReducer() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+  var action = arguments.length > 1 ? arguments[1] : undefined;
+
+  switch (action.type) {
+    case types.SHOW_EDIT_MODAL:
+      return true;
+
+    case types.HIDE_EDIT_MODAL:
+      return false;
+  }
+
+  return state;
+};
+
+var reducer = (0, _reduxImmutable.combineReducers)({
+  selected: selectedReducer,
+  editModalUserId: editModalUserIdReducer,
+  isEditModalOpen: isEditModalOpenReducer
+});
+var _default = reducer;
+exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("YLtl")))
+
+/***/ }),
+
 /***/ "QwoZ":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9289,10 +11376,295 @@ module.exports.default = exports.default;
 
 /***/ }),
 
+/***/ "RfHL":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.getEditModalUserId = exports.isEditModalOpen = exports.getSelected = void 0;
+
+var _reselect = __webpack_require__("MWqi");
+
+var getSelected = (0, _reselect.createSelector)(function (state) {
+  return state.getIn(["users", "selected"]);
+}, function (selected) {
+  return selected.toJS();
+});
+exports.getSelected = getSelected;
+
+var isEditModalOpen = function isEditModalOpen(state) {
+  return state.getIn(["users", "isEditModalOpen"]);
+};
+
+exports.isEditModalOpen = isEditModalOpen;
+
+var getEditModalUserId = function getEditModalUserId(state) {
+  return state.getIn(["users", "editModalUserId"]);
+};
+
+exports.getEditModalUserId = getEditModalUserId;
+
+/***/ }),
+
 /***/ "Rkej":
 /***/ (function(module, exports) {
 
 
+
+/***/ }),
+
+/***/ "RmMv":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(_) {
+
+var _interopRequireWildcard = __webpack_require__("5Uuq");
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.remove = exports.edit = exports.create = exports.editFirstSelected = exports.deselectAll = exports.selectAll = exports.setSelected = exports.hideEditModal = exports.showEditModal = void 0;
+
+var _regenerator = _interopRequireDefault(__webpack_require__("ln6h"));
+
+var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__("+oT+"));
+
+var actions = _interopRequireWildcard(__webpack_require__("Kg9H"));
+
+var selectors = _interopRequireWildcard(__webpack_require__("RfHL"));
+
+var _constants = _interopRequireDefault(__webpack_require__("QwoZ"));
+
+var _getFormErrors = _interopRequireDefault(__webpack_require__("Cyi7"));
+
+var _CreateUser = _interopRequireDefault(__webpack_require__("DfuF"));
+
+var _EditUser = _interopRequireDefault(__webpack_require__("IIe3"));
+
+var _DeleteUser = _interopRequireDefault(__webpack_require__("9nAp"));
+
+var showEditModal = actions.showEditModal;
+exports.showEditModal = showEditModal;
+var hideEditModal = actions.hideEditModal;
+exports.hideEditModal = hideEditModal;
+var setSelected = actions.setSelected;
+exports.setSelected = setSelected;
+var selectAll = actions.selectAll;
+exports.selectAll = selectAll;
+var deselectAll = actions.deselectAll;
+exports.deselectAll = deselectAll;
+
+var editFirstSelected = function editFirstSelected() {
+  return (
+    /*#__PURE__*/
+    function () {
+      var _ref = (0, _asyncToGenerator2.default)(
+      /*#__PURE__*/
+      _regenerator.default.mark(function _callee(dispatch, getState) {
+        var selected;
+        return _regenerator.default.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                selected = selectors.getSelected(getState());
+
+                if (!selected.length) {
+                  _context.next = 3;
+                  break;
+                }
+
+                return _context.abrupt("return", dispatch(actions.showEditModal({
+                  userId: selected[0]
+                })));
+
+              case 3:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }));
+
+      return function (_x, _x2) {
+        return _ref.apply(this, arguments);
+      };
+    }()
+  );
+};
+
+exports.editFirstSelected = editFirstSelected;
+
+var create = function create(_ref2) {
+  var name = _ref2.name,
+      email = _ref2.email,
+      password = _ref2.password,
+      isAdmin = _ref2.isAdmin;
+  return (
+    /*#__PURE__*/
+    function () {
+      var _ref3 = (0, _asyncToGenerator2.default)(
+      /*#__PURE__*/
+      _regenerator.default.mark(function _callee2(dispatch, getState, di) {
+        var data;
+        return _regenerator.default.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.next = 2;
+                return (0, _CreateUser.default)(di, {
+                  name: name,
+                  email: email,
+                  password: password,
+                  roles: _.compact([isAdmin && _constants.default.roles.ADMIN])
+                });
+
+              case 2:
+                data = _context2.sent;
+
+                if (!_.get(data, "data.createUser.user.id", null)) {
+                  _context2.next = 7;
+                  break;
+                }
+
+                _context2.next = 6;
+                return dispatch(actions.hideEditModal());
+
+              case 6:
+                return _context2.abrupt("return", true);
+
+              case 7:
+                return _context2.abrupt("return", (0, _getFormErrors.default)(data));
+
+              case 8:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2);
+      }));
+
+      return function (_x3, _x4, _x5) {
+        return _ref3.apply(this, arguments);
+      };
+    }()
+  );
+};
+
+exports.create = create;
+
+var edit = function edit(_ref4) {
+  var id = _ref4.id,
+      name = _ref4.name,
+      email = _ref4.email,
+      password = _ref4.password,
+      isAdmin = _ref4.isAdmin;
+  return (
+    /*#__PURE__*/
+    function () {
+      var _ref5 = (0, _asyncToGenerator2.default)(
+      /*#__PURE__*/
+      _regenerator.default.mark(function _callee3(dispatch, getState, di) {
+        var data;
+        return _regenerator.default.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                _context3.next = 2;
+                return (0, _EditUser.default)(di, {
+                  id: id,
+                  name: name,
+                  email: email,
+                  password: password,
+                  roles: _.compact([isAdmin && _constants.default.roles.ADMIN])
+                });
+
+              case 2:
+                data = _context3.sent;
+
+                if (!_.get(data, "data.editUser.user.id", null)) {
+                  _context3.next = 7;
+                  break;
+                }
+
+                _context3.next = 6;
+                return dispatch(actions.hideEditModal());
+
+              case 6:
+                return _context3.abrupt("return", true);
+
+              case 7:
+                return _context3.abrupt("return", (0, _getFormErrors.default)(data));
+
+              case 8:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3);
+      }));
+
+      return function (_x6, _x7, _x8) {
+        return _ref5.apply(this, arguments);
+      };
+    }()
+  );
+};
+
+exports.edit = edit;
+
+var remove = function remove(_ref6) {
+  var id = _ref6.id;
+  return (
+    /*#__PURE__*/
+    function () {
+      var _ref7 = (0, _asyncToGenerator2.default)(
+      /*#__PURE__*/
+      _regenerator.default.mark(function _callee4(dispatch, getState, di) {
+        var data;
+        return _regenerator.default.wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                _context4.next = 2;
+                return (0, _DeleteUser.default)(di, {
+                  id: id
+                });
+
+              case 2:
+                data = _context4.sent;
+                return _context4.abrupt("return", !!_.get(data, "data.deleteUser.user.id", null));
+
+              case 4:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4);
+      }));
+
+      return function (_x9, _x10, _x11) {
+        return _ref7.apply(this, arguments);
+      };
+    }()
+  );
+};
+
+exports.remove = remove;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("YLtl")))
+
+/***/ }),
+
+/***/ "RpH3":
+/***/ (function(module, exports) {
+
+module.exports = require("@material-ui/core/colors/red");
 
 /***/ }),
 
@@ -9373,20 +11745,100 @@ module.exports = __webpack_require__("pDh1");
 
 /***/ }),
 
-/***/ "TbGu":
+/***/ "TWtx":
+/***/ (function(module, exports) {
+
+module.exports = require("@material-ui/core/TableHead");
+
+/***/ }),
+
+/***/ "UIj7":
 /***/ (function(module, exports, __webpack_require__) {
 
-var arrayWithoutHoles = __webpack_require__("fGSI");
+"use strict";
+/**
+ * @flow
+ * @relayHash 0e5f73bf6b0c7445173a126055db4c71
+ */
 
-var iterableToArray = __webpack_require__("PQJW");
+/* eslint-disable */
 
-var nonIterableSpread = __webpack_require__("2PDY");
+/*::
+import type { ConcreteRequest } from 'relay-runtime';
+export type UsersSubscriptionVariables = {||};
+export type UsersSubscriptionResponse = {|
+  +userEvent: ?{|
+    +id: string
+  |}
+|};
+export type UsersSubscription = {|
+  variables: UsersSubscriptionVariables,
+  response: UsersSubscriptionResponse,
+|};
+*/
 
-function _toConsumableArray(arr) {
-  return arrayWithoutHoles(arr) || iterableToArray(arr) || nonIterableSpread();
+/*
+subscription UsersSubscription {
+  userEvent {
+    id
+  }
 }
+*/
 
-module.exports = _toConsumableArray;
+var node
+/*: ConcreteRequest*/
+= function () {
+  var v0 = [{
+    "kind": "LinkedField",
+    "alias": null,
+    "name": "userEvent",
+    "storageKey": null,
+    "args": null,
+    "concreteType": "User",
+    "plural": false,
+    "selections": [{
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "id",
+      "args": null,
+      "storageKey": null
+    }]
+  }];
+  return {
+    "kind": "Request",
+    "fragment": {
+      "kind": "Fragment",
+      "name": "UsersSubscription",
+      "type": "Subscription",
+      "metadata": null,
+      "argumentDefinitions": [],
+      "selections": v0
+      /*: any*/
+
+    },
+    "operation": {
+      "kind": "Operation",
+      "name": "UsersSubscription",
+      "argumentDefinitions": [],
+      "selections": v0
+      /*: any*/
+
+    },
+    "params": {
+      "operationKind": "subscription",
+      "name": "UsersSubscription",
+      "id": null,
+      "text": "subscription UsersSubscription {\n  userEvent {\n    id\n  }\n}\n",
+      "metadata": {}
+    }
+  };
+}(); // prettier-ignore
+
+
+node
+/*: any*/
+.hash = '96c3228fd5b86de1c1af7f2ad73c6ea6';
+module.exports = node;
 
 /***/ }),
 
@@ -9469,13 +11921,26 @@ module.exports.default = exports.default;
 
 /***/ }),
 
-/***/ "V/f9":
+/***/ "V5KF":
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__("k8Q4");
-__webpack_require__("YQlv");
-module.exports = __webpack_require__("p9MR").Array.from;
+"use strict";
 
+
+var _interopRequireWildcard = __webpack_require__("5Uuq");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _styles = __webpack_require__("Bjmp");
+
+var _ConfirmModal = _interopRequireWildcard(__webpack_require__("uj/t"));
+
+var ConfirmModal = (0, _styles.withStyles)(_ConfirmModal.styles)(_ConfirmModal.default);
+var _default = ConfirmModal;
+exports.default = _default;
 
 /***/ }),
 
@@ -10411,51 +12876,6 @@ module.exports = require("lodash");
 
 /***/ }),
 
-/***/ "YQlv":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var ctx = __webpack_require__("vCXk");
-var $export = __webpack_require__("0T/a");
-var toObject = __webpack_require__("AYVP");
-var call = __webpack_require__("nJOo");
-var isArrayIter = __webpack_require__("widk");
-var toLength = __webpack_require__("pasi");
-var createProperty = __webpack_require__("s+zB");
-var getIterFn = __webpack_require__("8Vlj");
-
-$export($export.S + $export.F * !__webpack_require__("Q2zc")(function (iter) { Array.from(iter); }), 'Array', {
-  // 22.1.2.1 Array.from(arrayLike, mapfn = undefined, thisArg = undefined)
-  from: function from(arrayLike /* , mapfn = undefined, thisArg = undefined */) {
-    var O = toObject(arrayLike);
-    var C = typeof this == 'function' ? this : Array;
-    var aLen = arguments.length;
-    var mapfn = aLen > 1 ? arguments[1] : undefined;
-    var mapping = mapfn !== undefined;
-    var index = 0;
-    var iterFn = getIterFn(O);
-    var length, result, step, iterator;
-    if (mapping) mapfn = ctx(mapfn, aLen > 2 ? arguments[2] : undefined, 2);
-    // if object isn't iterable or it's array with default iterator - use simple case
-    if (iterFn != undefined && !(C == Array && isArrayIter(iterFn))) {
-      for (iterator = iterFn.call(O), result = new C(); !(step = iterator.next()).done; index++) {
-        createProperty(result, index, mapping ? call(iterator, mapfn, [step.value, index], true) : step.value);
-      }
-    } else {
-      length = toLength(O.length);
-      for (result = new C(length); length > index; index++) {
-        createProperty(result, index, mapping ? mapfn(O[index], index) : O[index]);
-      }
-    }
-    result.length = index;
-    return result;
-  }
-});
-
-
-/***/ }),
-
 /***/ "YXwE":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11014,136 +13434,10 @@ module.exports.default = exports.default;
 
 /***/ }),
 
-/***/ "aN8n":
-/***/ (function(module, exports, __webpack_require__) {
+/***/ "aYOr":
+/***/ (function(module, exports) {
 
-"use strict";
-/* WEBPACK VAR INJECTION */(function(_) {
-
-var _interopRequireDefault = __webpack_require__("KI45");
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
-
-var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
-
-var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
-
-var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
-
-var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
-
-var _react = _interopRequireDefault(__webpack_require__("cDcd"));
-
-var _reactVirtualized = __webpack_require__("xvxd");
-
-var _victory = __webpack_require__("wL32");
-
-var _Paper = _interopRequireDefault(__webpack_require__("qt1I"));
-
-var _theme = _interopRequireDefault(__webpack_require__("3AO0"));
-
-var Chart1 =
-/*#__PURE__*/
-function (_React$Component) {
-  (0, _inherits2.default)(Chart1, _React$Component);
-
-  function Chart1() {
-    (0, _classCallCheck2.default)(this, Chart1);
-    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(Chart1).apply(this, arguments));
-  }
-
-  (0, _createClass2.default)(Chart1, [{
-    key: "getData",
-    value: function getData() {
-      return _.times(5, function () {
-        return [{
-          x: 1,
-          y: Math.random()
-        }, {
-          x: 2,
-          y: Math.random()
-        }, {
-          x: 3,
-          y: Math.random()
-        }];
-      });
-    }
-  }, {
-    key: "renderChart",
-    value: function renderChart(width, height) {
-      return _react.default.createElement("svg", {
-        width: width,
-        height: height
-      }, _react.default.createElement(_victory.VictoryChart, {
-        domainPadding: {
-          x: 50
-        },
-        width: width,
-        height: height,
-        standalone: false,
-        containerComponent: _react.default.createElement(_victory.VictoryContainer, {
-          responsive: false
-        }),
-        theme: (0, _theme.default)({
-          theme: this.props.theme,
-          withAxis: true
-        })
-      }, _react.default.createElement(_victory.VictoryGroup, {
-        offset: 20,
-        style: {
-          data: {
-            width: 15
-          }
-        }
-      }, _react.default.createElement(_victory.VictoryStack, {
-        colorScale: "red"
-      }, _.map(this.getData(), function (data, index) {
-        return _react.default.createElement(_victory.VictoryBar, {
-          key: index,
-          data: data
-        });
-      })), _react.default.createElement(_victory.VictoryStack, {
-        colorScale: "green"
-      }, _.map(this.getData(), function (data, index) {
-        return _react.default.createElement(_victory.VictoryBar, {
-          key: index,
-          data: data
-        });
-      })), _react.default.createElement(_victory.VictoryStack, {
-        colorScale: "blue"
-      }, _.map(this.getData(), function (data, index) {
-        return _react.default.createElement(_victory.VictoryBar, {
-          key: index,
-          data: data
-        });
-      })))));
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      var _this = this;
-
-      return _react.default.createElement(_Paper.default, {
-        className: this.props.className
-      }, _react.default.createElement(_reactVirtualized.AutoSizer, {
-        disableHeight: true
-      }, function (_ref) {
-        var width = _ref.width;
-        return !!width && _this.renderChart(width, 0.8 * width);
-      }));
-    }
-  }]);
-  return Chart1;
-}(_react.default.Component);
-
-var _default = Chart1;
-exports.default = _default;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("YLtl")))
+module.exports = require("@material-ui/icons/HelpOutline");
 
 /***/ }),
 
@@ -11340,6 +13634,188 @@ module.exports = function (it) {
 
 /***/ }),
 
+/***/ "bhiW":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @flow
+ */
+
+/* eslint-disable */
+
+/*::
+import type { ReaderFragment } from 'relay-runtime';
+type UserRowContainer_node$ref = any;
+import type { FragmentReference } from "relay-runtime";
+declare export opaque type UsersContainer_viewer$ref: FragmentReference;
+declare export opaque type UsersContainer_viewer$fragmentType: UsersContainer_viewer$ref;
+export type UsersContainer_viewer = {|
+  +users: ?{|
+    +edges: ?$ReadOnlyArray<?{|
+      +cursor: string,
+      +node: ?{|
+        +id: string,
+        +$fragmentRefs: UserRowContainer_node$ref,
+      |},
+    |}>,
+    +pageInfo: {|
+      +startCursor: ?string,
+      +endCursor: ?string,
+    |},
+    +totalCount: ?number,
+  |},
+  +$refType: UsersContainer_viewer$ref,
+|};
+export type UsersContainer_viewer$data = UsersContainer_viewer;
+export type UsersContainer_viewer$key = {
+  +$data?: UsersContainer_viewer$data,
+  +$fragmentRefs: UsersContainer_viewer$ref,
+};
+*/
+
+var node
+/*: ReaderFragment*/
+= {
+  "kind": "Fragment",
+  "name": "UsersContainer_viewer",
+  "type": "Viewer",
+  "metadata": null,
+  "argumentDefinitions": [{
+    "kind": "LocalArgument",
+    "name": "sortBy",
+    "type": "UserSortBy",
+    "defaultValue": null
+  }, {
+    "kind": "LocalArgument",
+    "name": "sortDir",
+    "type": "UserSortDir",
+    "defaultValue": null
+  }, {
+    "kind": "LocalArgument",
+    "name": "first",
+    "type": "Int",
+    "defaultValue": null
+  }, {
+    "kind": "LocalArgument",
+    "name": "after",
+    "type": "String",
+    "defaultValue": null
+  }, {
+    "kind": "LocalArgument",
+    "name": "last",
+    "type": "Int",
+    "defaultValue": null
+  }, {
+    "kind": "LocalArgument",
+    "name": "before",
+    "type": "String",
+    "defaultValue": null
+  }],
+  "selections": [{
+    "kind": "LinkedField",
+    "alias": null,
+    "name": "users",
+    "storageKey": null,
+    "args": [{
+      "kind": "Variable",
+      "name": "after",
+      "variableName": "after"
+    }, {
+      "kind": "Variable",
+      "name": "before",
+      "variableName": "before"
+    }, {
+      "kind": "Variable",
+      "name": "first",
+      "variableName": "first"
+    }, {
+      "kind": "Variable",
+      "name": "last",
+      "variableName": "last"
+    }, {
+      "kind": "Variable",
+      "name": "sortBy",
+      "variableName": "sortBy"
+    }, {
+      "kind": "Variable",
+      "name": "sortDir",
+      "variableName": "sortDir"
+    }],
+    "concreteType": "UserConnection",
+    "plural": false,
+    "selections": [{
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "edges",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "UserEdge",
+      "plural": true,
+      "selections": [{
+        "kind": "ScalarField",
+        "alias": null,
+        "name": "cursor",
+        "args": null,
+        "storageKey": null
+      }, {
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "node",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "User",
+        "plural": false,
+        "selections": [{
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "id",
+          "args": null,
+          "storageKey": null
+        }, {
+          "kind": "FragmentSpread",
+          "name": "UserRowContainer_node",
+          "args": null
+        }]
+      }]
+    }, {
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "pageInfo",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "PageInfo",
+      "plural": false,
+      "selections": [{
+        "kind": "ScalarField",
+        "alias": null,
+        "name": "startCursor",
+        "args": null,
+        "storageKey": null
+      }, {
+        "kind": "ScalarField",
+        "alias": null,
+        "name": "endCursor",
+        "args": null,
+        "storageKey": null
+      }]
+    }, {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "totalCount",
+      "args": null,
+      "storageKey": null
+    }]
+  }]
+}; // prettier-ignore
+
+node
+/*: any*/
+.hash = '402b6d1eab5b8957020e67d30e8db1c7';
+module.exports = node;
+
+/***/ }),
+
 /***/ "brtW":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11374,6 +13850,13 @@ var mapDispathToProps = function mapDispathToProps(dispatch) {
 var ErrorMessage = (0, _reactRedux.connect)(null, mapDispathToProps)((0, _styles.withStyles)(_ErrorMessage.styles)((0, _reactIntl.injectIntl)(_ErrorMessage.default)));
 var _default = ErrorMessage;
 exports.default = _default;
+
+/***/ }),
+
+/***/ "bzUq":
+/***/ (function(module, exports) {
+
+module.exports = require("@material-ui/core/TablePagination");
 
 /***/ }),
 
@@ -13247,201 +15730,6 @@ module.exports = require("regenerator-runtime");
 
 /***/ }),
 
-/***/ "cz0s":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(_) {
-
-var _interopRequireDefault = __webpack_require__("KI45");
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _toConsumableArray2 = _interopRequireDefault(__webpack_require__("TbGu"));
-
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
-
-var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
-
-var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
-
-var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
-
-var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
-
-var _react = _interopRequireDefault(__webpack_require__("cDcd"));
-
-var _reactVirtualized = __webpack_require__("xvxd");
-
-var _victory = __webpack_require__("wL32");
-
-var _Paper = _interopRequireDefault(__webpack_require__("qt1I"));
-
-var _theme = _interopRequireDefault(__webpack_require__("3AO0"));
-
-var Chart3 =
-/*#__PURE__*/
-function (_React$Component) {
-  (0, _inherits2.default)(Chart3, _React$Component);
-
-  function Chart3(props) {
-    var _this;
-
-    (0, _classCallCheck2.default)(this, Chart3);
-    _this = (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(Chart3).call(this, props));
-    _this.state = {
-      data: _this.processData(_this.getCharacterData()),
-      maxima: _this.getMaxima(_this.getCharacterData())
-    };
-    return _this;
-  }
-
-  (0, _createClass2.default)(Chart3, [{
-    key: "getCharacterData",
-    value: function getCharacterData() {
-      return [{
-        strength: 1,
-        intelligence: 250,
-        luck: 1,
-        stealth: 40,
-        charisma: 50
-      }, {
-        strength: 2,
-        intelligence: 300,
-        luck: 2,
-        stealth: 80,
-        charisma: 90
-      }, {
-        strength: 5,
-        intelligence: 225,
-        luck: 3,
-        stealth: 60,
-        charisma: 120
-      }];
-    }
-  }, {
-    key: "getMaxima",
-    value: function getMaxima(data) {
-      var groupedData = _.reduce(_.keys(data[0]), function (memo, key) {
-        memo[key] = _.map(data, function (d) {
-          return d[key];
-        });
-        return memo;
-      }, {});
-
-      return _.reduce(_.keys(groupedData), function (memo, key) {
-        memo[key] = Math.max.apply(Math, (0, _toConsumableArray2.default)(groupedData[key]));
-        return memo;
-      }, {});
-    }
-  }, {
-    key: "processData",
-    value: function processData(data) {
-      var maxByGroup = this.getMaxima(data);
-
-      var makeDataArray = function makeDataArray(d) {
-        return _.map(_.keys(d), function (key) {
-          return {
-            x: key,
-            y: d[key] / maxByGroup[key]
-          };
-        });
-      };
-
-      return _.map(data, function (datum) {
-        return makeDataArray(datum);
-      });
-    }
-  }, {
-    key: "renderChart",
-    value: function renderChart(width, height) {
-      var _this2 = this;
-
-      return _react.default.createElement("svg", {
-        width: width,
-        height: height
-      }, _react.default.createElement(_victory.VictoryChart, {
-        polar: true,
-        domain: {
-          y: [0, 1]
-        },
-        width: width,
-        height: height,
-        standalone: false,
-        containerComponent: _react.default.createElement(_victory.VictoryContainer, {
-          responsive: false
-        }),
-        theme: (0, _theme.default)({
-          theme: this.props.theme,
-          withGrid: true
-        })
-      }, _react.default.createElement(_victory.VictoryGroup, {
-        colorScale: ["gold", "orange", "tomato"],
-        style: {
-          data: {
-            fillOpacity: 0.2,
-            strokeWidth: 2
-          }
-        }
-      }, _.map(this.state.data, function (data, i) {
-        return _react.default.createElement(_victory.VictoryArea, {
-          key: i,
-          data: data
-        });
-      })), _.map(_.keys(this.state.maxima), function (key, i) {
-        return _react.default.createElement(_victory.VictoryPolarAxis, {
-          key: i,
-          dependentAxis: true,
-          tickLabelComponent: _react.default.createElement(_victory.VictoryLabel, {
-            labelPlacement: "vertical"
-          }),
-          labelPlacement: "perpendicular",
-          axisValue: i + 1,
-          label: key,
-          tickFormat: function tickFormat(t) {
-            return Math.ceil(t * _this2.state.maxima[key]);
-          },
-          tickValues: [0.25, 0.5, 0.75]
-        });
-      }), _react.default.createElement(_victory.VictoryPolarAxis, {
-        labelPlacement: "parallel",
-        tickFormat: _.constant("")
-      })));
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      var _this3 = this;
-
-      return _react.default.createElement(_Paper.default, {
-        className: this.props.className
-      }, _react.default.createElement(_reactVirtualized.AutoSizer, {
-        disableHeight: true
-      }, function (_ref) {
-        var width = _ref.width;
-        return !!width && _this3.renderChart(width, 0.8 * width);
-      }));
-    }
-  }]);
-  return Chart3;
-}(_react.default.Component);
-
-var _default = Chart3;
-exports.default = _default;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("YLtl")))
-
-/***/ }),
-
-/***/ "d04V":
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__("V/f9");
-
-/***/ }),
-
 /***/ "d3Kl":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -13493,6 +15781,29 @@ module.exports = Object.keys || function keys(O) {
 /***/ (function(module) {
 
 module.exports = {"MENU_DASHBOARD":"Dashboard","TITLE_DASHBOARD":"Dashboard","MENU_FORMS":"Forms","TITLE_FORMS":"Forms","MENU_CHARTS":"Charts","TITLE_CHARTS":"Charts","MENU_TABLES":"Tables","TITLE_TABLES":"Tables","MENU_MAPS":"Maps","TITLE_MAPS":"Maps","MENU_NOTIFICATIONS":"Notifications","TITLE_NOTIFICATIONS":"Notifications","MENU_TYPOGRAPHY":"Typography","TITLE_TYPOGRAPHY":"Typography","MENU_ICONS":"Icons","TITLE_ICONS":"Icons","MENU_USERS":"Users","TITLE_USERS":"Users","TITLE_PROFILE":"Profile","TITLE_VERIFY":"Email verification","TITLE_OAUTH_ERROR":"Authentication error","THEME_DARK_MENU":"Dark","THEME_DARK_LABEL":"Dark Theme","THEME_LIGHT_MENU":"Light","THEME_LIGHT_LABEL":"Light Theme","LAYOUT_UPDATE_READY_MESSAGE":"An update is available. Click here to reload the page.","LAYOUT_NOT_CONNECTED_MESSAGE":"Connecting...","SIDEBAR_LOGIN_BUTTON":"Sign Up / Login","SIDEBAR_GITHUB_LINK":"Github","SIDEBAR_BENCHMARKS_LINK":"Benchmarks","SIDEBAR_RESPONSIVENESS_LINK":"Responsiveness Test","HEADER_INBOX_LABEL":"Inbox","HEADER_PROFILE_LABEL":"Profile","HEADER_PROFILE_TOOLTIP":"As an anoymous user you don't have a profile.","PROFILE_NAME_LABEL":"Display name","PROFILE_EMAIL_LABEL":"Email","PROFILE_PASSWORD1_LABEL":"New password","PROFILE_PASSWORD2_LABEL":"Retype password","PROFILE_SAVE_BUTTON":"Save","PROFILE_DESTROY_BUTTON":"Self-destruct","PROFILE_VERIFY_BUTTON":"Verify Email","PROFILE_LINK_BUTTON":"Link","PROFILE_UNLINK_BUTTON":"Unlink","PROFILE_SAVE_SUCCESS":"Profile has been updated","PROFILE_VERIFY_SUCCESS":"Please check your mailbox for the verification email","PROFILE_LINK_SUCCESS":"Linking the service provider...","PROFILE_UNLINK_SUCCESS":"The service is no longer linked to your account","VERIFY_EMAIL_SUBJECT":"Next Dashboard - Verify your email","VERIFY_EMAIL_TEXT":"Use the link below to verify your email address:\n\n{url}\n\n","VERIFY_EMAIL_HTML":"<p>Use the link below to verify your email address:</p><p>{url}</p>","VERIFY_INTRO_MESSAGE":"Please use the button below to verify your email address","VERIFY_FAILED_MESSAGE":"This link is no longer valid","VERIFY_ACTION_BUTTON":"Verify Email","DELETE_PROFILE_TITLE":"Delete profile","DELETE_PROFILE_TEXT":"Are you sure you want to delete your profile?","DELETE_PROFILE_CANCEL":"Cancel","DELETE_PROFILE_SUBMIT":"Delete","OAUTH_ERROR_GENERIC":"An error occured","OAUTH_ERROR_ACCOUNT_EXISTS":"An account associated with your email address already exists","OAUTH_ERROR_ACCOUNT_EXISTS_TITLE1":"Why am I seeing this?","OAUTH_ERROR_ACCOUNT_EXISTS_MESSAGE1":["It looks like you might have already signed up using another service.\n","To protect your account, if you have perviously signed up using another service you must"," link accounts before you can use a different service to sign in."],"OAUTH_ERROR_ACCOUNT_EXISTS_TITLE2":"How do I fix this?","OAUTH_ERROR_ACCOUNT_EXISTS_MESSAGE2":["To sign in using another service, first sign in using your email address or the previous"," service then link accounts in your profile page."],"DASHBOARD_PROFIT_LABEL":"Profit","DASHBOARD_SALES_LABEL":"Sales","DASHBOARD_CLIENTS_LABEL":"Clients","DASHBOARD_AVG_TIME_LABEL":"Avg Time","DASHBOARD_CLICK_MAP_LABEL":"Click to select","DASHBOARD_US_SALES_LABEL":"US Sales","DASHBOARD_OTHER_LABEL":"Other","DEPT_PRODUCTION":"Production","DEPT_RD":"R&D","DEPT_PURCHASING":"Purchasing","DEPT_MARKETING":"Marketing","DEPT_HR":"HR","DEPT_ACCOUNTING":"Accounting","EMPLOYEES_MESSAGE_TITLE":"It's alive!","EMPLOYEES_MESSAGE_CONTENT":["This table is powered by GraphQL API and uses React Relay Modern. Try changing a value in another browser or tab and"," you will see it updated in all the browsers connected to this page thanks to GraphQL Subscriptions."],"EMPLOYEES_UID_COLUMN":"UID","EMPLOYEES_NAME_COLUMN":"Name","EMPLOYEES_DEPT_COLUMN":"Department","EMPLOYEES_TITLE_COLUMN":"Title","EMPLOYEES_COUNTRY_COLUMN":"Country","EMPLOYEES_SALARY_COLUMN":"Salary","EMPLOYEES_CREATE_BUTTON":"Create Employee","EMPLOYEES_EDIT_BUTTON":"Edit Employee","EMPLOYEES_DELETE_BUTTON":"Delete Employees","EDIT_EMPLOYEE_TITLE_CREATE":"Create employee","EDIT_EMPLOYEE_TITLE_EDIT":"Edit employee","EDIT_EMPLOYEE_UID_LABEL":"UID","EDIT_EMPLOYEE_UID_HINT":"Digits only","EDIT_EMPLOYEE_CHECKED_LABEL":"Enabled","EDIT_EMPLOYEE_NAME_LABEL":"Name","EDIT_EMPLOYEE_DEPT_LABEL":"Department","EDIT_EMPLOYEE_TITLE_LABEL":"Title","EDIT_EMPLOYEE_COUNTRY_LABEL":"Country","EDIT_EMPLOYEE_SALARY_LABEL":"Salary","EDIT_EMPLOYEE_CANCEL":"Cancel","EDIT_EMPLOYEE_SUBMIT":"Submit","DELETE_EMPLOYEE_TITLE":"Delete employees","DELETE_EMPLOYEE_TEXT":"Delete selected employees?","DELETE_EMPLOYEE_CANCEL":"Cancel","DELETE_EMPLOYEE_SUBMIT":"Delete","USERS_EMAIL_COLUMN":"Email","USERS_EMAIL_VERIFIED_COLUMN":"Verified","USERS_NAME_COLUMN":"Name","USERS_ROLES_COLUMN":"Roles","USERS_CREATE_BUTTON":"Create User","USERS_EDIT_BUTTON":"Edit User","USERS_DELETE_BUTTON":"Delete Users","EDIT_USER_TITLE_CREATE":"Create user","EDIT_USER_TITLE_EDIT":"Edit user","EDIT_USER_NAME_LABEL":"Name","EDIT_USER_EMAIL_LABEL":"Email","EDIT_USER_PASSWORD_LABEL":"Password","EDIT_USER_ANONYMOUS_LABEL":"Anonymous","EDIT_USER_AUTHENTICATED_LABEL":"Authenticated","EDIT_USER_ADMIN_LABEL":"Administrator","EDIT_USER_CANCEL":"Cancel","EDIT_USER_SUBMIT":"Submit","DELETE_USER_TITLE":"Delete users","DELETE_USER_TEXT":"Delete selected users?","DELETE_USER_CANCEL":"Cancel","DELETE_USER_SUBMIT":"Delete","FORMS_MESSAGE_TITLE":"It's alive!","FORMS_MESSAGE_CONTENT":["The form example below is fully functional, the fields normalize and validate the input using this form's"," declaration file. And the server can use the very same declaration file to revalidate the form upon submitting."],"FORMS_SUCCESS_TITLE":"Congratulations!","FORMS_SUCCESS_TEXT":"The form is finished and ready to be submitted to the backend","FORMS_SUCCESS_SUBMIT":"OK","WIZARD_PREV_BUTTON":"Prev","WIZARD_NEXT_BUTTON":"Next","WIZARD_SUBMIT_BUTTON":"Done","WIZARD_ERROR_LABEL":"Please fill out this form","SHIPPING_STEP_TITLE":"Shipping","SHIPPING_STEP_DESCR":"Choose your shipping options","SHIPPING_FIRST_NAME_LABEL":"First name","SHIPPING_MIDDLE_NAME_LABEL":"Middle name (optional)","SHIPPING_LAST_NAME_LABEL":"Last name","SHIPPING_ADDRESS_LABEL":"Address","SHIPPING_CITY_LABEL":"City/town","SHIPPING_STATE_LABEL":"State/Province/Region (if required)","SHIPPING_CODE_LABEL":"ZIP/Postal code","SHIPPING_COUNTRY_LABEL":"Country","SHIPPING_PHONE_LABEL":"Phone number","SHIPPING_EMAIL_LABEL":"Email","SHIPPING_Q1":"What is a dog?","SHIPPING_Q2":"What kinds of dogs are there?","SHIPPING_Q3":"How do you acquire a dog?","BILLING_STEP_TITLE":"Billing","BILLING_STEP_DESCR":"Enter billing information","BILLING_CARD_NUMBER_LABEL":"Credit card number","BILLING_CARD_DATE_LABEL":"MM / YY","BILLING_CARD_SECRET_LABEL":"CVV2","BILLING_SAME_ADDRESS_LABEL":"Billing address is the same as shipping address","BILLING_Q1":"What is Lorem Ipsum?","BILLING_Q2":"When did they start using it?","CONFIRM_STEP_TITLE":"Confirm","CONFIRM_STEP_DESCR_SUCCESS":"The form is ready to be submitted","CONFIRM_STEP_DESCR_FAILURE":"The form is not completed yet","CONFIRM_SHIPPING_LABEL":"Shipping Information","CONFIRM_BILLING_LABEL":"Billing Information","CONFIRM_FIRST_NAME_LABEL":"First name:","CONFIRM_MIDDLE_NAME_LABEL":"Middle name:","CONFIRM_LAST_NAME_LABEL":"Last name:","CONFIRM_ADDRESS_LABEL":"Address:","CONFIRM_CITY_LABEL":"City/town:","CONFIRM_STATE_LABEL":"State/Province/Region:","CONFIRM_CODE_LABEL":"ZIP/Postal code:","CONFIRM_COUNTRY_LABEL":"Country:","CONFIRM_PHONE_LABEL":"Phone number:","CONFIRM_EMAIL_LABEL":"Email:","CONFIRM_CARD_NUMBER_LABEL":"Credit card number:","CONFIRM_CARD_DATE_LABEL":"Credit card expires:","NOTIFICATIONS_LABEL":"Notifications","NOTIFICATIONS_TITLE":"Styled Popup!","ICONS_FILTER_LABEL":"Filter","APP_AUTH_TITLE":"Authentication","APP_AUTH_ANONYMOUS_BUTTON":"Anonymous","APP_AUTH_CREDENTIALS_LABEL":"Sign In using Credentials","APP_AUTH_NEW_USER_LABEL":"I don't have an account yet, please create one","APP_AUTH_EMAIL_LABEL":"Email","APP_AUTH_PASSWORD_LABEL":"Password","APP_AUTH_SERVICE_BUTTON":"Sign In with","APP_AUTH_SUBMIT":"Sign In","APP_AUTH_FAILED":"Invalid credentials","APP_AUTH_EMAIL_TAKEN":"This email is already registered","OPERATION_FAILED":"Operation failed","ERROR":"Error","ERROR_GO_HOME_LINK":"Go to the start page","ERROR_TRY_AUTH_LINK":"Sign in and try again","ERROR_FIELD_REQUIRED":"This field is required","ERROR_INVALID_PATTERN":"Please provide a valid value","ERROR_INVALID_EMAIL":"Please provide a valid email address","ERROR_INVALID_PHONE":"Please, provide a valid phone number","ERROR_INVALID_PHONE_COUNTRY":"This is not a valid phone number for this country","ERROR_INVALID_CREDIT_CARD_NUMBER":"Please, provide a valid credit card number","ERROR_INVALID_CREDIT_CARD_DATE":"Please, provide a valid credit card expiration date","ERROR_INVALID_CREDIT_CARD_SECRET":"Please, provide a valid credit card CVV2 code","ERROR_INVALID_PASSWORD":"Password should be at least 6 characters long","ERROR_MISMATCHED_VALUES":"The two values you entered do not match"};
+
+/***/ }),
+
+/***/ "dz41":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.HIDE_EDIT_MODAL = exports.SHOW_EDIT_MODAL = exports.DESELECT_ALL = exports.SELECT_ALL = exports.SET_SELECTED = void 0;
+var SET_SELECTED = "app/users/SET_SELECTED";
+exports.SET_SELECTED = SET_SELECTED;
+var SELECT_ALL = "app/users/SELECT_ALL";
+exports.SELECT_ALL = SELECT_ALL;
+var DESELECT_ALL = "app/users/DESELECT_ALL";
+exports.DESELECT_ALL = DESELECT_ALL;
+var SHOW_EDIT_MODAL = "app/users/SHOW_EDIT_MODAL";
+exports.SHOW_EDIT_MODAL = SHOW_EDIT_MODAL;
+var HIDE_EDIT_MODAL = "app/users/HIDE_EDIT_MODAL";
+exports.HIDE_EDIT_MODAL = HIDE_EDIT_MODAL;
 
 /***/ }),
 
@@ -13659,6 +15970,56 @@ module.exports = __webpack_require__("3QTP");
 
 /***/ }),
 
+/***/ "eul6":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireWildcard = __webpack_require__("5Uuq");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _reactRedux = __webpack_require__("h74D");
+
+var _reactIntl = __webpack_require__("k004");
+
+var _styles = __webpack_require__("Bjmp");
+
+var _state = __webpack_require__("g1gh");
+
+var _UsersTable = _interopRequireWildcard(__webpack_require__("Hcqa"));
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+  return {
+    onSetSelected: function onSetSelected(userId, isSelected) {
+      return dispatch(_state.usersOperations.setSelected({
+        userId: userId,
+        isSelected: isSelected
+      }));
+    },
+    onSelectAll: function onSelectAll(userIds) {
+      return dispatch(_state.usersOperations.selectAll({
+        userIds: userIds
+      }));
+    },
+    onDeselectAll: function onDeselectAll(exceptUserIds) {
+      return dispatch(_state.usersOperations.deselectAll({
+        exceptUserIds: exceptUserIds
+      }));
+    }
+  };
+};
+
+var UsersTable = (0, _styles.withStyles)(_UsersTable.styles)((0, _reactIntl.injectIntl)((0, _reactRedux.connect)(null, mapDispatchToProps)(_UsersTable.default)));
+var _default = UsersTable;
+exports.default = _default;
+
+/***/ }),
+
 /***/ "ewAR":
 /***/ (function(module, exports) {
 
@@ -13743,25 +16104,6 @@ exports.default = _default;
 /***/ (function(module, exports) {
 
 module.exports = require("@material-ui/core/Dialog");
-
-/***/ }),
-
-/***/ "fGSI":
-/***/ (function(module, exports, __webpack_require__) {
-
-var _Array$isArray = __webpack_require__("p0XB");
-
-function _arrayWithoutHoles(arr) {
-  if (_Array$isArray(arr)) {
-    for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) {
-      arr2[i] = arr[i];
-    }
-
-    return arr2;
-  }
-}
-
-module.exports = _arrayWithoutHoles;
 
 /***/ }),
 
@@ -14099,6 +16441,39 @@ exports.default = _default;
 
 /***/ }),
 
+/***/ "g1gh":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireWildcard = __webpack_require__("5Uuq");
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.usersSelectors = exports.usersOperations = exports.usersTypes = exports.default = void 0;
+
+var _reducers = _interopRequireDefault(__webpack_require__("QwMX"));
+
+var usersTypes = _interopRequireWildcard(__webpack_require__("dz41"));
+
+exports.usersTypes = usersTypes;
+
+var usersOperations = _interopRequireWildcard(__webpack_require__("RmMv"));
+
+exports.usersOperations = usersOperations;
+
+var usersSelectors = _interopRequireWildcard(__webpack_require__("RfHL"));
+
+exports.usersSelectors = usersSelectors;
+var _default = _reducers.default;
+exports.default = _default;
+
+/***/ }),
+
 /***/ "gGTQ":
 /***/ (function(module, exports) {
 
@@ -14374,6 +16749,13 @@ module.exports = Object('z').propertyIsEnumerable(0) ? Object : function (it) {
 
 /***/ }),
 
+/***/ "iDDF":
+/***/ (function(module, exports) {
+
+module.exports = require("@material-ui/core/TableRow");
+
+/***/ }),
+
 /***/ "iSPQ":
 /***/ (function(module, exports) {
 
@@ -14412,16 +16794,6 @@ function _typeof(obj) {
 }
 
 module.exports = _typeof;
-
-/***/ }),
-
-/***/ "icr7":
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__("tCzM");
-__webpack_require__("k8Q4");
-module.exports = __webpack_require__("04/V");
-
 
 /***/ }),
 
@@ -14640,6 +17012,105 @@ module.exports.default = exports.default;
 
 /***/ }),
 
+/***/ "irBH":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireWildcard = __webpack_require__("5Uuq");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+Object.defineProperty(exports, "pageSize", {
+  enumerable: true,
+  get: function get() {
+    return _Users.pageSize;
+  }
+});
+Object.defineProperty(exports, "sortBy", {
+  enumerable: true,
+  get: function get() {
+    return _Users.sortBy;
+  }
+});
+Object.defineProperty(exports, "sortDir", {
+  enumerable: true,
+  get: function get() {
+    return _Users.sortDir;
+  }
+});
+exports.default = void 0;
+
+var _reactRedux = __webpack_require__("h74D");
+
+var _reactRelay = __webpack_require__("iuEU");
+
+var _reactIntl = __webpack_require__("k004");
+
+var _styles = __webpack_require__("Bjmp");
+
+var _state = __webpack_require__("XiiD");
+
+var _state2 = __webpack_require__("g1gh");
+
+var _Users = _interopRequireWildcard(__webpack_require__("E223"));
+
+var mapStateToProps = function mapStateToProps(state) {
+  return {
+    isEditModalOpen: _state2.usersSelectors.isEditModalOpen(state),
+    selected: _state2.usersSelectors.getSelected(state)
+  };
+};
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+  return {
+    getToken: function getToken() {
+      return dispatch(_state.appOperations.getToken());
+    },
+    onCreate: function onCreate() {
+      return dispatch(_state2.usersOperations.showEditModal());
+    },
+    onEdit: function onEdit() {
+      return dispatch(_state2.usersOperations.editFirstSelected());
+    },
+    onDelete: function onDelete(userId) {
+      return dispatch(_state2.usersOperations.remove({
+        id: userId
+      }));
+    },
+    onSetSelected: function onSetSelected(userId, isSelected) {
+      return dispatch(_state2.usersOperations.setSelected({
+        userId: userId,
+        isSelected: isSelected
+      }));
+    },
+    onSelectAll: function onSelectAll(userIds) {
+      return dispatch(_state2.usersOperations.selectAll({
+        userIds: userIds
+      }));
+    },
+    onDeselectAll: function onDeselectAll(exceptUserIds) {
+      return dispatch(_state2.usersOperations.deselectAll({
+        exceptUserIds: exceptUserIds
+      }));
+    }
+  };
+};
+
+var Users = (0, _reactRelay.createRefetchContainer)((0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)((0, _styles.withStyles)(_Users.styles)((0, _reactIntl.injectIntl)(_Users.default))), {
+  viewer: function viewer() {
+    return __webpack_require__("bhiW");
+  }
+}, function () {
+  return __webpack_require__("4Lyb");
+});
+var _default = Users;
+exports.default = _default;
+
+/***/ }),
+
 /***/ "is7w":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -14764,6 +17235,13 @@ module.exports = __webpack_require__("fZVS") ? function (object, key, value) {
   return object;
 };
 
+
+/***/ }),
+
+/***/ "jOOh":
+/***/ (function(module, exports) {
+
+module.exports = require("@material-ui/core/TableSortLabel");
 
 /***/ }),
 
@@ -15498,6 +17976,85 @@ exports.default = _default;
 
 /***/ }),
 
+/***/ "lchf":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @flow
+ */
+
+/* eslint-disable */
+
+/*::
+import type { ReaderFragment } from 'relay-runtime';
+export type UserRole = "ADMIN" | "AUTHENTICATED" | "%future added value";
+import type { FragmentReference } from "relay-runtime";
+declare export opaque type UserRowContainer_node$ref: FragmentReference;
+declare export opaque type UserRowContainer_node$fragmentType: UserRowContainer_node$ref;
+export type UserRowContainer_node = {|
+  +id: string,
+  +email: string,
+  +isEmailVerified: boolean,
+  +name: ?string,
+  +roles: $ReadOnlyArray<?UserRole>,
+  +$refType: UserRowContainer_node$ref,
+|};
+export type UserRowContainer_node$data = UserRowContainer_node;
+export type UserRowContainer_node$key = {
+  +$data?: UserRowContainer_node$data,
+  +$fragmentRefs: UserRowContainer_node$ref,
+};
+*/
+
+var node
+/*: ReaderFragment*/
+= {
+  "kind": "Fragment",
+  "name": "UserRowContainer_node",
+  "type": "User",
+  "metadata": null,
+  "argumentDefinitions": [],
+  "selections": [{
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "id",
+    "args": null,
+    "storageKey": null
+  }, {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "email",
+    "args": null,
+    "storageKey": null
+  }, {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "isEmailVerified",
+    "args": null,
+    "storageKey": null
+  }, {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "name",
+    "args": null,
+    "storageKey": null
+  }, {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "roles",
+    "args": null,
+    "storageKey": null
+  }]
+}; // prettier-ignore
+
+node
+/*: any*/
+.hash = 'f5e95f4f9141d982bd0622e54271be61';
+module.exports = node;
+
+/***/ }),
+
 /***/ "liMu":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -16051,6 +18608,138 @@ module.exports = !$assign || __webpack_require__("14Ie")(function () {
 
 /***/ }),
 
+/***/ "nkzV":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @flow
+ * @relayHash 59481a840e657823b70cde44dac555aa
+ */
+
+/* eslint-disable */
+
+/*::
+import type { ConcreteRequest } from 'relay-runtime';
+export type DeleteUserInput = {|
+  id: string,
+  clientMutationId?: ?string,
+|};
+export type DeleteUserMutationVariables = {|
+  input: DeleteUserInput
+|};
+export type DeleteUserMutationResponse = {|
+  +deleteUser: ?{|
+    +user: ?{|
+      +id: string
+    |}
+  |}
+|};
+export type DeleteUserMutation = {|
+  variables: DeleteUserMutationVariables,
+  response: DeleteUserMutationResponse,
+|};
+*/
+
+/*
+mutation DeleteUserMutation(
+  $input: DeleteUserInput!
+) {
+  deleteUser(input: $input) {
+    user {
+      id
+    }
+  }
+}
+*/
+
+var node
+/*: ConcreteRequest*/
+= function () {
+  var v0 = [{
+    "kind": "LocalArgument",
+    "name": "input",
+    "type": "DeleteUserInput!",
+    "defaultValue": null
+  }],
+      v1 = [{
+    "kind": "LinkedField",
+    "alias": null,
+    "name": "deleteUser",
+    "storageKey": null,
+    "args": [{
+      "kind": "Variable",
+      "name": "input",
+      "variableName": "input"
+    }],
+    "concreteType": "DeleteUserPayload",
+    "plural": false,
+    "selections": [{
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "user",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "User",
+      "plural": false,
+      "selections": [{
+        "kind": "ScalarField",
+        "alias": null,
+        "name": "id",
+        "args": null,
+        "storageKey": null
+      }]
+    }]
+  }];
+  return {
+    "kind": "Request",
+    "fragment": {
+      "kind": "Fragment",
+      "name": "DeleteUserMutation",
+      "type": "Mutation",
+      "metadata": null,
+      "argumentDefinitions": v0
+      /*: any*/
+      ,
+      "selections": v1
+      /*: any*/
+
+    },
+    "operation": {
+      "kind": "Operation",
+      "name": "DeleteUserMutation",
+      "argumentDefinitions": v0
+      /*: any*/
+      ,
+      "selections": v1
+      /*: any*/
+
+    },
+    "params": {
+      "operationKind": "mutation",
+      "name": "DeleteUserMutation",
+      "id": null,
+      "text": "mutation DeleteUserMutation(\n  $input: DeleteUserInput!\n) {\n  deleteUser(input: $input) {\n    user {\n      id\n    }\n  }\n}\n",
+      "metadata": {}
+    }
+  };
+}(); // prettier-ignore
+
+
+node
+/*: any*/
+.hash = 'c41c3a031a3a3c187abf4960c8697c73';
+module.exports = node;
+
+/***/ }),
+
+/***/ "nuGg":
+/***/ (function(module, exports) {
+
+module.exports = require("immutable");
+
+/***/ }),
+
 /***/ "nz5+":
 /***/ (function(module, exports) {
 
@@ -16363,13 +19052,6 @@ function matches(str, pattern, modifiers) {
 
 module.exports = exports.default;
 module.exports.default = exports.default;
-
-/***/ }),
-
-/***/ "p0XB":
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__("1gQu");
 
 /***/ }),
 
@@ -16893,6 +19575,31 @@ module.exports = function create(P, D) {
 
 /***/ }),
 
+/***/ "r4qH":
+/***/ (function(module, exports) {
+
+module.exports = {
+  name: {
+    label: "EDIT_USER_NAME_LABEL"
+  },
+  email: {
+    normalize: "rows:1|remove:spaces",
+    transform: "trim",
+    validate: "required|email",
+    label: "EDIT_USER_EMAIL_LABEL"
+  },
+  password: {
+    label: "EDIT_USER_PASSWORD_LABEL",
+    validate: "required|password"
+  },
+  isAdmin: {
+    label: "EDIT_USER_ADMIN_LABEL"
+  }
+};
+
+
+/***/ }),
+
 /***/ "r6Lb":
 /***/ (function(module, exports) {
 
@@ -16972,26 +19679,17 @@ module.exports.default = exports.default;
 
 /***/ }),
 
+/***/ "rf6O":
+/***/ (function(module, exports) {
+
+module.exports = require("prop-types");
+
+/***/ }),
+
 /***/ "s+ck":
 /***/ (function(module, exports) {
 
 module.exports = function () { /* empty */ };
-
-
-/***/ }),
-
-/***/ "s+zB":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var $defineProperty = __webpack_require__("OtwA");
-var createDesc = __webpack_require__("+EWW");
-
-module.exports = function (object, index, value) {
-  if (index in object) $defineProperty.f(object, index, createDesc(0, value));
-  else object[index] = value;
-};
 
 
 /***/ }),
@@ -17275,179 +19973,6 @@ module.exports = __webpack_require__("p9MR").getIterator = function (it) {
 
 /***/ }),
 
-/***/ "t7Ea":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireWildcard = __webpack_require__("5Uuq");
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _styles = __webpack_require__("Bjmp");
-
-var _ChartsDemo = _interopRequireWildcard(__webpack_require__("FsgU"));
-
-var ChartsDemo = (0, _styles.withStyles)(_ChartsDemo.styles)((0, _styles.withTheme)(_ChartsDemo.default));
-var _default = ChartsDemo;
-exports.default = _default;
-
-/***/ }),
-
-/***/ "t7Ei":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__("KI45");
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
-
-var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
-
-var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
-
-var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
-
-var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
-
-var _react = _interopRequireDefault(__webpack_require__("cDcd"));
-
-var _reactVirtualized = __webpack_require__("xvxd");
-
-var _victory = __webpack_require__("wL32");
-
-var _Paper = _interopRequireDefault(__webpack_require__("qt1I"));
-
-var _theme = _interopRequireDefault(__webpack_require__("3AO0"));
-
-var Chart6 =
-/*#__PURE__*/
-function (_React$Component) {
-  (0, _inherits2.default)(Chart6, _React$Component);
-
-  function Chart6() {
-    (0, _classCallCheck2.default)(this, Chart6);
-    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(Chart6).apply(this, arguments));
-  }
-
-  (0, _createClass2.default)(Chart6, [{
-    key: "getData",
-    value: function getData() {
-      return [{
-        x: new Date(2016, 6, 1),
-        open: 9,
-        close: 30,
-        high: 56,
-        low: 7
-      }, {
-        x: new Date(2016, 6, 2),
-        open: 80,
-        close: 40,
-        high: 120,
-        low: 10
-      }, {
-        x: new Date(2016, 6, 3),
-        open: 50,
-        close: 80,
-        high: 90,
-        low: 20
-      }, {
-        x: new Date(2016, 6, 4),
-        open: 70,
-        close: 22,
-        high: 70,
-        low: 5
-      }, {
-        x: new Date(2016, 6, 5),
-        open: 20,
-        close: 35,
-        high: 50,
-        low: 10
-      }, {
-        x: new Date(2016, 6, 6),
-        open: 35,
-        close: 30,
-        high: 40,
-        low: 3
-      }, {
-        x: new Date(2016, 6, 7),
-        open: 30,
-        close: 90,
-        high: 95,
-        low: 30
-      }, {
-        x: new Date(2016, 6, 8),
-        open: 50,
-        close: 81,
-        high: 83,
-        low: 45
-      }];
-    }
-  }, {
-    key: "renderChart",
-    value: function renderChart(width, height) {
-      return _react.default.createElement("svg", {
-        width: width,
-        height: height
-      }, _react.default.createElement(_victory.VictoryChart, {
-        width: width,
-        height: height,
-        standalone: false,
-        scale: {
-          x: "time"
-        },
-        containerComponent: _react.default.createElement(_victory.VictoryContainer, {
-          responsive: false
-        }),
-        theme: (0, _theme.default)({
-          theme: this.props.theme,
-          withGrid: true
-        })
-      }, _react.default.createElement(_victory.VictoryAxis, {
-        tickFormat: function tickFormat(t) {
-          return "".concat(t.getDate(), "/").concat(t.getMonth());
-        }
-      }), _react.default.createElement(_victory.VictoryAxis, {
-        dependentAxis: true
-      }), _react.default.createElement(_victory.VictoryCandlestick, {
-        data: this.getData(),
-        size: 8
-      })));
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      var _this = this;
-
-      return _react.default.createElement(_Paper.default, {
-        className: this.props.className
-      }, _react.default.createElement(_reactVirtualized.AutoSizer, {
-        disableHeight: true
-      }, function (_ref) {
-        var width = _ref.width;
-        return !!width && _this.renderChart(width, 0.8 * width);
-      }));
-    }
-  }]);
-  return Chart6;
-}(_react.default.Component);
-
-var _default = Chart6;
-exports.default = _default;
-
-/***/ }),
-
 /***/ "tBFs":
 /***/ (function(module, exports) {
 
@@ -17624,123 +20149,10 @@ exports.default = _default;
 
 /***/ }),
 
-/***/ "uCCn":
-/***/ (function(module, exports, __webpack_require__) {
+/***/ "uQSa":
+/***/ (function(module, exports) {
 
-"use strict";
-/* WEBPACK VAR INJECTION */(function(_) {
-
-var _interopRequireDefault = __webpack_require__("KI45");
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
-
-var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
-
-var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
-
-var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
-
-var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
-
-var _react = _interopRequireDefault(__webpack_require__("cDcd"));
-
-var _reactVirtualized = __webpack_require__("xvxd");
-
-var _victory = __webpack_require__("wL32");
-
-var _Paper = _interopRequireDefault(__webpack_require__("qt1I"));
-
-var _theme = _interopRequireDefault(__webpack_require__("3AO0"));
-
-var Chart5 =
-/*#__PURE__*/
-function (_React$Component) {
-  (0, _inherits2.default)(Chart5, _React$Component);
-
-  function Chart5() {
-    (0, _classCallCheck2.default)(this, Chart5);
-    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(Chart5).apply(this, arguments));
-  }
-
-  (0, _createClass2.default)(Chart5, [{
-    key: "getData",
-    value: function getData() {
-      return _.times(7, function () {
-        return [{
-          x: 1,
-          y: _.random(1, 5)
-        }, {
-          x: 2,
-          y: _.random(1, 10)
-        }, {
-          x: 3,
-          y: _.random(2, 10)
-        }, {
-          x: 4,
-          y: _.random(2, 10)
-        }, {
-          x: 5,
-          y: _.random(2, 15)
-        }];
-      });
-    }
-  }, {
-    key: "renderChart",
-    value: function renderChart(width, height) {
-      return _react.default.createElement("svg", {
-        width: width,
-        height: height
-      }, _react.default.createElement(_victory.VictoryChart, {
-        width: width,
-        height: height,
-        standalone: false,
-        containerComponent: _react.default.createElement(_victory.VictoryContainer, {
-          responsive: false
-        }),
-        theme: (0, _theme.default)({
-          theme: this.props.theme,
-          withGrid: true,
-          withAxis: true,
-          withArea: true
-        })
-      }, _react.default.createElement(_victory.VictoryStack, {
-        colorScale: "blue"
-      }, _.map(this.getData(), function (data, i) {
-        return _react.default.createElement(_victory.VictoryArea, {
-          key: i,
-          data: data,
-          interpolation: "basis"
-        });
-      })), _react.default.createElement(_victory.VictoryAxis, null), _react.default.createElement(_victory.VictoryAxis, {
-        dependentAxis: true
-      })));
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      var _this = this;
-
-      return _react.default.createElement(_Paper.default, {
-        className: this.props.className
-      }, _react.default.createElement(_reactVirtualized.AutoSizer, {
-        disableHeight: true
-      }, function (_ref) {
-        var width = _ref.width;
-        return !!width && _this.renderChart(width, 0.8 * width);
-      }));
-    }
-  }]);
-  return Chart5;
-}(_react.default.Component);
-
-var _default = Chart5;
-exports.default = _default;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("YLtl")))
+module.exports = require("@material-ui/icons/Refresh");
 
 /***/ }),
 
@@ -17957,6 +20369,106 @@ function (_React$Component) {
 }(_react.default.Component);
 
 var _default = Inbox;
+exports.default = _default;
+
+/***/ }),
+
+/***/ "uj/t":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = exports.styles = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
+
+var _react = _interopRequireDefault(__webpack_require__("cDcd"));
+
+var _reactIntl = __webpack_require__("k004");
+
+var _Dialog = _interopRequireDefault(__webpack_require__("fEgT"));
+
+var _DialogActions = _interopRequireDefault(__webpack_require__("1gBk"));
+
+var _DialogContent = _interopRequireDefault(__webpack_require__("iTUb"));
+
+var _DialogContentText = _interopRequireDefault(__webpack_require__("MbIc"));
+
+var _DialogTitle = _interopRequireDefault(__webpack_require__("0Jp5"));
+
+var _Button = _interopRequireDefault(__webpack_require__("Wh1t"));
+
+var styles = function styles() {
+  return {
+    actions: {
+      paddingLeft: "1rem",
+      paddingRight: "1rem",
+      paddingBottom: "1rem"
+    }
+  };
+};
+
+exports.styles = styles;
+
+var ConfirmModal =
+/*#__PURE__*/
+function (_React$PureComponent) {
+  (0, _inherits2.default)(ConfirmModal, _React$PureComponent);
+
+  function ConfirmModal() {
+    (0, _classCallCheck2.default)(this, ConfirmModal);
+    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(ConfirmModal).apply(this, arguments));
+  }
+
+  (0, _createClass2.default)(ConfirmModal, [{
+    key: "render",
+    value: function render() {
+      return _react.default.createElement(_Dialog.default, {
+        maxWidth: "xs",
+        open: true,
+        onClose: this.props.onCancel
+      }, _react.default.createElement(_DialogTitle.default, null, _react.default.createElement(_reactIntl.FormattedMessage, {
+        id: this.props.title
+      })), _react.default.createElement(_DialogContent.default, null, _react.default.createElement(_DialogContentText.default, null, _react.default.createElement(_reactIntl.FormattedMessage, {
+        id: this.props.text,
+        values: this.props.values
+      }))), _react.default.createElement(_DialogActions.default, {
+        classes: {
+          root: this.props.classes.actions
+        }
+      }, _react.default.createElement(_Button.default, {
+        variant: "contained",
+        color: "primary",
+        onClick: this.props.onCancel
+      }, _react.default.createElement(_reactIntl.FormattedMessage, {
+        id: this.props.cancel
+      })), _react.default.createElement(_Button.default, {
+        variant: "contained",
+        color: "secondary",
+        onClick: this.props.onSubmit
+      }, _react.default.createElement(_reactIntl.FormattedMessage, {
+        id: this.props.submit
+      }))));
+    }
+  }]);
+  return ConfirmModal;
+}(_react.default.PureComponent);
+
+var _default = ConfirmModal;
 exports.default = _default;
 
 /***/ }),
@@ -18309,13 +20821,6 @@ module.exports.default = exports.default;
 /***/ (function(module, exports) {
 
 module.exports = "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><path d=\"M22 5.894a8.304 8.304 0 0 1-2.357.636 4.064 4.064 0 0 0 1.804-2.235c-.792.463-1.67.8-2.605.98A4.128 4.128 0 0 0 15.847 4c-2.266 0-4.104 1.808-4.104 4.04 0 .316.037.624.107.92a11.711 11.711 0 0 1-8.458-4.22 3.972 3.972 0 0 0-.555 2.03c0 1.401.724 2.638 1.825 3.362a4.138 4.138 0 0 1-1.858-.505v.05c0 1.958 1.414 3.59 3.29 3.961a4.169 4.169 0 0 1-1.852.07c.522 1.604 2.037 2.772 3.833 2.804a8.315 8.315 0 0 1-5.096 1.73c-.331 0-.658-.02-.979-.057A11.748 11.748 0 0 0 8.29 20c7.547 0 11.674-6.155 11.674-11.493 0-.175-.004-.349-.011-.522A8.265 8.265 0 0 0 22 5.894z\"></path></svg>"
-
-/***/ }),
-
-/***/ "wL32":
-/***/ (function(module, exports) {
-
-module.exports = require("victory");
 
 /***/ }),
 
@@ -19181,13 +21686,6 @@ module.exports = require("next/head");
 
 /***/ }),
 
-/***/ "xvxd":
-/***/ (function(module, exports) {
-
-module.exports = require("react-virtualized");
-
-/***/ }),
-
 /***/ "yFMe":
 /***/ (function(module, exports) {
 
@@ -19364,13 +21862,6 @@ module.exports = function validate(options, value, allValues) {
 };
 
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("YLtl")))
-
-/***/ }),
-
-/***/ "yLu3":
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__("icr7");
 
 /***/ }),
 

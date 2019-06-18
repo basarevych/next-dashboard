@@ -162,24 +162,25 @@ export const linkProvider = ({ provider }) => async (
   di
 ) => {
   const refreshToken = await di.get("fetcher").getRefreshToken();
-  const data = await GetTokenMutation(di, {
-    type: "oneTime",
-    token: refreshToken
-  });
-
-  let result = _.get(data, "data.getToken.success", null);
-  if (result === true) {
-    let oneTimeToken = _.get(data, "data.getToken.token", null);
-    window.location.href =
-      selectors.getApiServer(getState()) +
-      constants.apiBase +
-      "/oauth/" +
-      _.lowerCase(provider) +
-      "?token=" +
-      encodeURIComponent(oneTimeToken) +
-      "&redirect=" +
-      encodeURIComponent(window.location.href);
+  let oneTimeToken;
+  if (refreshToken) {
+    const data = await GetTokenMutation(di, {
+      type: "oneTime",
+      token: refreshToken
+    });
+    let result = _.get(data, "data.getToken.success", null);
+    if (result === true)
+      oneTimeToken = _.get(data, "data.getToken.token", null);
   }
+
+  window.location.href =
+    selectors.getApiServer(getState()) +
+    constants.apiBase +
+    "/oauth/" +
+    _.lowerCase(provider) +
+    "?redirect=" +
+    encodeURIComponent(window.location.href) +
+    (oneTimeToken ? "?token=" + encodeURIComponent(oneTimeToken) : "");
 };
 
 export const finishLinkingProvider = ({ token, redirect }) => async (
@@ -238,14 +239,12 @@ export const setCookie = ({ name, value, days }) => {
 
 export const fetchCities = () => {
   return async (dispatch, getState, di) => {
-    return di
-      .get("fetcher")
-      .fetch({
-        method: "GET",
-        resource:
-          selectors.getApiServer(getState()) +
-          constants.apiBase +
-          "/data/us-cities"
-      });
+    return di.get("fetcher").fetch({
+      method: "GET",
+      resource:
+        selectors.getApiServer(getState()) +
+        constants.apiBase +
+        "/data/us-cities"
+    });
   };
 };
