@@ -5646,7 +5646,7 @@ var linkProvider = function linkProvider(_ref15) {
                 if (result === true) oneTimeToken = _.get(data, "data.getToken.token", null);
 
               case 9:
-                window.location.href = selectors.getApiServer(getState()) + _constants.default.apiBase + "/oauth/" + _.lowerCase(provider) + "?redirect=" + encodeURIComponent(window.location.href) + (oneTimeToken ? "?token=" + encodeURIComponent(oneTimeToken) : "");
+                window.location.href = selectors.getApiServer(getState()) + _constants.default.apiBase + "/oauth/" + _.lowerCase(provider) + "?redirect=" + encodeURIComponent(window.location.href) + (oneTimeToken ? "&token=" + encodeURIComponent(oneTimeToken) : "");
                 return _context10.abrupt("return", refreshToken ? !!oneTimeToken : true);
 
               case 11:

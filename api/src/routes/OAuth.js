@@ -1,9 +1,11 @@
+const session = require("express-session");
+const RedisStore = require("connect-redis")(session);
 const Router = require("express").Router;
-const constants = require("../../common/constants");
 
 class OAuthRoute {
-  constructor(config, auth) {
+  constructor(config, cache, auth) {
     this.config = config;
+    this.cache = cache;
     this.auth = auth;
     this.router = Router();
   }
@@ -13,7 +15,7 @@ class OAuthRoute {
   }
 
   static get $requires() {
-    return ["config", "auth"];
+    return ["config", "cache", "auth"];
   }
 
   async init() {
@@ -21,11 +23,27 @@ class OAuthRoute {
 
     this.promise = Promise.resolve();
 
+    const store = new RedisStore({ client: this.cache.cacheRedis });
+    this.sessionMiddleware = session({
+      name: this.cookie,
+      secret: this.config.jwtSecret,
+      store,
+      resave: false,
+      rolling: false,
+      saveUninitialized: false,
+      cookie: {
+        httpOnly: true,
+        secure: false,
+        maxAge: 60 * 60 * 1000
+      }
+    });
+
     // Add routes for each provider
     for (let provider of this.auth.providers) {
       // Route to start sign in
       this.router.get(
         `/oauth/${provider.providerName}`,
+        this.sessionMiddleware,
         this.saveToken(provider.providerName),
         this.authenticate(provider.providerName, provider.providerOptions)
       );
@@ -33,6 +51,7 @@ class OAuthRoute {
       // Route to call back to after signing in
       this.router.get(
         `/oauth/${provider.providerName}/callback`,
+        this.sessionMiddleware,
         this.authenticate(provider.providerName, {
           failureRedirect: this.config.apiAppServer + "/auth/error?type=oauth"
         }),
@@ -42,11 +61,21 @@ class OAuthRoute {
   }
 
   saveToken(/* provider */) {
-    return (req, res, next) => {
+    return async (req, res, next) => {
       let token = req.query.token || "";
-      let redirect = req.query.redirect || "";
-      req.session.token = token;
-      req.session.redirect = redirect;
+      if (token) {
+        const { type, user, client } = (await this.useToken(token)) || {};
+        if (type === "oneTime") {
+          req.session.userId = user.id;
+          req.session.clientId = client.id;
+        }
+      } else {
+        req.session.userId = null;
+        req.session.clientId = null;
+      }
+
+      req.session.redirect = req.query.redirect || "";
+
       next();
     };
   }
@@ -62,15 +91,11 @@ class OAuthRoute {
 
   successRedirect(/* provider */) {
     return async (req, res, next) => {
-      res.clearCookie("token", { path: constants.apiBase + "/oauth" });
-      res.clearCookie("redirect", { path: constants.apiBase + "/oauth" });
-
-      let redirect = req.session.redirect || "";
-      let { user, client } = req.token || {};
-      if (!user || !client)
+      if (!req.user || !req.client)
         return res.redirect(this.config.apiAppServer + "/auth/error");
 
-      let token = await this.auth.createToken("oneTime", user, client);
+      let token = await this.auth.createToken("oneTime", req.user, req.client);
+      let redirect = req.session.redirect || "";
       res.redirect(
         this.config.apiAppServer +
           "/auth/return?token=" +

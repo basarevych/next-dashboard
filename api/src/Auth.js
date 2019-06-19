@@ -178,7 +178,8 @@ class Auth {
                 await user.validate();
                 await user.save();
 
-                req.token = { user, client };
+                req.user = user;
+                req.client = client;
 
                 next(null, user);
               } catch (error) {
@@ -186,21 +187,25 @@ class Auth {
               }
             };
 
-            const returnFailure = () => next(null, false);
+            const returnFailure = () => {
+              req.user = null;
+              req.client = null;
+              next(null, false);
+            };
 
-            const returnError = error =>
+            const returnError = error => {
+              req.user = null;
+              req.client = null;
               next(error || new Error("An error occured"), false);
+            };
 
             try {
               // Token bearer
               let curUser, curClient;
-              if (req.session.token) {
-                const { type, user, client } =
-                  (await this.useToken(req.session.token)) || {};
-                if (type === "oneTime") {
-                  curUser = user;
-                  curClient = client;
-                }
+              if (req.session.userId) {
+                curUser = await this.user.model.findById(req.session.userId);
+                if (curUser)
+                  curClient = curUser.clients.id(req.session.clientId);
               }
 
               // Look in the database for a user associated with this account.

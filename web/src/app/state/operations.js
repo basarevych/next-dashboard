@@ -180,7 +180,7 @@ export const linkProvider = ({ provider }) => async (
     _.lowerCase(provider) +
     "?redirect=" +
     encodeURIComponent(window.location.href) +
-    (oneTimeToken ? "?token=" + encodeURIComponent(oneTimeToken) : "");
+    (oneTimeToken ? "&token=" + encodeURIComponent(oneTimeToken) : "");
 
   return refreshToken ? !!oneTimeToken : true;
 };
