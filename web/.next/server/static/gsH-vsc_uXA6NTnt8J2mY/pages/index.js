@@ -4011,7 +4011,7 @@ function (_React$Component) {
   }, {
     key: "renderHeader",
     value: function renderHeader() {
-      var userId = this.prop.user && this.props.user.userId;
+      var userId = this.props.user && this.props.user.userId;
       return _react.default.createElement("div", {
         className: this.props.classes.avatar
       }, _react.default.createElement("img", {

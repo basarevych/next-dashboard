@@ -88,7 +88,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 7);
+/******/ 	return __webpack_require__(__webpack_require__.s = 5);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -1431,6 +1431,13 @@ if (typeof __g == 'number') __g = global; // eslint-disable-line no-undef
 
 /***/ }),
 
+/***/ "2kat":
+/***/ (function(module, exports) {
+
+module.exports = require("@material-ui/icons");
+
+/***/ }),
+
 /***/ "2x6k":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2188,6 +2195,14 @@ module.exports = __webpack_require__("Vphk");
 
 /***/ }),
 
+/***/ 5:
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__("6i86");
+
+
+/***/ }),
+
 /***/ "59gi":
 /***/ (function(module, exports) {
 
@@ -2568,11 +2583,25 @@ module.exports.default = exports.default;
 
 /***/ }),
 
-/***/ 7:
+/***/ "6i86":
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__("i/Ws");
+"use strict";
 
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+Object.defineProperty(exports, "default", {
+  enumerable: true,
+  get: function get() {
+    return _IconsPage.default;
+  }
+});
+
+var _IconsPage = _interopRequireDefault(__webpack_require__("K7NF"));
 
 /***/ }),
 
@@ -2998,40 +3027,6 @@ $export($export.S, 'Object', { setPrototypeOf: __webpack_require__("ZJRo").set }
 
 /***/ }),
 
-/***/ "BaY6":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireWildcard = __webpack_require__("5Uuq");
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _reactRedux = __webpack_require__("h74D");
-
-var _styles = __webpack_require__("Bjmp");
-
-var _state = __webpack_require__("XiiD");
-
-var _MapsDemo = _interopRequireWildcard(__webpack_require__("Uxdj"));
-
-var mapStateToProps = function mapStateToProps(state) {
-  return {
-    theme: _state.appSelectors.getTheme(state),
-    mapboxToken: _state.appSelectors.getMapboxToken(state)
-  };
-};
-
-var MapsDemo = (0, _reactRedux.connect)(mapStateToProps)((0, _styles.withStyles)(_MapsDemo.styles)(_MapsDemo.default));
-var _default = MapsDemo;
-exports.default = _default;
-
-/***/ }),
-
 /***/ "BfLe":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -3197,7 +3192,7 @@ function (_React$Component) {
   }, {
     key: "renderHeader",
     value: function renderHeader() {
-      var userId = this.prop.user && this.props.user.userId;
+      var userId = this.props.user && this.props.user.userId;
       return _react.default.createElement("div", {
         className: this.props.classes.avatar
       }, _react.default.createElement("img", {
@@ -3505,13 +3500,6 @@ module.exports = function (name) {
   if (name.charAt(0) != '_' && !(name in $Symbol)) defineProperty($Symbol, name, { value: wksExt.f(name) });
 };
 
-
-/***/ }),
-
-/***/ "ChlY":
-/***/ (function(module, exports) {
-
-module.exports = require("deck.gl");
 
 /***/ }),
 
@@ -5760,13 +5748,6 @@ module.exports = node;
 
 /***/ }),
 
-/***/ "JNDT":
-/***/ (function(module, exports) {
-
-module.exports = require("@material-ui/icons/MyLocation");
-
-/***/ }),
-
 /***/ "JQ2V":
 /***/ (function(module, exports) {
 
@@ -6142,6 +6123,13 @@ module.exports.default = exports.default;
 
 /***/ }),
 
+/***/ "K2gz":
+/***/ (function(module, exports) {
+
+module.exports = require("classnames");
+
+/***/ }),
+
 /***/ "K47E":
 /***/ (function(module, exports) {
 
@@ -6154,6 +6142,120 @@ function _assertThisInitialized(self) {
 }
 
 module.exports = _assertThisInitialized;
+
+/***/ }),
+
+/***/ "K7NF":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = exports.query = void 0;
+
+var _regenerator = _interopRequireDefault(__webpack_require__("ln6h"));
+
+var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__("+oT+"));
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
+
+var _react = _interopRequireDefault(__webpack_require__("cDcd"));
+
+var _reactRelay = __webpack_require__("iuEU");
+
+var _Relay = __webpack_require__("5upH");
+
+var _IconsDemoContainer = _interopRequireDefault(__webpack_require__("v6s2"));
+
+var _LayoutContainer = _interopRequireDefault(__webpack_require__("hl3i"));
+
+var _SpinnerContainer = _interopRequireDefault(__webpack_require__("wkow"));
+
+var defaultVariables = {};
+
+var query = function query() {
+  return __webpack_require__("coqC");
+};
+
+exports.query = query;
+
+var IconsPage =
+/*#__PURE__*/
+function (_React$Component) {
+  (0, _inherits2.default)(IconsPage, _React$Component);
+
+  function IconsPage() {
+    (0, _classCallCheck2.default)(this, IconsPage);
+    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(IconsPage).apply(this, arguments));
+  }
+
+  (0, _createClass2.default)(IconsPage, [{
+    key: "render",
+    value: function render() {
+      return _react.default.createElement(_Relay.QueryRenderer, {
+        query: query,
+        variables: defaultVariables,
+        render: function render(_ref) {
+          var error = _ref.error,
+              props = _ref.props;
+          return _react.default.createElement(_LayoutContainer.default, {
+            page: "/icons",
+            viewer: props ? props.viewer : null,
+            error: error
+          }, !error && !props && _react.default.createElement(_SpinnerContainer.default, null), !error && props && _react.default.createElement(_IconsDemoContainer.default, {
+            viewer: props.viewer
+          }));
+        }
+      });
+    }
+  }], [{
+    key: "getInitialProps",
+    value: function () {
+      var _getInitialProps = (0, _asyncToGenerator2.default)(
+      /*#__PURE__*/
+      _regenerator.default.mark(function _callee(_ref2) {
+        var fetchQuery;
+        return _regenerator.default.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                fetchQuery = _ref2.fetchQuery;
+                _context.next = 3;
+                return fetchQuery(query, defaultVariables);
+
+              case 3:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }));
+
+      function getInitialProps(_x) {
+        return _getInitialProps.apply(this, arguments);
+      }
+
+      return getInitialProps;
+    }()
+  }]);
+  return IconsPage;
+}(_react.default.Component);
+
+var _default = IconsPage;
+exports.default = _default;
 
 /***/ }),
 
@@ -6778,13 +6880,6 @@ module.exports = {
 };
 
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("YLtl")))
-
-/***/ }),
-
-/***/ "MX+i":
-/***/ (function(module, exports) {
-
-module.exports = require("@material-ui/icons/Streetview");
 
 /***/ }),
 
@@ -7853,13 +7948,6 @@ exports.fetchCities = fetchCities;
 
 /***/ }),
 
-/***/ "P9o6":
-/***/ (function(module, exports) {
-
-module.exports = require("@material-ui/icons/Category");
-
-/***/ }),
-
 /***/ "PczM":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -8541,120 +8629,6 @@ module.exports.default = exports.default;
 
 /***/ }),
 
-/***/ "Rt0e":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__("KI45");
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = exports.query = void 0;
-
-var _regenerator = _interopRequireDefault(__webpack_require__("ln6h"));
-
-var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__("+oT+"));
-
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
-
-var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
-
-var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
-
-var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
-
-var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
-
-var _react = _interopRequireDefault(__webpack_require__("cDcd"));
-
-var _reactRelay = __webpack_require__("iuEU");
-
-var _Relay = __webpack_require__("5upH");
-
-var _MapsDemoContainer = _interopRequireDefault(__webpack_require__("BaY6"));
-
-var _LayoutContainer = _interopRequireDefault(__webpack_require__("hl3i"));
-
-var _SpinnerContainer = _interopRequireDefault(__webpack_require__("wkow"));
-
-var defaultVariables = {};
-
-var query = function query() {
-  return __webpack_require__("ZuRb");
-};
-
-exports.query = query;
-
-var MapsPage =
-/*#__PURE__*/
-function (_React$Component) {
-  (0, _inherits2.default)(MapsPage, _React$Component);
-
-  function MapsPage() {
-    (0, _classCallCheck2.default)(this, MapsPage);
-    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(MapsPage).apply(this, arguments));
-  }
-
-  (0, _createClass2.default)(MapsPage, [{
-    key: "render",
-    value: function render() {
-      return _react.default.createElement(_Relay.QueryRenderer, {
-        query: query,
-        variables: defaultVariables,
-        render: function render(_ref) {
-          var error = _ref.error,
-              props = _ref.props;
-          return _react.default.createElement(_LayoutContainer.default, {
-            page: "/maps",
-            viewer: props ? props.viewer : null,
-            error: error
-          }, !error && !props && _react.default.createElement(_SpinnerContainer.default, null), !error && props && _react.default.createElement(_MapsDemoContainer.default, {
-            viewer: props.viewer
-          }));
-        }
-      });
-    }
-  }], [{
-    key: "getInitialProps",
-    value: function () {
-      var _getInitialProps = (0, _asyncToGenerator2.default)(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee(_ref2) {
-        var fetchQuery;
-        return _regenerator.default.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                fetchQuery = _ref2.fetchQuery;
-                _context.next = 3;
-                return fetchQuery(query, defaultVariables);
-
-              case 3:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee);
-      }));
-
-      function getInitialProps(_x) {
-        return _getInitialProps.apply(this, arguments);
-      }
-
-      return getInitialProps;
-    }()
-  }]);
-  return MapsPage;
-}(_react.default.Component);
-
-var _default = MapsPage;
-exports.default = _default;
-
-/***/ }),
-
 /***/ "STjA":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -8808,348 +8782,6 @@ function isHexadecimal(str) {
 
 module.exports = exports.default;
 module.exports.default = exports.default;
-
-/***/ }),
-
-/***/ "Uxdj":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireWildcard = __webpack_require__("5Uuq");
-
-var _interopRequireDefault = __webpack_require__("KI45");
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = exports.styles = void 0;
-
-var _regenerator = _interopRequireDefault(__webpack_require__("ln6h"));
-
-var _promise = _interopRequireDefault(__webpack_require__("eVuF"));
-
-var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__("+oT+"));
-
-var _objectSpread2 = _interopRequireDefault(__webpack_require__("Avpf"));
-
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
-
-var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
-
-var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
-
-var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
-
-var _assertThisInitialized2 = _interopRequireDefault(__webpack_require__("K47E"));
-
-var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
-
-var _defineProperty2 = _interopRequireDefault(__webpack_require__("xHqa"));
-
-var _react = _interopRequireDefault(__webpack_require__("cDcd"));
-
-var _reactMapGl = _interopRequireWildcard(__webpack_require__("fdHT"));
-
-var _deck = _interopRequireDefault(__webpack_require__("ChlY"));
-
-var _Map = _interopRequireDefault(__webpack_require__("zmJW"));
-
-var _ThreeSixty = _interopRequireDefault(__webpack_require__("vbly"));
-
-var _MyLocation = _interopRequireDefault(__webpack_require__("JNDT"));
-
-var _Category = _interopRequireDefault(__webpack_require__("P9o6"));
-
-var _Streetview = _interopRequireDefault(__webpack_require__("MX+i"));
-
-var _Satellite = _interopRequireDefault(__webpack_require__("yV47"));
-
-var styles = function styles(theme) {
-  var _layout;
-
-  return {
-    layout: (_layout = {
-      width: "100%",
-      flex: 1,
-      marginTop: "-2rem"
-    }, (0, _defineProperty2.default)(_layout, theme.breakpoints.down("xs"), {
-      marginTop: 0
-    }), (0, _defineProperty2.default)(_layout, "& canvas", {
-      top: 0,
-      left: 0
-    }), _layout),
-    controls: {
-      position: "absolute",
-      zIndex: 100,
-      top: "10px",
-      right: "10px"
-    },
-    controlsSpacer: {
-      height: "10px"
-    },
-    controlsSelected: {
-      background: ["rgba(0, 0, 255, 0.1)", "!important"]
-    }
-  };
-};
-
-exports.styles = styles;
-
-var MapsDemo =
-/*#__PURE__*/
-function (_React$Component) {
-  (0, _inherits2.default)(MapsDemo, _React$Component);
-
-  function MapsDemo(props) {
-    var _this;
-
-    (0, _classCallCheck2.default)(this, MapsDemo);
-    _this = (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(MapsDemo).call(this, props));
-    _this.state = {
-      mode: "contour",
-      viewState: {
-        latitude: 53.35014,
-        longitude: -6.266155,
-        zoom: 13,
-        bearing: 0,
-        pitch: 0
-      }
-    };
-    _this.updateViewState = _this.updateViewState.bind((0, _assertThisInitialized2.default)(_this));
-    _this.updateViewportNoPitch = _this.updateViewportNoPitch.bind((0, _assertThisInitialized2.default)(_this));
-    _this.updateMapMode = _this.updateMapMode.bind((0, _assertThisInitialized2.default)(_this));
-    _this.updateViewMode = _this.updateViewMode.bind((0, _assertThisInitialized2.default)(_this));
-    return _this;
-  }
-
-  (0, _createClass2.default)(MapsDemo, [{
-    key: "updateViewState",
-    value: function updateViewState(_ref) {
-      var viewState = _ref.viewState;
-      viewState = (0, _objectSpread2.default)({}, this.state.viewState, viewState);
-      this.setState({
-        viewState: viewState
-      }, this.renderLayers);
-    } // "Look North" button also tries to reset the pitch, so we prevent this here
-
-  }, {
-    key: "updateViewportNoPitch",
-    value: function updateViewportNoPitch(viewport) {
-      viewport.pitch = this.state.viewState.pitch;
-      this.updateViewState({
-        viewState: viewport
-      });
-    }
-  }, {
-    key: "updateMapMode",
-    value: function updateMapMode(mode) {
-      switch (mode) {
-        case "flat":
-          this.updateViewState({
-            viewState: {
-              pitch: 0,
-              transitionDuration: 2000,
-              // animate the change
-              transitionInterpolator: new _reactMapGl.FlyToInterpolator()
-            }
-          });
-          break;
-
-        case "perspective":
-          this.updateViewState({
-            viewState: {
-              pitch: 60,
-              transitionDuration: 2000,
-              // animate the change
-              transitionInterpolator: new _reactMapGl.FlyToInterpolator()
-            }
-          });
-          break;
-      }
-    }
-  }, {
-    key: "updateViewMode",
-    value: function updateViewMode(mode) {
-      this.setState({
-        mode: mode
-      });
-    }
-  }, {
-    key: "locateUser",
-    value: function () {
-      var _locateUser = (0, _asyncToGenerator2.default)(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee() {
-        var location, state;
-        return _regenerator.default.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                _context.next = 2;
-                return new _promise.default(function (resolve) {
-                  /*
-                  // Quick test
-                  return resolve({
-                    latitude: 35.778105,
-                    longitude: -78.638618
-                  });
-                  */
-                  if ("geolocation" in navigator) {
-                    navigator.geolocation.getCurrentPosition(function (position) {
-                      return resolve({
-                        latitude: position.coords.latitude,
-                        longitude: position.coords.longitude
-                      });
-                    }, function (error) {
-                      console.error(error);
-                      resolve(null);
-                    }, {
-                      timeout: 5000,
-                      enableHighAccuracy: true
-                    });
-                  } else {
-                    console.error("Geolocation IS NOT available");
-                    resolve(null);
-                  }
-                });
-
-              case 2:
-                location = _context.sent;
-
-                if (location) {
-                  _context.next = 5;
-                  break;
-                }
-
-                return _context.abrupt("return");
-
-              case 5:
-                state = {
-                  viewState: (0, _objectSpread2.default)({}, this.state.viewState, location, {
-                    transitionDuration: 2000,
-                    // add transition animation
-                    transitionInterpolator: new _reactMapGl.FlyToInterpolator()
-                  })
-                };
-                this.setState(state);
-
-              case 7:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee, this);
-      }));
-
-      function locateUser() {
-        return _locateUser.apply(this, arguments);
-      }
-
-      return locateUser;
-    }()
-  }, {
-    key: "render",
-    value: function render() {
-      var _this2 = this;
-
-      var _this$props = this.props,
-          mapboxToken = _this$props.mapboxToken,
-          theme = _this$props.theme;
-      var _this$state = this.state,
-          pitch = _this$state.viewState.pitch,
-          mode = _this$state.mode;
-      var mapStyle;
-
-      switch (mode) {
-        case "contour":
-          mapStyle = "mapbox://styles/mapbox/" + theme + "-v9";
-          break;
-
-        case "streets":
-          mapStyle = "mapbox://styles/mapbox/streets-v10";
-          break;
-
-        case "satellite":
-          mapStyle = "mapbox://styles/mapbox/satellite-v9";
-          break;
-      }
-
-      return _react.default.createElement("div", {
-        className: this.props.classes.layout
-      }, _react.default.createElement(_deck.default, {
-        controller: true,
-        width: "100%",
-        height: "100%",
-        viewState: this.state.viewState,
-        getCursor: function getCursor() {
-          return "crosshair";
-        },
-        onViewStateChange: this.updateViewState
-      }, _react.default.createElement(_reactMapGl.default, {
-        reuseMaps: true,
-        preventStyleDiffing: true,
-        mapboxApiAccessToken: mapboxToken,
-        mapStyle: mapStyle
-      }, _react.default.createElement("div", {
-        className: this.props.classes.controls
-      }, _react.default.createElement(_reactMapGl.NavigationControl, {
-        onViewportChange: this.updateViewportNoPitch
-      }), _react.default.createElement("div", {
-        className: this.props.classes.controlsSpacer
-      }), _react.default.createElement("div", {
-        className: "mapboxgl-ctrl mapboxgl-ctrl-group "
-      }, _react.default.createElement("button", {
-        title: "My Location",
-        className: "mapboxgl-ctrl-icon ",
-        onClick: this.locateUser
-      }, _react.default.createElement(_MyLocation.default, null))), _react.default.createElement("div", {
-        className: this.props.classes.controlsSpacer
-      }), _react.default.createElement("div", {
-        className: "mapboxgl-ctrl mapboxgl-ctrl-group "
-      }, _react.default.createElement("button", {
-        title: "Flat Mode",
-        className: "mapboxgl-ctrl-icon " + (pitch ? "" : this.props.classes.controlsSelected),
-        onClick: function onClick() {
-          return _this2.updateMapMode("flat");
-        }
-      }, _react.default.createElement(_Map.default, null)), _react.default.createElement("button", {
-        title: "3D Mode",
-        className: "mapboxgl-ctrl-icon " + (pitch ? this.props.classes.controlsSelected : ""),
-        onClick: function onClick() {
-          return _this2.updateMapMode("perspective");
-        }
-      }, _react.default.createElement(_ThreeSixty.default, null))), _react.default.createElement("div", {
-        className: this.props.classes.controlsSpacer
-      }), _react.default.createElement("div", {
-        className: "mapboxgl-ctrl mapboxgl-ctrl-group "
-      }, _react.default.createElement("button", {
-        title: "Contour View",
-        className: "mapboxgl-ctrl-icon " + (mode === "contour" ? this.props.classes.controlsSelected : ""),
-        onClick: function onClick() {
-          return _this2.updateViewMode("contour");
-        }
-      }, _react.default.createElement(_Category.default, null)), _react.default.createElement("button", {
-        title: "Streets View",
-        className: "mapboxgl-ctrl-icon " + (mode === "streets" ? this.props.classes.controlsSelected : ""),
-        onClick: function onClick() {
-          return _this2.updateViewMode("streets");
-        }
-      }, _react.default.createElement(_Streetview.default, null)), _react.default.createElement("button", {
-        title: "Satellite View",
-        className: "mapboxgl-ctrl-icon " + (mode === "satellite" ? this.props.classes.controlsSelected : ""),
-        onClick: function onClick() {
-          return _this2.updateViewMode("satellite");
-        }
-      }, _react.default.createElement(_Satellite.default, null)))))));
-    }
-  }]);
-  return MapsDemo;
-}(_react.default.Component);
-
-var _default = MapsDemo;
-exports.default = _default;
 
 /***/ }),
 
@@ -10640,165 +10272,6 @@ function isLength(str, options) {
 
 module.exports = exports.default;
 module.exports.default = exports.default;
-
-/***/ }),
-
-/***/ "ZuRb":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @flow
- * @relayHash c2c48cfeccd6ce0f078fe06697d1272f
- */
-
-/* eslint-disable */
-
-/*::
-import type { ConcreteRequest } from 'relay-runtime';
-type LayoutContainer_viewer$ref = any;
-export type MapsPageQueryVariables = {||};
-export type MapsPageQueryResponse = {|
-  +viewer: ?{|
-    +$fragmentRefs: LayoutContainer_viewer$ref
-  |}
-|};
-export type MapsPageQuery = {|
-  variables: MapsPageQueryVariables,
-  response: MapsPageQueryResponse,
-|};
-*/
-
-/*
-query MapsPageQuery {
-  viewer {
-    ...LayoutContainer_viewer
-  }
-}
-
-fragment LayoutContainer_viewer on Viewer {
-  me {
-    isAuthenticated
-    userId
-    name
-    email
-    roles
-    providers {
-      name
-    }
-  }
-}
-*/
-
-var node
-/*: ConcreteRequest*/
-= function () {
-  var v0 = {
-    "kind": "ScalarField",
-    "alias": null,
-    "name": "name",
-    "args": null,
-    "storageKey": null
-  };
-  return {
-    "kind": "Request",
-    "fragment": {
-      "kind": "Fragment",
-      "name": "MapsPageQuery",
-      "type": "Query",
-      "metadata": null,
-      "argumentDefinitions": [],
-      "selections": [{
-        "kind": "LinkedField",
-        "alias": null,
-        "name": "viewer",
-        "storageKey": null,
-        "args": null,
-        "concreteType": "Viewer",
-        "plural": false,
-        "selections": [{
-          "kind": "FragmentSpread",
-          "name": "LayoutContainer_viewer",
-          "args": null
-        }]
-      }]
-    },
-    "operation": {
-      "kind": "Operation",
-      "name": "MapsPageQuery",
-      "argumentDefinitions": [],
-      "selections": [{
-        "kind": "LinkedField",
-        "alias": null,
-        "name": "viewer",
-        "storageKey": null,
-        "args": null,
-        "concreteType": "Viewer",
-        "plural": false,
-        "selections": [{
-          "kind": "LinkedField",
-          "alias": null,
-          "name": "me",
-          "storageKey": null,
-          "args": null,
-          "concreteType": "Status",
-          "plural": false,
-          "selections": [{
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "isAuthenticated",
-            "args": null,
-            "storageKey": null
-          }, {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "userId",
-            "args": null,
-            "storageKey": null
-          }, v0
-          /*: any*/
-          , {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "email",
-            "args": null,
-            "storageKey": null
-          }, {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "roles",
-            "args": null,
-            "storageKey": null
-          }, {
-            "kind": "LinkedField",
-            "alias": null,
-            "name": "providers",
-            "storageKey": null,
-            "args": null,
-            "concreteType": "ProviderStatus",
-            "plural": true,
-            "selections": [v0
-            /*: any*/
-            ]
-          }]
-        }]
-      }]
-    },
-    "params": {
-      "operationKind": "query",
-      "name": "MapsPageQuery",
-      "id": null,
-      "text": "query MapsPageQuery {\n  viewer {\n    ...LayoutContainer_viewer\n  }\n}\n\nfragment LayoutContainer_viewer on Viewer {\n  me {\n    isAuthenticated\n    userId\n    name\n    email\n    roles\n    providers {\n      name\n    }\n  }\n}\n",
-      "metadata": {}
-    }
-  };
-}(); // prettier-ignore
-
-
-node
-/*: any*/
-.hash = '581e71fb6db09ace5cad8fa88ca4f3f2';
-module.exports = node;
 
 /***/ }),
 
@@ -12895,6 +12368,165 @@ module.exports = node;
 
 /***/ }),
 
+/***/ "coqC":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @flow
+ * @relayHash c671d4d412d03dd033a6d94ad502f26c
+ */
+
+/* eslint-disable */
+
+/*::
+import type { ConcreteRequest } from 'relay-runtime';
+type LayoutContainer_viewer$ref = any;
+export type IconsPageQueryVariables = {||};
+export type IconsPageQueryResponse = {|
+  +viewer: ?{|
+    +$fragmentRefs: LayoutContainer_viewer$ref
+  |}
+|};
+export type IconsPageQuery = {|
+  variables: IconsPageQueryVariables,
+  response: IconsPageQueryResponse,
+|};
+*/
+
+/*
+query IconsPageQuery {
+  viewer {
+    ...LayoutContainer_viewer
+  }
+}
+
+fragment LayoutContainer_viewer on Viewer {
+  me {
+    isAuthenticated
+    userId
+    name
+    email
+    roles
+    providers {
+      name
+    }
+  }
+}
+*/
+
+var node
+/*: ConcreteRequest*/
+= function () {
+  var v0 = {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "name",
+    "args": null,
+    "storageKey": null
+  };
+  return {
+    "kind": "Request",
+    "fragment": {
+      "kind": "Fragment",
+      "name": "IconsPageQuery",
+      "type": "Query",
+      "metadata": null,
+      "argumentDefinitions": [],
+      "selections": [{
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "viewer",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "Viewer",
+        "plural": false,
+        "selections": [{
+          "kind": "FragmentSpread",
+          "name": "LayoutContainer_viewer",
+          "args": null
+        }]
+      }]
+    },
+    "operation": {
+      "kind": "Operation",
+      "name": "IconsPageQuery",
+      "argumentDefinitions": [],
+      "selections": [{
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "viewer",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "Viewer",
+        "plural": false,
+        "selections": [{
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "me",
+          "storageKey": null,
+          "args": null,
+          "concreteType": "Status",
+          "plural": false,
+          "selections": [{
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "isAuthenticated",
+            "args": null,
+            "storageKey": null
+          }, {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "userId",
+            "args": null,
+            "storageKey": null
+          }, v0
+          /*: any*/
+          , {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "email",
+            "args": null,
+            "storageKey": null
+          }, {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "roles",
+            "args": null,
+            "storageKey": null
+          }, {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "providers",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "ProviderStatus",
+            "plural": true,
+            "selections": [v0
+            /*: any*/
+            ]
+          }]
+        }]
+      }]
+    },
+    "params": {
+      "operationKind": "query",
+      "name": "IconsPageQuery",
+      "id": null,
+      "text": "query IconsPageQuery {\n  viewer {\n    ...LayoutContainer_viewer\n  }\n}\n\nfragment LayoutContainer_viewer on Viewer {\n  me {\n    isAuthenticated\n    userId\n    name\n    email\n    roles\n    providers {\n      name\n    }\n  }\n}\n",
+      "metadata": {}
+    }
+  };
+}(); // prettier-ignore
+
+
+node
+/*: any*/
+.hash = 'ffde8a9d5df2e357833e82bd95e09274';
+module.exports = node;
+
+/***/ }),
+
 /***/ "cu1A":
 /***/ (function(module, exports) {
 
@@ -13472,13 +13104,6 @@ module.exports = !__webpack_require__("14Ie")(function () {
 
 /***/ }),
 
-/***/ "fdHT":
-/***/ (function(module, exports) {
-
-module.exports = require("react-map-gl");
-
-/***/ }),
-
 /***/ "flba":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -13779,28 +13404,6 @@ function _extends() {
 }
 
 module.exports = _extends;
-
-/***/ }),
-
-/***/ "i/Ws":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__("KI45");
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-Object.defineProperty(exports, "default", {
-  enumerable: true,
-  get: function get() {
-    return _MapsPage.default;
-  }
-});
-
-var _MapsPage = _interopRequireDefault(__webpack_require__("Rt0e"));
 
 /***/ }),
 
@@ -15796,6 +15399,282 @@ exports.default = _default;
 
 /***/ }),
 
+/***/ "okkc":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(_) {
+
+var _interopRequireWildcard = __webpack_require__("5Uuq");
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = exports.styles = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
+
+var _assertThisInitialized2 = _interopRequireDefault(__webpack_require__("K47E"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
+
+var _defineProperty2 = _interopRequireDefault(__webpack_require__("xHqa"));
+
+var _objectSpread2 = _interopRequireDefault(__webpack_require__("Avpf"));
+
+var _react = _interopRequireDefault(__webpack_require__("cDcd"));
+
+var _classnames = _interopRequireDefault(__webpack_require__("K2gz"));
+
+var _reactIntl = __webpack_require__("k004");
+
+var _reactVirtualized = __webpack_require__("xvxd");
+
+var _colorManipulator = __webpack_require__("oOPP");
+
+var _Grid = _interopRequireDefault(__webpack_require__("JQ2V"));
+
+var _Typography = _interopRequireDefault(__webpack_require__("UVoM"));
+
+var _TextField = _interopRequireDefault(__webpack_require__("IbbU"));
+
+var source = _interopRequireWildcard(__webpack_require__("2kat"));
+
+var _styledScroll = _interopRequireDefault(__webpack_require__("kPkA"));
+
+var icons = {};
+
+_.forEach(_.keys(source), function (name) {
+  var icon = source[name];
+  if (!icon || icon.muiName !== "SvgIcon") return;
+  var match;
+  match = /^(.+)Outlined$/.exec(name);
+
+  if (match) {
+    if (!icons[match[1]]) icons[match[1]] = {};
+    icons[match[1]].Outlined = icon;
+    return;
+  }
+
+  match = /^(.+)Rounded$/.exec(name);
+
+  if (match) {
+    if (!icons[match[1]]) icons[match[1]] = {};
+    icons[match[1]].Rounded = icon;
+    return;
+  }
+
+  match = /^(.+)Sharp$/.exec(name);
+
+  if (match) {
+    if (!icons[match[1]]) icons[match[1]] = {};
+    icons[match[1]].Sharp = icon;
+    return;
+  }
+
+  match = /^(.+)TwoTone$/.exec(name);
+
+  if (match) {
+    if (!icons[match[1]]) icons[match[1]] = {};
+    icons[match[1]].TwoTone = icon;
+    return;
+  }
+
+  if (!icons[name]) icons[name] = {};
+  icons[name].Main = icon;
+});
+
+var list = _.reduce(_.keys(icons), function (acc, cur) {
+  acc.push((0, _objectSpread2.default)({
+    name: _.replace(cur, /([A-Z])/g, " $1")
+  }, icons[cur]));
+  return acc;
+}, []);
+
+var styles = function styles(theme) {
+  return {
+    layout: {
+      width: "100%",
+      flex: 1,
+      display: "flex",
+      flexDirection: "column"
+    },
+    header: {
+      marginTop: "1rem",
+      padding: theme.spacing(1)
+    },
+    wrapper: {
+      flex: 1
+    },
+    list: (0, _styledScroll.default)(theme),
+    row: (0, _defineProperty2.default)({
+      display: "flex",
+      justifyContent: "space-around",
+      alignItems: "center",
+      overflowX: "auto"
+    }, theme.breakpoints.down("sm"), {
+      justifyContent: "unset"
+    }),
+    odd: {
+      background: (0, _colorManipulator.darken)(theme.palette.background.paper, 0.1)
+    },
+    even: {
+      background: (0, _colorManipulator.darken)(theme.palette.background.paper, 0.05)
+    },
+    item: {
+      width: "20%",
+      minWidth: 100,
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      color: theme.palette.text.primary
+    },
+    text: {
+      lineHeight: "1rem",
+      textAlign: "center"
+    }
+  };
+};
+
+exports.styles = styles;
+
+var IconsDemo =
+/*#__PURE__*/
+function (_React$Component) {
+  (0, _inherits2.default)(IconsDemo, _React$Component);
+
+  function IconsDemo(props) {
+    var _this;
+
+    (0, _classCallCheck2.default)(this, IconsDemo);
+    _this = (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(IconsDemo).call(this, props));
+    _this.state = {
+      filter: "",
+      list: list
+    };
+    _this.renderIcon = _this.renderIcon.bind((0, _assertThisInitialized2.default)(_this));
+    _this.renderRow = _this.renderRow.bind((0, _assertThisInitialized2.default)(_this));
+    _this.handleInput = _this.handleInput.bind((0, _assertThisInitialized2.default)(_this));
+    return _this;
+  }
+
+  (0, _createClass2.default)(IconsDemo, [{
+    key: "renderIcon",
+    value: function renderIcon(Icon, name) {
+      if (!Icon) return null;
+      return _react.default.createElement("div", {
+        className: this.props.classes.item
+      }, _react.default.createElement(Icon, {
+        fontSize: "large",
+        color: "inherit"
+      }), _react.default.createElement("div", null, _react.default.createElement(_Typography.default, {
+        variant: "overline",
+        className: this.props.classes.text
+      }, name)));
+    }
+  }, {
+    key: "renderRow",
+    value: function renderRow(_ref) {
+      var index = _ref.index,
+          key = _ref.key,
+          style = _ref.style;
+      var item = this.state.list[index];
+      var name = item.name;
+      var Main = item.Main;
+      var Outlined = item.Outlined;
+      var Rounded = item.Rounded;
+      var Sharp = item.Sharp;
+      var TwoTone = item.TwoTone;
+      return _react.default.createElement("div", {
+        className: (0, _classnames.default)(this.props.classes.row, index % 2 ? this.props.classes.odd : this.props.classes.even),
+        key: key,
+        style: style
+      }, this.renderIcon(Main, name), this.renderIcon(Outlined, name + " Outlined"), this.renderIcon(Rounded, name + " Rounded"), this.renderIcon(Sharp, name + " Sharp"), this.renderIcon(TwoTone, name + "Two Tone"));
+    }
+  }, {
+    key: "handleInput",
+    value: function handleInput(evt) {
+      var filter = evt.target.value;
+      this.setState({
+        filter: filter,
+        list: _.filter(list, function (item) {
+          return _.includes(_.toLower(item.name), _.toLower(filter));
+        })
+      });
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this2 = this;
+
+      return _react.default.createElement("div", {
+        className: this.props.classes.layout
+      }, _react.default.createElement("div", {
+        className: this.props.classes.header
+      }, _react.default.createElement(_Grid.default, {
+        container: true,
+        spacing: 2,
+        alignItems: "center"
+      }, _react.default.createElement(_Grid.default, {
+        item: true,
+        xs: 12,
+        sm: 6,
+        md: 8
+      }, _react.default.createElement(_Typography.default, {
+        variant: "h3"
+      }, _react.default.createElement(_reactIntl.FormattedMessage, {
+        id: "TITLE_ICONS"
+      }))), _react.default.createElement(_Grid.default, {
+        item: true,
+        xs: 12,
+        sm: 6,
+        md: 4
+      }, _react.default.createElement("form", {
+        className: this.props.classes.form,
+        noValidate: true,
+        autoComplete: "off"
+      }, _react.default.createElement(_TextField.default, {
+        id: "iconsFilter",
+        fullWidth: true,
+        label: this.props.intl.formatMessage({
+          id: "ICONS_FILTER_LABEL"
+        }),
+        value: this.state.filter,
+        onChange: this.handleInput
+      }))))), _react.default.createElement("div", {
+        className: this.props.classes.wrapper
+      }, _react.default.createElement(_reactVirtualized.AutoSizer, null, function (_ref2) {
+        var width = _ref2.width,
+            height = _ref2.height;
+        if (height < 300) height = 300;
+        return _react.default.createElement(_reactVirtualized.List, {
+          className: _this2.props.classes.list,
+          width: width,
+          height: height,
+          rowCount: _this2.state.list.length,
+          rowHeight: 100,
+          rowRenderer: _this2.renderRow
+        });
+      })));
+    }
+  }]);
+  return IconsDemo;
+}(_react.default.Component);
+
+var _default = IconsDemo;
+exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("YLtl")))
+
+/***/ }),
+
 /***/ "p+Qh":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -17164,6 +17043,31 @@ module.exports = require("@material-ui/icons/Pets");
 
 /***/ }),
 
+/***/ "v6s2":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireWildcard = __webpack_require__("5Uuq");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _reactIntl = __webpack_require__("k004");
+
+var _styles = __webpack_require__("Bjmp");
+
+var _IconsDemo = _interopRequireWildcard(__webpack_require__("okkc"));
+
+var IconsDemo = (0, _styles.withStyles)(_IconsDemo.styles)((0, _styles.withTheme)((0, _reactIntl.injectIntl)(_IconsDemo.default)));
+var _default = IconsDemo;
+exports.default = _default;
+
+/***/ }),
+
 /***/ "vAff":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -17227,13 +17131,6 @@ module.exports = require("@material-ui/core/Tooltip");
 /***/ (function(module, exports) {
 
 module.exports = require("@material-ui/icons/Dashboard");
-
-/***/ }),
-
-/***/ "vbly":
-/***/ (function(module, exports) {
-
-module.exports = require("@material-ui/icons/ThreeSixty");
 
 /***/ }),
 
@@ -18325,6 +18222,13 @@ module.exports = require("next/head");
 
 /***/ }),
 
+/***/ "xvxd":
+/***/ (function(module, exports) {
+
+module.exports = require("react-virtualized");
+
+/***/ }),
+
 /***/ "yFMe":
 /***/ (function(module, exports) {
 
@@ -18501,13 +18405,6 @@ module.exports = function validate(options, value, allValues) {
 };
 
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("YLtl")))
-
-/***/ }),
-
-/***/ "yV47":
-/***/ (function(module, exports) {
-
-module.exports = require("@material-ui/icons/Satellite");
 
 /***/ }),
 
