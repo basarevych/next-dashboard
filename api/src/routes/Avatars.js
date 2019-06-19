@@ -189,7 +189,7 @@ class AvatarsRoute {
 
       if (image) {
         res.set("content-type", image.type);
-        res.send(req.query.size === "large" ? image.large : image.small);
+        res.send(req.query.size === "small" ? image.small : image.large);
       } else {
         throw this.di.get("error.notFound");
       }
