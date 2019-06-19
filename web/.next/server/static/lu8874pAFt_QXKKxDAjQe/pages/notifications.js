@@ -88,7 +88,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 7);
+/******/ 	return __webpack_require__(__webpack_require__.s = 8);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -1063,6 +1063,45 @@ function isAlpha(str) {
 
 var locales = Object.keys(_alpha.alpha);
 exports.locales = locales;
+
+/***/ }),
+
+/***/ "1aff":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireWildcard = __webpack_require__("5Uuq");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _reactRedux = __webpack_require__("h74D");
+
+var _styles = __webpack_require__("Bjmp");
+
+var _NotificationsDemo = _interopRequireWildcard(__webpack_require__("8I47"));
+
+var _state = __webpack_require__("XiiD");
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+  return {
+    sendToast: function sendToast(position, title, content) {
+      return dispatch(_state.appOperations.sendToast({
+        position: position,
+        title: title,
+        content: content
+      }));
+    }
+  };
+};
+
+var NotificationsDemo = (0, _reactRedux.connect)(null, mapDispatchToProps)((0, _styles.withStyles)(_NotificationsDemo.styles)(_NotificationsDemo.default));
+var _default = NotificationsDemo;
+exports.default = _default;
 
 /***/ }),
 
@@ -2568,14 +2607,6 @@ module.exports.default = exports.default;
 
 /***/ }),
 
-/***/ 7:
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__("i/Ws");
-
-
-/***/ }),
-
 /***/ "7FvJ":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2670,6 +2701,14 @@ module.exports = require("@material-ui/core/FormControlLabel");
 
 /***/ }),
 
+/***/ 8:
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__("ziBp");
+
+
+/***/ }),
+
 /***/ "8+AD":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2683,6 +2722,174 @@ __webpack_require__("wWUK")('keys', function () {
   };
 });
 
+
+/***/ }),
+
+/***/ "8I47":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = exports.styles = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
+
+var _react = _interopRequireDefault(__webpack_require__("cDcd"));
+
+var _reactIntl = __webpack_require__("k004");
+
+var _reactToastify = __webpack_require__("oAEb");
+
+var _Paper = _interopRequireDefault(__webpack_require__("qt1I"));
+
+var _Button = _interopRequireDefault(__webpack_require__("Wh1t"));
+
+var _Typography = _interopRequireDefault(__webpack_require__("UVoM"));
+
+var _ArrowRightAlt = _interopRequireDefault(__webpack_require__("NotL"));
+
+var styles = function styles() {
+  return {
+    layout: {
+      width: "100%",
+      flex: 1,
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center"
+    },
+    paper: {
+      width: 300
+    },
+    row: {
+      display: "flex",
+      justifyContent: "center"
+    },
+    item: {
+      width: "33%",
+      fontSize: "200%",
+      padding: "0.5rem"
+    },
+    label: {
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      padding: "1rem"
+    }
+  };
+};
+
+exports.styles = styles;
+
+var NotificationsDemo =
+/*#__PURE__*/
+function (_React$Component) {
+  (0, _inherits2.default)(NotificationsDemo, _React$Component);
+
+  function NotificationsDemo() {
+    (0, _classCallCheck2.default)(this, NotificationsDemo);
+    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(NotificationsDemo).apply(this, arguments));
+  }
+
+  (0, _createClass2.default)(NotificationsDemo, [{
+    key: "toast",
+    value: function toast(position) {
+      this.props.sendToast(position, "Lorem Ipsum!", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent\n       ornare viverra sapien in cursus.");
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this = this;
+
+      return _react.default.createElement("div", {
+        className: this.props.classes.layout
+      }, _react.default.createElement(_Paper.default, {
+        className: this.props.classes.paper
+      }, _react.default.createElement("div", {
+        className: this.props.classes.row
+      }, _react.default.createElement(_Button.default, {
+        className: this.props.classes.item,
+        onClick: function onClick() {
+          return _this.toast(_reactToastify.toast.POSITION.TOP_LEFT);
+        }
+      }, _react.default.createElement(_ArrowRightAlt.default, {
+        style: {
+          transform: "rotate(-135deg)"
+        }
+      })), _react.default.createElement(_Button.default, {
+        className: this.props.classes.item,
+        onClick: function onClick() {
+          return _this.toast(_reactToastify.toast.POSITION.TOP_CENTER);
+        }
+      }, _react.default.createElement(_ArrowRightAlt.default, {
+        style: {
+          transform: "rotate(-90deg)"
+        }
+      })), _react.default.createElement(_Button.default, {
+        className: this.props.classes.item,
+        onClick: function onClick() {
+          return _this.toast(_reactToastify.toast.POSITION.TOP_RIGHT);
+        }
+      }, _react.default.createElement(_ArrowRightAlt.default, {
+        style: {
+          transform: "rotate(-45deg)"
+        }
+      }))), _react.default.createElement("div", {
+        className: this.props.classes.label
+      }, _react.default.createElement(_Typography.default, {
+        variant: "overline"
+      }, _react.default.createElement(_reactIntl.FormattedMessage, {
+        id: "NOTIFICATIONS_LABEL"
+      }))), _react.default.createElement("div", {
+        className: this.props.classes.row
+      }, _react.default.createElement(_Button.default, {
+        className: this.props.classes.item,
+        onClick: function onClick() {
+          return _this.toast(_reactToastify.toast.POSITION.BOTTOM_LEFT);
+        }
+      }, _react.default.createElement(_ArrowRightAlt.default, {
+        style: {
+          transform: "rotate(135deg)"
+        }
+      })), _react.default.createElement(_Button.default, {
+        className: this.props.classes.item,
+        onClick: function onClick() {
+          return _this.toast(_reactToastify.toast.POSITION.BOTTOM_CENTER);
+        }
+      }, _react.default.createElement(_ArrowRightAlt.default, {
+        style: {
+          transform: "rotate(90deg)"
+        }
+      })), _react.default.createElement(_Button.default, {
+        className: this.props.classes.item,
+        onClick: function onClick() {
+          return _this.toast(_reactToastify.toast.POSITION.BOTTOM_RIGHT);
+        }
+      }, _react.default.createElement(_ArrowRightAlt.default, {
+        style: {
+          transform: "rotate(45deg)"
+        }
+      })))));
+    }
+  }]);
+  return NotificationsDemo;
+}(_react.default.Component);
+
+var _default = NotificationsDemo;
+exports.default = _default;
 
 /***/ }),
 
@@ -2998,40 +3205,6 @@ $export($export.S, 'Object', { setPrototypeOf: __webpack_require__("ZJRo").set }
 
 /***/ }),
 
-/***/ "BaY6":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireWildcard = __webpack_require__("5Uuq");
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _reactRedux = __webpack_require__("h74D");
-
-var _styles = __webpack_require__("Bjmp");
-
-var _state = __webpack_require__("XiiD");
-
-var _MapsDemo = _interopRequireWildcard(__webpack_require__("Uxdj"));
-
-var mapStateToProps = function mapStateToProps(state) {
-  return {
-    theme: _state.appSelectors.getTheme(state),
-    mapboxToken: _state.appSelectors.getMapboxToken(state)
-  };
-};
-
-var MapsDemo = (0, _reactRedux.connect)(mapStateToProps)((0, _styles.withStyles)(_MapsDemo.styles)(_MapsDemo.default));
-var _default = MapsDemo;
-exports.default = _default;
-
-/***/ }),
-
 /***/ "BfLe":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -3197,7 +3370,7 @@ function (_React$Component) {
   }, {
     key: "renderHeader",
     value: function renderHeader() {
-      var userId = this.user && this.user.userId;
+      var userId = this.prop.user && this.props.user.userId;
       return _react.default.createElement("div", {
         className: this.props.classes.avatar
       }, _react.default.createElement("img", {
@@ -3505,13 +3678,6 @@ module.exports = function (name) {
   if (name.charAt(0) != '_' && !(name in $Symbol)) defineProperty($Symbol, name, { value: wksExt.f(name) });
 };
 
-
-/***/ }),
-
-/***/ "ChlY":
-/***/ (function(module, exports) {
-
-module.exports = require("deck.gl");
 
 /***/ }),
 
@@ -5760,13 +5926,6 @@ module.exports = node;
 
 /***/ }),
 
-/***/ "JNDT":
-/***/ (function(module, exports) {
-
-module.exports = require("@material-ui/icons/MyLocation");
-
-/***/ }),
-
 /***/ "JQ2V":
 /***/ (function(module, exports) {
 
@@ -6781,13 +6940,6 @@ module.exports = {
 
 /***/ }),
 
-/***/ "MX+i":
-/***/ (function(module, exports) {
-
-module.exports = require("@material-ui/icons/Streetview");
-
-/***/ }),
-
 /***/ "McIs":
 /***/ (function(module, exports) {
 
@@ -6886,6 +7038,13 @@ __webpack_require__("jDDT");
 __webpack_require__("GCOt");
 
 __webpack_require__("rG3h");
+
+/***/ }),
+
+/***/ "NotL":
+/***/ (function(module, exports) {
+
+module.exports = require("@material-ui/icons/ArrowRightAlt");
 
 /***/ }),
 
@@ -7853,13 +8012,6 @@ exports.fetchCities = fetchCities;
 
 /***/ }),
 
-/***/ "P9o6":
-/***/ (function(module, exports) {
-
-module.exports = require("@material-ui/icons/Category");
-
-/***/ }),
-
 /***/ "PczM":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -8464,6 +8616,120 @@ module.exports = require("formik");
 
 /***/ }),
 
+/***/ "R9Vg":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = exports.query = void 0;
+
+var _regenerator = _interopRequireDefault(__webpack_require__("ln6h"));
+
+var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__("+oT+"));
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
+
+var _react = _interopRequireDefault(__webpack_require__("cDcd"));
+
+var _reactRelay = __webpack_require__("iuEU");
+
+var _Relay = __webpack_require__("5upH");
+
+var _NotificationsDemoContainer = _interopRequireDefault(__webpack_require__("1aff"));
+
+var _LayoutContainer = _interopRequireDefault(__webpack_require__("hl3i"));
+
+var _SpinnerContainer = _interopRequireDefault(__webpack_require__("wkow"));
+
+var defaultVariables = {};
+
+var query = function query() {
+  return __webpack_require__("c94Z");
+};
+
+exports.query = query;
+
+var NotificationsPage =
+/*#__PURE__*/
+function (_React$Component) {
+  (0, _inherits2.default)(NotificationsPage, _React$Component);
+
+  function NotificationsPage() {
+    (0, _classCallCheck2.default)(this, NotificationsPage);
+    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(NotificationsPage).apply(this, arguments));
+  }
+
+  (0, _createClass2.default)(NotificationsPage, [{
+    key: "render",
+    value: function render() {
+      return _react.default.createElement(_Relay.QueryRenderer, {
+        query: query,
+        variables: defaultVariables,
+        render: function render(_ref) {
+          var error = _ref.error,
+              props = _ref.props;
+          return _react.default.createElement(_LayoutContainer.default, {
+            page: "/notifications",
+            viewer: props ? props.viewer : null,
+            error: error
+          }, !error && !props && _react.default.createElement(_SpinnerContainer.default, null), !error && props && _react.default.createElement(_NotificationsDemoContainer.default, {
+            viewer: props.viewer
+          }));
+        }
+      });
+    }
+  }], [{
+    key: "getInitialProps",
+    value: function () {
+      var _getInitialProps = (0, _asyncToGenerator2.default)(
+      /*#__PURE__*/
+      _regenerator.default.mark(function _callee(_ref2) {
+        var fetchQuery;
+        return _regenerator.default.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                fetchQuery = _ref2.fetchQuery;
+                _context.next = 3;
+                return fetchQuery(query, defaultVariables);
+
+              case 3:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }));
+
+      function getInitialProps(_x) {
+        return _getInitialProps.apply(this, arguments);
+      }
+
+      return getInitialProps;
+    }()
+  }]);
+  return NotificationsPage;
+}(_react.default.Component);
+
+var _default = NotificationsPage;
+exports.default = _default;
+
+/***/ }),
+
 /***/ "RByD":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -8538,120 +8804,6 @@ module.exports.default = exports.default;
 /***/ (function(module, exports) {
 
 
-
-/***/ }),
-
-/***/ "Rt0e":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__("KI45");
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = exports.query = void 0;
-
-var _regenerator = _interopRequireDefault(__webpack_require__("ln6h"));
-
-var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__("+oT+"));
-
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
-
-var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
-
-var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
-
-var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
-
-var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
-
-var _react = _interopRequireDefault(__webpack_require__("cDcd"));
-
-var _reactRelay = __webpack_require__("iuEU");
-
-var _Relay = __webpack_require__("5upH");
-
-var _MapsDemoContainer = _interopRequireDefault(__webpack_require__("BaY6"));
-
-var _LayoutContainer = _interopRequireDefault(__webpack_require__("hl3i"));
-
-var _SpinnerContainer = _interopRequireDefault(__webpack_require__("wkow"));
-
-var defaultVariables = {};
-
-var query = function query() {
-  return __webpack_require__("ZuRb");
-};
-
-exports.query = query;
-
-var MapsPage =
-/*#__PURE__*/
-function (_React$Component) {
-  (0, _inherits2.default)(MapsPage, _React$Component);
-
-  function MapsPage() {
-    (0, _classCallCheck2.default)(this, MapsPage);
-    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(MapsPage).apply(this, arguments));
-  }
-
-  (0, _createClass2.default)(MapsPage, [{
-    key: "render",
-    value: function render() {
-      return _react.default.createElement(_Relay.QueryRenderer, {
-        query: query,
-        variables: defaultVariables,
-        render: function render(_ref) {
-          var error = _ref.error,
-              props = _ref.props;
-          return _react.default.createElement(_LayoutContainer.default, {
-            page: "/maps",
-            viewer: props ? props.viewer : null,
-            error: error
-          }, !error && !props && _react.default.createElement(_SpinnerContainer.default, null), !error && props && _react.default.createElement(_MapsDemoContainer.default, {
-            viewer: props.viewer
-          }));
-        }
-      });
-    }
-  }], [{
-    key: "getInitialProps",
-    value: function () {
-      var _getInitialProps = (0, _asyncToGenerator2.default)(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee(_ref2) {
-        var fetchQuery;
-        return _regenerator.default.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                fetchQuery = _ref2.fetchQuery;
-                _context.next = 3;
-                return fetchQuery(query, defaultVariables);
-
-              case 3:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee);
-      }));
-
-      function getInitialProps(_x) {
-        return _getInitialProps.apply(this, arguments);
-      }
-
-      return getInitialProps;
-    }()
-  }]);
-  return MapsPage;
-}(_react.default.Component);
-
-var _default = MapsPage;
-exports.default = _default;
 
 /***/ }),
 
@@ -8808,348 +8960,6 @@ function isHexadecimal(str) {
 
 module.exports = exports.default;
 module.exports.default = exports.default;
-
-/***/ }),
-
-/***/ "Uxdj":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireWildcard = __webpack_require__("5Uuq");
-
-var _interopRequireDefault = __webpack_require__("KI45");
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = exports.styles = void 0;
-
-var _regenerator = _interopRequireDefault(__webpack_require__("ln6h"));
-
-var _promise = _interopRequireDefault(__webpack_require__("eVuF"));
-
-var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__("+oT+"));
-
-var _objectSpread2 = _interopRequireDefault(__webpack_require__("Avpf"));
-
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
-
-var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
-
-var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
-
-var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
-
-var _assertThisInitialized2 = _interopRequireDefault(__webpack_require__("K47E"));
-
-var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
-
-var _defineProperty2 = _interopRequireDefault(__webpack_require__("xHqa"));
-
-var _react = _interopRequireDefault(__webpack_require__("cDcd"));
-
-var _reactMapGl = _interopRequireWildcard(__webpack_require__("fdHT"));
-
-var _deck = _interopRequireDefault(__webpack_require__("ChlY"));
-
-var _Map = _interopRequireDefault(__webpack_require__("zmJW"));
-
-var _ThreeSixty = _interopRequireDefault(__webpack_require__("vbly"));
-
-var _MyLocation = _interopRequireDefault(__webpack_require__("JNDT"));
-
-var _Category = _interopRequireDefault(__webpack_require__("P9o6"));
-
-var _Streetview = _interopRequireDefault(__webpack_require__("MX+i"));
-
-var _Satellite = _interopRequireDefault(__webpack_require__("yV47"));
-
-var styles = function styles(theme) {
-  var _layout;
-
-  return {
-    layout: (_layout = {
-      width: "100%",
-      flex: 1,
-      marginTop: "-2rem"
-    }, (0, _defineProperty2.default)(_layout, theme.breakpoints.down("xs"), {
-      marginTop: 0
-    }), (0, _defineProperty2.default)(_layout, "& canvas", {
-      top: 0,
-      left: 0
-    }), _layout),
-    controls: {
-      position: "absolute",
-      zIndex: 100,
-      top: "10px",
-      right: "10px"
-    },
-    controlsSpacer: {
-      height: "10px"
-    },
-    controlsSelected: {
-      background: ["rgba(0, 0, 255, 0.1)", "!important"]
-    }
-  };
-};
-
-exports.styles = styles;
-
-var MapsDemo =
-/*#__PURE__*/
-function (_React$Component) {
-  (0, _inherits2.default)(MapsDemo, _React$Component);
-
-  function MapsDemo(props) {
-    var _this;
-
-    (0, _classCallCheck2.default)(this, MapsDemo);
-    _this = (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(MapsDemo).call(this, props));
-    _this.state = {
-      mode: "contour",
-      viewState: {
-        latitude: 53.35014,
-        longitude: -6.266155,
-        zoom: 13,
-        bearing: 0,
-        pitch: 0
-      }
-    };
-    _this.updateViewState = _this.updateViewState.bind((0, _assertThisInitialized2.default)(_this));
-    _this.updateViewportNoPitch = _this.updateViewportNoPitch.bind((0, _assertThisInitialized2.default)(_this));
-    _this.updateMapMode = _this.updateMapMode.bind((0, _assertThisInitialized2.default)(_this));
-    _this.updateViewMode = _this.updateViewMode.bind((0, _assertThisInitialized2.default)(_this));
-    return _this;
-  }
-
-  (0, _createClass2.default)(MapsDemo, [{
-    key: "updateViewState",
-    value: function updateViewState(_ref) {
-      var viewState = _ref.viewState;
-      viewState = (0, _objectSpread2.default)({}, this.state.viewState, viewState);
-      this.setState({
-        viewState: viewState
-      }, this.renderLayers);
-    } // "Look North" button also tries to reset the pitch, so we prevent this here
-
-  }, {
-    key: "updateViewportNoPitch",
-    value: function updateViewportNoPitch(viewport) {
-      viewport.pitch = this.state.viewState.pitch;
-      this.updateViewState({
-        viewState: viewport
-      });
-    }
-  }, {
-    key: "updateMapMode",
-    value: function updateMapMode(mode) {
-      switch (mode) {
-        case "flat":
-          this.updateViewState({
-            viewState: {
-              pitch: 0,
-              transitionDuration: 2000,
-              // animate the change
-              transitionInterpolator: new _reactMapGl.FlyToInterpolator()
-            }
-          });
-          break;
-
-        case "perspective":
-          this.updateViewState({
-            viewState: {
-              pitch: 60,
-              transitionDuration: 2000,
-              // animate the change
-              transitionInterpolator: new _reactMapGl.FlyToInterpolator()
-            }
-          });
-          break;
-      }
-    }
-  }, {
-    key: "updateViewMode",
-    value: function updateViewMode(mode) {
-      this.setState({
-        mode: mode
-      });
-    }
-  }, {
-    key: "locateUser",
-    value: function () {
-      var _locateUser = (0, _asyncToGenerator2.default)(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee() {
-        var location, state;
-        return _regenerator.default.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                _context.next = 2;
-                return new _promise.default(function (resolve) {
-                  /*
-                  // Quick test
-                  return resolve({
-                    latitude: 35.778105,
-                    longitude: -78.638618
-                  });
-                  */
-                  if ("geolocation" in navigator) {
-                    navigator.geolocation.getCurrentPosition(function (position) {
-                      return resolve({
-                        latitude: position.coords.latitude,
-                        longitude: position.coords.longitude
-                      });
-                    }, function (error) {
-                      console.error(error);
-                      resolve(null);
-                    }, {
-                      timeout: 5000,
-                      enableHighAccuracy: true
-                    });
-                  } else {
-                    console.error("Geolocation IS NOT available");
-                    resolve(null);
-                  }
-                });
-
-              case 2:
-                location = _context.sent;
-
-                if (location) {
-                  _context.next = 5;
-                  break;
-                }
-
-                return _context.abrupt("return");
-
-              case 5:
-                state = {
-                  viewState: (0, _objectSpread2.default)({}, this.state.viewState, location, {
-                    transitionDuration: 2000,
-                    // add transition animation
-                    transitionInterpolator: new _reactMapGl.FlyToInterpolator()
-                  })
-                };
-                this.setState(state);
-
-              case 7:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee, this);
-      }));
-
-      function locateUser() {
-        return _locateUser.apply(this, arguments);
-      }
-
-      return locateUser;
-    }()
-  }, {
-    key: "render",
-    value: function render() {
-      var _this2 = this;
-
-      var _this$props = this.props,
-          mapboxToken = _this$props.mapboxToken,
-          theme = _this$props.theme;
-      var _this$state = this.state,
-          pitch = _this$state.viewState.pitch,
-          mode = _this$state.mode;
-      var mapStyle;
-
-      switch (mode) {
-        case "contour":
-          mapStyle = "mapbox://styles/mapbox/" + theme + "-v9";
-          break;
-
-        case "streets":
-          mapStyle = "mapbox://styles/mapbox/streets-v10";
-          break;
-
-        case "satellite":
-          mapStyle = "mapbox://styles/mapbox/satellite-v9";
-          break;
-      }
-
-      return _react.default.createElement("div", {
-        className: this.props.classes.layout
-      }, _react.default.createElement(_deck.default, {
-        controller: true,
-        width: "100%",
-        height: "100%",
-        viewState: this.state.viewState,
-        getCursor: function getCursor() {
-          return "crosshair";
-        },
-        onViewStateChange: this.updateViewState
-      }, _react.default.createElement(_reactMapGl.default, {
-        reuseMaps: true,
-        preventStyleDiffing: true,
-        mapboxApiAccessToken: mapboxToken,
-        mapStyle: mapStyle
-      }, _react.default.createElement("div", {
-        className: this.props.classes.controls
-      }, _react.default.createElement(_reactMapGl.NavigationControl, {
-        onViewportChange: this.updateViewportNoPitch
-      }), _react.default.createElement("div", {
-        className: this.props.classes.controlsSpacer
-      }), _react.default.createElement("div", {
-        className: "mapboxgl-ctrl mapboxgl-ctrl-group "
-      }, _react.default.createElement("button", {
-        title: "My Location",
-        className: "mapboxgl-ctrl-icon ",
-        onClick: this.locateUser
-      }, _react.default.createElement(_MyLocation.default, null))), _react.default.createElement("div", {
-        className: this.props.classes.controlsSpacer
-      }), _react.default.createElement("div", {
-        className: "mapboxgl-ctrl mapboxgl-ctrl-group "
-      }, _react.default.createElement("button", {
-        title: "Flat Mode",
-        className: "mapboxgl-ctrl-icon " + (pitch ? "" : this.props.classes.controlsSelected),
-        onClick: function onClick() {
-          return _this2.updateMapMode("flat");
-        }
-      }, _react.default.createElement(_Map.default, null)), _react.default.createElement("button", {
-        title: "3D Mode",
-        className: "mapboxgl-ctrl-icon " + (pitch ? this.props.classes.controlsSelected : ""),
-        onClick: function onClick() {
-          return _this2.updateMapMode("perspective");
-        }
-      }, _react.default.createElement(_ThreeSixty.default, null))), _react.default.createElement("div", {
-        className: this.props.classes.controlsSpacer
-      }), _react.default.createElement("div", {
-        className: "mapboxgl-ctrl mapboxgl-ctrl-group "
-      }, _react.default.createElement("button", {
-        title: "Contour View",
-        className: "mapboxgl-ctrl-icon " + (mode === "contour" ? this.props.classes.controlsSelected : ""),
-        onClick: function onClick() {
-          return _this2.updateViewMode("contour");
-        }
-      }, _react.default.createElement(_Category.default, null)), _react.default.createElement("button", {
-        title: "Streets View",
-        className: "mapboxgl-ctrl-icon " + (mode === "streets" ? this.props.classes.controlsSelected : ""),
-        onClick: function onClick() {
-          return _this2.updateViewMode("streets");
-        }
-      }, _react.default.createElement(_Streetview.default, null)), _react.default.createElement("button", {
-        title: "Satellite View",
-        className: "mapboxgl-ctrl-icon " + (mode === "satellite" ? this.props.classes.controlsSelected : ""),
-        onClick: function onClick() {
-          return _this2.updateViewMode("satellite");
-        }
-      }, _react.default.createElement(_Satellite.default, null)))))));
-    }
-  }]);
-  return MapsDemo;
-}(_react.default.Component);
-
-var _default = MapsDemo;
-exports.default = _default;
 
 /***/ }),
 
@@ -10640,165 +10450,6 @@ function isLength(str, options) {
 
 module.exports = exports.default;
 module.exports.default = exports.default;
-
-/***/ }),
-
-/***/ "ZuRb":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @flow
- * @relayHash c2c48cfeccd6ce0f078fe06697d1272f
- */
-
-/* eslint-disable */
-
-/*::
-import type { ConcreteRequest } from 'relay-runtime';
-type LayoutContainer_viewer$ref = any;
-export type MapsPageQueryVariables = {||};
-export type MapsPageQueryResponse = {|
-  +viewer: ?{|
-    +$fragmentRefs: LayoutContainer_viewer$ref
-  |}
-|};
-export type MapsPageQuery = {|
-  variables: MapsPageQueryVariables,
-  response: MapsPageQueryResponse,
-|};
-*/
-
-/*
-query MapsPageQuery {
-  viewer {
-    ...LayoutContainer_viewer
-  }
-}
-
-fragment LayoutContainer_viewer on Viewer {
-  me {
-    isAuthenticated
-    userId
-    name
-    email
-    roles
-    providers {
-      name
-    }
-  }
-}
-*/
-
-var node
-/*: ConcreteRequest*/
-= function () {
-  var v0 = {
-    "kind": "ScalarField",
-    "alias": null,
-    "name": "name",
-    "args": null,
-    "storageKey": null
-  };
-  return {
-    "kind": "Request",
-    "fragment": {
-      "kind": "Fragment",
-      "name": "MapsPageQuery",
-      "type": "Query",
-      "metadata": null,
-      "argumentDefinitions": [],
-      "selections": [{
-        "kind": "LinkedField",
-        "alias": null,
-        "name": "viewer",
-        "storageKey": null,
-        "args": null,
-        "concreteType": "Viewer",
-        "plural": false,
-        "selections": [{
-          "kind": "FragmentSpread",
-          "name": "LayoutContainer_viewer",
-          "args": null
-        }]
-      }]
-    },
-    "operation": {
-      "kind": "Operation",
-      "name": "MapsPageQuery",
-      "argumentDefinitions": [],
-      "selections": [{
-        "kind": "LinkedField",
-        "alias": null,
-        "name": "viewer",
-        "storageKey": null,
-        "args": null,
-        "concreteType": "Viewer",
-        "plural": false,
-        "selections": [{
-          "kind": "LinkedField",
-          "alias": null,
-          "name": "me",
-          "storageKey": null,
-          "args": null,
-          "concreteType": "Status",
-          "plural": false,
-          "selections": [{
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "isAuthenticated",
-            "args": null,
-            "storageKey": null
-          }, {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "userId",
-            "args": null,
-            "storageKey": null
-          }, v0
-          /*: any*/
-          , {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "email",
-            "args": null,
-            "storageKey": null
-          }, {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "roles",
-            "args": null,
-            "storageKey": null
-          }, {
-            "kind": "LinkedField",
-            "alias": null,
-            "name": "providers",
-            "storageKey": null,
-            "args": null,
-            "concreteType": "ProviderStatus",
-            "plural": true,
-            "selections": [v0
-            /*: any*/
-            ]
-          }]
-        }]
-      }]
-    },
-    "params": {
-      "operationKind": "query",
-      "name": "MapsPageQuery",
-      "id": null,
-      "text": "query MapsPageQuery {\n  viewer {\n    ...LayoutContainer_viewer\n  }\n}\n\nfragment LayoutContainer_viewer on Viewer {\n  me {\n    isAuthenticated\n    userId\n    name\n    email\n    roles\n    providers {\n      name\n    }\n  }\n}\n",
-      "metadata": {}
-    }
-  };
-}(); // prettier-ignore
-
-
-node
-/*: any*/
-.hash = '581e71fb6db09ace5cad8fa88ca4f3f2';
-module.exports = node;
 
 /***/ }),
 
@@ -12661,6 +12312,165 @@ module.exports = {
 
 /***/ }),
 
+/***/ "c94Z":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @flow
+ * @relayHash 356c64dfb2337f1346c91df0cc97d1d3
+ */
+
+/* eslint-disable */
+
+/*::
+import type { ConcreteRequest } from 'relay-runtime';
+type LayoutContainer_viewer$ref = any;
+export type NotificationsPageQueryVariables = {||};
+export type NotificationsPageQueryResponse = {|
+  +viewer: ?{|
+    +$fragmentRefs: LayoutContainer_viewer$ref
+  |}
+|};
+export type NotificationsPageQuery = {|
+  variables: NotificationsPageQueryVariables,
+  response: NotificationsPageQueryResponse,
+|};
+*/
+
+/*
+query NotificationsPageQuery {
+  viewer {
+    ...LayoutContainer_viewer
+  }
+}
+
+fragment LayoutContainer_viewer on Viewer {
+  me {
+    isAuthenticated
+    userId
+    name
+    email
+    roles
+    providers {
+      name
+    }
+  }
+}
+*/
+
+var node
+/*: ConcreteRequest*/
+= function () {
+  var v0 = {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "name",
+    "args": null,
+    "storageKey": null
+  };
+  return {
+    "kind": "Request",
+    "fragment": {
+      "kind": "Fragment",
+      "name": "NotificationsPageQuery",
+      "type": "Query",
+      "metadata": null,
+      "argumentDefinitions": [],
+      "selections": [{
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "viewer",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "Viewer",
+        "plural": false,
+        "selections": [{
+          "kind": "FragmentSpread",
+          "name": "LayoutContainer_viewer",
+          "args": null
+        }]
+      }]
+    },
+    "operation": {
+      "kind": "Operation",
+      "name": "NotificationsPageQuery",
+      "argumentDefinitions": [],
+      "selections": [{
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "viewer",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "Viewer",
+        "plural": false,
+        "selections": [{
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "me",
+          "storageKey": null,
+          "args": null,
+          "concreteType": "Status",
+          "plural": false,
+          "selections": [{
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "isAuthenticated",
+            "args": null,
+            "storageKey": null
+          }, {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "userId",
+            "args": null,
+            "storageKey": null
+          }, v0
+          /*: any*/
+          , {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "email",
+            "args": null,
+            "storageKey": null
+          }, {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "roles",
+            "args": null,
+            "storageKey": null
+          }, {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "providers",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "ProviderStatus",
+            "plural": true,
+            "selections": [v0
+            /*: any*/
+            ]
+          }]
+        }]
+      }]
+    },
+    "params": {
+      "operationKind": "query",
+      "name": "NotificationsPageQuery",
+      "id": null,
+      "text": "query NotificationsPageQuery {\n  viewer {\n    ...LayoutContainer_viewer\n  }\n}\n\nfragment LayoutContainer_viewer on Viewer {\n  me {\n    isAuthenticated\n    userId\n    name\n    email\n    roles\n    providers {\n      name\n    }\n  }\n}\n",
+      "metadata": {}
+    }
+  };
+}(); // prettier-ignore
+
+
+node
+/*: any*/
+.hash = 'a5448716b28019842cc4e22b2b15b90c';
+module.exports = node;
+
+/***/ }),
+
 /***/ "cBdl":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -13472,13 +13282,6 @@ module.exports = !__webpack_require__("14Ie")(function () {
 
 /***/ }),
 
-/***/ "fdHT":
-/***/ (function(module, exports) {
-
-module.exports = require("react-map-gl");
-
-/***/ }),
-
 /***/ "flba":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -13779,28 +13582,6 @@ function _extends() {
 }
 
 module.exports = _extends;
-
-/***/ }),
-
-/***/ "i/Ws":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__("KI45");
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-Object.defineProperty(exports, "default", {
-  enumerable: true,
-  get: function get() {
-    return _MapsPage.default;
-  }
-});
-
-var _MapsPage = _interopRequireDefault(__webpack_require__("Rt0e"));
 
 /***/ }),
 
@@ -17230,13 +17011,6 @@ module.exports = require("@material-ui/icons/Dashboard");
 
 /***/ }),
 
-/***/ "vbly":
-/***/ (function(module, exports) {
-
-module.exports = require("@material-ui/icons/ThreeSixty");
-
-/***/ }),
-
 /***/ "vdyi":
 /***/ (function(module, exports) {
 
@@ -18504,13 +18278,6 @@ module.exports = function validate(options, value, allValues) {
 
 /***/ }),
 
-/***/ "yV47":
-/***/ (function(module, exports) {
-
-module.exports = require("@material-ui/icons/Satellite");
-
-/***/ }),
-
 /***/ "yboX":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -18738,6 +18505,28 @@ function () {
 }();
 
 exports.default = _default;
+
+/***/ }),
+
+/***/ "ziBp":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+Object.defineProperty(exports, "default", {
+  enumerable: true,
+  get: function get() {
+    return _NotificationsPage.default;
+  }
+});
+
+var _NotificationsPage = _interopRequireDefault(__webpack_require__("R9Vg"));
 
 /***/ }),
 

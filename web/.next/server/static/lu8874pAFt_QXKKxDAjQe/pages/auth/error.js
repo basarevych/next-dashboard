@@ -1,7 +1,7 @@
 module.exports =
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
-/******/ 	var installedModules = require('../../../ssr-module-cache.js');
+/******/ 	var installedModules = require('../../../../ssr-module-cache.js');
 /******/
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
@@ -88,7 +88,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 8);
+/******/ 	return __webpack_require__(__webpack_require__.s = 12);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -867,6 +867,14 @@ exports.f = {}.propertyIsEnumerable;
 
 /***/ }),
 
+/***/ 12:
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__("H5iX");
+
+
+/***/ }),
+
 /***/ "14Ie":
 /***/ (function(module, exports) {
 
@@ -1063,45 +1071,6 @@ function isAlpha(str) {
 
 var locales = Object.keys(_alpha.alpha);
 exports.locales = locales;
-
-/***/ }),
-
-/***/ "1aff":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireWildcard = __webpack_require__("5Uuq");
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _reactRedux = __webpack_require__("h74D");
-
-var _styles = __webpack_require__("Bjmp");
-
-var _NotificationsDemo = _interopRequireWildcard(__webpack_require__("8I47"));
-
-var _state = __webpack_require__("XiiD");
-
-var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-  return {
-    sendToast: function sendToast(position, title, content) {
-      return dispatch(_state.appOperations.sendToast({
-        position: position,
-        title: title,
-        content: content
-      }));
-    }
-  };
-};
-
-var NotificationsDemo = (0, _reactRedux.connect)(null, mapDispatchToProps)((0, _styles.withStyles)(_NotificationsDemo.styles)(_NotificationsDemo.default));
-var _default = NotificationsDemo;
-exports.default = _default;
 
 /***/ }),
 
@@ -2163,6 +2132,129 @@ module.exports = require("@material-ui/icons/Menu");
 
 /***/ }),
 
+/***/ "4DS7":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(_) {
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = exports.styles = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
+
+var _react = _interopRequireDefault(__webpack_require__("cDcd"));
+
+var _reactIntl = __webpack_require__("k004");
+
+var _Typography = _interopRequireDefault(__webpack_require__("UVoM"));
+
+var styles = function styles(theme) {
+  return {
+    layout: {
+      width: "100%",
+      flex: 1,
+      padding: theme.spacing(1),
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center"
+    },
+    form: {
+      width: "100%",
+      maxWidth: 700
+    },
+    title: {
+      borderBottom: "1px dotted ".concat(theme.palette.text.primary)
+    },
+    hint: {
+      marginTop: "4rem",
+      marginLeft: "5rem"
+    }
+  };
+};
+
+exports.styles = styles;
+
+var AuthError =
+/*#__PURE__*/
+function (_React$Component) {
+  (0, _inherits2.default)(AuthError, _React$Component);
+
+  function AuthError() {
+    (0, _classCallCheck2.default)(this, AuthError);
+    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(AuthError).apply(this, arguments));
+  }
+
+  (0, _createClass2.default)(AuthError, [{
+    key: "render",
+    value: function render() {
+      var _this = this;
+
+      var msg = "OAUTH_ERROR_GENERIC";
+      var hints = [];
+
+      if (this.props.type === "oauth") {
+        msg = "OAUTH_ERROR_ACCOUNT_EXISTS";
+        hints.push({
+          title: "OAUTH_ERROR_ACCOUNT_EXISTS_TITLE1",
+          body: "OAUTH_ERROR_ACCOUNT_EXISTS_MESSAGE1"
+        });
+        hints.push({
+          title: "OAUTH_ERROR_ACCOUNT_EXISTS_TITLE2",
+          body: "OAUTH_ERROR_ACCOUNT_EXISTS_MESSAGE2"
+        });
+      }
+
+      return _react.default.createElement("div", {
+        className: this.props.classes.layout
+      }, _react.default.createElement("div", {
+        className: this.props.classes.form
+      }, _react.default.createElement(_Typography.default, {
+        variant: "h4",
+        classes: {
+          root: this.props.classes.title
+        }
+      }, _react.default.createElement(_reactIntl.FormattedMessage, {
+        id: "TITLE_OAUTH_ERROR"
+      })), _react.default.createElement("p", null, _react.default.createElement(_reactIntl.FormattedMessage, {
+        id: msg
+      })), _.map(hints, function (hint, index) {
+        return _react.default.createElement("div", {
+          key: "hint-".concat(index),
+          className: _this.props.classes.hint
+        }, _react.default.createElement(_Typography.default, {
+          variant: "h5"
+        }, _react.default.createElement(_reactIntl.FormattedMessage, {
+          id: hint.title
+        })), _react.default.createElement(_Typography.default, {
+          variant: "body1"
+        }, _react.default.createElement(_reactIntl.FormattedMessage, {
+          id: hint.body
+        })));
+      })));
+    }
+  }]);
+  return AuthError;
+}(_react.default.Component);
+
+var _default = AuthError;
+exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("YLtl")))
+
+/***/ }),
+
 /***/ "4N2y":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2701,14 +2793,6 @@ module.exports = require("@material-ui/core/FormControlLabel");
 
 /***/ }),
 
-/***/ 8:
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__("ziBp");
-
-
-/***/ }),
-
 /***/ "8+AD":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2722,174 +2806,6 @@ __webpack_require__("wWUK")('keys', function () {
   };
 });
 
-
-/***/ }),
-
-/***/ "8I47":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__("KI45");
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = exports.styles = void 0;
-
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
-
-var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
-
-var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
-
-var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
-
-var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
-
-var _react = _interopRequireDefault(__webpack_require__("cDcd"));
-
-var _reactIntl = __webpack_require__("k004");
-
-var _reactToastify = __webpack_require__("oAEb");
-
-var _Paper = _interopRequireDefault(__webpack_require__("qt1I"));
-
-var _Button = _interopRequireDefault(__webpack_require__("Wh1t"));
-
-var _Typography = _interopRequireDefault(__webpack_require__("UVoM"));
-
-var _ArrowRightAlt = _interopRequireDefault(__webpack_require__("NotL"));
-
-var styles = function styles() {
-  return {
-    layout: {
-      width: "100%",
-      flex: 1,
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center"
-    },
-    paper: {
-      width: 300
-    },
-    row: {
-      display: "flex",
-      justifyContent: "center"
-    },
-    item: {
-      width: "33%",
-      fontSize: "200%",
-      padding: "0.5rem"
-    },
-    label: {
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      padding: "1rem"
-    }
-  };
-};
-
-exports.styles = styles;
-
-var NotificationsDemo =
-/*#__PURE__*/
-function (_React$Component) {
-  (0, _inherits2.default)(NotificationsDemo, _React$Component);
-
-  function NotificationsDemo() {
-    (0, _classCallCheck2.default)(this, NotificationsDemo);
-    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(NotificationsDemo).apply(this, arguments));
-  }
-
-  (0, _createClass2.default)(NotificationsDemo, [{
-    key: "toast",
-    value: function toast(position) {
-      this.props.sendToast(position, "Lorem Ipsum!", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent\n       ornare viverra sapien in cursus.");
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      var _this = this;
-
-      return _react.default.createElement("div", {
-        className: this.props.classes.layout
-      }, _react.default.createElement(_Paper.default, {
-        className: this.props.classes.paper
-      }, _react.default.createElement("div", {
-        className: this.props.classes.row
-      }, _react.default.createElement(_Button.default, {
-        className: this.props.classes.item,
-        onClick: function onClick() {
-          return _this.toast(_reactToastify.toast.POSITION.TOP_LEFT);
-        }
-      }, _react.default.createElement(_ArrowRightAlt.default, {
-        style: {
-          transform: "rotate(-135deg)"
-        }
-      })), _react.default.createElement(_Button.default, {
-        className: this.props.classes.item,
-        onClick: function onClick() {
-          return _this.toast(_reactToastify.toast.POSITION.TOP_CENTER);
-        }
-      }, _react.default.createElement(_ArrowRightAlt.default, {
-        style: {
-          transform: "rotate(-90deg)"
-        }
-      })), _react.default.createElement(_Button.default, {
-        className: this.props.classes.item,
-        onClick: function onClick() {
-          return _this.toast(_reactToastify.toast.POSITION.TOP_RIGHT);
-        }
-      }, _react.default.createElement(_ArrowRightAlt.default, {
-        style: {
-          transform: "rotate(-45deg)"
-        }
-      }))), _react.default.createElement("div", {
-        className: this.props.classes.label
-      }, _react.default.createElement(_Typography.default, {
-        variant: "overline"
-      }, _react.default.createElement(_reactIntl.FormattedMessage, {
-        id: "NOTIFICATIONS_LABEL"
-      }))), _react.default.createElement("div", {
-        className: this.props.classes.row
-      }, _react.default.createElement(_Button.default, {
-        className: this.props.classes.item,
-        onClick: function onClick() {
-          return _this.toast(_reactToastify.toast.POSITION.BOTTOM_LEFT);
-        }
-      }, _react.default.createElement(_ArrowRightAlt.default, {
-        style: {
-          transform: "rotate(135deg)"
-        }
-      })), _react.default.createElement(_Button.default, {
-        className: this.props.classes.item,
-        onClick: function onClick() {
-          return _this.toast(_reactToastify.toast.POSITION.BOTTOM_CENTER);
-        }
-      }, _react.default.createElement(_ArrowRightAlt.default, {
-        style: {
-          transform: "rotate(90deg)"
-        }
-      })), _react.default.createElement(_Button.default, {
-        className: this.props.classes.item,
-        onClick: function onClick() {
-          return _this.toast(_reactToastify.toast.POSITION.BOTTOM_RIGHT);
-        }
-      }, _react.default.createElement(_ArrowRightAlt.default, {
-        style: {
-          transform: "rotate(45deg)"
-        }
-      })))));
-    }
-  }]);
-  return NotificationsDemo;
-}(_react.default.Component);
-
-var _default = NotificationsDemo;
-exports.default = _default;
 
 /***/ }),
 
@@ -3370,7 +3286,7 @@ function (_React$Component) {
   }, {
     key: "renderHeader",
     value: function renderHeader() {
-      var userId = this.user && this.user.userId;
+      var userId = this.prop.user && this.props.user.userId;
       return _react.default.createElement("div", {
         className: this.props.classes.avatar
       }, _react.default.createElement("img", {
@@ -4192,6 +4108,28 @@ module.exports = require("@material-ui/core/Menu");
 
 /***/ }),
 
+/***/ "H5iX":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+Object.defineProperty(exports, "default", {
+  enumerable: true,
+  get: function get() {
+    return _AuthErrorPage.default;
+  }
+});
+
+var _AuthErrorPage = _interopRequireDefault(__webpack_require__("rEps"));
+
+/***/ }),
+
 /***/ "H7v7":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -4327,6 +4265,29 @@ function (_React$Component) {
 }(_react.default.Component);
 
 var _default = Header;
+exports.default = _default;
+
+/***/ }),
+
+/***/ "HA6i":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireWildcard = __webpack_require__("5Uuq");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _styles = __webpack_require__("Bjmp");
+
+var _AuthError = _interopRequireWildcard(__webpack_require__("4DS7"));
+
+var AuthError = (0, _styles.withStyles)(_AuthError.styles)(_AuthError.default);
+var _default = AuthError;
 exports.default = _default;
 
 /***/ }),
@@ -7041,13 +7002,6 @@ __webpack_require__("rG3h");
 
 /***/ }),
 
-/***/ "NotL":
-/***/ (function(module, exports) {
-
-module.exports = require("@material-ui/icons/ArrowRightAlt");
-
-/***/ }),
-
 /***/ "Nr6a":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -8613,120 +8567,6 @@ module.exports = {
 /***/ (function(module, exports) {
 
 module.exports = require("formik");
-
-/***/ }),
-
-/***/ "R9Vg":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__("KI45");
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = exports.query = void 0;
-
-var _regenerator = _interopRequireDefault(__webpack_require__("ln6h"));
-
-var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__("+oT+"));
-
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
-
-var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
-
-var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
-
-var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
-
-var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
-
-var _react = _interopRequireDefault(__webpack_require__("cDcd"));
-
-var _reactRelay = __webpack_require__("iuEU");
-
-var _Relay = __webpack_require__("5upH");
-
-var _NotificationsDemoContainer = _interopRequireDefault(__webpack_require__("1aff"));
-
-var _LayoutContainer = _interopRequireDefault(__webpack_require__("hl3i"));
-
-var _SpinnerContainer = _interopRequireDefault(__webpack_require__("wkow"));
-
-var defaultVariables = {};
-
-var query = function query() {
-  return __webpack_require__("c94Z");
-};
-
-exports.query = query;
-
-var NotificationsPage =
-/*#__PURE__*/
-function (_React$Component) {
-  (0, _inherits2.default)(NotificationsPage, _React$Component);
-
-  function NotificationsPage() {
-    (0, _classCallCheck2.default)(this, NotificationsPage);
-    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(NotificationsPage).apply(this, arguments));
-  }
-
-  (0, _createClass2.default)(NotificationsPage, [{
-    key: "render",
-    value: function render() {
-      return _react.default.createElement(_Relay.QueryRenderer, {
-        query: query,
-        variables: defaultVariables,
-        render: function render(_ref) {
-          var error = _ref.error,
-              props = _ref.props;
-          return _react.default.createElement(_LayoutContainer.default, {
-            page: "/notifications",
-            viewer: props ? props.viewer : null,
-            error: error
-          }, !error && !props && _react.default.createElement(_SpinnerContainer.default, null), !error && props && _react.default.createElement(_NotificationsDemoContainer.default, {
-            viewer: props.viewer
-          }));
-        }
-      });
-    }
-  }], [{
-    key: "getInitialProps",
-    value: function () {
-      var _getInitialProps = (0, _asyncToGenerator2.default)(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee(_ref2) {
-        var fetchQuery;
-        return _regenerator.default.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                fetchQuery = _ref2.fetchQuery;
-                _context.next = 3;
-                return fetchQuery(query, defaultVariables);
-
-              case 3:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee);
-      }));
-
-      function getInitialProps(_x) {
-        return _getInitialProps.apply(this, arguments);
-      }
-
-      return getInitialProps;
-    }()
-  }]);
-  return NotificationsPage;
-}(_react.default.Component);
-
-var _default = NotificationsPage;
-exports.default = _default;
 
 /***/ }),
 
@@ -12309,165 +12149,6 @@ module.exports = {
            allCountryCodes: allCountryCodes
        };
 
-
-/***/ }),
-
-/***/ "c94Z":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @flow
- * @relayHash 356c64dfb2337f1346c91df0cc97d1d3
- */
-
-/* eslint-disable */
-
-/*::
-import type { ConcreteRequest } from 'relay-runtime';
-type LayoutContainer_viewer$ref = any;
-export type NotificationsPageQueryVariables = {||};
-export type NotificationsPageQueryResponse = {|
-  +viewer: ?{|
-    +$fragmentRefs: LayoutContainer_viewer$ref
-  |}
-|};
-export type NotificationsPageQuery = {|
-  variables: NotificationsPageQueryVariables,
-  response: NotificationsPageQueryResponse,
-|};
-*/
-
-/*
-query NotificationsPageQuery {
-  viewer {
-    ...LayoutContainer_viewer
-  }
-}
-
-fragment LayoutContainer_viewer on Viewer {
-  me {
-    isAuthenticated
-    userId
-    name
-    email
-    roles
-    providers {
-      name
-    }
-  }
-}
-*/
-
-var node
-/*: ConcreteRequest*/
-= function () {
-  var v0 = {
-    "kind": "ScalarField",
-    "alias": null,
-    "name": "name",
-    "args": null,
-    "storageKey": null
-  };
-  return {
-    "kind": "Request",
-    "fragment": {
-      "kind": "Fragment",
-      "name": "NotificationsPageQuery",
-      "type": "Query",
-      "metadata": null,
-      "argumentDefinitions": [],
-      "selections": [{
-        "kind": "LinkedField",
-        "alias": null,
-        "name": "viewer",
-        "storageKey": null,
-        "args": null,
-        "concreteType": "Viewer",
-        "plural": false,
-        "selections": [{
-          "kind": "FragmentSpread",
-          "name": "LayoutContainer_viewer",
-          "args": null
-        }]
-      }]
-    },
-    "operation": {
-      "kind": "Operation",
-      "name": "NotificationsPageQuery",
-      "argumentDefinitions": [],
-      "selections": [{
-        "kind": "LinkedField",
-        "alias": null,
-        "name": "viewer",
-        "storageKey": null,
-        "args": null,
-        "concreteType": "Viewer",
-        "plural": false,
-        "selections": [{
-          "kind": "LinkedField",
-          "alias": null,
-          "name": "me",
-          "storageKey": null,
-          "args": null,
-          "concreteType": "Status",
-          "plural": false,
-          "selections": [{
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "isAuthenticated",
-            "args": null,
-            "storageKey": null
-          }, {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "userId",
-            "args": null,
-            "storageKey": null
-          }, v0
-          /*: any*/
-          , {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "email",
-            "args": null,
-            "storageKey": null
-          }, {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "roles",
-            "args": null,
-            "storageKey": null
-          }, {
-            "kind": "LinkedField",
-            "alias": null,
-            "name": "providers",
-            "storageKey": null,
-            "args": null,
-            "concreteType": "ProviderStatus",
-            "plural": true,
-            "selections": [v0
-            /*: any*/
-            ]
-          }]
-        }]
-      }]
-    },
-    "params": {
-      "operationKind": "query",
-      "name": "NotificationsPageQuery",
-      "id": null,
-      "text": "query NotificationsPageQuery {\n  viewer {\n    ...LayoutContainer_viewer\n  }\n}\n\nfragment LayoutContainer_viewer on Viewer {\n  me {\n    isAuthenticated\n    userId\n    name\n    email\n    roles\n    providers {\n      name\n    }\n  }\n}\n",
-      "metadata": {}
-    }
-  };
-}(); // prettier-ignore
-
-
-node
-/*: any*/
-.hash = 'a5448716b28019842cc4e22b2b15b90c';
-module.exports = node;
 
 /***/ }),
 
@@ -16134,6 +15815,128 @@ module.exports = require("@material-ui/core/Checkbox");
 
 /***/ }),
 
+/***/ "rEps":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = exports.query = void 0;
+
+var _regenerator = _interopRequireDefault(__webpack_require__("ln6h"));
+
+var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__("+oT+"));
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
+
+var _react = _interopRequireDefault(__webpack_require__("cDcd"));
+
+var _reactRelay = __webpack_require__("iuEU");
+
+var _Relay = __webpack_require__("5upH");
+
+var _AuthErrorContainer = _interopRequireDefault(__webpack_require__("HA6i"));
+
+var _LayoutContainer = _interopRequireDefault(__webpack_require__("hl3i"));
+
+var _SpinnerContainer = _interopRequireDefault(__webpack_require__("wkow"));
+
+var defaultVariables = {};
+
+var query = function query() {
+  return __webpack_require__("wdw8");
+};
+
+exports.query = query;
+
+var AuthErrorPage =
+/*#__PURE__*/
+function (_React$Component) {
+  (0, _inherits2.default)(AuthErrorPage, _React$Component);
+
+  function AuthErrorPage() {
+    (0, _classCallCheck2.default)(this, AuthErrorPage);
+    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(AuthErrorPage).apply(this, arguments));
+  }
+
+  (0, _createClass2.default)(AuthErrorPage, [{
+    key: "render",
+    value: function render() {
+      var _this = this;
+
+      return _react.default.createElement(_Relay.QueryRenderer, {
+        query: query,
+        variables: defaultVariables,
+        render: function render(_ref) {
+          var error = _ref.error,
+              props = _ref.props;
+          return _react.default.createElement(_LayoutContainer.default, {
+            page: "/auth/error",
+            viewer: props ? props.viewer : null,
+            error: error
+          }, !error && !props && _react.default.createElement(_SpinnerContainer.default, null), !error && props && _react.default.createElement(_AuthErrorContainer.default, {
+            viewer: props.viewer,
+            type: _this.props.type
+          }));
+        }
+      });
+    }
+  }], [{
+    key: "getInitialProps",
+    value: function () {
+      var _getInitialProps = (0, _asyncToGenerator2.default)(
+      /*#__PURE__*/
+      _regenerator.default.mark(function _callee(_ref2) {
+        var urlQuery, fetchQuery;
+        return _regenerator.default.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                urlQuery = _ref2.query, fetchQuery = _ref2.fetchQuery;
+                _context.next = 3;
+                return fetchQuery(query, defaultVariables);
+
+              case 3:
+                return _context.abrupt("return", {
+                  type: urlQuery.type
+                });
+
+              case 4:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }));
+
+      function getInitialProps(_x) {
+        return _getInitialProps.apply(this, arguments);
+      }
+
+      return getInitialProps;
+    }()
+  }]);
+  return AuthErrorPage;
+}(_react.default.Component);
+
+var _default = AuthErrorPage;
+exports.default = _default;
+
+/***/ }),
+
 /***/ "rG3h":
 /***/ (function(module, exports) {
 
@@ -17427,6 +17230,165 @@ module.exports.default = exports.default;
 
 /***/ }),
 
+/***/ "wdw8":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @flow
+ * @relayHash 77569dcdffd4b4bd188908f293cef61e
+ */
+
+/* eslint-disable */
+
+/*::
+import type { ConcreteRequest } from 'relay-runtime';
+type LayoutContainer_viewer$ref = any;
+export type AuthErrorPageQueryVariables = {||};
+export type AuthErrorPageQueryResponse = {|
+  +viewer: ?{|
+    +$fragmentRefs: LayoutContainer_viewer$ref
+  |}
+|};
+export type AuthErrorPageQuery = {|
+  variables: AuthErrorPageQueryVariables,
+  response: AuthErrorPageQueryResponse,
+|};
+*/
+
+/*
+query AuthErrorPageQuery {
+  viewer {
+    ...LayoutContainer_viewer
+  }
+}
+
+fragment LayoutContainer_viewer on Viewer {
+  me {
+    isAuthenticated
+    userId
+    name
+    email
+    roles
+    providers {
+      name
+    }
+  }
+}
+*/
+
+var node
+/*: ConcreteRequest*/
+= function () {
+  var v0 = {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "name",
+    "args": null,
+    "storageKey": null
+  };
+  return {
+    "kind": "Request",
+    "fragment": {
+      "kind": "Fragment",
+      "name": "AuthErrorPageQuery",
+      "type": "Query",
+      "metadata": null,
+      "argumentDefinitions": [],
+      "selections": [{
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "viewer",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "Viewer",
+        "plural": false,
+        "selections": [{
+          "kind": "FragmentSpread",
+          "name": "LayoutContainer_viewer",
+          "args": null
+        }]
+      }]
+    },
+    "operation": {
+      "kind": "Operation",
+      "name": "AuthErrorPageQuery",
+      "argumentDefinitions": [],
+      "selections": [{
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "viewer",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "Viewer",
+        "plural": false,
+        "selections": [{
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "me",
+          "storageKey": null,
+          "args": null,
+          "concreteType": "Status",
+          "plural": false,
+          "selections": [{
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "isAuthenticated",
+            "args": null,
+            "storageKey": null
+          }, {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "userId",
+            "args": null,
+            "storageKey": null
+          }, v0
+          /*: any*/
+          , {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "email",
+            "args": null,
+            "storageKey": null
+          }, {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "roles",
+            "args": null,
+            "storageKey": null
+          }, {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "providers",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "ProviderStatus",
+            "plural": true,
+            "selections": [v0
+            /*: any*/
+            ]
+          }]
+        }]
+      }]
+    },
+    "params": {
+      "operationKind": "query",
+      "name": "AuthErrorPageQuery",
+      "id": null,
+      "text": "query AuthErrorPageQuery {\n  viewer {\n    ...LayoutContainer_viewer\n  }\n}\n\nfragment LayoutContainer_viewer on Viewer {\n  me {\n    isAuthenticated\n    userId\n    name\n    email\n    roles\n    providers {\n      name\n    }\n  }\n}\n",
+      "metadata": {}
+    }
+  };
+}(); // prettier-ignore
+
+
+node
+/*: any*/
+.hash = '88ba45de177ae6f48b4e9c1ed466ab6c';
+module.exports = node;
+
+/***/ }),
+
 /***/ "widk":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -18505,28 +18467,6 @@ function () {
 }();
 
 exports.default = _default;
-
-/***/ }),
-
-/***/ "ziBp":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__("KI45");
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-Object.defineProperty(exports, "default", {
-  enumerable: true,
-  get: function get() {
-    return _NotificationsPage.default;
-  }
-});
-
-var _NotificationsPage = _interopRequireDefault(__webpack_require__("R9Vg"));
 
 /***/ }),
 

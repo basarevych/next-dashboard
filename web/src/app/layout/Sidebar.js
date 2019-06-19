@@ -117,7 +117,7 @@ class Sidebar extends React.Component {
   }
 
   renderHeader() {
-    const userId = this.user && this.user.userId;
+    const userId = this.prop.user && this.props.user.userId;
     return (
       <div className={this.props.classes.avatar}>
         <img

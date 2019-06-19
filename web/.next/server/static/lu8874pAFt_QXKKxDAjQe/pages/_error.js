@@ -1,7 +1,7 @@
 module.exports =
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
-/******/ 	var installedModules = require('../../../../ssr-module-cache.js');
+/******/ 	var installedModules = require('../../../ssr-module-cache.js');
 /******/
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
@@ -88,7 +88,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 12);
+/******/ 	return __webpack_require__(__webpack_require__.s = 2);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -867,14 +867,6 @@ exports.f = {}.propertyIsEnumerable;
 
 /***/ }),
 
-/***/ 12:
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__("H5iX");
-
-
-/***/ }),
-
 /***/ "14Ie":
 /***/ (function(module, exports) {
 
@@ -1154,10 +1146,11 @@ module.exports = require("@material-ui/core/DialogActions");
 
 /***/ }),
 
-/***/ "1imS":
-/***/ (function(module, exports) {
+/***/ 2:
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = require("@material-ui/core/CircularProgress");
+module.exports = __webpack_require__("Y0NT");
+
 
 /***/ }),
 
@@ -2132,129 +2125,6 @@ module.exports = require("@material-ui/icons/Menu");
 
 /***/ }),
 
-/***/ "4DS7":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(_) {
-
-var _interopRequireDefault = __webpack_require__("KI45");
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = exports.styles = void 0;
-
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
-
-var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
-
-var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
-
-var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
-
-var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
-
-var _react = _interopRequireDefault(__webpack_require__("cDcd"));
-
-var _reactIntl = __webpack_require__("k004");
-
-var _Typography = _interopRequireDefault(__webpack_require__("UVoM"));
-
-var styles = function styles(theme) {
-  return {
-    layout: {
-      width: "100%",
-      flex: 1,
-      padding: theme.spacing(1),
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center"
-    },
-    form: {
-      width: "100%",
-      maxWidth: 700
-    },
-    title: {
-      borderBottom: "1px dotted ".concat(theme.palette.text.primary)
-    },
-    hint: {
-      marginTop: "4rem",
-      marginLeft: "5rem"
-    }
-  };
-};
-
-exports.styles = styles;
-
-var AuthError =
-/*#__PURE__*/
-function (_React$Component) {
-  (0, _inherits2.default)(AuthError, _React$Component);
-
-  function AuthError() {
-    (0, _classCallCheck2.default)(this, AuthError);
-    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(AuthError).apply(this, arguments));
-  }
-
-  (0, _createClass2.default)(AuthError, [{
-    key: "render",
-    value: function render() {
-      var _this = this;
-
-      var msg = "OAUTH_ERROR_GENERIC";
-      var hints = [];
-
-      if (this.props.type === "oauth") {
-        msg = "OAUTH_ERROR_ACCOUNT_EXISTS";
-        hints.push({
-          title: "OAUTH_ERROR_ACCOUNT_EXISTS_TITLE1",
-          body: "OAUTH_ERROR_ACCOUNT_EXISTS_MESSAGE1"
-        });
-        hints.push({
-          title: "OAUTH_ERROR_ACCOUNT_EXISTS_TITLE2",
-          body: "OAUTH_ERROR_ACCOUNT_EXISTS_MESSAGE2"
-        });
-      }
-
-      return _react.default.createElement("div", {
-        className: this.props.classes.layout
-      }, _react.default.createElement("div", {
-        className: this.props.classes.form
-      }, _react.default.createElement(_Typography.default, {
-        variant: "h4",
-        classes: {
-          root: this.props.classes.title
-        }
-      }, _react.default.createElement(_reactIntl.FormattedMessage, {
-        id: "TITLE_OAUTH_ERROR"
-      })), _react.default.createElement("p", null, _react.default.createElement(_reactIntl.FormattedMessage, {
-        id: msg
-      })), _.map(hints, function (hint, index) {
-        return _react.default.createElement("div", {
-          key: "hint-".concat(index),
-          className: _this.props.classes.hint
-        }, _react.default.createElement(_Typography.default, {
-          variant: "h5"
-        }, _react.default.createElement(_reactIntl.FormattedMessage, {
-          id: hint.title
-        })), _react.default.createElement(_Typography.default, {
-          variant: "body1"
-        }, _react.default.createElement(_reactIntl.FormattedMessage, {
-          id: hint.body
-        })));
-      })));
-    }
-  }]);
-  return AuthError;
-}(_react.default.Component);
-
-var _default = AuthError;
-exports.default = _default;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("YLtl")))
-
-/***/ }),
-
 /***/ "4N2y":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2696,6 +2566,127 @@ function trim(str, chars) {
 
 module.exports = exports.default;
 module.exports.default = exports.default;
+
+/***/ }),
+
+/***/ "6wdM":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = exports.query = void 0;
+
+var _regenerator = _interopRequireDefault(__webpack_require__("ln6h"));
+
+var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__("+oT+"));
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
+
+var _react = _interopRequireDefault(__webpack_require__("cDcd"));
+
+var _reactRelay = __webpack_require__("iuEU");
+
+var _Relay = __webpack_require__("5upH");
+
+var _LayoutContainer = _interopRequireDefault(__webpack_require__("hl3i"));
+
+var _state = __webpack_require__("XiiD");
+
+var defaultVariables = {};
+
+var query = function query() {
+  return __webpack_require__("GnFA");
+};
+
+exports.query = query;
+
+var ErrorPage =
+/*#__PURE__*/
+function (_React$Component) {
+  (0, _inherits2.default)(ErrorPage, _React$Component);
+
+  function ErrorPage() {
+    (0, _classCallCheck2.default)(this, ErrorPage);
+    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(ErrorPage).apply(this, arguments));
+  }
+
+  (0, _createClass2.default)(ErrorPage, [{
+    key: "render",
+    value: function render() {
+      return _react.default.createElement(_Relay.QueryRenderer, {
+        query: query,
+        variables: defaultVariables,
+        render: function render(_ref) {
+          var error = _ref.error,
+              props = _ref.props;
+          return _react.default.createElement(_LayoutContainer.default, {
+            page: "/_error",
+            viewer: props ? props.viewer : null,
+            error: error
+          });
+        }
+      });
+    }
+  }], [{
+    key: "getInitialProps",
+    value: function () {
+      var _getInitialProps = (0, _asyncToGenerator2.default)(
+      /*#__PURE__*/
+      _regenerator.default.mark(function _callee(_ref2) {
+        var store, fetchQuery;
+        return _regenerator.default.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                store = _ref2.store, fetchQuery = _ref2.fetchQuery;
+                _context.next = 3;
+                return fetchQuery(query, defaultVariables);
+
+              case 3:
+                if (!(_state.appSelectors.getStatusCode(store.getState()) === 200)) {
+                  _context.next = 6;
+                  break;
+                }
+
+                _context.next = 6;
+                return store.dispatch(_state.appOperations.setStatusCode({
+                  code: 500
+                }));
+
+              case 6:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }));
+
+      function getInitialProps(_x) {
+        return _getInitialProps.apply(this, arguments);
+      }
+
+      return getInitialProps;
+    }()
+  }]);
+  return ErrorPage;
+}(_react.default.Component);
+
+var _default = ErrorPage;
+exports.default = _default;
 
 /***/ }),
 
@@ -3286,7 +3277,7 @@ function (_React$Component) {
   }, {
     key: "renderHeader",
     value: function renderHeader() {
-      var userId = this.user && this.user.userId;
+      var userId = this.prop.user && this.props.user.userId;
       return _react.default.createElement("div", {
         className: this.props.classes.avatar
       }, _react.default.createElement("img", {
@@ -4108,25 +4099,162 @@ module.exports = require("@material-ui/core/Menu");
 
 /***/ }),
 
-/***/ "H5iX":
+/***/ "GnFA":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+/**
+ * @flow
+ * @relayHash 6f29a1293f67ba1a5d810c9470792d1f
+ */
 
+/* eslint-disable */
 
-var _interopRequireDefault = __webpack_require__("KI45");
+/*::
+import type { ConcreteRequest } from 'relay-runtime';
+type LayoutContainer_viewer$ref = any;
+export type ErrorPageQueryVariables = {||};
+export type ErrorPageQueryResponse = {|
+  +viewer: ?{|
+    +$fragmentRefs: LayoutContainer_viewer$ref
+  |}
+|};
+export type ErrorPageQuery = {|
+  variables: ErrorPageQueryVariables,
+  response: ErrorPageQueryResponse,
+|};
+*/
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-Object.defineProperty(exports, "default", {
-  enumerable: true,
-  get: function get() {
-    return _AuthErrorPage.default;
+/*
+query ErrorPageQuery {
+  viewer {
+    ...LayoutContainer_viewer
   }
-});
+}
 
-var _AuthErrorPage = _interopRequireDefault(__webpack_require__("rEps"));
+fragment LayoutContainer_viewer on Viewer {
+  me {
+    isAuthenticated
+    userId
+    name
+    email
+    roles
+    providers {
+      name
+    }
+  }
+}
+*/
+
+var node
+/*: ConcreteRequest*/
+= function () {
+  var v0 = {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "name",
+    "args": null,
+    "storageKey": null
+  };
+  return {
+    "kind": "Request",
+    "fragment": {
+      "kind": "Fragment",
+      "name": "ErrorPageQuery",
+      "type": "Query",
+      "metadata": null,
+      "argumentDefinitions": [],
+      "selections": [{
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "viewer",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "Viewer",
+        "plural": false,
+        "selections": [{
+          "kind": "FragmentSpread",
+          "name": "LayoutContainer_viewer",
+          "args": null
+        }]
+      }]
+    },
+    "operation": {
+      "kind": "Operation",
+      "name": "ErrorPageQuery",
+      "argumentDefinitions": [],
+      "selections": [{
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "viewer",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "Viewer",
+        "plural": false,
+        "selections": [{
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "me",
+          "storageKey": null,
+          "args": null,
+          "concreteType": "Status",
+          "plural": false,
+          "selections": [{
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "isAuthenticated",
+            "args": null,
+            "storageKey": null
+          }, {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "userId",
+            "args": null,
+            "storageKey": null
+          }, v0
+          /*: any*/
+          , {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "email",
+            "args": null,
+            "storageKey": null
+          }, {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "roles",
+            "args": null,
+            "storageKey": null
+          }, {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "providers",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "ProviderStatus",
+            "plural": true,
+            "selections": [v0
+            /*: any*/
+            ]
+          }]
+        }]
+      }]
+    },
+    "params": {
+      "operationKind": "query",
+      "name": "ErrorPageQuery",
+      "id": null,
+      "text": "query ErrorPageQuery {\n  viewer {\n    ...LayoutContainer_viewer\n  }\n}\n\nfragment LayoutContainer_viewer on Viewer {\n  me {\n    isAuthenticated\n    userId\n    name\n    email\n    roles\n    providers {\n      name\n    }\n  }\n}\n",
+      "metadata": {}
+    }
+  };
+}(); // prettier-ignore
+
+
+node
+/*: any*/
+.hash = '0dd0941c74afefa8a4c1aea99d3e5c26';
+module.exports = node;
 
 /***/ }),
 
@@ -4265,29 +4393,6 @@ function (_React$Component) {
 }(_react.default.Component);
 
 var _default = Header;
-exports.default = _default;
-
-/***/ }),
-
-/***/ "HA6i":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireWildcard = __webpack_require__("5Uuq");
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _styles = __webpack_require__("Bjmp");
-
-var _AuthError = _interopRequireWildcard(__webpack_require__("4DS7"));
-
-var AuthError = (0, _styles.withStyles)(_AuthError.styles)(_AuthError.default);
-var _default = AuthError;
 exports.default = _default;
 
 /***/ }),
@@ -9718,6 +9823,28 @@ var appSelectors = _interopRequireWildcard(__webpack_require__("VOgL"));
 exports.appSelectors = appSelectors;
 var _default = _reducers.default;
 exports.default = _default;
+
+/***/ }),
+
+/***/ "Y0NT":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+Object.defineProperty(exports, "default", {
+  enumerable: true,
+  get: function get() {
+    return _ErrorPage.default;
+  }
+});
+
+var _ErrorPage = _interopRequireDefault(__webpack_require__("6wdM"));
 
 /***/ }),
 
@@ -15664,90 +15791,6 @@ module.exports = function (it) {
 
 /***/ }),
 
-/***/ "qS1M":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__("KI45");
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = exports.styles = void 0;
-
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
-
-var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
-
-var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
-
-var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
-
-var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
-
-var _react = _interopRequireDefault(__webpack_require__("cDcd"));
-
-var _CircularProgress = _interopRequireDefault(__webpack_require__("1imS"));
-
-var styles = function styles(theme) {
-  return {
-    backdrop: {
-      pointerEvents: "none",
-      background: theme.main.backdrop,
-      opacity: 0.8,
-      zIndex: 10000,
-      position: "fixed",
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0
-    },
-    spinner: {
-      position: "fixed",
-      width: 60,
-      top: "50vh",
-      left: "50vw",
-      transform: "translate3d(-50%, -50%, 0)",
-      color: theme.main.spinner
-    }
-  };
-};
-
-exports.styles = styles;
-
-var Spinner =
-/*#__PURE__*/
-function (_React$Component) {
-  (0, _inherits2.default)(Spinner, _React$Component);
-
-  function Spinner() {
-    (0, _classCallCheck2.default)(this, Spinner);
-    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(Spinner).apply(this, arguments));
-  }
-
-  (0, _createClass2.default)(Spinner, [{
-    key: "render",
-    value: function render() {
-      return _react.default.createElement("div", {
-        className: this.props.classes.backdrop
-      }, _react.default.createElement("div", {
-        className: this.props.classes.spinner
-      }, _react.default.createElement(_CircularProgress.default, {
-        color: "inherit",
-        size: 60
-      })));
-    }
-  }]);
-  return Spinner;
-}(_react.default.Component);
-
-var _default = Spinner;
-exports.default = _default;
-
-/***/ }),
-
 /***/ "qire":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -15812,128 +15855,6 @@ module.exports = function create(P, D) {
 /***/ (function(module, exports) {
 
 module.exports = require("@material-ui/core/Checkbox");
-
-/***/ }),
-
-/***/ "rEps":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__("KI45");
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = exports.query = void 0;
-
-var _regenerator = _interopRequireDefault(__webpack_require__("ln6h"));
-
-var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__("+oT+"));
-
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
-
-var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
-
-var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
-
-var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
-
-var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
-
-var _react = _interopRequireDefault(__webpack_require__("cDcd"));
-
-var _reactRelay = __webpack_require__("iuEU");
-
-var _Relay = __webpack_require__("5upH");
-
-var _AuthErrorContainer = _interopRequireDefault(__webpack_require__("HA6i"));
-
-var _LayoutContainer = _interopRequireDefault(__webpack_require__("hl3i"));
-
-var _SpinnerContainer = _interopRequireDefault(__webpack_require__("wkow"));
-
-var defaultVariables = {};
-
-var query = function query() {
-  return __webpack_require__("wdw8");
-};
-
-exports.query = query;
-
-var AuthErrorPage =
-/*#__PURE__*/
-function (_React$Component) {
-  (0, _inherits2.default)(AuthErrorPage, _React$Component);
-
-  function AuthErrorPage() {
-    (0, _classCallCheck2.default)(this, AuthErrorPage);
-    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(AuthErrorPage).apply(this, arguments));
-  }
-
-  (0, _createClass2.default)(AuthErrorPage, [{
-    key: "render",
-    value: function render() {
-      var _this = this;
-
-      return _react.default.createElement(_Relay.QueryRenderer, {
-        query: query,
-        variables: defaultVariables,
-        render: function render(_ref) {
-          var error = _ref.error,
-              props = _ref.props;
-          return _react.default.createElement(_LayoutContainer.default, {
-            page: "/auth/error",
-            viewer: props ? props.viewer : null,
-            error: error
-          }, !error && !props && _react.default.createElement(_SpinnerContainer.default, null), !error && props && _react.default.createElement(_AuthErrorContainer.default, {
-            viewer: props.viewer,
-            type: _this.props.type
-          }));
-        }
-      });
-    }
-  }], [{
-    key: "getInitialProps",
-    value: function () {
-      var _getInitialProps = (0, _asyncToGenerator2.default)(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee(_ref2) {
-        var urlQuery, fetchQuery;
-        return _regenerator.default.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                urlQuery = _ref2.query, fetchQuery = _ref2.fetchQuery;
-                _context.next = 3;
-                return fetchQuery(query, defaultVariables);
-
-              case 3:
-                return _context.abrupt("return", {
-                  type: urlQuery.type
-                });
-
-              case 4:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee);
-      }));
-
-      function getInitialProps(_x) {
-        return _getInitialProps.apply(this, arguments);
-      }
-
-      return getInitialProps;
-    }()
-  }]);
-  return AuthErrorPage;
-}(_react.default.Component);
-
-var _default = AuthErrorPage;
-exports.default = _default;
 
 /***/ }),
 
@@ -17230,165 +17151,6 @@ module.exports.default = exports.default;
 
 /***/ }),
 
-/***/ "wdw8":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @flow
- * @relayHash 77569dcdffd4b4bd188908f293cef61e
- */
-
-/* eslint-disable */
-
-/*::
-import type { ConcreteRequest } from 'relay-runtime';
-type LayoutContainer_viewer$ref = any;
-export type AuthErrorPageQueryVariables = {||};
-export type AuthErrorPageQueryResponse = {|
-  +viewer: ?{|
-    +$fragmentRefs: LayoutContainer_viewer$ref
-  |}
-|};
-export type AuthErrorPageQuery = {|
-  variables: AuthErrorPageQueryVariables,
-  response: AuthErrorPageQueryResponse,
-|};
-*/
-
-/*
-query AuthErrorPageQuery {
-  viewer {
-    ...LayoutContainer_viewer
-  }
-}
-
-fragment LayoutContainer_viewer on Viewer {
-  me {
-    isAuthenticated
-    userId
-    name
-    email
-    roles
-    providers {
-      name
-    }
-  }
-}
-*/
-
-var node
-/*: ConcreteRequest*/
-= function () {
-  var v0 = {
-    "kind": "ScalarField",
-    "alias": null,
-    "name": "name",
-    "args": null,
-    "storageKey": null
-  };
-  return {
-    "kind": "Request",
-    "fragment": {
-      "kind": "Fragment",
-      "name": "AuthErrorPageQuery",
-      "type": "Query",
-      "metadata": null,
-      "argumentDefinitions": [],
-      "selections": [{
-        "kind": "LinkedField",
-        "alias": null,
-        "name": "viewer",
-        "storageKey": null,
-        "args": null,
-        "concreteType": "Viewer",
-        "plural": false,
-        "selections": [{
-          "kind": "FragmentSpread",
-          "name": "LayoutContainer_viewer",
-          "args": null
-        }]
-      }]
-    },
-    "operation": {
-      "kind": "Operation",
-      "name": "AuthErrorPageQuery",
-      "argumentDefinitions": [],
-      "selections": [{
-        "kind": "LinkedField",
-        "alias": null,
-        "name": "viewer",
-        "storageKey": null,
-        "args": null,
-        "concreteType": "Viewer",
-        "plural": false,
-        "selections": [{
-          "kind": "LinkedField",
-          "alias": null,
-          "name": "me",
-          "storageKey": null,
-          "args": null,
-          "concreteType": "Status",
-          "plural": false,
-          "selections": [{
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "isAuthenticated",
-            "args": null,
-            "storageKey": null
-          }, {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "userId",
-            "args": null,
-            "storageKey": null
-          }, v0
-          /*: any*/
-          , {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "email",
-            "args": null,
-            "storageKey": null
-          }, {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "roles",
-            "args": null,
-            "storageKey": null
-          }, {
-            "kind": "LinkedField",
-            "alias": null,
-            "name": "providers",
-            "storageKey": null,
-            "args": null,
-            "concreteType": "ProviderStatus",
-            "plural": true,
-            "selections": [v0
-            /*: any*/
-            ]
-          }]
-        }]
-      }]
-    },
-    "params": {
-      "operationKind": "query",
-      "name": "AuthErrorPageQuery",
-      "id": null,
-      "text": "query AuthErrorPageQuery {\n  viewer {\n    ...LayoutContainer_viewer\n  }\n}\n\nfragment LayoutContainer_viewer on Viewer {\n  me {\n    isAuthenticated\n    userId\n    name\n    email\n    roles\n    providers {\n      name\n    }\n  }\n}\n",
-      "metadata": {}
-    }
-  };
-}(); // prettier-ignore
-
-
-node
-/*: any*/
-.hash = '88ba45de177ae6f48b4e9c1ed466ab6c';
-module.exports = node;
-
-/***/ }),
-
 /***/ "widk":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -17401,29 +17163,6 @@ module.exports = function (it) {
   return it !== undefined && (Iterators.Array === it || ArrayProto[ITERATOR] === it);
 };
 
-
-/***/ }),
-
-/***/ "wkow":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireWildcard = __webpack_require__("5Uuq");
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _styles = __webpack_require__("Bjmp");
-
-var _Spinner = _interopRequireWildcard(__webpack_require__("qS1M"));
-
-var Spinner = (0, _styles.withStyles)(_Spinner.styles)(_Spinner.default);
-var _default = Spinner;
-exports.default = _default;
 
 /***/ }),
 

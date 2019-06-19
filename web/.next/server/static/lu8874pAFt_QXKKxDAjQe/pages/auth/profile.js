@@ -1,7 +1,7 @@
 module.exports =
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
-/******/ 	var installedModules = require('../../../ssr-module-cache.js');
+/******/ 	var installedModules = require('../../../../ssr-module-cache.js');
 /******/
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
@@ -88,7 +88,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 10);
+/******/ 	return __webpack_require__(__webpack_require__.s = 13);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -859,18 +859,18 @@ module.exports.default = exports.default;
 
 /***/ }),
 
-/***/ 10:
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__("C4at");
-
-
-/***/ }),
-
 /***/ "1077":
 /***/ (function(module, exports) {
 
 exports.f = {}.propertyIsEnumerable;
+
+
+/***/ }),
+
+/***/ 13:
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__("t6mg");
 
 
 /***/ }),
@@ -2712,6 +2712,123 @@ module.exports = function (it) {
 
 /***/ }),
 
+/***/ "9Asn":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @flow
+ */
+
+/* eslint-disable */
+
+/*::
+import type { ReaderFragment } from 'relay-runtime';
+export type UserRole = "ADMIN" | "AUTHENTICATED" | "%future added value";
+import type { FragmentReference } from "relay-runtime";
+declare export opaque type ProfileContainer_viewer$ref: FragmentReference;
+declare export opaque type ProfileContainer_viewer$fragmentType: ProfileContainer_viewer$ref;
+export type ProfileContainer_viewer = {|
+  +me: ?{|
+    +isAuthenticated: boolean,
+    +name: ?string,
+    +email: ?string,
+    +isEmailVerified: boolean,
+    +roles: $ReadOnlyArray<?UserRole>,
+    +providers: $ReadOnlyArray<?{|
+      +name: string,
+      +isLinked: boolean,
+    |}>,
+  |},
+  +$refType: ProfileContainer_viewer$ref,
+|};
+export type ProfileContainer_viewer$data = ProfileContainer_viewer;
+export type ProfileContainer_viewer$key = {
+  +$data?: ProfileContainer_viewer$data,
+  +$fragmentRefs: ProfileContainer_viewer$ref,
+};
+*/
+
+var node
+/*: ReaderFragment*/
+= function () {
+  var v0 = {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "name",
+    "args": null,
+    "storageKey": null
+  };
+  return {
+    "kind": "Fragment",
+    "name": "ProfileContainer_viewer",
+    "type": "Viewer",
+    "metadata": null,
+    "argumentDefinitions": [],
+    "selections": [{
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "me",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "Status",
+      "plural": false,
+      "selections": [{
+        "kind": "ScalarField",
+        "alias": null,
+        "name": "isAuthenticated",
+        "args": null,
+        "storageKey": null
+      }, v0
+      /*: any*/
+      , {
+        "kind": "ScalarField",
+        "alias": null,
+        "name": "email",
+        "args": null,
+        "storageKey": null
+      }, {
+        "kind": "ScalarField",
+        "alias": null,
+        "name": "isEmailVerified",
+        "args": null,
+        "storageKey": null
+      }, {
+        "kind": "ScalarField",
+        "alias": null,
+        "name": "roles",
+        "args": null,
+        "storageKey": null
+      }, {
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "providers",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "ProviderStatus",
+        "plural": true,
+        "selections": [v0
+        /*: any*/
+        , {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "isLinked",
+          "args": null,
+          "storageKey": null
+        }]
+      }]
+    }]
+  };
+}(); // prettier-ignore
+
+
+node
+/*: any*/
+.hash = 'd3e89f916095b5468e8e2f66d9f845e0';
+module.exports = node;
+
+/***/ }),
+
 /***/ "9Pu4":
 /***/ (function(module, exports) {
 
@@ -3163,7 +3280,7 @@ function (_React$Component) {
   }, {
     key: "renderHeader",
     value: function renderHeader() {
-      var userId = this.user && this.user.userId;
+      var userId = this.prop.user && this.props.user.userId;
       return _react.default.createElement("div", {
         className: this.props.classes.avatar
       }, _react.default.createElement("img", {
@@ -3282,28 +3399,6 @@ module.exports = require("react-intl/locale-data/en.js");
 /***/ (function(module, exports) {
 
 module.exports = require("@material-ui/icons/InsertChart");
-
-/***/ }),
-
-/***/ "C4at":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__("KI45");
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-Object.defineProperty(exports, "default", {
-  enumerable: true,
-  get: function get() {
-    return _TypographyPage.default;
-  }
-});
-
-var _TypographyPage = _interopRequireDefault(__webpack_require__("yOcD"));
 
 /***/ }),
 
@@ -4233,6 +4328,120 @@ module.exports.default = exports.default;
 /***/ (function(module, exports) {
 
 module.exports = require("@material-ui/icons/ColorLens");
+
+/***/ }),
+
+/***/ "Hefa":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = exports.query = void 0;
+
+var _regenerator = _interopRequireDefault(__webpack_require__("ln6h"));
+
+var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__("+oT+"));
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
+
+var _react = _interopRequireDefault(__webpack_require__("cDcd"));
+
+var _reactRelay = __webpack_require__("iuEU");
+
+var _Relay = __webpack_require__("5upH");
+
+var _ProfileContainer = _interopRequireDefault(__webpack_require__("LlNd"));
+
+var _LayoutContainer = _interopRequireDefault(__webpack_require__("hl3i"));
+
+var _SpinnerContainer = _interopRequireDefault(__webpack_require__("wkow"));
+
+var defaultVariables = {};
+
+var query = function query() {
+  return __webpack_require__("Q83a");
+};
+
+exports.query = query;
+
+var ProfilePage =
+/*#__PURE__*/
+function (_React$Component) {
+  (0, _inherits2.default)(ProfilePage, _React$Component);
+
+  function ProfilePage() {
+    (0, _classCallCheck2.default)(this, ProfilePage);
+    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(ProfilePage).apply(this, arguments));
+  }
+
+  (0, _createClass2.default)(ProfilePage, [{
+    key: "render",
+    value: function render() {
+      return _react.default.createElement(_Relay.QueryRenderer, {
+        query: query,
+        variables: defaultVariables,
+        render: function render(_ref) {
+          var error = _ref.error,
+              props = _ref.props;
+          return _react.default.createElement(_LayoutContainer.default, {
+            page: "/auth/profile",
+            viewer: props ? props.viewer : null,
+            error: error
+          }, !error && !props && _react.default.createElement(_SpinnerContainer.default, null), !error && props && _react.default.createElement(_ProfileContainer.default, {
+            viewer: props.viewer
+          }));
+        }
+      });
+    }
+  }], [{
+    key: "getInitialProps",
+    value: function () {
+      var _getInitialProps = (0, _asyncToGenerator2.default)(
+      /*#__PURE__*/
+      _regenerator.default.mark(function _callee(_ref2) {
+        var fetchQuery;
+        return _regenerator.default.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                fetchQuery = _ref2.fetchQuery;
+                _context.next = 3;
+                return fetchQuery(query, defaultVariables);
+
+              case 3:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }));
+
+      function getInitialProps(_x) {
+        return _getInitialProps.apply(this, arguments);
+      }
+
+      return getInitialProps;
+    }()
+  }]);
+  return ProfilePage;
+}(_react.default.Component);
+
+var _default = ProfilePage;
+exports.default = _default;
 
 /***/ }),
 
@@ -5748,165 +5957,6 @@ module.exports = require("@material-ui/core/Grid");
 
 /***/ }),
 
-/***/ "JZwh":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @flow
- * @relayHash b1220d923d5e3219a6437864c282b270
- */
-
-/* eslint-disable */
-
-/*::
-import type { ConcreteRequest } from 'relay-runtime';
-type LayoutContainer_viewer$ref = any;
-export type TypographyPageQueryVariables = {||};
-export type TypographyPageQueryResponse = {|
-  +viewer: ?{|
-    +$fragmentRefs: LayoutContainer_viewer$ref
-  |}
-|};
-export type TypographyPageQuery = {|
-  variables: TypographyPageQueryVariables,
-  response: TypographyPageQueryResponse,
-|};
-*/
-
-/*
-query TypographyPageQuery {
-  viewer {
-    ...LayoutContainer_viewer
-  }
-}
-
-fragment LayoutContainer_viewer on Viewer {
-  me {
-    isAuthenticated
-    userId
-    name
-    email
-    roles
-    providers {
-      name
-    }
-  }
-}
-*/
-
-var node
-/*: ConcreteRequest*/
-= function () {
-  var v0 = {
-    "kind": "ScalarField",
-    "alias": null,
-    "name": "name",
-    "args": null,
-    "storageKey": null
-  };
-  return {
-    "kind": "Request",
-    "fragment": {
-      "kind": "Fragment",
-      "name": "TypographyPageQuery",
-      "type": "Query",
-      "metadata": null,
-      "argumentDefinitions": [],
-      "selections": [{
-        "kind": "LinkedField",
-        "alias": null,
-        "name": "viewer",
-        "storageKey": null,
-        "args": null,
-        "concreteType": "Viewer",
-        "plural": false,
-        "selections": [{
-          "kind": "FragmentSpread",
-          "name": "LayoutContainer_viewer",
-          "args": null
-        }]
-      }]
-    },
-    "operation": {
-      "kind": "Operation",
-      "name": "TypographyPageQuery",
-      "argumentDefinitions": [],
-      "selections": [{
-        "kind": "LinkedField",
-        "alias": null,
-        "name": "viewer",
-        "storageKey": null,
-        "args": null,
-        "concreteType": "Viewer",
-        "plural": false,
-        "selections": [{
-          "kind": "LinkedField",
-          "alias": null,
-          "name": "me",
-          "storageKey": null,
-          "args": null,
-          "concreteType": "Status",
-          "plural": false,
-          "selections": [{
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "isAuthenticated",
-            "args": null,
-            "storageKey": null
-          }, {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "userId",
-            "args": null,
-            "storageKey": null
-          }, v0
-          /*: any*/
-          , {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "email",
-            "args": null,
-            "storageKey": null
-          }, {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "roles",
-            "args": null,
-            "storageKey": null
-          }, {
-            "kind": "LinkedField",
-            "alias": null,
-            "name": "providers",
-            "storageKey": null,
-            "args": null,
-            "concreteType": "ProviderStatus",
-            "plural": true,
-            "selections": [v0
-            /*: any*/
-            ]
-          }]
-        }]
-      }]
-    },
-    "params": {
-      "operationKind": "query",
-      "name": "TypographyPageQuery",
-      "id": null,
-      "text": "query TypographyPageQuery {\n  viewer {\n    ...LayoutContainer_viewer\n  }\n}\n\nfragment LayoutContainer_viewer on Viewer {\n  me {\n    isAuthenticated\n    userId\n    name\n    email\n    roles\n    providers {\n      name\n    }\n  }\n}\n",
-      "metadata": {}
-    }
-  };
-}(); // prettier-ignore
-
-
-node
-/*: any*/
-.hash = 'fb28b1df81a99274c110ddd14c957fcd';
-module.exports = node;
-
-/***/ }),
-
 /***/ "Jhmf":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -6465,6 +6515,69 @@ module.exports = require("http-status-codes");
 
 /***/ }),
 
+/***/ "LlNd":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireWildcard = __webpack_require__("5Uuq");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _reactRedux = __webpack_require__("h74D");
+
+var _styles = __webpack_require__("Bjmp");
+
+var _state = __webpack_require__("XiiD");
+
+var _reactRelay = __webpack_require__("iuEU");
+
+var _Profile = _interopRequireWildcard(__webpack_require__("OcY6"));
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+  return {
+    onSave: function onSave(name, email, password) {
+      return dispatch(_state.appOperations.updateProfile({
+        name: name,
+        email: email,
+        password: password
+      }));
+    },
+    onLink: function onLink(provider) {
+      return dispatch(_state.appOperations.linkProvider({
+        provider: provider
+      }));
+    },
+    onUnlink: function onUnlink(provider) {
+      return dispatch(_state.appOperations.unlinkProvider({
+        provider: provider
+      }));
+    },
+    onVerify: function onVerify() {
+      return dispatch(_state.appOperations.requestEmailVerification());
+    },
+    onDestroy: function onDestroy() {
+      return dispatch(_state.appOperations.deleteProfile());
+    }
+  };
+};
+
+var Profile = (0, _reactRelay.createRefetchContainer)((0, _reactRedux.connect)(null, mapDispatchToProps)((0, _styles.withStyles)(_Profile.styles)((0, _styles.withTheme)(_Profile.default))), {
+  viewer: function viewer() {
+    return __webpack_require__("9Asn");
+  }
+}, function () {
+  return __webpack_require__("Mv9G");
+});
+var _default = Profile;
+exports.default = _default;
+
+/***/ }),
+
 /***/ "LqFA":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -6914,6 +7027,13 @@ module.exports = {
 
 /***/ }),
 
+/***/ "MbIc":
+/***/ (function(module, exports) {
+
+module.exports = require("@material-ui/core/DialogContentText");
+
+/***/ }),
+
 /***/ "McIs":
 /***/ (function(module, exports) {
 
@@ -6933,6 +7053,172 @@ module.exports = "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\
 /***/ (function(module, exports) {
 
 module.exports = require("@material-ui/core/Toolbar");
+
+/***/ }),
+
+/***/ "Mv9G":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @flow
+ * @relayHash 388a084d6285a7c16bf84512970f4579
+ */
+
+/* eslint-disable */
+
+/*::
+import type { ConcreteRequest } from 'relay-runtime';
+type ProfileContainer_viewer$ref = any;
+export type ProfileContainerQueryVariables = {||};
+export type ProfileContainerQueryResponse = {|
+  +viewer: ?{|
+    +$fragmentRefs: ProfileContainer_viewer$ref
+  |}
+|};
+export type ProfileContainerQuery = {|
+  variables: ProfileContainerQueryVariables,
+  response: ProfileContainerQueryResponse,
+|};
+*/
+
+/*
+query ProfileContainerQuery {
+  viewer {
+    ...ProfileContainer_viewer
+  }
+}
+
+fragment ProfileContainer_viewer on Viewer {
+  me {
+    isAuthenticated
+    name
+    email
+    isEmailVerified
+    roles
+    providers {
+      name
+      isLinked
+    }
+  }
+}
+*/
+
+var node
+/*: ConcreteRequest*/
+= function () {
+  var v0 = {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "name",
+    "args": null,
+    "storageKey": null
+  };
+  return {
+    "kind": "Request",
+    "fragment": {
+      "kind": "Fragment",
+      "name": "ProfileContainerQuery",
+      "type": "Query",
+      "metadata": null,
+      "argumentDefinitions": [],
+      "selections": [{
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "viewer",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "Viewer",
+        "plural": false,
+        "selections": [{
+          "kind": "FragmentSpread",
+          "name": "ProfileContainer_viewer",
+          "args": null
+        }]
+      }]
+    },
+    "operation": {
+      "kind": "Operation",
+      "name": "ProfileContainerQuery",
+      "argumentDefinitions": [],
+      "selections": [{
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "viewer",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "Viewer",
+        "plural": false,
+        "selections": [{
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "me",
+          "storageKey": null,
+          "args": null,
+          "concreteType": "Status",
+          "plural": false,
+          "selections": [{
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "isAuthenticated",
+            "args": null,
+            "storageKey": null
+          }, v0
+          /*: any*/
+          , {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "email",
+            "args": null,
+            "storageKey": null
+          }, {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "isEmailVerified",
+            "args": null,
+            "storageKey": null
+          }, {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "roles",
+            "args": null,
+            "storageKey": null
+          }, {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "providers",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "ProviderStatus",
+            "plural": true,
+            "selections": [v0
+            /*: any*/
+            , {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "isLinked",
+              "args": null,
+              "storageKey": null
+            }]
+          }]
+        }]
+      }]
+    },
+    "params": {
+      "operationKind": "query",
+      "name": "ProfileContainerQuery",
+      "id": null,
+      "text": "query ProfileContainerQuery {\n  viewer {\n    ...ProfileContainer_viewer\n  }\n}\n\nfragment ProfileContainer_viewer on Viewer {\n  me {\n    isAuthenticated\n    name\n    email\n    isEmailVerified\n    roles\n    providers {\n      name\n      isLinked\n    }\n  }\n}\n",
+      "metadata": {}
+    }
+  };
+}(); // prettier-ignore
+
+
+node
+/*: any*/
+.hash = 'f14e1e725e3a097c2118359cdbb7f3b6';
+module.exports = node;
 
 /***/ }),
 
@@ -7139,6 +7425,637 @@ module.exports = function (target, src, safe) {
   } return target;
 };
 
+
+/***/ }),
+
+/***/ "OcY6":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(_) {
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = exports.styles = void 0;
+
+var _regenerator = _interopRequireDefault(__webpack_require__("ln6h"));
+
+var _objectWithoutProperties2 = _interopRequireDefault(__webpack_require__("EY6e"));
+
+var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__("+oT+"));
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
+
+var _assertThisInitialized2 = _interopRequireDefault(__webpack_require__("K47E"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
+
+var _react = _interopRequireDefault(__webpack_require__("cDcd"));
+
+var _router = _interopRequireDefault(__webpack_require__("4Q3z"));
+
+var _reactIntl = __webpack_require__("k004");
+
+var _Paper = _interopRequireDefault(__webpack_require__("qt1I"));
+
+var _Grow = _interopRequireDefault(__webpack_require__("mf1M"));
+
+var _Hidden = _interopRequireDefault(__webpack_require__("Y8uC"));
+
+var _Typography = _interopRequireDefault(__webpack_require__("UVoM"));
+
+var _Grid = _interopRequireDefault(__webpack_require__("JQ2V"));
+
+var _Button = _interopRequireDefault(__webpack_require__("Wh1t"));
+
+var _red = _interopRequireDefault(__webpack_require__("RpH3"));
+
+var _forms = __webpack_require__("KH7Z");
+
+var _profile = _interopRequireDefault(__webpack_require__("uORY"));
+
+var _ConfirmModalContainer = _interopRequireDefault(__webpack_require__("V5KF"));
+
+var _facebook = _interopRequireDefault(__webpack_require__("MmNR"));
+
+var _google = _interopRequireDefault(__webpack_require__("yh8l"));
+
+var _twitter = _interopRequireDefault(__webpack_require__("w1vu"));
+
+var styles = function styles(theme) {
+  return {
+    layout: {
+      width: "100%",
+      flex: 1,
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center"
+    },
+    profile: {
+      padding: theme.spacing(2),
+      width: "100%",
+      maxWidth: 700
+    },
+    destroyButton: {
+      background: _red.default[500]
+    },
+    title: {
+      borderBottom: "1px dotted ".concat(theme.palette.text.secondary)
+    },
+    error: theme.main.error,
+    info: theme.main.info,
+    serviceLogo: {
+      marginLeft: "0.5em",
+      marginRight: "0.5em",
+      verticalAlign: "middle",
+      "& svg": {
+        height: "1.8em",
+        fill: "currentColor",
+        verticalAlign: "middle"
+      }
+    },
+    facebook: {
+      margin: "1rem",
+      color: theme.palette.primary.contrastText,
+      background: ["#3b5998", "!important"],
+      "&:hover": {
+        background: ["#1b3978", "!important"]
+      }
+    },
+    google: {
+      margin: "1rem",
+      color: theme.palette.primary.contrastText,
+      background: ["#dd4b39", "!important"],
+      "&:hover": {
+        background: ["#bd2b19", "!important"]
+      }
+    },
+    twitter: {
+      margin: "1rem",
+      color: theme.palette.primary.contrastText,
+      background: ["#38A1F3", "!important"],
+      "&:hover": {
+        background: ["#1881d3", "!important"]
+      }
+    }
+  };
+};
+
+exports.styles = styles;
+
+var ProfilePage =
+/*#__PURE__*/
+function (_React$Component) {
+  (0, _inherits2.default)(ProfilePage, _React$Component);
+
+  function ProfilePage(props) {
+    var _this;
+
+    (0, _classCallCheck2.default)(this, ProfilePage);
+    _this = (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(ProfilePage).call(this, props));
+    _this.state = {
+      animating: false,
+      message: null,
+      isConfirmOpen: false
+    };
+    _this.messageTimer = null;
+    _this.save = _this.save.bind((0, _assertThisInitialized2.default)(_this));
+    _this.verify = _this.verify.bind((0, _assertThisInitialized2.default)(_this));
+    _this.destroy = _this.destroy.bind((0, _assertThisInitialized2.default)(_this));
+    _this.handleRefreshAction = _this.handleRefreshAction.bind((0, _assertThisInitialized2.default)(_this));
+    _this.handleConfirmDelete = _this.handleConfirmDelete.bind((0, _assertThisInitialized2.default)(_this));
+    _this.handleCancelDelete = _this.handleCancelDelete.bind((0, _assertThisInitialized2.default)(_this));
+    return _this;
+  }
+
+  (0, _createClass2.default)(ProfilePage, [{
+    key: "getUser",
+    value: function getUser() {
+      return _.get(this.props.viewer, "me", {
+        roles: []
+      });
+    }
+  }, {
+    key: "getProviders",
+    value: function getProviders() {
+      return _.get(this.props.viewer, "me.providers", []);
+    }
+  }, {
+    key: "getUserVerified",
+    value: function getUserVerified() {
+      return _.get(this.props.viewer, "me.isEmailVerified", false);
+    }
+  }, {
+    key: "handleRefreshAction",
+    value: function handleRefreshAction() {
+      this.props.relay.refetch(null, null, null, {
+        force: true
+      });
+    }
+  }, {
+    key: "save",
+    value: function () {
+      var _save = (0, _asyncToGenerator2.default)(
+      /*#__PURE__*/
+      _regenerator.default.mark(function _callee(_ref, _ref2) {
+        var name, email, password1, setSubmitting, setFieldValue, setErrors, setStatus, result, _status, errors;
+
+        return _regenerator.default.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                name = _ref.name, email = _ref.email, password1 = _ref.password1;
+                setSubmitting = _ref2.setSubmitting, setFieldValue = _ref2.setFieldValue, setErrors = _ref2.setErrors, setStatus = _ref2.setStatus;
+                _context.next = 4;
+                return this.props.onSave(name || null, email, password1);
+
+              case 4:
+                result = _context.sent;
+
+                if (result === true) {
+                  this.handleRefreshAction();
+                  setSubmitting(false);
+                  setFieldValue("password1", "");
+                  setFieldValue("password2", "");
+                  this.showMessage("PROFILE_SAVE_SUCCESS");
+                } else {
+                  _status = result._status, errors = (0, _objectWithoutProperties2.default)(result, ["_status"]);
+                  setSubmitting(false);
+                  setErrors(errors);
+                  setStatus(_status);
+                }
+
+              case 6:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function save(_x, _x2) {
+        return _save.apply(this, arguments);
+      }
+
+      return save;
+    }()
+  }, {
+    key: "verify",
+    value: function () {
+      var _verify = (0, _asyncToGenerator2.default)(
+      /*#__PURE__*/
+      _regenerator.default.mark(function _callee2() {
+        var success;
+        return _regenerator.default.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.next = 2;
+                return this.props.onVerify();
+
+              case 2:
+                success = _context2.sent;
+                this.showMessage(success ? "PROFILE_VERIFY_SUCCESS" : "OPERATION_FAILED");
+
+              case 4:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this);
+      }));
+
+      function verify() {
+        return _verify.apply(this, arguments);
+      }
+
+      return verify;
+    }()
+  }, {
+    key: "link",
+    value: function () {
+      var _link = (0, _asyncToGenerator2.default)(
+      /*#__PURE__*/
+      _regenerator.default.mark(function _callee3(provider) {
+        var success;
+        return _regenerator.default.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                _context3.next = 2;
+                return this.props.onLink(provider);
+
+              case 2:
+                success = _context3.sent;
+                this.showMessage(success ? "PROFILE_LINK_SUCCESS" : "OPERATION_FAILED");
+
+              case 4:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3, this);
+      }));
+
+      function link(_x3) {
+        return _link.apply(this, arguments);
+      }
+
+      return link;
+    }()
+  }, {
+    key: "unlink",
+    value: function () {
+      var _unlink = (0, _asyncToGenerator2.default)(
+      /*#__PURE__*/
+      _regenerator.default.mark(function _callee4(provider) {
+        var success;
+        return _regenerator.default.wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                _context4.next = 2;
+                return this.props.onUnlink(provider);
+
+              case 2:
+                success = _context4.sent;
+                this.showMessage(success ? "PROFILE_UNLINK_SUCCESS" : "OPERATION_FAILED");
+
+              case 4:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4, this);
+      }));
+
+      function unlink(_x4) {
+        return _unlink.apply(this, arguments);
+      }
+
+      return unlink;
+    }()
+  }, {
+    key: "destroy",
+    value: function () {
+      var _destroy = (0, _asyncToGenerator2.default)(
+      /*#__PURE__*/
+      _regenerator.default.mark(function _callee5() {
+        return _regenerator.default.wrap(function _callee5$(_context5) {
+          while (1) {
+            switch (_context5.prev = _context5.next) {
+              case 0:
+                this.setState({
+                  isConfirmOpen: true
+                });
+
+              case 1:
+              case "end":
+                return _context5.stop();
+            }
+          }
+        }, _callee5, this);
+      }));
+
+      function destroy() {
+        return _destroy.apply(this, arguments);
+      }
+
+      return destroy;
+    }()
+  }, {
+    key: "handleCancelDelete",
+    value: function handleCancelDelete() {
+      this.setState({
+        isConfirmOpen: false
+      });
+    }
+  }, {
+    key: "handleConfirmDelete",
+    value: function () {
+      var _handleConfirmDelete = (0, _asyncToGenerator2.default)(
+      /*#__PURE__*/
+      _regenerator.default.mark(function _callee6() {
+        return _regenerator.default.wrap(function _callee6$(_context6) {
+          while (1) {
+            switch (_context6.prev = _context6.next) {
+              case 0:
+                this.setState({
+                  isConfirmOpen: false
+                });
+                _context6.next = 3;
+                return this.props.onDestroy();
+
+              case 3:
+                if (!_context6.sent) {
+                  _context6.next = 5;
+                  break;
+                }
+
+                _router.default.push("/");
+
+              case 5:
+              case "end":
+                return _context6.stop();
+            }
+          }
+        }, _callee6, this);
+      }));
+
+      function handleConfirmDelete() {
+        return _handleConfirmDelete.apply(this, arguments);
+      }
+
+      return handleConfirmDelete;
+    }()
+  }, {
+    key: "showMessage",
+    value: function showMessage(message) {
+      var _this2 = this;
+
+      if (this.messageTimer) clearTimeout(this.messageTimer);
+      this.messageTimer = setTimeout(function () {
+        _this2.messageTimer = null;
+
+        _this2.setState({
+          animating: false
+        }, function () {
+          _this2.messageTimer = setTimeout(function () {
+            _this2.messageTimer = null;
+
+            _this2.setState({
+              message: null
+            });
+          }, _this2.props.theme.transitions.duration.leavingScreen);
+        });
+      }, 5000);
+      this.setState({
+        message: message,
+        animating: true
+      });
+    }
+  }, {
+    key: "renderButton",
+    value: function renderButton(provider, submitting) {
+      var _this3 = this;
+
+      var name = _.toLower(provider.name);
+
+      var isLinked = provider.isLinked;
+      return _react.default.createElement(_Button.default, {
+        key: provider,
+        variant: "contained",
+        color: "default",
+        classes: {
+          contained: this.props.classes[name]
+        },
+        disabled: submitting,
+        onClick: function onClick() {
+          return isLinked ? _this3.unlink(name) : _this3.link(name);
+        }
+      }, _react.default.createElement(_Hidden.default, {
+        xsDown: true
+      }, _react.default.createElement(_reactIntl.FormattedMessage, {
+        id: isLinked ? "PROFILE_UNLINK_BUTTON" : "PROFILE_LINK_BUTTON"
+      })), name === "facebook" && _react.default.createElement("span", {
+        dangerouslySetInnerHTML: {
+          __html: _facebook.default
+        },
+        className: this.props.classes.serviceLogo
+      }), name === "google" && _react.default.createElement("span", {
+        dangerouslySetInnerHTML: {
+          __html: _google.default
+        },
+        className: this.props.classes.serviceLogo
+      }), name === "twitter" && _react.default.createElement("span", {
+        dangerouslySetInnerHTML: {
+          __html: _twitter.default
+        },
+        className: this.props.classes.serviceLogo
+      }), _.upperFirst(name));
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this4 = this;
+
+      return _react.default.createElement("div", {
+        className: this.props.classes.layout
+      }, _react.default.createElement(_Paper.default, {
+        className: this.props.classes.profile
+      }, _react.default.createElement(_forms.Form, {
+        fields: _profile.default,
+        initialValues: this.getUser(),
+        onSubmit: this.save,
+        render: function render(_ref3) {
+          var isSubmitting = _ref3.isSubmitting,
+              status = _ref3.status,
+              handleSubmit = _ref3.handleSubmit;
+
+          var services = _.map(_this4.getProviders(), function (provider) {
+            return _this4.renderButton(provider, isSubmitting);
+          });
+
+          return _react.default.createElement(_Grid.default, {
+            container: true,
+            spacing: 2
+          }, _react.default.createElement(_Grid.default, {
+            item: true,
+            xs: 12
+          }, _react.default.createElement(_Typography.default, {
+            variant: "h4",
+            classes: {
+              root: _this4.props.classes.title
+            }
+          }, _react.default.createElement(_reactIntl.FormattedMessage, {
+            id: "TITLE_PROFILE"
+          }))), _react.default.createElement(_Hidden.default, {
+            xsDown: true
+          }, _react.default.createElement(_Grid.default, {
+            item: true,
+            xs: 12,
+            container: true,
+            justify: "space-between"
+          }, services)), _react.default.createElement(_Hidden.default, {
+            smUp: true
+          }, _react.default.createElement(_Grid.default, {
+            item: true,
+            xs: 12,
+            container: true,
+            justify: "center"
+          }, services)), !!status && _react.default.createElement(_Grid.default, {
+            item: true,
+            xs: 12
+          }, _.map(_.isArray(status) ? status : [status], function (error, index) {
+            return _react.default.createElement("div", {
+              key: "error-".concat(index),
+              className: _this4.props.classes.error
+            }, _.isArray(error) ? _react.default.createElement(_reactIntl.FormattedMessage, {
+              id: error[0],
+              values: error[1]
+            }) : _react.default.createElement(_reactIntl.FormattedMessage, {
+              id: error
+            }));
+          })), _this4.state.message && _react.default.createElement(_Grid.default, {
+            item: true,
+            xs: 12
+          }, _react.default.createElement(_Grow.default, {
+            in: _this4.state.animating
+          }, _react.default.createElement("div", {
+            className: _this4.props.classes.info
+          }, _react.default.createElement(_reactIntl.FormattedMessage, {
+            id: _this4.state.message
+          })))), _react.default.createElement(_Hidden.default, {
+            xsDown: true
+          }, _react.default.createElement(_Grid.default, {
+            item: true,
+            sm: 6
+          }, _react.default.createElement(_forms.Field, {
+            name: "name",
+            type: "text"
+          })), _react.default.createElement(_Grid.default, {
+            item: true,
+            sm: 6
+          }, _react.default.createElement(_forms.Field, {
+            name: "password1",
+            type: "password"
+          })), _react.default.createElement(_Grid.default, {
+            item: true,
+            sm: 6
+          }, _react.default.createElement(_forms.Field, {
+            name: "email",
+            type: "text"
+          })), _react.default.createElement(_Grid.default, {
+            item: true,
+            sm: 6
+          }, _react.default.createElement(_forms.Field, {
+            name: "password2",
+            type: "password"
+          }))), _react.default.createElement(_Hidden.default, {
+            smUp: true
+          }, _react.default.createElement(_Grid.default, {
+            item: true,
+            xs: 12
+          }, _react.default.createElement(_forms.Field, {
+            name: "name",
+            type: "text"
+          })), _react.default.createElement(_Grid.default, {
+            item: true,
+            xs: 12
+          }, _react.default.createElement(_forms.Field, {
+            name: "email",
+            type: "text"
+          })), _react.default.createElement(_Grid.default, {
+            item: true,
+            xs: 12
+          }, _react.default.createElement(_forms.Field, {
+            name: "password1",
+            type: "password"
+          })), _react.default.createElement(_Grid.default, {
+            item: true,
+            xs: 12
+          }, _react.default.createElement(_forms.Field, {
+            name: "password2",
+            type: "password"
+          }))), _react.default.createElement(_Grid.default, {
+            item: true,
+            xs: 12,
+            container: true,
+            justify: "space-between"
+          }, _react.default.createElement(_Button.default, {
+            variant: "contained",
+            color: "primary",
+            disabled: isSubmitting,
+            onClick: handleSubmit
+          }, _react.default.createElement(_reactIntl.FormattedMessage, {
+            id: "PROFILE_SAVE_BUTTON"
+          })), _react.default.createElement(_Button.default, {
+            variant: "contained",
+            color: "inherit",
+            className: _this4.props.classes.destroyButton,
+            disabled: isSubmitting,
+            onClick: _this4.destroy
+          }, _react.default.createElement(_reactIntl.FormattedMessage, {
+            id: "PROFILE_DESTROY_BUTTON"
+          }))), !_this4.getUserVerified() && _react.default.createElement(_Grid.default, {
+            item: true,
+            xs: 12,
+            container: true,
+            justify: "flex-start"
+          }, _react.default.createElement(_Button.default, {
+            variant: "contained",
+            color: "primary",
+            disabled: isSubmitting,
+            onClick: _this4.verify
+          }, _react.default.createElement(_reactIntl.FormattedMessage, {
+            id: "PROFILE_VERIFY_BUTTON"
+          }))));
+        }
+      }), this.state.isConfirmOpen && _react.default.createElement(_ConfirmModalContainer.default, {
+        title: "DELETE_PROFILE_TITLE",
+        text: "DELETE_PROFILE_TEXT",
+        cancel: "DELETE_PROFILE_CANCEL",
+        submit: "DELETE_PROFILE_SUBMIT",
+        onCancel: this.handleCancelDelete,
+        onSubmit: this.handleConfirmDelete
+      })));
+    }
+  }]);
+  return ProfilePage;
+}(_react.default.Component);
+
+var _default = ProfilePage;
+exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("YLtl")))
 
 /***/ }),
 
@@ -8162,6 +9079,197 @@ module.exports = require("@material-ui/icons/Mail");
 
 /***/ }),
 
+/***/ "Q83a":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @flow
+ * @relayHash 5e1a027595f23b5a2cbe74b8aa034107
+ */
+
+/* eslint-disable */
+
+/*::
+import type { ConcreteRequest } from 'relay-runtime';
+type LayoutContainer_viewer$ref = any;
+type ProfileContainer_viewer$ref = any;
+export type ProfilePageQueryVariables = {||};
+export type ProfilePageQueryResponse = {|
+  +viewer: ?{|
+    +$fragmentRefs: LayoutContainer_viewer$ref & ProfileContainer_viewer$ref
+  |}
+|};
+export type ProfilePageQuery = {|
+  variables: ProfilePageQueryVariables,
+  response: ProfilePageQueryResponse,
+|};
+*/
+
+/*
+query ProfilePageQuery {
+  viewer {
+    ...LayoutContainer_viewer
+    ...ProfileContainer_viewer
+  }
+}
+
+fragment LayoutContainer_viewer on Viewer {
+  me {
+    isAuthenticated
+    userId
+    name
+    email
+    roles
+    providers {
+      name
+    }
+  }
+}
+
+fragment ProfileContainer_viewer on Viewer {
+  me {
+    isAuthenticated
+    name
+    email
+    isEmailVerified
+    roles
+    providers {
+      name
+      isLinked
+    }
+  }
+}
+*/
+
+var node
+/*: ConcreteRequest*/
+= function () {
+  var v0 = {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "name",
+    "args": null,
+    "storageKey": null
+  };
+  return {
+    "kind": "Request",
+    "fragment": {
+      "kind": "Fragment",
+      "name": "ProfilePageQuery",
+      "type": "Query",
+      "metadata": null,
+      "argumentDefinitions": [],
+      "selections": [{
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "viewer",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "Viewer",
+        "plural": false,
+        "selections": [{
+          "kind": "FragmentSpread",
+          "name": "LayoutContainer_viewer",
+          "args": null
+        }, {
+          "kind": "FragmentSpread",
+          "name": "ProfileContainer_viewer",
+          "args": null
+        }]
+      }]
+    },
+    "operation": {
+      "kind": "Operation",
+      "name": "ProfilePageQuery",
+      "argumentDefinitions": [],
+      "selections": [{
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "viewer",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "Viewer",
+        "plural": false,
+        "selections": [{
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "me",
+          "storageKey": null,
+          "args": null,
+          "concreteType": "Status",
+          "plural": false,
+          "selections": [{
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "isAuthenticated",
+            "args": null,
+            "storageKey": null
+          }, {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "userId",
+            "args": null,
+            "storageKey": null
+          }, v0
+          /*: any*/
+          , {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "email",
+            "args": null,
+            "storageKey": null
+          }, {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "roles",
+            "args": null,
+            "storageKey": null
+          }, {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "providers",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "ProviderStatus",
+            "plural": true,
+            "selections": [v0
+            /*: any*/
+            , {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "isLinked",
+              "args": null,
+              "storageKey": null
+            }]
+          }, {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "isEmailVerified",
+            "args": null,
+            "storageKey": null
+          }]
+        }]
+      }]
+    },
+    "params": {
+      "operationKind": "query",
+      "name": "ProfilePageQuery",
+      "id": null,
+      "text": "query ProfilePageQuery {\n  viewer {\n    ...LayoutContainer_viewer\n    ...ProfileContainer_viewer\n  }\n}\n\nfragment LayoutContainer_viewer on Viewer {\n  me {\n    isAuthenticated\n    userId\n    name\n    email\n    roles\n    providers {\n      name\n    }\n  }\n}\n\nfragment ProfileContainer_viewer on Viewer {\n  me {\n    isAuthenticated\n    name\n    email\n    isEmailVerified\n    roles\n    providers {\n      name\n      isLinked\n    }\n  }\n}\n",
+      "metadata": {}
+    }
+  };
+}(); // prettier-ignore
+
+
+node
+/*: any*/
+.hash = 'a0c93fa74fc3d25de0b1626bf81cb37f';
+module.exports = node;
+
+/***/ }),
+
 /***/ "Q8jq":
 /***/ (function(module, exports) {
 
@@ -8660,6 +9768,13 @@ module.exports.default = exports.default;
 
 /***/ }),
 
+/***/ "RpH3":
+/***/ (function(module, exports) {
+
+module.exports = require("@material-ui/core/colors/red");
+
+/***/ }),
+
 /***/ "STjA":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -8813,6 +9928,29 @@ function isHexadecimal(str) {
 
 module.exports = exports.default;
 module.exports.default = exports.default;
+
+/***/ }),
+
+/***/ "V5KF":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireWildcard = __webpack_require__("5Uuq");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _styles = __webpack_require__("Bjmp");
+
+var _ConfirmModal = _interopRequireWildcard(__webpack_require__("uj/t"));
+
+var ConfirmModal = (0, _styles.withStyles)(_ConfirmModal.styles)(_ConfirmModal.default);
+var _default = ConfirmModal;
+exports.default = _default;
 
 /***/ }),
 
@@ -9295,29 +10433,6 @@ $export($export.S + $export.F * !(USE_NATIVE && __webpack_require__("Q2zc")(func
   }
 });
 
-
-/***/ }),
-
-/***/ "W8Wa":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireWildcard = __webpack_require__("5Uuq");
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _styles = __webpack_require__("Bjmp");
-
-var _TypographyDemo = _interopRequireWildcard(__webpack_require__("u/d+"));
-
-var TypographyDemo = (0, _styles.withStyles)(_TypographyDemo.styles)(_TypographyDemo.default);
-var _default = TypographyDemo;
-exports.default = _default;
 
 /***/ }),
 
@@ -14709,6 +15824,13 @@ module.exports.default = exports.default;
 
 /***/ }),
 
+/***/ "mf1M":
+/***/ (function(module, exports) {
+
+module.exports = require("@material-ui/core/Grow");
+
+/***/ }),
+
 /***/ "mlGW":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -16210,6 +17332,28 @@ module.exports = __webpack_require__("p9MR").getIterator = function (it) {
 
 /***/ }),
 
+/***/ "t6mg":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+Object.defineProperty(exports, "default", {
+  enumerable: true,
+  get: function get() {
+    return _ProfilePage.default;
+  }
+});
+
+var _ProfilePage = _interopRequireDefault(__webpack_require__("Hefa"));
+
+/***/ }),
+
 /***/ "tBFs":
 /***/ (function(module, exports) {
 
@@ -16386,240 +17530,31 @@ exports.default = _default;
 
 /***/ }),
 
-/***/ "u/d+":
-/***/ (function(module, exports, __webpack_require__) {
+/***/ "uORY":
+/***/ (function(module, exports) {
 
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__("KI45");
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = exports.styles = void 0;
-
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
-
-var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
-
-var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
-
-var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
-
-var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
-
-var _defineProperty2 = _interopRequireDefault(__webpack_require__("xHqa"));
-
-var _react = _interopRequireDefault(__webpack_require__("cDcd"));
-
-var _Typography = _interopRequireDefault(__webpack_require__("UVoM"));
-
-var _Paper = _interopRequireDefault(__webpack_require__("qt1I"));
-
-var styles = function styles(theme) {
-  return {
-    layout: {
-      width: "100%",
-      flex: 1,
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "stretch",
-      flexDirection: "column"
-    },
-    row: (0, _defineProperty2.default)({
-      display: "flex",
-      justifyContent: "stretch",
-      alignItems: "center",
-      margin: "2rem"
-    }, theme.breakpoints.down("sm"), {
-      flexDirection: "column",
-      margin: "2rem 0"
-    }),
-    label: (0, _defineProperty2.default)({
-      width: 350,
-      padding: "0 2rem 1rem 2rem",
-      textAlign: "right",
-      fontFamily: "Roboto Mono",
-      fontWeight: "bold"
-    }, theme.breakpoints.down("sm"), {
-      textAlign: "center"
-    }),
-    item: {
-      padding: "2rem",
-      flex: 1
-    }
-  };
+module.exports = {
+  name: {
+    normalize: "rows:1|compact:spaces",
+    label: "PROFILE_NAME_LABEL",
+    transform: "trim"
+  },
+  email: {
+    normalize: "rows:1|remove:spaces",
+    transform: "trim",
+    validate: "required|email",
+    label: "PROFILE_EMAIL_LABEL"
+  },
+  password1: {
+    label: "PROFILE_PASSWORD1_LABEL",
+    validate: "password"
+  },
+  password2: {
+    label: "PROFILE_PASSWORD2_LABEL",
+    validate: "password|required:password1|match:password1"
+  }
 };
 
-exports.styles = styles;
-
-var TypographyDemo =
-/*#__PURE__*/
-function (_React$Component) {
-  (0, _inherits2.default)(TypographyDemo, _React$Component);
-
-  function TypographyDemo() {
-    (0, _classCallCheck2.default)(this, TypographyDemo);
-    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(TypographyDemo).apply(this, arguments));
-  }
-
-  (0, _createClass2.default)(TypographyDemo, [{
-    key: "render",
-    value: function render() {
-      return _react.default.createElement("div", {
-        className: this.props.classes.layout
-      }, _react.default.createElement("div", {
-        className: this.props.classes.row
-      }, _react.default.createElement(_Typography.default, {
-        className: this.props.classes.label,
-        variant: "body1",
-        color: "inherit"
-      }, "<Typography variant=\"h1\">"), _react.default.createElement(_Paper.default, {
-        className: this.props.classes.item
-      }, _react.default.createElement(_Typography.default, {
-        variant: "h1",
-        color: "inherit"
-      }, "h1. Heading"))), _react.default.createElement("div", {
-        className: this.props.classes.row
-      }, _react.default.createElement(_Typography.default, {
-        className: this.props.classes.label,
-        variant: "body1",
-        color: "inherit"
-      }, "<Typography variant=\"h2\">"), _react.default.createElement(_Paper.default, {
-        className: this.props.classes.item
-      }, _react.default.createElement(_Typography.default, {
-        variant: "h2",
-        color: "inherit"
-      }, "h2. Heading"))), _react.default.createElement("div", {
-        className: this.props.classes.row
-      }, _react.default.createElement(_Typography.default, {
-        className: this.props.classes.label,
-        variant: "body1",
-        color: "inherit"
-      }, "<Typography variant=\"h3\">"), _react.default.createElement(_Paper.default, {
-        className: this.props.classes.item
-      }, _react.default.createElement(_Typography.default, {
-        variant: "h3",
-        color: "inherit"
-      }, "h3. Heading"))), _react.default.createElement("div", {
-        className: this.props.classes.row
-      }, _react.default.createElement(_Typography.default, {
-        className: this.props.classes.label,
-        variant: "body1",
-        color: "inherit"
-      }, "<Typography variant=\"h4\">"), _react.default.createElement(_Paper.default, {
-        className: this.props.classes.item
-      }, _react.default.createElement(_Typography.default, {
-        variant: "h4",
-        color: "inherit"
-      }, "h4. Heading"))), _react.default.createElement("div", {
-        className: this.props.classes.row
-      }, _react.default.createElement(_Typography.default, {
-        className: this.props.classes.label,
-        variant: "body1",
-        color: "inherit"
-      }, "<Typography variant=\"h5\">"), _react.default.createElement(_Paper.default, {
-        className: this.props.classes.item
-      }, _react.default.createElement(_Typography.default, {
-        variant: "h5",
-        color: "inherit"
-      }, "h5. Heading"))), _react.default.createElement("div", {
-        className: this.props.classes.row
-      }, _react.default.createElement(_Typography.default, {
-        className: this.props.classes.label,
-        variant: "body1",
-        color: "inherit"
-      }, "<Typography variant=\"h6\">"), _react.default.createElement(_Paper.default, {
-        className: this.props.classes.item
-      }, _react.default.createElement(_Typography.default, {
-        variant: "h6",
-        color: "inherit"
-      }, "h6. Heading"))), _react.default.createElement("div", {
-        className: this.props.classes.row
-      }, _react.default.createElement(_Typography.default, {
-        className: this.props.classes.label,
-        variant: "body1",
-        color: "inherit"
-      }, "<Typography variant=\"subtitle1\">"), _react.default.createElement(_Paper.default, {
-        className: this.props.classes.item
-      }, _react.default.createElement(_Typography.default, {
-        variant: "subtitle1",
-        color: "inherit"
-      }, "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos blanditiis tenetur"))), _react.default.createElement("div", {
-        className: this.props.classes.row
-      }, _react.default.createElement(_Typography.default, {
-        className: this.props.classes.label,
-        variant: "body1",
-        color: "inherit"
-      }, "<Typography variant=\"subtitle2\">"), _react.default.createElement(_Paper.default, {
-        className: this.props.classes.item
-      }, _react.default.createElement(_Typography.default, {
-        variant: "subtitle2",
-        color: "inherit"
-      }, "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos blanditiis tenetur"))), _react.default.createElement("div", {
-        className: this.props.classes.row
-      }, _react.default.createElement(_Typography.default, {
-        className: this.props.classes.label,
-        variant: "body1",
-        color: "inherit"
-      }, "<Typography variant=\"body1\">"), _react.default.createElement(_Paper.default, {
-        className: this.props.classes.item
-      }, _react.default.createElement(_Typography.default, {
-        variant: "body1",
-        color: "inherit"
-      }, "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos blanditiis tenetur unde suscipit, quam beatae rerum inventore consectetur, neque doloribus, cupiditate numquam dignissimos laborum fugiat deleniti? Eum quasi quidem quibusdam."))), _react.default.createElement("div", {
-        className: this.props.classes.row
-      }, _react.default.createElement(_Typography.default, {
-        className: this.props.classes.label,
-        variant: "body1",
-        color: "inherit"
-      }, "<Typography variant=\"body2\">"), _react.default.createElement(_Paper.default, {
-        className: this.props.classes.item
-      }, _react.default.createElement(_Typography.default, {
-        variant: "body2",
-        color: "inherit"
-      }, "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos blanditiis tenetur unde suscipit, quam beatae rerum inventore consectetur, neque doloribus, cupiditate numquam dignissimos laborum fugiat deleniti? Eum quasi quidem quibusdam."))), _react.default.createElement("div", {
-        className: this.props.classes.row
-      }, _react.default.createElement(_Typography.default, {
-        className: this.props.classes.label,
-        variant: "body1",
-        color: "inherit"
-      }, "<Typography variant=\"button\">"), _react.default.createElement(_Paper.default, {
-        className: this.props.classes.item
-      }, _react.default.createElement(_Typography.default, {
-        variant: "button",
-        color: "inherit"
-      }, "Button text"))), _react.default.createElement("div", {
-        className: this.props.classes.row
-      }, _react.default.createElement(_Typography.default, {
-        className: this.props.classes.label,
-        variant: "body1",
-        color: "inherit"
-      }, "<Typography variant=\"caption\">"), _react.default.createElement(_Paper.default, {
-        className: this.props.classes.item
-      }, _react.default.createElement(_Typography.default, {
-        variant: "caption",
-        color: "inherit"
-      }, "Caption text"))), _react.default.createElement("div", {
-        className: this.props.classes.row
-      }, _react.default.createElement(_Typography.default, {
-        className: this.props.classes.label,
-        variant: "body1",
-        color: "inherit"
-      }, "<Typography variant=\"overline\">"), _react.default.createElement(_Paper.default, {
-        className: this.props.classes.item
-      }, _react.default.createElement(_Typography.default, {
-        variant: "overline",
-        color: "inherit"
-      }, "Overline text"))));
-    }
-  }]);
-  return TypographyDemo;
-}(_react.default.Component);
-
-var _default = TypographyDemo;
-exports.default = _default;
 
 /***/ }),
 
@@ -16836,6 +17771,106 @@ function (_React$Component) {
 }(_react.default.Component);
 
 var _default = Inbox;
+exports.default = _default;
+
+/***/ }),
+
+/***/ "uj/t":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = exports.styles = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
+
+var _react = _interopRequireDefault(__webpack_require__("cDcd"));
+
+var _reactIntl = __webpack_require__("k004");
+
+var _Dialog = _interopRequireDefault(__webpack_require__("fEgT"));
+
+var _DialogActions = _interopRequireDefault(__webpack_require__("1gBk"));
+
+var _DialogContent = _interopRequireDefault(__webpack_require__("iTUb"));
+
+var _DialogContentText = _interopRequireDefault(__webpack_require__("MbIc"));
+
+var _DialogTitle = _interopRequireDefault(__webpack_require__("0Jp5"));
+
+var _Button = _interopRequireDefault(__webpack_require__("Wh1t"));
+
+var styles = function styles() {
+  return {
+    actions: {
+      paddingLeft: "1rem",
+      paddingRight: "1rem",
+      paddingBottom: "1rem"
+    }
+  };
+};
+
+exports.styles = styles;
+
+var ConfirmModal =
+/*#__PURE__*/
+function (_React$PureComponent) {
+  (0, _inherits2.default)(ConfirmModal, _React$PureComponent);
+
+  function ConfirmModal() {
+    (0, _classCallCheck2.default)(this, ConfirmModal);
+    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(ConfirmModal).apply(this, arguments));
+  }
+
+  (0, _createClass2.default)(ConfirmModal, [{
+    key: "render",
+    value: function render() {
+      return _react.default.createElement(_Dialog.default, {
+        maxWidth: "xs",
+        open: true,
+        onClose: this.props.onCancel
+      }, _react.default.createElement(_DialogTitle.default, null, _react.default.createElement(_reactIntl.FormattedMessage, {
+        id: this.props.title
+      })), _react.default.createElement(_DialogContent.default, null, _react.default.createElement(_DialogContentText.default, null, _react.default.createElement(_reactIntl.FormattedMessage, {
+        id: this.props.text,
+        values: this.props.values
+      }))), _react.default.createElement(_DialogActions.default, {
+        classes: {
+          root: this.props.classes.actions
+        }
+      }, _react.default.createElement(_Button.default, {
+        variant: "contained",
+        color: "primary",
+        onClick: this.props.onCancel
+      }, _react.default.createElement(_reactIntl.FormattedMessage, {
+        id: this.props.cancel
+      })), _react.default.createElement(_Button.default, {
+        variant: "contained",
+        color: "secondary",
+        onClick: this.props.onSubmit
+      }, _react.default.createElement(_reactIntl.FormattedMessage, {
+        id: this.props.submit
+      }))));
+    }
+  }]);
+  return ConfirmModal;
+}(_react.default.PureComponent);
+
+var _default = ConfirmModal;
 exports.default = _default;
 
 /***/ }),
@@ -18229,120 +19264,6 @@ module.exports = function validate(options, value, allValues) {
 };
 
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("YLtl")))
-
-/***/ }),
-
-/***/ "yOcD":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__("KI45");
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = exports.query = void 0;
-
-var _regenerator = _interopRequireDefault(__webpack_require__("ln6h"));
-
-var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__("+oT+"));
-
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
-
-var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
-
-var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
-
-var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
-
-var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
-
-var _react = _interopRequireDefault(__webpack_require__("cDcd"));
-
-var _reactRelay = __webpack_require__("iuEU");
-
-var _Relay = __webpack_require__("5upH");
-
-var _TypographyDemoContainer = _interopRequireDefault(__webpack_require__("W8Wa"));
-
-var _LayoutContainer = _interopRequireDefault(__webpack_require__("hl3i"));
-
-var _SpinnerContainer = _interopRequireDefault(__webpack_require__("wkow"));
-
-var defaultVariables = {};
-
-var query = function query() {
-  return __webpack_require__("JZwh");
-};
-
-exports.query = query;
-
-var TypographyPage =
-/*#__PURE__*/
-function (_React$Component) {
-  (0, _inherits2.default)(TypographyPage, _React$Component);
-
-  function TypographyPage() {
-    (0, _classCallCheck2.default)(this, TypographyPage);
-    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(TypographyPage).apply(this, arguments));
-  }
-
-  (0, _createClass2.default)(TypographyPage, [{
-    key: "render",
-    value: function render() {
-      return _react.default.createElement(_Relay.QueryRenderer, {
-        query: query,
-        variables: defaultVariables,
-        render: function render(_ref) {
-          var error = _ref.error,
-              props = _ref.props;
-          return _react.default.createElement(_LayoutContainer.default, {
-            page: "/typography",
-            viewer: props ? props.viewer : null,
-            error: error
-          }, !error && !props && _react.default.createElement(_SpinnerContainer.default, null), !error && props && _react.default.createElement(_TypographyDemoContainer.default, {
-            viewer: props.viewer
-          }));
-        }
-      });
-    }
-  }], [{
-    key: "getInitialProps",
-    value: function () {
-      var _getInitialProps = (0, _asyncToGenerator2.default)(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee(_ref2) {
-        var fetchQuery;
-        return _regenerator.default.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                fetchQuery = _ref2.fetchQuery;
-                _context.next = 3;
-                return fetchQuery(query, defaultVariables);
-
-              case 3:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee);
-      }));
-
-      function getInitialProps(_x) {
-        return _getInitialProps.apply(this, arguments);
-      }
-
-      return getInitialProps;
-    }()
-  }]);
-  return TypographyPage;
-}(_react.default.Component);
-
-var _default = TypographyPage;
-exports.default = _default;
 
 /***/ }),
 
