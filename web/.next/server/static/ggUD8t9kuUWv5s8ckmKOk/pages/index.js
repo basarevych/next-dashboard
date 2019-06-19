@@ -4011,10 +4011,11 @@ function (_React$Component) {
   }, {
     key: "renderHeader",
     value: function renderHeader() {
+      var userId = this.user && this.user.userId;
       return _react.default.createElement("div", {
         className: this.props.classes.avatar
       }, _react.default.createElement("img", {
-        src: this.props.isAuthenticated ? this.props.apiServer + _constants.default.apiBase + "/avatars/self?size=large&t=" + (0, _now.default)() : "/static/img/anonymous.png"
+        src: this.props.isAuthenticated && userId ? this.props.apiServer + _constants.default.apiBase + "/avatars/" + userId + "?size=large&t=" + (0, _now.default)() : "/static/img/anonymous.png"
       }), _react.default.createElement(_Typography.default, {
         variant: "subtitle1",
         color: "inherit"
@@ -22200,7 +22201,7 @@ function (_React$Component) {
       }, _react.default.createElement(_ListItemAvatar.default, null, _react.default.createElement(_Avatar.default, {
         className: this.props.classes.inboxAvatar,
         alt: "Mitch Stigall",
-        src: this.props.apiServer + _constants.default.apiBase + "/avatars/1?t=" + (0, _now.default)()
+        src: this.props.apiServer + _constants.default.apiBase + "/avatars/x0?t=" + (0, _now.default)()
       })), _react.default.createElement(_ListItemText.default, {
         primary: _react.default.createElement(_react.default.Fragment, null, _react.default.createElement("div", {
           className: this.props.classes.inboxName
@@ -22217,13 +22218,13 @@ function (_React$Component) {
         secondary: _react.default.createElement("span", {
           className: this.props.classes.inboxPreview
         }, "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.")
-      }), " "), _react.default.createElement(_MenuItem.default, {
+      })), _react.default.createElement(_MenuItem.default, {
         className: this.props.classes.menuItem,
         onClick: this.props.onClose
       }, _react.default.createElement(_ListItemAvatar.default, null, _react.default.createElement(_Avatar.default, {
         className: this.props.classes.inboxAvatar,
         alt: "Marie Wineinger",
-        src: this.props.apiServer + _constants.default.apiBase + "/avatars/2?t=" + (0, _now.default)()
+        src: this.props.apiServer + _constants.default.apiBase + "/avatars/x1?t=" + (0, _now.default)()
       })), _react.default.createElement(_ListItemText.default, {
         primary: _react.default.createElement(_react.default.Fragment, null, _react.default.createElement("div", {
           className: this.props.classes.inboxName
@@ -22240,13 +22241,13 @@ function (_React$Component) {
         secondary: _react.default.createElement("span", {
           className: this.props.classes.inboxPreview
         }, "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.")
-      }), " "), _react.default.createElement(_MenuItem.default, {
+      })), _react.default.createElement(_MenuItem.default, {
         className: this.props.classes.menuItem,
         onClick: this.props.onClose
       }, _react.default.createElement(_ListItemAvatar.default, null, _react.default.createElement(_Avatar.default, {
         className: this.props.classes.inboxAvatar,
         alt: "Ted Eriksson",
-        src: this.props.apiServer + _constants.default.apiBase + "/avatars/3?t=" + (0, _now.default)()
+        src: this.props.apiServer + _constants.default.apiBase + "/avatars/x2?t=" + (0, _now.default)()
       })), _react.default.createElement(_ListItemText.default, {
         primary: _react.default.createElement(_react.default.Fragment, null, _react.default.createElement("div", {
           className: this.props.classes.inboxName
@@ -22263,13 +22264,13 @@ function (_React$Component) {
         secondary: _react.default.createElement("span", {
           className: this.props.classes.inboxPreview
         }, "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.")
-      }), " "), _react.default.createElement(_MenuItem.default, {
+      })), _react.default.createElement(_MenuItem.default, {
         className: this.props.classes.menuItem,
         onClick: this.props.onClose
       }, _react.default.createElement(_ListItemAvatar.default, null, _react.default.createElement(_Avatar.default, {
         className: this.props.classes.inboxAvatar,
         alt: "Martin Murry",
-        src: this.props.apiServer + _constants.default.apiBase + "/avatars/4?t=" + (0, _now.default)()
+        src: this.props.apiServer + _constants.default.apiBase + "/avatars/x3?t=" + (0, _now.default)()
       })), _react.default.createElement(_ListItemText.default, {
         primary: _react.default.createElement(_react.default.Fragment, null, _react.default.createElement("div", {
           className: this.props.classes.inboxName
@@ -22286,7 +22287,7 @@ function (_React$Component) {
         secondary: _react.default.createElement("span", {
           className: this.props.classes.inboxPreview
         }, "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.")
-      }), " "));
+      })));
     }
   }]);
   return Inbox;

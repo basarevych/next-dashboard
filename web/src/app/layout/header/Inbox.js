@@ -76,7 +76,7 @@ class Inbox extends React.Component {
               src={
                 this.props.apiServer +
                 constants.apiBase +
-                "/avatars/1?t=" +
+                "/avatars/x0?t=" +
                 Date.now()
               }
             />
@@ -108,7 +108,7 @@ class Inbox extends React.Component {
                 eiusmod tempor incididunt ut labore et dolore magna aliqua.
               </span>
             }
-          />{" "}
+          />
         </MenuItem>
         <MenuItem
           className={this.props.classes.menuItem}
@@ -121,7 +121,7 @@ class Inbox extends React.Component {
               src={
                 this.props.apiServer +
                 constants.apiBase +
-                "/avatars/2?t=" +
+                "/avatars/x1?t=" +
                 Date.now()
               }
             />
@@ -153,7 +153,7 @@ class Inbox extends React.Component {
                 eiusmod tempor incididunt ut labore et dolore magna aliqua.
               </span>
             }
-          />{" "}
+          />
         </MenuItem>
         <MenuItem
           className={this.props.classes.menuItem}
@@ -166,7 +166,7 @@ class Inbox extends React.Component {
               src={
                 this.props.apiServer +
                 constants.apiBase +
-                "/avatars/3?t=" +
+                "/avatars/x2?t=" +
                 Date.now()
               }
             />
@@ -196,7 +196,7 @@ class Inbox extends React.Component {
                 eiusmod tempor incididunt ut labore et dolore magna aliqua.
               </span>
             }
-          />{" "}
+          />
         </MenuItem>
         <MenuItem
           className={this.props.classes.menuItem}
@@ -209,7 +209,7 @@ class Inbox extends React.Component {
               src={
                 this.props.apiServer +
                 constants.apiBase +
-                "/avatars/4?t=" +
+                "/avatars/x3?t=" +
                 Date.now()
               }
             />
@@ -239,7 +239,7 @@ class Inbox extends React.Component {
                 eiusmod tempor incididunt ut labore et dolore magna aliqua.
               </span>
             }
-          />{" "}
+          />
         </MenuItem>
       </Menu>
     );

@@ -117,14 +117,17 @@ class Sidebar extends React.Component {
   }
 
   renderHeader() {
+    const userId = this.user && this.user.userId;
     return (
       <div className={this.props.classes.avatar}>
         <img
           src={
-            this.props.isAuthenticated
+            this.props.isAuthenticated && userId
               ? this.props.apiServer +
                 constants.apiBase +
-                "/avatars/self?size=large&t=" +
+                "/avatars/" +
+                userId +
+                "?size=large&t=" +
                 Date.now()
               : "/static/img/anonymous.png"
           }

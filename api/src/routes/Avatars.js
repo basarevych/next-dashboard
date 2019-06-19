@@ -4,10 +4,11 @@ const sharp = require("sharp");
 const Router = require("express").Router;
 
 class AvatarsRoute {
-  constructor(di, config, cache) {
+  constructor(di, config, cache, user) {
     this.di = di;
     this.config = config;
     this.cache = cache;
+    this.user = user;
     this.router = Router();
 
     this.fetchInterval = 60; // minutes
@@ -22,7 +23,7 @@ class AvatarsRoute {
   }
 
   static get $requires() {
-    return ["di", "config", "cache"];
+    return ["di", "config", "cache", "model.user"];
   }
 
   async init() {
@@ -158,9 +159,13 @@ class AvatarsRoute {
       if (this.fetchPromise) await this.fetchPromise;
 
       let url;
-      if (req.params.id === "self") {
-        // own avatar
-        let { user } = req.token || {};
+      const match = /^x(\d)$/.exec(req.params.id);
+      if (match) {
+        // random avatar
+        url = this.avatars[parseInt(match[1])];
+      } else {
+        // user avatar
+        let user = await this.user.findById(req.params.id);
         if (user) {
           for (let provider of user.providers) {
             if (provider.profile.photos && provider.profile.photos.length)
@@ -168,9 +173,6 @@ class AvatarsRoute {
             if (url) break;
           }
         }
-      } else {
-        // random avatar
-        url = this.avatars[parseInt(req.params.id) - 1];
       }
       if (!url) url = this.config.apiAppServer + "/static/img/anonymous.png";
       debug(url);
