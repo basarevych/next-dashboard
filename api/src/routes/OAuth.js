@@ -64,7 +64,7 @@ class OAuthRoute {
     return async (req, res, next) => {
       let token = req.query.token || "";
       if (token) {
-        const { type, user, client } = (await this.useToken(token)) || {};
+        const { type, user, client } = (await this.auth.useToken(token)) || {};
         if (type === "oneTime") {
           req.session.userId = user.id;
           req.session.clientId = client.id;
