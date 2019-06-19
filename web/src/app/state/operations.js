@@ -173,13 +173,21 @@ export const linkProvider = ({ provider }) => async (
       oneTimeToken = _.get(data, "data.getToken.token", null);
   }
 
+  let redirect = window.location.href;
+  if (
+    _.startsWith(Router.pathname, "/auth") &&
+    Router.pathname !== "/auth/profile"
+  ) {
+    redirect = selectors.getAppServer(getState());
+  }
+
   window.location.href =
     selectors.getApiServer(getState()) +
     constants.apiBase +
     "/oauth/" +
     _.lowerCase(provider) +
     "?redirect=" +
-    encodeURIComponent(window.location.href) +
+    encodeURIComponent(redirect) +
     (oneTimeToken ? "&token=" + encodeURIComponent(oneTimeToken) : "");
 
   return refreshToken ? !!oneTimeToken : true;

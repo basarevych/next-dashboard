@@ -52,9 +52,7 @@ class OAuthRoute {
       this.router.get(
         `/oauth/${provider.providerName}/callback`,
         this.sessionMiddleware,
-        this.authenticate(provider.providerName, {
-          failureRedirect: this.config.apiAppServer + "/auth/error?type=oauth"
-        }),
+        this.authenticate(provider.providerName),
         this.successRedirect(provider.providerName)
       );
     }
@@ -91,6 +89,9 @@ class OAuthRoute {
 
   successRedirect(/* provider */) {
     return async (req, res, next) => {
+      req.session.userId = null;
+      req.session.clientId = null;
+
       if (!req.user || !req.client)
         return res.redirect(this.config.apiAppServer + "/auth/error");
 

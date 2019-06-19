@@ -10554,7 +10554,7 @@ var linkProvider = function linkProvider(_ref15) {
       var _ref16 = (0, _asyncToGenerator2.default)(
       /*#__PURE__*/
       _regenerator.default.mark(function _callee10(dispatch, getState, di) {
-        var refreshToken, oneTimeToken, data, result;
+        var refreshToken, oneTimeToken, data, result, redirect;
         return _regenerator.default.wrap(function _callee10$(_context10) {
           while (1) {
             switch (_context10.prev = _context10.next) {
@@ -10582,10 +10582,16 @@ var linkProvider = function linkProvider(_ref15) {
                 if (result === true) oneTimeToken = _.get(data, "data.getToken.token", null);
 
               case 9:
-                window.location.href = selectors.getApiServer(getState()) + _constants.default.apiBase + "/oauth/" + _.lowerCase(provider) + "?redirect=" + encodeURIComponent(window.location.href) + (oneTimeToken ? "&token=" + encodeURIComponent(oneTimeToken) : "");
+                redirect = window.location.href;
+
+                if (_.startsWith(_router.default.pathname, "/auth") && _router.default.pathname !== "/auth/profile") {
+                  redirect = selectors.getAppServer(getState());
+                }
+
+                window.location.href = selectors.getApiServer(getState()) + _constants.default.apiBase + "/oauth/" + _.lowerCase(provider) + "?redirect=" + encodeURIComponent(redirect) + (oneTimeToken ? "&token=" + encodeURIComponent(oneTimeToken) : "");
                 return _context10.abrupt("return", refreshToken ? !!oneTimeToken : true);
 
-              case 11:
+              case 13:
               case "end":
                 return _context10.stop();
             }

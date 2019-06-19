@@ -187,24 +187,20 @@ class Auth {
               }
             };
 
-            const returnFailure = () => {
-              req.user = null;
-              req.client = null;
-              next(null, false);
-            };
+            const returnFailure = () => next(null, false);
 
-            const returnError = error => {
-              req.user = null;
-              req.client = null;
+            const returnError = error =>
               next(error || new Error("An error occured"), false);
-            };
+
+            req.user = null;
+            req.client = null;
 
             try {
               // Token bearer
               let curUser, curClient;
               if (req.session.userId) {
                 curUser = await this.user.model.findById(req.session.userId);
-                if (curUser)
+                if (curUser && req.session.clientId)
                   curClient = curUser.clients.id(req.session.clientId);
               }
 
