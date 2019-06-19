@@ -165,7 +165,7 @@ class AvatarsRoute {
         url = this.avatars[parseInt(match[1])];
       } else {
         // user avatar
-        let user = await this.user.findById(req.params.id);
+        let user = await this.user.model.findById(req.params.id);
         if (user) {
           for (let provider of user.providers) {
             if (provider.profile.photos && provider.profile.photos.length)
