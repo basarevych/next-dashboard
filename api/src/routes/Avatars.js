@@ -99,8 +99,8 @@ class AvatarsRoute {
       _.map(urls, url => (_.startsWith(url, "http") ? doFetch(url) : null))
     );
 
-    const metadata = await Promise.all(buffers, buffer =>
-      buffer ? sharp(buffer).metadata() : null
+    const metadata = await Promise.all(
+      _.map(buffers, buffer => (buffer ? sharp(buffer).metadata() : null))
     );
 
     let result = null;
