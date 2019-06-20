@@ -31,18 +31,19 @@ export const styles = () => ({
 
 class StateLegendLabel extends React.Component {
   static propTypes = {
-    index: PropTypes.number.isRequired,
-    x: PropTypes.number.isRequired,
-    y: PropTypes.number.isRequired,
-    offsetX: PropTypes.number.isRequired,
-    offsetY: PropTypes.number.isRequired,
-    text: PropTypes.string.isRequired,
-    chart: PropTypes.object.isRequired,
-    theme: PropTypes.object.isRequired
+    index: PropTypes.number,
+    x: PropTypes.number,
+    y: PropTypes.number,
+    offsetX: PropTypes.number,
+    offsetY: PropTypes.number,
+    text: PropTypes.string,
+    chart: PropTypes.array,
+    theme: PropTypes.object
   };
 
   render() {
     const { index, x, y, offsetX, offsetY, text, chart, theme } = this.props;
+    if (!chart || !text) return null;
     return (
       <g>
         <text
@@ -130,7 +131,7 @@ class StateSales extends React.Component {
     if (!data) return null;
 
     let legendLineHeight = height / 2 / 10 / 2;
-    let radius = Math.min(width, height / 2) / 2 - 10;
+    let radius = Math.min(width / 2, height / 2) - 10;
     let colorScale = [];
     let labels = [];
     let legends = _.map(data, (item, i) => ({
@@ -155,7 +156,7 @@ class StateSales extends React.Component {
       <svg width={width} height={height}>
         <VictoryChart
           width={width}
-          height={height / 2}
+          height={radius + height / 2}
           standalone={false}
           containerComponent={<VictoryContainer responsive={false} />}
           theme={_.merge({}, VictoryTheme.material, {
@@ -192,15 +193,17 @@ class StateSales extends React.Component {
             labels={labels}
             colorScale={colorScale}
             padAngle={3}
+            startAngle={90}
+            endAngle={-90}
             radius={radius}
             innerRadius={0.5 * radius}
             labelRadius={0.75 * radius}
           />
           <VictoryLegend
             data={legends}
-            x={0}
+            x={(width - 2 * radius) / 2 + 15}
             y={height / 2}
-            width={width}
+            width={2 * radius}
             height={height / 2}
             colorScale={colorScale}
             labelComponent={
@@ -208,7 +211,7 @@ class StateSales extends React.Component {
                 chart={data}
                 theme={this.props.theme}
                 offsetY={0.45 * legendLineHeight}
-                offsetX={0.6 * width}
+                offsetX={radius}
               />
             }
             rowGutter={0}
