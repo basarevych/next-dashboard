@@ -139,15 +139,15 @@ class StateSales extends React.Component {
       symbol: {
         fill:
           this.props.theme.name === "dark"
-            ? darken("rgba(255, 167, 38)", i * 0.05)
-            : darken("rgba(66, 165, 245)", i * 0.05)
+            ? darken("rgb(255, 167, 38)", i * 0.05)
+            : darken("rgb(66, 165, 245)", i * 0.05)
       }
     }));
     for (let i = 0; i <= 10; i++) {
       colorScale.push(
         this.props.theme.name === "dark"
-          ? darken("rgba(255, 167, 38)", i * 0.05)
-          : darken("rgba(66, 165, 245)", i * 0.05)
+          ? darken("rgb(255, 167, 38)", i * 0.05)
+          : darken("rgb(66, 165, 245)", i * 0.05)
       );
       labels.push(i + 1);
     }
