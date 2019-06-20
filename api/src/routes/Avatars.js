@@ -62,6 +62,7 @@ class AvatarsRoute {
                 ) <= 10
               ) {
                 this.randomSelected.push(i);
+                return;
               }
             }
           }
