@@ -123,17 +123,14 @@ class Cache {
     return result;
   }
 
-  _avatarToKey(url) {
-    const hash = crypto.createHash("md5");
-    hash.update(url);
-    return this.namespace + ":avatar:" + hash.digest("hex");
+  _avatarToKey(id) {
+    return this.namespace + ":avatar:" + id;
   }
 
-  async setAvatar(url, type, small, large) {
-    if (!url || !type || !small || !large) return 0;
-    let key = this._avatarToKey(url);
+  async setAvatar(id, small, large) {
+    if (!id || !small || !large) return 0;
+    let key = this._avatarToKey(id);
     let result = 0;
-    result += await this.cacheRedis.hset(key, "type", type);
     result += await this.cacheRedis.hset(
       key,
       "small",
@@ -148,14 +145,12 @@ class Cache {
     return result;
   }
 
-  async getAvatar(url) {
-    let key = this._avatarToKey(url);
-    let type = await this.cacheRedis.hget(key, "type");
+  async getAvatar(id) {
+    let key = this._avatarToKey(id);
     let small = await this.cacheRedis.hget(key, "small");
     let large = await this.cacheRedis.hget(key, "large");
-    if (type && small && large) {
+    if (small && large) {
       return {
-        type,
         small: Buffer.from(small, "base64"),
         large: Buffer.from(large, "base64")
       };

@@ -1,7 +1,7 @@
 module.exports =
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
-/******/ 	var installedModules = require('../../../../ssr-module-cache.js');
+/******/ 	var installedModules = require('../../../ssr-module-cache.js');
 /******/
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
@@ -88,7 +88,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 12);
+/******/ 	return __webpack_require__(__webpack_require__.s = 3);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -427,6 +427,165 @@ module.exports = __webpack_require__("p9MR").Object.keys;
 
 /***/ }),
 
+/***/ "/kPW":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @flow
+ * @relayHash 35361ee6822f22d12e23dc92418b8376
+ */
+
+/* eslint-disable */
+
+/*::
+import type { ConcreteRequest } from 'relay-runtime';
+type LayoutContainer_viewer$ref = any;
+export type ChartsPageQueryVariables = {||};
+export type ChartsPageQueryResponse = {|
+  +viewer: ?{|
+    +$fragmentRefs: LayoutContainer_viewer$ref
+  |}
+|};
+export type ChartsPageQuery = {|
+  variables: ChartsPageQueryVariables,
+  response: ChartsPageQueryResponse,
+|};
+*/
+
+/*
+query ChartsPageQuery {
+  viewer {
+    ...LayoutContainer_viewer
+  }
+}
+
+fragment LayoutContainer_viewer on Viewer {
+  me {
+    isAuthenticated
+    userId
+    name
+    email
+    roles
+    providers {
+      name
+    }
+  }
+}
+*/
+
+var node
+/*: ConcreteRequest*/
+= function () {
+  var v0 = {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "name",
+    "args": null,
+    "storageKey": null
+  };
+  return {
+    "kind": "Request",
+    "fragment": {
+      "kind": "Fragment",
+      "name": "ChartsPageQuery",
+      "type": "Query",
+      "metadata": null,
+      "argumentDefinitions": [],
+      "selections": [{
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "viewer",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "Viewer",
+        "plural": false,
+        "selections": [{
+          "kind": "FragmentSpread",
+          "name": "LayoutContainer_viewer",
+          "args": null
+        }]
+      }]
+    },
+    "operation": {
+      "kind": "Operation",
+      "name": "ChartsPageQuery",
+      "argumentDefinitions": [],
+      "selections": [{
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "viewer",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "Viewer",
+        "plural": false,
+        "selections": [{
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "me",
+          "storageKey": null,
+          "args": null,
+          "concreteType": "Status",
+          "plural": false,
+          "selections": [{
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "isAuthenticated",
+            "args": null,
+            "storageKey": null
+          }, {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "userId",
+            "args": null,
+            "storageKey": null
+          }, v0
+          /*: any*/
+          , {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "email",
+            "args": null,
+            "storageKey": null
+          }, {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "roles",
+            "args": null,
+            "storageKey": null
+          }, {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "providers",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "ProviderStatus",
+            "plural": true,
+            "selections": [v0
+            /*: any*/
+            ]
+          }]
+        }]
+      }]
+    },
+    "params": {
+      "operationKind": "query",
+      "name": "ChartsPageQuery",
+      "id": null,
+      "text": "query ChartsPageQuery {\n  viewer {\n    ...LayoutContainer_viewer\n  }\n}\n\nfragment LayoutContainer_viewer on Viewer {\n  me {\n    isAuthenticated\n    userId\n    name\n    email\n    roles\n    providers {\n      name\n    }\n  }\n}\n",
+      "metadata": {}
+    }
+  };
+}(); // prettier-ignore
+
+
+node
+/*: any*/
+.hash = 'b8a0757bd55f42bc8295064f58ba24b6';
+module.exports = node;
+
+/***/ }),
+
 /***/ "/wxW":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -442,6 +601,23 @@ module.exports = Object.getPrototypeOf || function (O) {
   if (typeof O.constructor == 'function' && O instanceof O.constructor) {
     return O.constructor.prototype;
   } return O instanceof Object ? ObjectProto : null;
+};
+
+
+/***/ }),
+
+/***/ "04/V":
+/***/ (function(module, exports, __webpack_require__) {
+
+var classof = __webpack_require__("fYqa");
+var ITERATOR = __webpack_require__("G1Wo")('iterator');
+var Iterators = __webpack_require__("sipE");
+module.exports = __webpack_require__("p9MR").isIterable = function (it) {
+  var O = Object(it);
+  return O[ITERATOR] !== undefined
+    || '@@iterator' in O
+    // eslint-disable-next-line no-prototype-builtins
+    || Iterators.hasOwnProperty(classof(O));
 };
 
 
@@ -867,14 +1043,6 @@ exports.f = {}.propertyIsEnumerable;
 
 /***/ }),
 
-/***/ 12:
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__("H5iX");
-
-
-/***/ }),
-
 /***/ "14Ie":
 /***/ (function(module, exports) {
 
@@ -1154,6 +1322,15 @@ module.exports = require("@material-ui/core/DialogActions");
 
 /***/ }),
 
+/***/ "1gQu":
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__("GTiD");
+module.exports = __webpack_require__("p9MR").Array.isArray;
+
+
+/***/ }),
+
 /***/ "1imS":
 /***/ (function(module, exports) {
 
@@ -1172,6 +1349,17 @@ exports.f = Object.getOwnPropertyNames || function getOwnPropertyNames(O) {
   return $keys(O, hiddenKeys);
 };
 
+
+/***/ }),
+
+/***/ "2PDY":
+/***/ (function(module, exports) {
+
+function _nonIterableSpread() {
+  throw new TypeError("Invalid attempt to spread non-iterable instance");
+}
+
+module.exports = _nonIterableSpread;
 
 /***/ }),
 
@@ -1775,6 +1963,14 @@ module.exports = {
 
 /***/ }),
 
+/***/ 3:
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__("9KWN");
+
+
+/***/ }),
+
 /***/ "31Yn":
 /***/ (function(module, exports) {
 
@@ -1807,6 +2003,99 @@ function isISRC(str) {
 
 module.exports = exports.default;
 module.exports.default = exports.default;
+
+/***/ }),
+
+/***/ "3AO0":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(_) {
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _victory = __webpack_require__("wL32");
+
+var _colorManipulator = __webpack_require__("oOPP");
+
+var _default = function _default() {
+  var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+      theme = _ref.theme,
+      withAxis = _ref.withAxis,
+      withGrid = _ref.withGrid,
+      withArea = _ref.withArea;
+
+  return _.merge({}, _victory.VictoryTheme.material, {
+    axis: {
+      style: {
+        axis: withAxis ? {
+          stroke: theme.palette.text.primary
+        } : {
+          display: "none"
+        },
+        axisLabel: withAxis || withGrid ? {
+          fill: theme.palette.text.primary
+        } : {
+          display: "none"
+        },
+        ticks: withAxis ? {
+          stroke: (0, _colorManipulator.fade)(theme.palette.text.disabled, 0.25)
+        } : {
+          display: "none"
+        },
+        tickLabels: withAxis || withGrid ? {
+          fill: theme.palette.text.secondary
+        } : {
+          display: "none"
+        },
+        grid: withGrid ? {
+          stroke: (0, _colorManipulator.fade)(theme.palette.text.disabled, 0.25)
+        } : {
+          display: "none"
+        }
+      }
+    },
+    pie: {
+      style: {
+        data: {
+          strokeWidth: 0
+        },
+        labels: {
+          fill: theme.palette.text.primary
+        }
+      }
+    },
+    area: withArea ? {
+      style: {
+        data: {
+          strokeWidth: 1,
+          stroke: theme.palette.text.primary
+        }
+      }
+    } : undefined,
+    candlestick: {
+      style: {
+        data: {
+          stroke: theme.palette.text.primary,
+          strokeWidth: 2
+        },
+        labels: {
+          fill: theme.palette.text.primary
+        }
+      },
+      candleColors: {
+        positive: "#e45a51",
+        negative: "#5ae451"
+      }
+    }
+  });
+};
+
+exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("YLtl")))
 
 /***/ }),
 
@@ -2129,129 +2418,6 @@ module.exports = node;
 /***/ (function(module, exports) {
 
 module.exports = require("@material-ui/icons/Menu");
-
-/***/ }),
-
-/***/ "4DS7":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(_) {
-
-var _interopRequireDefault = __webpack_require__("KI45");
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = exports.styles = void 0;
-
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
-
-var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
-
-var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
-
-var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
-
-var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
-
-var _react = _interopRequireDefault(__webpack_require__("cDcd"));
-
-var _reactIntl = __webpack_require__("k004");
-
-var _Typography = _interopRequireDefault(__webpack_require__("UVoM"));
-
-var styles = function styles(theme) {
-  return {
-    layout: {
-      width: "100%",
-      flex: 1,
-      padding: theme.spacing(1),
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center"
-    },
-    form: {
-      width: "100%",
-      maxWidth: 700
-    },
-    title: {
-      borderBottom: "1px dotted ".concat(theme.palette.text.primary)
-    },
-    hint: {
-      marginTop: "4rem",
-      marginLeft: "5rem"
-    }
-  };
-};
-
-exports.styles = styles;
-
-var AuthError =
-/*#__PURE__*/
-function (_React$Component) {
-  (0, _inherits2.default)(AuthError, _React$Component);
-
-  function AuthError() {
-    (0, _classCallCheck2.default)(this, AuthError);
-    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(AuthError).apply(this, arguments));
-  }
-
-  (0, _createClass2.default)(AuthError, [{
-    key: "render",
-    value: function render() {
-      var _this = this;
-
-      var msg = "OAUTH_ERROR_GENERIC";
-      var hints = [];
-
-      if (this.props.type === "oauth") {
-        msg = "OAUTH_ERROR_ACCOUNT_EXISTS";
-        hints.push({
-          title: "OAUTH_ERROR_ACCOUNT_EXISTS_TITLE1",
-          body: "OAUTH_ERROR_ACCOUNT_EXISTS_MESSAGE1"
-        });
-        hints.push({
-          title: "OAUTH_ERROR_ACCOUNT_EXISTS_TITLE2",
-          body: "OAUTH_ERROR_ACCOUNT_EXISTS_MESSAGE2"
-        });
-      }
-
-      return _react.default.createElement("div", {
-        className: this.props.classes.layout
-      }, _react.default.createElement("div", {
-        className: this.props.classes.form
-      }, _react.default.createElement(_Typography.default, {
-        variant: "h4",
-        classes: {
-          root: this.props.classes.title
-        }
-      }, _react.default.createElement(_reactIntl.FormattedMessage, {
-        id: "TITLE_OAUTH_ERROR"
-      })), _react.default.createElement("p", null, _react.default.createElement(_reactIntl.FormattedMessage, {
-        id: msg
-      })), _.map(hints, function (hint, index) {
-        return _react.default.createElement("div", {
-          key: "hint-".concat(index),
-          className: _this.props.classes.hint
-        }, _react.default.createElement(_Typography.default, {
-          variant: "h5"
-        }, _react.default.createElement(_reactIntl.FormattedMessage, {
-          id: hint.title
-        })), _react.default.createElement(_Typography.default, {
-          variant: "body1"
-        }, _react.default.createElement(_reactIntl.FormattedMessage, {
-          id: hint.body
-        })));
-      })));
-    }
-  }]);
-  return AuthError;
-}(_react.default.Component);
-
-var _default = AuthError;
-exports.default = _default;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("YLtl")))
 
 /***/ }),
 
@@ -2832,6 +2998,28 @@ module.exports = function (it) {
   return it;
 };
 
+
+/***/ }),
+
+/***/ "9KWN":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+Object.defineProperty(exports, "default", {
+  enumerable: true,
+  get: function get() {
+    return _ChartsPage.default;
+  }
+});
+
+var _ChartsPage = _interopRequireDefault(__webpack_require__("ON+m"));
 
 /***/ }),
 
@@ -3597,6 +3785,111 @@ module.exports = function (name) {
 
 /***/ }),
 
+/***/ "Ckg0":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
+
+var _react = _interopRequireDefault(__webpack_require__("cDcd"));
+
+var _reactVirtualized = __webpack_require__("xvxd");
+
+var _victory = __webpack_require__("wL32");
+
+var _Paper = _interopRequireDefault(__webpack_require__("qt1I"));
+
+var _theme = _interopRequireDefault(__webpack_require__("3AO0"));
+
+var Chart4 =
+/*#__PURE__*/
+function (_React$Component) {
+  (0, _inherits2.default)(Chart4, _React$Component);
+
+  function Chart4() {
+    (0, _classCallCheck2.default)(this, Chart4);
+    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(Chart4).apply(this, arguments));
+  }
+
+  (0, _createClass2.default)(Chart4, [{
+    key: "getData",
+    value: function getData() {
+      return [{
+        x: "Cats",
+        y: 35
+      }, {
+        x: "Dogs",
+        y: 40
+      }, {
+        x: "Birds",
+        y: 55
+      }];
+    }
+  }, {
+    key: "renderChart",
+    value: function renderChart(width, height) {
+      return _react.default.createElement("svg", {
+        width: width,
+        height: height
+      }, _react.default.createElement(_victory.VictoryChart, {
+        domainPadding: {
+          x: 50
+        },
+        width: width,
+        height: height,
+        standalone: false,
+        containerComponent: _react.default.createElement(_victory.VictoryContainer, {
+          responsive: false
+        }),
+        theme: (0, _theme.default)({
+          theme: this.props.theme
+        })
+      }, _react.default.createElement(_victory.VictoryAxis, null), _react.default.createElement(_victory.VictoryAxis, {
+        dependentAxis: true
+      }), _react.default.createElement(_victory.VictoryPie, {
+        data: this.getData()
+      })));
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this = this;
+
+      return _react.default.createElement(_Paper.default, {
+        className: this.props.className
+      }, _react.default.createElement(_reactVirtualized.AutoSizer, {
+        disableHeight: true
+      }, function (_ref) {
+        var width = _ref.width;
+        return !!width && _this.renderChart(width, 0.8 * width);
+      }));
+    }
+  }]);
+  return Chart4;
+}(_react.default.Component);
+
+var _default = Chart4;
+exports.default = _default;
+
+/***/ }),
+
 /***/ "CpH4":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -3976,6 +4269,151 @@ module.exports = function (it) {
 
 /***/ }),
 
+/***/ "FsgU":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = exports.styles = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
+
+var _react = _interopRequireDefault(__webpack_require__("cDcd"));
+
+var _reactIntl = __webpack_require__("k004");
+
+var _Typography = _interopRequireDefault(__webpack_require__("UVoM"));
+
+var _Grid = _interopRequireDefault(__webpack_require__("JQ2V"));
+
+var _Chart = _interopRequireDefault(__webpack_require__("aN8n"));
+
+var _Chart2 = _interopRequireDefault(__webpack_require__("OG1x"));
+
+var _Chart3 = _interopRequireDefault(__webpack_require__("cz0s"));
+
+var _Chart4 = _interopRequireDefault(__webpack_require__("Ckg0"));
+
+var _Chart5 = _interopRequireDefault(__webpack_require__("uCCn"));
+
+var _Chart6 = _interopRequireDefault(__webpack_require__("t7Ei"));
+
+var styles = function styles(theme) {
+  return {
+    layout: {
+      width: "100%",
+      flex: 1,
+      padding: theme.spacing(2)
+    },
+    paper: {
+      background: theme.main.paper
+    },
+    title: {
+      marginTop: "3rem",
+      marginBottom: "1rem"
+    }
+  };
+};
+
+exports.styles = styles;
+
+var ChartsDemo =
+/*#__PURE__*/
+function (_React$Component) {
+  (0, _inherits2.default)(ChartsDemo, _React$Component);
+
+  function ChartsDemo() {
+    (0, _classCallCheck2.default)(this, ChartsDemo);
+    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(ChartsDemo).apply(this, arguments));
+  }
+
+  (0, _createClass2.default)(ChartsDemo, [{
+    key: "render",
+    value: function render() {
+      return _react.default.createElement("div", {
+        className: this.props.classes.layout
+      }, _react.default.createElement(_Typography.default, {
+        variant: "h3",
+        color: "inherit",
+        className: this.props.classes.title
+      }, _react.default.createElement(_reactIntl.FormattedMessage, {
+        id: "TITLE_CHARTS"
+      })), _react.default.createElement(_Grid.default, {
+        container: true,
+        spacing: 2
+      }, _react.default.createElement(_Grid.default, {
+        item: true,
+        xs: 12,
+        md: 6,
+        lg: 4
+      }, _react.default.createElement(_Chart.default, {
+        theme: this.props.theme,
+        className: this.props.classes.paper
+      })), _react.default.createElement(_Grid.default, {
+        item: true,
+        xs: 12,
+        md: 6,
+        lg: 4
+      }, _react.default.createElement(_Chart2.default, {
+        theme: this.props.theme,
+        className: this.props.classes.paper
+      })), _react.default.createElement(_Grid.default, {
+        item: true,
+        xs: 12,
+        md: 6,
+        lg: 4
+      }, _react.default.createElement(_Chart3.default, {
+        theme: this.props.theme,
+        className: this.props.classes.paper
+      })), _react.default.createElement(_Grid.default, {
+        item: true,
+        xs: 12,
+        md: 6,
+        lg: 4
+      }, _react.default.createElement(_Chart4.default, {
+        theme: this.props.theme,
+        className: this.props.classes.paper
+      })), _react.default.createElement(_Grid.default, {
+        item: true,
+        xs: 12,
+        md: 6,
+        lg: 4
+      }, _react.default.createElement(_Chart5.default, {
+        theme: this.props.theme,
+        className: this.props.classes.paper
+      })), _react.default.createElement(_Grid.default, {
+        item: true,
+        xs: 12,
+        md: 6,
+        lg: 4
+      }, _react.default.createElement(_Chart6.default, {
+        theme: this.props.theme,
+        className: this.props.classes.paper
+      }))));
+    }
+  }]);
+  return ChartsDemo;
+}(_react.default.Component);
+
+var _default = ChartsDemo;
+exports.default = _default;
+
+/***/ }),
+
 /***/ "G+Sp":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -4078,6 +4516,17 @@ module.exports = require("@material-ui/core/ListItemIcon");
 
 /***/ }),
 
+/***/ "GTiD":
+/***/ (function(module, exports, __webpack_require__) {
+
+// 22.1.2.2 / 15.4.3.2 Array.isArray(arg)
+var $export = __webpack_require__("0T/a");
+
+$export($export.S, 'Array', { isArray: __webpack_require__("taoM") });
+
+
+/***/ }),
+
 /***/ "GWyB":
 /***/ (function(module, exports) {
 
@@ -4105,28 +4554,6 @@ module.exports = function (fn, args, that) {
 /***/ (function(module, exports) {
 
 module.exports = require("@material-ui/core/Menu");
-
-/***/ }),
-
-/***/ "H5iX":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__("KI45");
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-Object.defineProperty(exports, "default", {
-  enumerable: true,
-  get: function get() {
-    return _AuthErrorPage.default;
-  }
-});
-
-var _AuthErrorPage = _interopRequireDefault(__webpack_require__("rEps"));
 
 /***/ }),
 
@@ -4265,29 +4692,6 @@ function (_React$Component) {
 }(_react.default.Component);
 
 var _default = Header;
-exports.default = _default;
-
-/***/ }),
-
-/***/ "HA6i":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireWildcard = __webpack_require__("5Uuq");
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _styles = __webpack_require__("Bjmp");
-
-var _AuthError = _interopRequireWildcard(__webpack_require__("4DS7"));
-
-var AuthError = (0, _styles.withStyles)(_AuthError.styles)(_AuthError.default);
-var _default = AuthError;
 exports.default = _default;
 
 /***/ }),
@@ -7115,6 +7519,249 @@ module.exports = require("@material-ui/icons/ErrorOutlined");
 
 /***/ }),
 
+/***/ "OG1x":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
+
+var _react = _interopRequireDefault(__webpack_require__("cDcd"));
+
+var _reactVirtualized = __webpack_require__("xvxd");
+
+var _victory = __webpack_require__("wL32");
+
+var _Paper = _interopRequireDefault(__webpack_require__("qt1I"));
+
+var _theme = _interopRequireDefault(__webpack_require__("3AO0"));
+
+var Chart2 =
+/*#__PURE__*/
+function (_React$Component) {
+  (0, _inherits2.default)(Chart2, _React$Component);
+
+  function Chart2() {
+    (0, _classCallCheck2.default)(this, Chart2);
+    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(Chart2).apply(this, arguments));
+  }
+
+  (0, _createClass2.default)(Chart2, [{
+    key: "getData",
+    value: function getData() {
+      return [{
+        x: 0,
+        y: 0
+      }, {
+        x: 1,
+        y: 2
+      }, {
+        x: 2,
+        y: 1
+      }, {
+        x: 3,
+        y: 4
+      }, {
+        x: 4,
+        y: 3
+      }, {
+        x: 5,
+        y: 5
+      }];
+    }
+  }, {
+    key: "renderChart",
+    value: function renderChart(width, height) {
+      return _react.default.createElement("svg", {
+        width: width,
+        height: height
+      }, _react.default.createElement(_victory.VictoryChart, {
+        domainPadding: {
+          x: 50
+        },
+        width: width,
+        height: height,
+        standalone: false,
+        containerComponent: _react.default.createElement(_victory.VictoryContainer, {
+          responsive: false
+        }),
+        theme: (0, _theme.default)({
+          theme: this.props.theme,
+          withAxis: true
+        })
+      }, _react.default.createElement(_victory.VictoryAxis, null), _react.default.createElement(_victory.VictoryAxis, {
+        dependentAxis: true
+      }), _react.default.createElement(_victory.VictoryLine, {
+        interpolation: "linear",
+        data: this.getData(),
+        style: {
+          data: {
+            stroke: "#e45a51"
+          }
+        }
+      }), _react.default.createElement(_victory.VictoryScatter, {
+        data: this.getData(),
+        size: 5,
+        style: {
+          data: {
+            fill: "#c43a31"
+          }
+        }
+      })));
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this = this;
+
+      return _react.default.createElement(_Paper.default, {
+        className: this.props.className
+      }, _react.default.createElement(_reactVirtualized.AutoSizer, {
+        disableHeight: true
+      }, function (_ref) {
+        var width = _ref.width;
+        return !!width && _this.renderChart(width, 0.8 * width);
+      }));
+    }
+  }]);
+  return Chart2;
+}(_react.default.Component);
+
+var _default = Chart2;
+exports.default = _default;
+
+/***/ }),
+
+/***/ "ON+m":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = exports.query = void 0;
+
+var _regenerator = _interopRequireDefault(__webpack_require__("ln6h"));
+
+var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__("+oT+"));
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
+
+var _react = _interopRequireDefault(__webpack_require__("cDcd"));
+
+var _reactRelay = __webpack_require__("iuEU");
+
+var _Relay = __webpack_require__("5upH");
+
+var _ChartsDemoContainer = _interopRequireDefault(__webpack_require__("t7Ea"));
+
+var _LayoutContainer = _interopRequireDefault(__webpack_require__("hl3i"));
+
+var _SpinnerContainer = _interopRequireDefault(__webpack_require__("wkow"));
+
+var defaultVariables = {};
+
+var query = function query() {
+  return __webpack_require__("/kPW");
+};
+
+exports.query = query;
+
+var ChartsPage =
+/*#__PURE__*/
+function (_React$Component) {
+  (0, _inherits2.default)(ChartsPage, _React$Component);
+
+  function ChartsPage() {
+    (0, _classCallCheck2.default)(this, ChartsPage);
+    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(ChartsPage).apply(this, arguments));
+  }
+
+  (0, _createClass2.default)(ChartsPage, [{
+    key: "render",
+    value: function render() {
+      return _react.default.createElement(_Relay.QueryRenderer, {
+        query: query,
+        variables: defaultVariables,
+        render: function render(_ref) {
+          var error = _ref.error,
+              props = _ref.props;
+          return _react.default.createElement(_LayoutContainer.default, {
+            page: "/charts",
+            viewer: props ? props.viewer : null,
+            error: error
+          }, !error && !props && _react.default.createElement(_SpinnerContainer.default, null), !error && props && _react.default.createElement(_ChartsDemoContainer.default, {
+            viewer: props.viewer
+          }));
+        }
+      });
+    }
+  }], [{
+    key: "getInitialProps",
+    value: function () {
+      var _getInitialProps = (0, _asyncToGenerator2.default)(
+      /*#__PURE__*/
+      _regenerator.default.mark(function _callee(_ref2) {
+        var fetchQuery;
+        return _regenerator.default.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                fetchQuery = _ref2.fetchQuery;
+                _context.next = 3;
+                return fetchQuery(query, defaultVariables);
+
+              case 3:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }));
+
+      function getInitialProps(_x) {
+        return _getInitialProps.apply(this, arguments);
+      }
+
+      return getInitialProps;
+    }()
+  }]);
+  return ChartsPage;
+}(_react.default.Component);
+
+var _default = ChartsPage;
+exports.default = _default;
+
+/***/ }),
+
 /***/ "OQSD":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -7966,6 +8613,21 @@ exports.fetchCities = fetchCities;
 
 /***/ }),
 
+/***/ "PQJW":
+/***/ (function(module, exports, __webpack_require__) {
+
+var _Array$from = __webpack_require__("d04V");
+
+var _isIterable = __webpack_require__("yLu3");
+
+function _iterableToArray(iter) {
+  if (_isIterable(Object(iter)) || Object.prototype.toString.call(iter) === "[object Arguments]") return _Array$from(iter);
+}
+
+module.exports = _iterableToArray;
+
+/***/ }),
+
 /***/ "PczM":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -8724,6 +9386,23 @@ module.exports = __webpack_require__("pDh1");
 
 /***/ }),
 
+/***/ "TbGu":
+/***/ (function(module, exports, __webpack_require__) {
+
+var arrayWithoutHoles = __webpack_require__("fGSI");
+
+var iterableToArray = __webpack_require__("PQJW");
+
+var nonIterableSpread = __webpack_require__("2PDY");
+
+function _toConsumableArray(arr) {
+  return arrayWithoutHoles(arr) || iterableToArray(arr) || nonIterableSpread();
+}
+
+module.exports = _toConsumableArray;
+
+/***/ }),
+
 /***/ "UM4E":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -8800,6 +9479,16 @@ function isHexadecimal(str) {
 
 module.exports = exports.default;
 module.exports.default = exports.default;
+
+/***/ }),
+
+/***/ "V/f9":
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__("k8Q4");
+__webpack_require__("YQlv");
+module.exports = __webpack_require__("p9MR").Array.from;
+
 
 /***/ }),
 
@@ -9735,6 +10424,51 @@ module.exports = require("lodash");
 
 /***/ }),
 
+/***/ "YQlv":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var ctx = __webpack_require__("vCXk");
+var $export = __webpack_require__("0T/a");
+var toObject = __webpack_require__("AYVP");
+var call = __webpack_require__("nJOo");
+var isArrayIter = __webpack_require__("widk");
+var toLength = __webpack_require__("pasi");
+var createProperty = __webpack_require__("s+zB");
+var getIterFn = __webpack_require__("8Vlj");
+
+$export($export.S + $export.F * !__webpack_require__("Q2zc")(function (iter) { Array.from(iter); }), 'Array', {
+  // 22.1.2.1 Array.from(arrayLike, mapfn = undefined, thisArg = undefined)
+  from: function from(arrayLike /* , mapfn = undefined, thisArg = undefined */) {
+    var O = toObject(arrayLike);
+    var C = typeof this == 'function' ? this : Array;
+    var aLen = arguments.length;
+    var mapfn = aLen > 1 ? arguments[1] : undefined;
+    var mapping = mapfn !== undefined;
+    var index = 0;
+    var iterFn = getIterFn(O);
+    var length, result, step, iterator;
+    if (mapping) mapfn = ctx(mapfn, aLen > 2 ? arguments[2] : undefined, 2);
+    // if object isn't iterable or it's array with default iterator - use simple case
+    if (iterFn != undefined && !(C == Array && isArrayIter(iterFn))) {
+      for (iterator = iterFn.call(O), result = new C(); !(step = iterator.next()).done; index++) {
+        createProperty(result, index, mapping ? call(iterator, mapfn, [step.value, index], true) : step.value);
+      }
+    } else {
+      length = toLength(O.length);
+      for (result = new C(length); length > index; index++) {
+        createProperty(result, index, mapping ? mapfn(O[index], index) : O[index]);
+      }
+    }
+    result.length = index;
+    return result;
+  }
+});
+
+
+/***/ }),
+
 /***/ "YXwE":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -10290,6 +11024,139 @@ function isLength(str, options) {
 
 module.exports = exports.default;
 module.exports.default = exports.default;
+
+/***/ }),
+
+/***/ "aN8n":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(_) {
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
+
+var _react = _interopRequireDefault(__webpack_require__("cDcd"));
+
+var _reactVirtualized = __webpack_require__("xvxd");
+
+var _victory = __webpack_require__("wL32");
+
+var _Paper = _interopRequireDefault(__webpack_require__("qt1I"));
+
+var _theme = _interopRequireDefault(__webpack_require__("3AO0"));
+
+var Chart1 =
+/*#__PURE__*/
+function (_React$Component) {
+  (0, _inherits2.default)(Chart1, _React$Component);
+
+  function Chart1() {
+    (0, _classCallCheck2.default)(this, Chart1);
+    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(Chart1).apply(this, arguments));
+  }
+
+  (0, _createClass2.default)(Chart1, [{
+    key: "getData",
+    value: function getData() {
+      return _.times(5, function () {
+        return [{
+          x: 1,
+          y: Math.random()
+        }, {
+          x: 2,
+          y: Math.random()
+        }, {
+          x: 3,
+          y: Math.random()
+        }];
+      });
+    }
+  }, {
+    key: "renderChart",
+    value: function renderChart(width, height) {
+      return _react.default.createElement("svg", {
+        width: width,
+        height: height
+      }, _react.default.createElement(_victory.VictoryChart, {
+        domainPadding: {
+          x: 50
+        },
+        width: width,
+        height: height,
+        standalone: false,
+        containerComponent: _react.default.createElement(_victory.VictoryContainer, {
+          responsive: false
+        }),
+        theme: (0, _theme.default)({
+          theme: this.props.theme,
+          withAxis: true
+        })
+      }, _react.default.createElement(_victory.VictoryGroup, {
+        offset: 20,
+        style: {
+          data: {
+            width: 15
+          }
+        }
+      }, _react.default.createElement(_victory.VictoryStack, {
+        colorScale: "red"
+      }, _.map(this.getData(), function (data, index) {
+        return _react.default.createElement(_victory.VictoryBar, {
+          key: index,
+          data: data
+        });
+      })), _react.default.createElement(_victory.VictoryStack, {
+        colorScale: "green"
+      }, _.map(this.getData(), function (data, index) {
+        return _react.default.createElement(_victory.VictoryBar, {
+          key: index,
+          data: data
+        });
+      })), _react.default.createElement(_victory.VictoryStack, {
+        colorScale: "blue"
+      }, _.map(this.getData(), function (data, index) {
+        return _react.default.createElement(_victory.VictoryBar, {
+          key: index,
+          data: data
+        });
+      })))));
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this = this;
+
+      return _react.default.createElement(_Paper.default, {
+        className: this.props.className
+      }, _react.default.createElement(_reactVirtualized.AutoSizer, {
+        disableHeight: true
+      }, function (_ref) {
+        var width = _ref.width;
+        return !!width && _this.renderChart(width, 0.8 * width);
+      }));
+    }
+  }]);
+  return Chart1;
+}(_react.default.Component);
+
+var _default = Chart1;
+exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("YLtl")))
 
 /***/ }),
 
@@ -12393,6 +13260,201 @@ module.exports = require("regenerator-runtime");
 
 /***/ }),
 
+/***/ "cz0s":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(_) {
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _toConsumableArray2 = _interopRequireDefault(__webpack_require__("TbGu"));
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
+
+var _react = _interopRequireDefault(__webpack_require__("cDcd"));
+
+var _reactVirtualized = __webpack_require__("xvxd");
+
+var _victory = __webpack_require__("wL32");
+
+var _Paper = _interopRequireDefault(__webpack_require__("qt1I"));
+
+var _theme = _interopRequireDefault(__webpack_require__("3AO0"));
+
+var Chart3 =
+/*#__PURE__*/
+function (_React$Component) {
+  (0, _inherits2.default)(Chart3, _React$Component);
+
+  function Chart3(props) {
+    var _this;
+
+    (0, _classCallCheck2.default)(this, Chart3);
+    _this = (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(Chart3).call(this, props));
+    _this.state = {
+      data: _this.processData(_this.getCharacterData()),
+      maxima: _this.getMaxima(_this.getCharacterData())
+    };
+    return _this;
+  }
+
+  (0, _createClass2.default)(Chart3, [{
+    key: "getCharacterData",
+    value: function getCharacterData() {
+      return [{
+        strength: 1,
+        intelligence: 250,
+        luck: 1,
+        stealth: 40,
+        charisma: 50
+      }, {
+        strength: 2,
+        intelligence: 300,
+        luck: 2,
+        stealth: 80,
+        charisma: 90
+      }, {
+        strength: 5,
+        intelligence: 225,
+        luck: 3,
+        stealth: 60,
+        charisma: 120
+      }];
+    }
+  }, {
+    key: "getMaxima",
+    value: function getMaxima(data) {
+      var groupedData = _.reduce(_.keys(data[0]), function (memo, key) {
+        memo[key] = _.map(data, function (d) {
+          return d[key];
+        });
+        return memo;
+      }, {});
+
+      return _.reduce(_.keys(groupedData), function (memo, key) {
+        memo[key] = Math.max.apply(Math, (0, _toConsumableArray2.default)(groupedData[key]));
+        return memo;
+      }, {});
+    }
+  }, {
+    key: "processData",
+    value: function processData(data) {
+      var maxByGroup = this.getMaxima(data);
+
+      var makeDataArray = function makeDataArray(d) {
+        return _.map(_.keys(d), function (key) {
+          return {
+            x: key,
+            y: d[key] / maxByGroup[key]
+          };
+        });
+      };
+
+      return _.map(data, function (datum) {
+        return makeDataArray(datum);
+      });
+    }
+  }, {
+    key: "renderChart",
+    value: function renderChart(width, height) {
+      var _this2 = this;
+
+      return _react.default.createElement("svg", {
+        width: width,
+        height: height
+      }, _react.default.createElement(_victory.VictoryChart, {
+        polar: true,
+        domain: {
+          y: [0, 1]
+        },
+        width: width,
+        height: height,
+        standalone: false,
+        containerComponent: _react.default.createElement(_victory.VictoryContainer, {
+          responsive: false
+        }),
+        theme: (0, _theme.default)({
+          theme: this.props.theme,
+          withGrid: true
+        })
+      }, _react.default.createElement(_victory.VictoryGroup, {
+        colorScale: ["gold", "orange", "tomato"],
+        style: {
+          data: {
+            fillOpacity: 0.2,
+            strokeWidth: 2
+          }
+        }
+      }, _.map(this.state.data, function (data, i) {
+        return _react.default.createElement(_victory.VictoryArea, {
+          key: i,
+          data: data
+        });
+      })), _.map(_.keys(this.state.maxima), function (key, i) {
+        return _react.default.createElement(_victory.VictoryPolarAxis, {
+          key: i,
+          dependentAxis: true,
+          tickLabelComponent: _react.default.createElement(_victory.VictoryLabel, {
+            labelPlacement: "vertical"
+          }),
+          labelPlacement: "perpendicular",
+          axisValue: i + 1,
+          label: key,
+          tickFormat: function tickFormat(t) {
+            return Math.ceil(t * _this2.state.maxima[key]);
+          },
+          tickValues: [0.25, 0.5, 0.75]
+        });
+      }), _react.default.createElement(_victory.VictoryPolarAxis, {
+        labelPlacement: "parallel",
+        tickFormat: _.constant("")
+      })));
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this3 = this;
+
+      return _react.default.createElement(_Paper.default, {
+        className: this.props.className
+      }, _react.default.createElement(_reactVirtualized.AutoSizer, {
+        disableHeight: true
+      }, function (_ref) {
+        var width = _ref.width;
+        return !!width && _this3.renderChart(width, 0.8 * width);
+      }));
+    }
+  }]);
+  return Chart3;
+}(_react.default.Component);
+
+var _default = Chart3;
+exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("YLtl")))
+
+/***/ }),
+
+/***/ "d04V":
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__("V/f9");
+
+/***/ }),
+
 /***/ "d3Kl":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -12694,6 +13756,25 @@ exports.default = _default;
 /***/ (function(module, exports) {
 
 module.exports = require("@material-ui/core/Dialog");
+
+/***/ }),
+
+/***/ "fGSI":
+/***/ (function(module, exports, __webpack_require__) {
+
+var _Array$isArray = __webpack_require__("p0XB");
+
+function _arrayWithoutHoles(arr) {
+  if (_Array$isArray(arr)) {
+    for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) {
+      arr2[i] = arr[i];
+    }
+
+    return arr2;
+  }
+}
+
+module.exports = _arrayWithoutHoles;
 
 /***/ }),
 
@@ -13344,6 +14425,16 @@ function _typeof(obj) {
 }
 
 module.exports = _typeof;
+
+/***/ }),
+
+/***/ "icr7":
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__("tCzM");
+__webpack_require__("k8Q4");
+module.exports = __webpack_require__("04/V");
+
 
 /***/ }),
 
@@ -15288,6 +16379,13 @@ module.exports.default = exports.default;
 
 /***/ }),
 
+/***/ "p0XB":
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__("1gQu");
+
+/***/ }),
+
 /***/ "p1nR":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -15815,128 +16913,6 @@ module.exports = require("@material-ui/core/Checkbox");
 
 /***/ }),
 
-/***/ "rEps":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__("KI45");
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = exports.query = void 0;
-
-var _regenerator = _interopRequireDefault(__webpack_require__("ln6h"));
-
-var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__("+oT+"));
-
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
-
-var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
-
-var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
-
-var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
-
-var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
-
-var _react = _interopRequireDefault(__webpack_require__("cDcd"));
-
-var _reactRelay = __webpack_require__("iuEU");
-
-var _Relay = __webpack_require__("5upH");
-
-var _AuthErrorContainer = _interopRequireDefault(__webpack_require__("HA6i"));
-
-var _LayoutContainer = _interopRequireDefault(__webpack_require__("hl3i"));
-
-var _SpinnerContainer = _interopRequireDefault(__webpack_require__("wkow"));
-
-var defaultVariables = {};
-
-var query = function query() {
-  return __webpack_require__("wdw8");
-};
-
-exports.query = query;
-
-var AuthErrorPage =
-/*#__PURE__*/
-function (_React$Component) {
-  (0, _inherits2.default)(AuthErrorPage, _React$Component);
-
-  function AuthErrorPage() {
-    (0, _classCallCheck2.default)(this, AuthErrorPage);
-    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(AuthErrorPage).apply(this, arguments));
-  }
-
-  (0, _createClass2.default)(AuthErrorPage, [{
-    key: "render",
-    value: function render() {
-      var _this = this;
-
-      return _react.default.createElement(_Relay.QueryRenderer, {
-        query: query,
-        variables: defaultVariables,
-        render: function render(_ref) {
-          var error = _ref.error,
-              props = _ref.props;
-          return _react.default.createElement(_LayoutContainer.default, {
-            page: "/auth/error",
-            viewer: props ? props.viewer : null,
-            error: error
-          }, !error && !props && _react.default.createElement(_SpinnerContainer.default, null), !error && props && _react.default.createElement(_AuthErrorContainer.default, {
-            viewer: props.viewer,
-            type: _this.props.type
-          }));
-        }
-      });
-    }
-  }], [{
-    key: "getInitialProps",
-    value: function () {
-      var _getInitialProps = (0, _asyncToGenerator2.default)(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee(_ref2) {
-        var urlQuery, fetchQuery;
-        return _regenerator.default.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                urlQuery = _ref2.query, fetchQuery = _ref2.fetchQuery;
-                _context.next = 3;
-                return fetchQuery(query, defaultVariables);
-
-              case 3:
-                return _context.abrupt("return", {
-                  type: urlQuery.type
-                });
-
-              case 4:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee);
-      }));
-
-      function getInitialProps(_x) {
-        return _getInitialProps.apply(this, arguments);
-      }
-
-      return getInitialProps;
-    }()
-  }]);
-  return AuthErrorPage;
-}(_react.default.Component);
-
-var _default = AuthErrorPage;
-exports.default = _default;
-
-/***/ }),
-
 /***/ "rG3h":
 /***/ (function(module, exports) {
 
@@ -16013,6 +16989,22 @@ module.exports.default = exports.default;
 /***/ (function(module, exports) {
 
 module.exports = function () { /* empty */ };
+
+
+/***/ }),
+
+/***/ "s+zB":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var $defineProperty = __webpack_require__("OtwA");
+var createDesc = __webpack_require__("+EWW");
+
+module.exports = function (object, index, value) {
+  if (index in object) $defineProperty.f(object, index, createDesc(0, value));
+  else object[index] = value;
+};
 
 
 /***/ }),
@@ -16296,6 +17288,179 @@ module.exports = __webpack_require__("p9MR").getIterator = function (it) {
 
 /***/ }),
 
+/***/ "t7Ea":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireWildcard = __webpack_require__("5Uuq");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _styles = __webpack_require__("Bjmp");
+
+var _ChartsDemo = _interopRequireWildcard(__webpack_require__("FsgU"));
+
+var ChartsDemo = (0, _styles.withStyles)(_ChartsDemo.styles)((0, _styles.withTheme)(_ChartsDemo.default));
+var _default = ChartsDemo;
+exports.default = _default;
+
+/***/ }),
+
+/***/ "t7Ei":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
+
+var _react = _interopRequireDefault(__webpack_require__("cDcd"));
+
+var _reactVirtualized = __webpack_require__("xvxd");
+
+var _victory = __webpack_require__("wL32");
+
+var _Paper = _interopRequireDefault(__webpack_require__("qt1I"));
+
+var _theme = _interopRequireDefault(__webpack_require__("3AO0"));
+
+var Chart6 =
+/*#__PURE__*/
+function (_React$Component) {
+  (0, _inherits2.default)(Chart6, _React$Component);
+
+  function Chart6() {
+    (0, _classCallCheck2.default)(this, Chart6);
+    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(Chart6).apply(this, arguments));
+  }
+
+  (0, _createClass2.default)(Chart6, [{
+    key: "getData",
+    value: function getData() {
+      return [{
+        x: new Date(2016, 6, 1),
+        open: 9,
+        close: 30,
+        high: 56,
+        low: 7
+      }, {
+        x: new Date(2016, 6, 2),
+        open: 80,
+        close: 40,
+        high: 120,
+        low: 10
+      }, {
+        x: new Date(2016, 6, 3),
+        open: 50,
+        close: 80,
+        high: 90,
+        low: 20
+      }, {
+        x: new Date(2016, 6, 4),
+        open: 70,
+        close: 22,
+        high: 70,
+        low: 5
+      }, {
+        x: new Date(2016, 6, 5),
+        open: 20,
+        close: 35,
+        high: 50,
+        low: 10
+      }, {
+        x: new Date(2016, 6, 6),
+        open: 35,
+        close: 30,
+        high: 40,
+        low: 3
+      }, {
+        x: new Date(2016, 6, 7),
+        open: 30,
+        close: 90,
+        high: 95,
+        low: 30
+      }, {
+        x: new Date(2016, 6, 8),
+        open: 50,
+        close: 81,
+        high: 83,
+        low: 45
+      }];
+    }
+  }, {
+    key: "renderChart",
+    value: function renderChart(width, height) {
+      return _react.default.createElement("svg", {
+        width: width,
+        height: height
+      }, _react.default.createElement(_victory.VictoryChart, {
+        width: width,
+        height: height,
+        standalone: false,
+        scale: {
+          x: "time"
+        },
+        containerComponent: _react.default.createElement(_victory.VictoryContainer, {
+          responsive: false
+        }),
+        theme: (0, _theme.default)({
+          theme: this.props.theme,
+          withGrid: true
+        })
+      }, _react.default.createElement(_victory.VictoryAxis, {
+        tickFormat: function tickFormat(t) {
+          return "".concat(t.getDate(), "/").concat(t.getMonth());
+        }
+      }), _react.default.createElement(_victory.VictoryAxis, {
+        dependentAxis: true
+      }), _react.default.createElement(_victory.VictoryCandlestick, {
+        data: this.getData(),
+        size: 8
+      })));
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this = this;
+
+      return _react.default.createElement(_Paper.default, {
+        className: this.props.className
+      }, _react.default.createElement(_reactVirtualized.AutoSizer, {
+        disableHeight: true
+      }, function (_ref) {
+        var width = _ref.width;
+        return !!width && _this.renderChart(width, 0.8 * width);
+      }));
+    }
+  }]);
+  return Chart6;
+}(_react.default.Component);
+
+var _default = Chart6;
+exports.default = _default;
+
+/***/ }),
+
 /***/ "tBFs":
 /***/ (function(module, exports) {
 
@@ -16472,6 +17637,126 @@ exports.default = _default;
 
 /***/ }),
 
+/***/ "uCCn":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(_) {
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
+
+var _react = _interopRequireDefault(__webpack_require__("cDcd"));
+
+var _reactVirtualized = __webpack_require__("xvxd");
+
+var _victory = __webpack_require__("wL32");
+
+var _Paper = _interopRequireDefault(__webpack_require__("qt1I"));
+
+var _theme = _interopRequireDefault(__webpack_require__("3AO0"));
+
+var Chart5 =
+/*#__PURE__*/
+function (_React$Component) {
+  (0, _inherits2.default)(Chart5, _React$Component);
+
+  function Chart5() {
+    (0, _classCallCheck2.default)(this, Chart5);
+    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(Chart5).apply(this, arguments));
+  }
+
+  (0, _createClass2.default)(Chart5, [{
+    key: "getData",
+    value: function getData() {
+      return _.times(7, function () {
+        return [{
+          x: 1,
+          y: _.random(1, 5)
+        }, {
+          x: 2,
+          y: _.random(1, 10)
+        }, {
+          x: 3,
+          y: _.random(2, 10)
+        }, {
+          x: 4,
+          y: _.random(2, 10)
+        }, {
+          x: 5,
+          y: _.random(2, 15)
+        }];
+      });
+    }
+  }, {
+    key: "renderChart",
+    value: function renderChart(width, height) {
+      return _react.default.createElement("svg", {
+        width: width,
+        height: height
+      }, _react.default.createElement(_victory.VictoryChart, {
+        width: width,
+        height: height,
+        standalone: false,
+        containerComponent: _react.default.createElement(_victory.VictoryContainer, {
+          responsive: false
+        }),
+        theme: (0, _theme.default)({
+          theme: this.props.theme,
+          withGrid: true,
+          withAxis: true,
+          withArea: true
+        })
+      }, _react.default.createElement(_victory.VictoryStack, {
+        colorScale: "blue"
+      }, _.map(this.getData(), function (data, i) {
+        return _react.default.createElement(_victory.VictoryArea, {
+          key: i,
+          data: data,
+          interpolation: "basis"
+        });
+      })), _react.default.createElement(_victory.VictoryAxis, null), _react.default.createElement(_victory.VictoryAxis, {
+        dependentAxis: true
+      })));
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this = this;
+
+      return _react.default.createElement(_Paper.default, {
+        className: this.props.className
+      }, _react.default.createElement(_reactVirtualized.AutoSizer, {
+        disableHeight: true
+      }, function (_ref) {
+        var width = _ref.width;
+        return !!width && _this.renderChart(width, 0.8 * width);
+      }));
+    }
+  }]);
+  return Chart5;
+}(_react.default.Component);
+
+var _default = Chart5;
+exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("YLtl")))
+
+/***/ }),
+
 /***/ "uXag":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -16592,7 +17877,7 @@ function (_React$Component) {
       }, _react.default.createElement(_ListItemAvatar.default, null, _react.default.createElement(_Avatar.default, {
         className: this.props.classes.inboxAvatar,
         alt: "Mitch Stigall",
-        src: this.props.apiServer + _constants.default.apiBase + "/avatars/x0?t=" + (0, _now.default)()
+        src: this.props.apiServer + _constants.default.apiBase + "/avatars/x0?size=small&t=" + (0, _now.default)()
       })), _react.default.createElement(_ListItemText.default, {
         primary: _react.default.createElement(_react.default.Fragment, null, _react.default.createElement("div", {
           className: this.props.classes.inboxName
@@ -16615,7 +17900,7 @@ function (_React$Component) {
       }, _react.default.createElement(_ListItemAvatar.default, null, _react.default.createElement(_Avatar.default, {
         className: this.props.classes.inboxAvatar,
         alt: "Marie Wineinger",
-        src: this.props.apiServer + _constants.default.apiBase + "/avatars/x1?t=" + (0, _now.default)()
+        src: this.props.apiServer + _constants.default.apiBase + "/avatars/x1?size=small&t=" + (0, _now.default)()
       })), _react.default.createElement(_ListItemText.default, {
         primary: _react.default.createElement(_react.default.Fragment, null, _react.default.createElement("div", {
           className: this.props.classes.inboxName
@@ -16638,7 +17923,7 @@ function (_React$Component) {
       }, _react.default.createElement(_ListItemAvatar.default, null, _react.default.createElement(_Avatar.default, {
         className: this.props.classes.inboxAvatar,
         alt: "Ted Eriksson",
-        src: this.props.apiServer + _constants.default.apiBase + "/avatars/x2?t=" + (0, _now.default)()
+        src: this.props.apiServer + _constants.default.apiBase + "/avatars/x2?size=small&t=" + (0, _now.default)()
       })), _react.default.createElement(_ListItemText.default, {
         primary: _react.default.createElement(_react.default.Fragment, null, _react.default.createElement("div", {
           className: this.props.classes.inboxName
@@ -16661,7 +17946,7 @@ function (_React$Component) {
       }, _react.default.createElement(_ListItemAvatar.default, null, _react.default.createElement(_Avatar.default, {
         className: this.props.classes.inboxAvatar,
         alt: "Martin Murry",
-        src: this.props.apiServer + _constants.default.apiBase + "/avatars/x3?t=" + (0, _now.default)()
+        src: this.props.apiServer + _constants.default.apiBase + "/avatars/x3?size=small&t=" + (0, _now.default)()
       })), _react.default.createElement(_ListItemText.default, {
         primary: _react.default.createElement(_react.default.Fragment, null, _react.default.createElement("div", {
           className: this.props.classes.inboxName
@@ -17040,6 +18325,13 @@ module.exports = "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\
 
 /***/ }),
 
+/***/ "wL32":
+/***/ (function(module, exports) {
+
+module.exports = require("victory");
+
+/***/ }),
+
 /***/ "wNhr":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -17227,165 +18519,6 @@ function isURL(url, options) {
 
 module.exports = exports.default;
 module.exports.default = exports.default;
-
-/***/ }),
-
-/***/ "wdw8":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @flow
- * @relayHash 77569dcdffd4b4bd188908f293cef61e
- */
-
-/* eslint-disable */
-
-/*::
-import type { ConcreteRequest } from 'relay-runtime';
-type LayoutContainer_viewer$ref = any;
-export type AuthErrorPageQueryVariables = {||};
-export type AuthErrorPageQueryResponse = {|
-  +viewer: ?{|
-    +$fragmentRefs: LayoutContainer_viewer$ref
-  |}
-|};
-export type AuthErrorPageQuery = {|
-  variables: AuthErrorPageQueryVariables,
-  response: AuthErrorPageQueryResponse,
-|};
-*/
-
-/*
-query AuthErrorPageQuery {
-  viewer {
-    ...LayoutContainer_viewer
-  }
-}
-
-fragment LayoutContainer_viewer on Viewer {
-  me {
-    isAuthenticated
-    userId
-    name
-    email
-    roles
-    providers {
-      name
-    }
-  }
-}
-*/
-
-var node
-/*: ConcreteRequest*/
-= function () {
-  var v0 = {
-    "kind": "ScalarField",
-    "alias": null,
-    "name": "name",
-    "args": null,
-    "storageKey": null
-  };
-  return {
-    "kind": "Request",
-    "fragment": {
-      "kind": "Fragment",
-      "name": "AuthErrorPageQuery",
-      "type": "Query",
-      "metadata": null,
-      "argumentDefinitions": [],
-      "selections": [{
-        "kind": "LinkedField",
-        "alias": null,
-        "name": "viewer",
-        "storageKey": null,
-        "args": null,
-        "concreteType": "Viewer",
-        "plural": false,
-        "selections": [{
-          "kind": "FragmentSpread",
-          "name": "LayoutContainer_viewer",
-          "args": null
-        }]
-      }]
-    },
-    "operation": {
-      "kind": "Operation",
-      "name": "AuthErrorPageQuery",
-      "argumentDefinitions": [],
-      "selections": [{
-        "kind": "LinkedField",
-        "alias": null,
-        "name": "viewer",
-        "storageKey": null,
-        "args": null,
-        "concreteType": "Viewer",
-        "plural": false,
-        "selections": [{
-          "kind": "LinkedField",
-          "alias": null,
-          "name": "me",
-          "storageKey": null,
-          "args": null,
-          "concreteType": "Status",
-          "plural": false,
-          "selections": [{
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "isAuthenticated",
-            "args": null,
-            "storageKey": null
-          }, {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "userId",
-            "args": null,
-            "storageKey": null
-          }, v0
-          /*: any*/
-          , {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "email",
-            "args": null,
-            "storageKey": null
-          }, {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "roles",
-            "args": null,
-            "storageKey": null
-          }, {
-            "kind": "LinkedField",
-            "alias": null,
-            "name": "providers",
-            "storageKey": null,
-            "args": null,
-            "concreteType": "ProviderStatus",
-            "plural": true,
-            "selections": [v0
-            /*: any*/
-            ]
-          }]
-        }]
-      }]
-    },
-    "params": {
-      "operationKind": "query",
-      "name": "AuthErrorPageQuery",
-      "id": null,
-      "text": "query AuthErrorPageQuery {\n  viewer {\n    ...LayoutContainer_viewer\n  }\n}\n\nfragment LayoutContainer_viewer on Viewer {\n  me {\n    isAuthenticated\n    userId\n    name\n    email\n    roles\n    providers {\n      name\n    }\n  }\n}\n",
-      "metadata": {}
-    }
-  };
-}(); // prettier-ignore
-
-
-node
-/*: any*/
-.hash = '88ba45de177ae6f48b4e9c1ed466ab6c';
-module.exports = node;
 
 /***/ }),
 
@@ -18061,6 +19194,13 @@ module.exports = require("next/head");
 
 /***/ }),
 
+/***/ "xvxd":
+/***/ (function(module, exports) {
+
+module.exports = require("react-virtualized");
+
+/***/ }),
+
 /***/ "yFMe":
 /***/ (function(module, exports) {
 
@@ -18237,6 +19377,13 @@ module.exports = function validate(options, value, allValues) {
 };
 
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("YLtl")))
+
+/***/ }),
+
+/***/ "yLu3":
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__("icr7");
 
 /***/ }),
 

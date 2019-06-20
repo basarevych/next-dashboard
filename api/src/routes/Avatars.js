@@ -11,11 +11,9 @@ class AvatarsRoute {
     this.user = user;
     this.router = Router();
 
-    this.fetchInterval = 60; // minutes
     this.smallWidth = 60;
     this.largeWidth = 160;
-    this.fetchTime = 0;
-    this.avatars = [];
+    this.avatarPromises = [];
   }
 
   static get $provides() {
@@ -28,64 +26,45 @@ class AvatarsRoute {
 
   async init() {
     if (this.promise) return this.promise;
-    this.promise = Promise.resolve();
-    this.router.get("/avatars/:id", this.getAvatar.bind(this));
-  }
 
-  async randomize() {
-    if (this.fetchPromise) return this.fetchPromise;
-    this.fetchTime = Date.now();
-
-    if (process.env.NODE_ENV !== "test") console.log("> Updating avatar list");
-
-    this.fetchPromise = new Promise(async (resolve, reject) => {
-      this.avatars = [];
-      let list;
+    this.promise = new Promise(async resolve => {
+      this.router.get("/avatars/:id", this.getAvatar.bind(this));
 
       try {
         let response = await fetch("https://tinyfac.es/api/users");
-        debug(`Tinyfaces response: ${response.status}`);
-        if (response.status === 200) {
-          let data = await response.json();
-          if (!_.isArray(data) || !data.length)
-            throw new Error("Failed to fetch avatars list");
-          list = _.shuffle(data);
-        }
-      } catch (error) {
-        console.log(`> ${error.message}`);
-        return resolve();
-      }
+        if (response.status !== 200)
+          throw new Error(`Service response: ${response.status}`);
 
-      debug(`List size: ${list.length}`);
+        let data = await response.json();
+        if (!_.isArray(data) || !data.length)
+          throw new Error("Failed to fetch avatars list");
 
-      try {
-        let used = [];
+        this.randomList = _.shuffle(data);
+        this.randomSelected = [];
+
         const getRandomAvatar = male => {
-          for (let i = 0; i < list.length; i++) {
+          for (let i = 0; i < this.randomList.length; i++) {
             if (
               !_.isUndefined(male) &&
-              list[i].gender !== (male ? "male" : "female")
+              this.randomList[i].gender !== (male ? "male" : "female")
             ) {
               continue;
             }
 
-            if (_.includes(used, i)) continue;
+            if (_.includes(this.randomSelected, i)) continue;
 
-            for (let j = 0; j < list[i].avatars.length; j++) {
+            for (let j = 0; j < this.randomList[i].avatars.length; j++) {
               if (
-                list[i].avatars[j].width >= this.largeWidth &&
-                list[i].avatars[j].height >= this.largeWidth &&
+                // square avatars
                 Math.abs(
-                  list[i].avatars[j].width - list[i].avatars[j].height
+                  this.randomList[i].avatars[j].width -
+                    this.randomList[i].avatars[j].height
                 ) <= 10
               ) {
-                used.push(i);
-                debug(`Selected ${list[i].avatars[j].url}`);
-                return this.avatars.push(list[i].avatars[j].url);
+                this.randomSelected.push(i);
               }
             }
           }
-          this.avatars.push(null);
         };
 
         getRandomAvatar(true);
@@ -93,54 +72,103 @@ class AvatarsRoute {
         getRandomAvatar(true);
         getRandomAvatar(true);
       } catch (error) {
-        reject(error);
+        console.log(`> Random avatars service: ${error.message}`);
       }
 
       resolve();
-    }).then(
-      () => {
-        this.fetchPromise = null;
-      },
-      error => {
-        this.fetchPromise = null;
-        throw error;
-      }
-    );
+    });
 
-    return this.fetchPromise;
+    return this.promise;
   }
 
-  async download(url) {
-    try {
-      let type, data;
-      if (_.startsWith(url, "http")) {
-        let response = await fetch(url);
-        if (response.status === 200) {
-          type = response.headers.get("Content-Type");
-          data = await new Promise((resolve, reject) => {
-            let concatStream = concat(resolve);
-            response.body.on("error", reject);
-            response.body.pipe(concatStream);
-          });
-        }
+  async fetch(urls) {
+    const doFetch = async url => {
+      let response = await fetch(url);
+      if (response.status === 200) {
+        return new Promise((resolve, reject) => {
+          let concatStream = concat(resolve);
+          response.body.on("error", reject);
+          response.body.pipe(concatStream);
+        });
       }
+      return null;
+    };
 
-      if (type && data) {
-        debug(`Got data for ${url}`);
-        return Promise.all([
-          sharp(Buffer.from(data))
-            .resize(this.smallWidth)
-            .toBuffer(),
-          sharp(Buffer.from(data))
-            .resize(this.largeWidth)
-            .toBuffer()
-        ]).then(([small, large]) => ({ type, small, large }));
+    const buffers = await Promise.all(
+      _.map(urls, url => (_.startsWith(url, "http") ? doFetch(url) : null))
+    );
+
+    const metadata = await Promise.all(buffers, buffer =>
+      buffer ? sharp(buffer).metadata() : null
+    );
+
+    let result = null;
+    let size = 0;
+    for (let i = 0; i < metadata.length; i++) {
+      if (metadata[i] && metadata[i].width > size) {
+        size = metadata[i].width;
+        result = buffers[i];
       }
-    } catch (error) {
-      console.error(error);
     }
 
-    return null;
+    return result;
+  }
+
+  async downloadRandom(id) {
+    const index = this.randomSelected[id];
+
+    const urls = [];
+    for (let j = 0; j < this.randomList[index].avatars.length; j++)
+      urls.push(this.randomList[index].avatars[j].url);
+
+    return this.fetch(urls);
+  }
+
+  async downloadReal(id) {
+    let user = await this.user.model.findById(id);
+    if (!user) return null;
+
+    const urls = [];
+    for (let provider of user.providers)
+      for (let photo of provider.profile.photos || []) urls.push(photo.value);
+
+    return this.fetch(urls);
+  }
+
+  async download(id) {
+    if (this.avatarPromises[id]) return this.avatarPromises[id];
+
+    this.avatarPromises[id] = new Promise(async (resolve, reject) => {
+      try {
+        const match = /^x(\d)$/.exec(id);
+        const data = match
+          ? await this.downloadRandom(match[1])
+          : await this.downloadReal(id);
+
+        if (data) {
+          debug(`Got data for ${id}`);
+          const [small, large] = await Promise.all([
+            sharp(Buffer.from(data))
+              .resize(this.smallWidth)
+              .toBuffer(),
+            sharp(Buffer.from(data))
+              .resize(this.largeWidth)
+              .toBuffer()
+          ]);
+          await this.cache.setAvatar(id, small, large);
+          this.avatarPromises[id] = null;
+          return resolve({ small, large });
+        }
+
+        this.avatarPromises[id] = null;
+        resolve(null);
+      } catch (error) {
+        this.avatarPromises[id] = null;
+        reject(error);
+      }
+    });
+
+    return this.avatarPromises[id];
   }
 
   /**
@@ -153,42 +181,13 @@ class AvatarsRoute {
     debug("Got request");
 
     try {
-      if (Date.now() - this.fetchTime > this.fetchInterval * 60 * 1000)
-        this.randomize();
-
-      if (this.fetchPromise) await this.fetchPromise;
-
-      let url;
-      const match = /^x(\d)$/.exec(req.params.id);
-      if (match) {
-        // random avatar
-        url = this.avatars[parseInt(match[1])];
-      } else {
-        // user avatar
-        let user = await this.user.model.findById(req.params.id);
-        if (user) {
-          for (let provider of user.providers) {
-            if (provider.profile.photos && provider.profile.photos.length)
-              url = provider.profile.photos[0].value;
-            if (url) break;
-          }
-        }
-      }
-      if (!url) url = this.config.apiAppServer + "/static/img/anonymous.png";
-      debug(url);
-
-      let image = await this.cache.getAvatar(url);
+      let image = await this.cache.getAvatar(req.params.id);
       debug(`Cache: ${image ? "hit" : "miss"}`);
-      if (!image) {
-        image = await this.download(url);
-        if (image)
-          await this.cache.setAvatar(url, image.type, image.small, image.large);
-      }
+      if (!image) image = await this.download(req.params.id);
 
       res.setHeader("Cache-Control", "public, must-revalidate, max-age=864000");
-
       if (image) {
-        res.set("content-type", image.type);
+        res.set("content-type", "image/png");
         res.send(req.query.size === "small" ? image.small : image.large);
       } else {
         throw this.di.get("error.notFound");

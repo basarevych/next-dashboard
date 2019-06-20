@@ -88,7 +88,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 10);
+/******/ 	return __webpack_require__(__webpack_require__.s = 7);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -856,14 +856,6 @@ function isAfter(str) {
 
 module.exports = exports.default;
 module.exports.default = exports.default;
-
-/***/ }),
-
-/***/ 10:
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__("C4at");
-
 
 /***/ }),
 
@@ -2576,6 +2568,14 @@ module.exports.default = exports.default;
 
 /***/ }),
 
+/***/ 7:
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__("i/Ws");
+
+
+/***/ }),
+
 /***/ "7FvJ":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2998,6 +2998,40 @@ $export($export.S, 'Object', { setPrototypeOf: __webpack_require__("ZJRo").set }
 
 /***/ }),
 
+/***/ "BaY6":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireWildcard = __webpack_require__("5Uuq");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _reactRedux = __webpack_require__("h74D");
+
+var _styles = __webpack_require__("Bjmp");
+
+var _state = __webpack_require__("XiiD");
+
+var _MapsDemo = _interopRequireWildcard(__webpack_require__("Uxdj"));
+
+var mapStateToProps = function mapStateToProps(state) {
+  return {
+    theme: _state.appSelectors.getTheme(state),
+    mapboxToken: _state.appSelectors.getMapboxToken(state)
+  };
+};
+
+var MapsDemo = (0, _reactRedux.connect)(mapStateToProps)((0, _styles.withStyles)(_MapsDemo.styles)(_MapsDemo.default));
+var _default = MapsDemo;
+exports.default = _default;
+
+/***/ }),
+
 /***/ "BfLe":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -3285,28 +3319,6 @@ module.exports = require("@material-ui/icons/InsertChart");
 
 /***/ }),
 
-/***/ "C4at":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__("KI45");
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-Object.defineProperty(exports, "default", {
-  enumerable: true,
-  get: function get() {
-    return _TypographyPage.default;
-  }
-});
-
-var _TypographyPage = _interopRequireDefault(__webpack_require__("yOcD"));
-
-/***/ }),
-
 /***/ "CLtn":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -3493,6 +3505,13 @@ module.exports = function (name) {
   if (name.charAt(0) != '_' && !(name in $Symbol)) defineProperty($Symbol, name, { value: wksExt.f(name) });
 };
 
+
+/***/ }),
+
+/***/ "ChlY":
+/***/ (function(module, exports) {
+
+module.exports = require("deck.gl");
 
 /***/ }),
 
@@ -5741,169 +5760,17 @@ module.exports = node;
 
 /***/ }),
 
+/***/ "JNDT":
+/***/ (function(module, exports) {
+
+module.exports = require("@material-ui/icons/MyLocation");
+
+/***/ }),
+
 /***/ "JQ2V":
 /***/ (function(module, exports) {
 
 module.exports = require("@material-ui/core/Grid");
-
-/***/ }),
-
-/***/ "JZwh":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @flow
- * @relayHash b1220d923d5e3219a6437864c282b270
- */
-
-/* eslint-disable */
-
-/*::
-import type { ConcreteRequest } from 'relay-runtime';
-type LayoutContainer_viewer$ref = any;
-export type TypographyPageQueryVariables = {||};
-export type TypographyPageQueryResponse = {|
-  +viewer: ?{|
-    +$fragmentRefs: LayoutContainer_viewer$ref
-  |}
-|};
-export type TypographyPageQuery = {|
-  variables: TypographyPageQueryVariables,
-  response: TypographyPageQueryResponse,
-|};
-*/
-
-/*
-query TypographyPageQuery {
-  viewer {
-    ...LayoutContainer_viewer
-  }
-}
-
-fragment LayoutContainer_viewer on Viewer {
-  me {
-    isAuthenticated
-    userId
-    name
-    email
-    roles
-    providers {
-      name
-    }
-  }
-}
-*/
-
-var node
-/*: ConcreteRequest*/
-= function () {
-  var v0 = {
-    "kind": "ScalarField",
-    "alias": null,
-    "name": "name",
-    "args": null,
-    "storageKey": null
-  };
-  return {
-    "kind": "Request",
-    "fragment": {
-      "kind": "Fragment",
-      "name": "TypographyPageQuery",
-      "type": "Query",
-      "metadata": null,
-      "argumentDefinitions": [],
-      "selections": [{
-        "kind": "LinkedField",
-        "alias": null,
-        "name": "viewer",
-        "storageKey": null,
-        "args": null,
-        "concreteType": "Viewer",
-        "plural": false,
-        "selections": [{
-          "kind": "FragmentSpread",
-          "name": "LayoutContainer_viewer",
-          "args": null
-        }]
-      }]
-    },
-    "operation": {
-      "kind": "Operation",
-      "name": "TypographyPageQuery",
-      "argumentDefinitions": [],
-      "selections": [{
-        "kind": "LinkedField",
-        "alias": null,
-        "name": "viewer",
-        "storageKey": null,
-        "args": null,
-        "concreteType": "Viewer",
-        "plural": false,
-        "selections": [{
-          "kind": "LinkedField",
-          "alias": null,
-          "name": "me",
-          "storageKey": null,
-          "args": null,
-          "concreteType": "Status",
-          "plural": false,
-          "selections": [{
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "isAuthenticated",
-            "args": null,
-            "storageKey": null
-          }, {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "userId",
-            "args": null,
-            "storageKey": null
-          }, v0
-          /*: any*/
-          , {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "email",
-            "args": null,
-            "storageKey": null
-          }, {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "roles",
-            "args": null,
-            "storageKey": null
-          }, {
-            "kind": "LinkedField",
-            "alias": null,
-            "name": "providers",
-            "storageKey": null,
-            "args": null,
-            "concreteType": "ProviderStatus",
-            "plural": true,
-            "selections": [v0
-            /*: any*/
-            ]
-          }]
-        }]
-      }]
-    },
-    "params": {
-      "operationKind": "query",
-      "name": "TypographyPageQuery",
-      "id": null,
-      "text": "query TypographyPageQuery {\n  viewer {\n    ...LayoutContainer_viewer\n  }\n}\n\nfragment LayoutContainer_viewer on Viewer {\n  me {\n    isAuthenticated\n    userId\n    name\n    email\n    roles\n    providers {\n      name\n    }\n  }\n}\n",
-      "metadata": {}
-    }
-  };
-}(); // prettier-ignore
-
-
-node
-/*: any*/
-.hash = 'fb28b1df81a99274c110ddd14c957fcd';
-module.exports = node;
 
 /***/ }),
 
@@ -6911,6 +6778,13 @@ module.exports = {
 };
 
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("YLtl")))
+
+/***/ }),
+
+/***/ "MX+i":
+/***/ (function(module, exports) {
+
+module.exports = require("@material-ui/icons/Streetview");
 
 /***/ }),
 
@@ -7979,6 +7853,13 @@ exports.fetchCities = fetchCities;
 
 /***/ }),
 
+/***/ "P9o6":
+/***/ (function(module, exports) {
+
+module.exports = require("@material-ui/icons/Category");
+
+/***/ }),
+
 /***/ "PczM":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -8660,6 +8541,120 @@ module.exports.default = exports.default;
 
 /***/ }),
 
+/***/ "Rt0e":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = exports.query = void 0;
+
+var _regenerator = _interopRequireDefault(__webpack_require__("ln6h"));
+
+var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__("+oT+"));
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
+
+var _react = _interopRequireDefault(__webpack_require__("cDcd"));
+
+var _reactRelay = __webpack_require__("iuEU");
+
+var _Relay = __webpack_require__("5upH");
+
+var _MapsDemoContainer = _interopRequireDefault(__webpack_require__("BaY6"));
+
+var _LayoutContainer = _interopRequireDefault(__webpack_require__("hl3i"));
+
+var _SpinnerContainer = _interopRequireDefault(__webpack_require__("wkow"));
+
+var defaultVariables = {};
+
+var query = function query() {
+  return __webpack_require__("ZuRb");
+};
+
+exports.query = query;
+
+var MapsPage =
+/*#__PURE__*/
+function (_React$Component) {
+  (0, _inherits2.default)(MapsPage, _React$Component);
+
+  function MapsPage() {
+    (0, _classCallCheck2.default)(this, MapsPage);
+    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(MapsPage).apply(this, arguments));
+  }
+
+  (0, _createClass2.default)(MapsPage, [{
+    key: "render",
+    value: function render() {
+      return _react.default.createElement(_Relay.QueryRenderer, {
+        query: query,
+        variables: defaultVariables,
+        render: function render(_ref) {
+          var error = _ref.error,
+              props = _ref.props;
+          return _react.default.createElement(_LayoutContainer.default, {
+            page: "/maps",
+            viewer: props ? props.viewer : null,
+            error: error
+          }, !error && !props && _react.default.createElement(_SpinnerContainer.default, null), !error && props && _react.default.createElement(_MapsDemoContainer.default, {
+            viewer: props.viewer
+          }));
+        }
+      });
+    }
+  }], [{
+    key: "getInitialProps",
+    value: function () {
+      var _getInitialProps = (0, _asyncToGenerator2.default)(
+      /*#__PURE__*/
+      _regenerator.default.mark(function _callee(_ref2) {
+        var fetchQuery;
+        return _regenerator.default.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                fetchQuery = _ref2.fetchQuery;
+                _context.next = 3;
+                return fetchQuery(query, defaultVariables);
+
+              case 3:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }));
+
+      function getInitialProps(_x) {
+        return _getInitialProps.apply(this, arguments);
+      }
+
+      return getInitialProps;
+    }()
+  }]);
+  return MapsPage;
+}(_react.default.Component);
+
+var _default = MapsPage;
+exports.default = _default;
+
+/***/ }),
+
 /***/ "STjA":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -8813,6 +8808,348 @@ function isHexadecimal(str) {
 
 module.exports = exports.default;
 module.exports.default = exports.default;
+
+/***/ }),
+
+/***/ "Uxdj":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireWildcard = __webpack_require__("5Uuq");
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = exports.styles = void 0;
+
+var _regenerator = _interopRequireDefault(__webpack_require__("ln6h"));
+
+var _promise = _interopRequireDefault(__webpack_require__("eVuF"));
+
+var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__("+oT+"));
+
+var _objectSpread2 = _interopRequireDefault(__webpack_require__("Avpf"));
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
+
+var _assertThisInitialized2 = _interopRequireDefault(__webpack_require__("K47E"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
+
+var _defineProperty2 = _interopRequireDefault(__webpack_require__("xHqa"));
+
+var _react = _interopRequireDefault(__webpack_require__("cDcd"));
+
+var _reactMapGl = _interopRequireWildcard(__webpack_require__("fdHT"));
+
+var _deck = _interopRequireDefault(__webpack_require__("ChlY"));
+
+var _Map = _interopRequireDefault(__webpack_require__("zmJW"));
+
+var _ThreeSixty = _interopRequireDefault(__webpack_require__("vbly"));
+
+var _MyLocation = _interopRequireDefault(__webpack_require__("JNDT"));
+
+var _Category = _interopRequireDefault(__webpack_require__("P9o6"));
+
+var _Streetview = _interopRequireDefault(__webpack_require__("MX+i"));
+
+var _Satellite = _interopRequireDefault(__webpack_require__("yV47"));
+
+var styles = function styles(theme) {
+  var _layout;
+
+  return {
+    layout: (_layout = {
+      width: "100%",
+      flex: 1,
+      marginTop: "-2rem"
+    }, (0, _defineProperty2.default)(_layout, theme.breakpoints.down("xs"), {
+      marginTop: 0
+    }), (0, _defineProperty2.default)(_layout, "& canvas", {
+      top: 0,
+      left: 0
+    }), _layout),
+    controls: {
+      position: "absolute",
+      zIndex: 100,
+      top: "10px",
+      right: "10px"
+    },
+    controlsSpacer: {
+      height: "10px"
+    },
+    controlsSelected: {
+      background: ["rgba(0, 0, 255, 0.1)", "!important"]
+    }
+  };
+};
+
+exports.styles = styles;
+
+var MapsDemo =
+/*#__PURE__*/
+function (_React$Component) {
+  (0, _inherits2.default)(MapsDemo, _React$Component);
+
+  function MapsDemo(props) {
+    var _this;
+
+    (0, _classCallCheck2.default)(this, MapsDemo);
+    _this = (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(MapsDemo).call(this, props));
+    _this.state = {
+      mode: "contour",
+      viewState: {
+        latitude: 53.35014,
+        longitude: -6.266155,
+        zoom: 13,
+        bearing: 0,
+        pitch: 0
+      }
+    };
+    _this.updateViewState = _this.updateViewState.bind((0, _assertThisInitialized2.default)(_this));
+    _this.updateViewportNoPitch = _this.updateViewportNoPitch.bind((0, _assertThisInitialized2.default)(_this));
+    _this.updateMapMode = _this.updateMapMode.bind((0, _assertThisInitialized2.default)(_this));
+    _this.updateViewMode = _this.updateViewMode.bind((0, _assertThisInitialized2.default)(_this));
+    return _this;
+  }
+
+  (0, _createClass2.default)(MapsDemo, [{
+    key: "updateViewState",
+    value: function updateViewState(_ref) {
+      var viewState = _ref.viewState;
+      viewState = (0, _objectSpread2.default)({}, this.state.viewState, viewState);
+      this.setState({
+        viewState: viewState
+      }, this.renderLayers);
+    } // "Look North" button also tries to reset the pitch, so we prevent this here
+
+  }, {
+    key: "updateViewportNoPitch",
+    value: function updateViewportNoPitch(viewport) {
+      viewport.pitch = this.state.viewState.pitch;
+      this.updateViewState({
+        viewState: viewport
+      });
+    }
+  }, {
+    key: "updateMapMode",
+    value: function updateMapMode(mode) {
+      switch (mode) {
+        case "flat":
+          this.updateViewState({
+            viewState: {
+              pitch: 0,
+              transitionDuration: 2000,
+              // animate the change
+              transitionInterpolator: new _reactMapGl.FlyToInterpolator()
+            }
+          });
+          break;
+
+        case "perspective":
+          this.updateViewState({
+            viewState: {
+              pitch: 60,
+              transitionDuration: 2000,
+              // animate the change
+              transitionInterpolator: new _reactMapGl.FlyToInterpolator()
+            }
+          });
+          break;
+      }
+    }
+  }, {
+    key: "updateViewMode",
+    value: function updateViewMode(mode) {
+      this.setState({
+        mode: mode
+      });
+    }
+  }, {
+    key: "locateUser",
+    value: function () {
+      var _locateUser = (0, _asyncToGenerator2.default)(
+      /*#__PURE__*/
+      _regenerator.default.mark(function _callee() {
+        var location, state;
+        return _regenerator.default.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.next = 2;
+                return new _promise.default(function (resolve) {
+                  /*
+                  // Quick test
+                  return resolve({
+                    latitude: 35.778105,
+                    longitude: -78.638618
+                  });
+                  */
+                  if ("geolocation" in navigator) {
+                    navigator.geolocation.getCurrentPosition(function (position) {
+                      return resolve({
+                        latitude: position.coords.latitude,
+                        longitude: position.coords.longitude
+                      });
+                    }, function (error) {
+                      console.error(error);
+                      resolve(null);
+                    }, {
+                      timeout: 5000,
+                      enableHighAccuracy: true
+                    });
+                  } else {
+                    console.error("Geolocation IS NOT available");
+                    resolve(null);
+                  }
+                });
+
+              case 2:
+                location = _context.sent;
+
+                if (location) {
+                  _context.next = 5;
+                  break;
+                }
+
+                return _context.abrupt("return");
+
+              case 5:
+                state = {
+                  viewState: (0, _objectSpread2.default)({}, this.state.viewState, location, {
+                    transitionDuration: 2000,
+                    // add transition animation
+                    transitionInterpolator: new _reactMapGl.FlyToInterpolator()
+                  })
+                };
+                this.setState(state);
+
+              case 7:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function locateUser() {
+        return _locateUser.apply(this, arguments);
+      }
+
+      return locateUser;
+    }()
+  }, {
+    key: "render",
+    value: function render() {
+      var _this2 = this;
+
+      var _this$props = this.props,
+          mapboxToken = _this$props.mapboxToken,
+          theme = _this$props.theme;
+      var _this$state = this.state,
+          pitch = _this$state.viewState.pitch,
+          mode = _this$state.mode;
+      var mapStyle;
+
+      switch (mode) {
+        case "contour":
+          mapStyle = "mapbox://styles/mapbox/" + theme + "-v9";
+          break;
+
+        case "streets":
+          mapStyle = "mapbox://styles/mapbox/streets-v10";
+          break;
+
+        case "satellite":
+          mapStyle = "mapbox://styles/mapbox/satellite-v9";
+          break;
+      }
+
+      return _react.default.createElement("div", {
+        className: this.props.classes.layout
+      }, _react.default.createElement(_deck.default, {
+        controller: true,
+        width: "100%",
+        height: "100%",
+        viewState: this.state.viewState,
+        getCursor: function getCursor() {
+          return "crosshair";
+        },
+        onViewStateChange: this.updateViewState
+      }, _react.default.createElement(_reactMapGl.default, {
+        reuseMaps: true,
+        preventStyleDiffing: true,
+        mapboxApiAccessToken: mapboxToken,
+        mapStyle: mapStyle
+      }, _react.default.createElement("div", {
+        className: this.props.classes.controls
+      }, _react.default.createElement(_reactMapGl.NavigationControl, {
+        onViewportChange: this.updateViewportNoPitch
+      }), _react.default.createElement("div", {
+        className: this.props.classes.controlsSpacer
+      }), _react.default.createElement("div", {
+        className: "mapboxgl-ctrl mapboxgl-ctrl-group "
+      }, _react.default.createElement("button", {
+        title: "My Location",
+        className: "mapboxgl-ctrl-icon ",
+        onClick: this.locateUser
+      }, _react.default.createElement(_MyLocation.default, null))), _react.default.createElement("div", {
+        className: this.props.classes.controlsSpacer
+      }), _react.default.createElement("div", {
+        className: "mapboxgl-ctrl mapboxgl-ctrl-group "
+      }, _react.default.createElement("button", {
+        title: "Flat Mode",
+        className: "mapboxgl-ctrl-icon " + (pitch ? "" : this.props.classes.controlsSelected),
+        onClick: function onClick() {
+          return _this2.updateMapMode("flat");
+        }
+      }, _react.default.createElement(_Map.default, null)), _react.default.createElement("button", {
+        title: "3D Mode",
+        className: "mapboxgl-ctrl-icon " + (pitch ? this.props.classes.controlsSelected : ""),
+        onClick: function onClick() {
+          return _this2.updateMapMode("perspective");
+        }
+      }, _react.default.createElement(_ThreeSixty.default, null))), _react.default.createElement("div", {
+        className: this.props.classes.controlsSpacer
+      }), _react.default.createElement("div", {
+        className: "mapboxgl-ctrl mapboxgl-ctrl-group "
+      }, _react.default.createElement("button", {
+        title: "Contour View",
+        className: "mapboxgl-ctrl-icon " + (mode === "contour" ? this.props.classes.controlsSelected : ""),
+        onClick: function onClick() {
+          return _this2.updateViewMode("contour");
+        }
+      }, _react.default.createElement(_Category.default, null)), _react.default.createElement("button", {
+        title: "Streets View",
+        className: "mapboxgl-ctrl-icon " + (mode === "streets" ? this.props.classes.controlsSelected : ""),
+        onClick: function onClick() {
+          return _this2.updateViewMode("streets");
+        }
+      }, _react.default.createElement(_Streetview.default, null)), _react.default.createElement("button", {
+        title: "Satellite View",
+        className: "mapboxgl-ctrl-icon " + (mode === "satellite" ? this.props.classes.controlsSelected : ""),
+        onClick: function onClick() {
+          return _this2.updateViewMode("satellite");
+        }
+      }, _react.default.createElement(_Satellite.default, null)))))));
+    }
+  }]);
+  return MapsDemo;
+}(_react.default.Component);
+
+var _default = MapsDemo;
+exports.default = _default;
 
 /***/ }),
 
@@ -9295,29 +9632,6 @@ $export($export.S + $export.F * !(USE_NATIVE && __webpack_require__("Q2zc")(func
   }
 });
 
-
-/***/ }),
-
-/***/ "W8Wa":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireWildcard = __webpack_require__("5Uuq");
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _styles = __webpack_require__("Bjmp");
-
-var _TypographyDemo = _interopRequireWildcard(__webpack_require__("u/d+"));
-
-var TypographyDemo = (0, _styles.withStyles)(_TypographyDemo.styles)(_TypographyDemo.default);
-var _default = TypographyDemo;
-exports.default = _default;
 
 /***/ }),
 
@@ -10326,6 +10640,165 @@ function isLength(str, options) {
 
 module.exports = exports.default;
 module.exports.default = exports.default;
+
+/***/ }),
+
+/***/ "ZuRb":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @flow
+ * @relayHash c2c48cfeccd6ce0f078fe06697d1272f
+ */
+
+/* eslint-disable */
+
+/*::
+import type { ConcreteRequest } from 'relay-runtime';
+type LayoutContainer_viewer$ref = any;
+export type MapsPageQueryVariables = {||};
+export type MapsPageQueryResponse = {|
+  +viewer: ?{|
+    +$fragmentRefs: LayoutContainer_viewer$ref
+  |}
+|};
+export type MapsPageQuery = {|
+  variables: MapsPageQueryVariables,
+  response: MapsPageQueryResponse,
+|};
+*/
+
+/*
+query MapsPageQuery {
+  viewer {
+    ...LayoutContainer_viewer
+  }
+}
+
+fragment LayoutContainer_viewer on Viewer {
+  me {
+    isAuthenticated
+    userId
+    name
+    email
+    roles
+    providers {
+      name
+    }
+  }
+}
+*/
+
+var node
+/*: ConcreteRequest*/
+= function () {
+  var v0 = {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "name",
+    "args": null,
+    "storageKey": null
+  };
+  return {
+    "kind": "Request",
+    "fragment": {
+      "kind": "Fragment",
+      "name": "MapsPageQuery",
+      "type": "Query",
+      "metadata": null,
+      "argumentDefinitions": [],
+      "selections": [{
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "viewer",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "Viewer",
+        "plural": false,
+        "selections": [{
+          "kind": "FragmentSpread",
+          "name": "LayoutContainer_viewer",
+          "args": null
+        }]
+      }]
+    },
+    "operation": {
+      "kind": "Operation",
+      "name": "MapsPageQuery",
+      "argumentDefinitions": [],
+      "selections": [{
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "viewer",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "Viewer",
+        "plural": false,
+        "selections": [{
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "me",
+          "storageKey": null,
+          "args": null,
+          "concreteType": "Status",
+          "plural": false,
+          "selections": [{
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "isAuthenticated",
+            "args": null,
+            "storageKey": null
+          }, {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "userId",
+            "args": null,
+            "storageKey": null
+          }, v0
+          /*: any*/
+          , {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "email",
+            "args": null,
+            "storageKey": null
+          }, {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "roles",
+            "args": null,
+            "storageKey": null
+          }, {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "providers",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "ProviderStatus",
+            "plural": true,
+            "selections": [v0
+            /*: any*/
+            ]
+          }]
+        }]
+      }]
+    },
+    "params": {
+      "operationKind": "query",
+      "name": "MapsPageQuery",
+      "id": null,
+      "text": "query MapsPageQuery {\n  viewer {\n    ...LayoutContainer_viewer\n  }\n}\n\nfragment LayoutContainer_viewer on Viewer {\n  me {\n    isAuthenticated\n    userId\n    name\n    email\n    roles\n    providers {\n      name\n    }\n  }\n}\n",
+      "metadata": {}
+    }
+  };
+}(); // prettier-ignore
+
+
+node
+/*: any*/
+.hash = '581e71fb6db09ace5cad8fa88ca4f3f2';
+module.exports = node;
 
 /***/ }),
 
@@ -12999,6 +13472,13 @@ module.exports = !__webpack_require__("14Ie")(function () {
 
 /***/ }),
 
+/***/ "fdHT":
+/***/ (function(module, exports) {
+
+module.exports = require("react-map-gl");
+
+/***/ }),
+
 /***/ "flba":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -13299,6 +13779,28 @@ function _extends() {
 }
 
 module.exports = _extends;
+
+/***/ }),
+
+/***/ "i/Ws":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__("KI45");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+Object.defineProperty(exports, "default", {
+  enumerable: true,
+  get: function get() {
+    return _MapsPage.default;
+  }
+});
+
+var _MapsPage = _interopRequireDefault(__webpack_require__("Rt0e"));
 
 /***/ }),
 
@@ -16386,243 +16888,6 @@ exports.default = _default;
 
 /***/ }),
 
-/***/ "u/d+":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__("KI45");
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = exports.styles = void 0;
-
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
-
-var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
-
-var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
-
-var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
-
-var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
-
-var _defineProperty2 = _interopRequireDefault(__webpack_require__("xHqa"));
-
-var _react = _interopRequireDefault(__webpack_require__("cDcd"));
-
-var _Typography = _interopRequireDefault(__webpack_require__("UVoM"));
-
-var _Paper = _interopRequireDefault(__webpack_require__("qt1I"));
-
-var styles = function styles(theme) {
-  return {
-    layout: {
-      width: "100%",
-      flex: 1,
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "stretch",
-      flexDirection: "column"
-    },
-    row: (0, _defineProperty2.default)({
-      display: "flex",
-      justifyContent: "stretch",
-      alignItems: "center",
-      margin: "2rem"
-    }, theme.breakpoints.down("sm"), {
-      flexDirection: "column",
-      margin: "2rem 0"
-    }),
-    label: (0, _defineProperty2.default)({
-      width: 350,
-      padding: "0 2rem 1rem 2rem",
-      textAlign: "right",
-      fontFamily: "Roboto Mono",
-      fontWeight: "bold"
-    }, theme.breakpoints.down("sm"), {
-      textAlign: "center"
-    }),
-    item: {
-      padding: "2rem",
-      flex: 1
-    }
-  };
-};
-
-exports.styles = styles;
-
-var TypographyDemo =
-/*#__PURE__*/
-function (_React$Component) {
-  (0, _inherits2.default)(TypographyDemo, _React$Component);
-
-  function TypographyDemo() {
-    (0, _classCallCheck2.default)(this, TypographyDemo);
-    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(TypographyDemo).apply(this, arguments));
-  }
-
-  (0, _createClass2.default)(TypographyDemo, [{
-    key: "render",
-    value: function render() {
-      return _react.default.createElement("div", {
-        className: this.props.classes.layout
-      }, _react.default.createElement("div", {
-        className: this.props.classes.row
-      }, _react.default.createElement(_Typography.default, {
-        className: this.props.classes.label,
-        variant: "body1",
-        color: "inherit"
-      }, "<Typography variant=\"h1\">"), _react.default.createElement(_Paper.default, {
-        className: this.props.classes.item
-      }, _react.default.createElement(_Typography.default, {
-        variant: "h1",
-        color: "inherit"
-      }, "h1. Heading"))), _react.default.createElement("div", {
-        className: this.props.classes.row
-      }, _react.default.createElement(_Typography.default, {
-        className: this.props.classes.label,
-        variant: "body1",
-        color: "inherit"
-      }, "<Typography variant=\"h2\">"), _react.default.createElement(_Paper.default, {
-        className: this.props.classes.item
-      }, _react.default.createElement(_Typography.default, {
-        variant: "h2",
-        color: "inherit"
-      }, "h2. Heading"))), _react.default.createElement("div", {
-        className: this.props.classes.row
-      }, _react.default.createElement(_Typography.default, {
-        className: this.props.classes.label,
-        variant: "body1",
-        color: "inherit"
-      }, "<Typography variant=\"h3\">"), _react.default.createElement(_Paper.default, {
-        className: this.props.classes.item
-      }, _react.default.createElement(_Typography.default, {
-        variant: "h3",
-        color: "inherit"
-      }, "h3. Heading"))), _react.default.createElement("div", {
-        className: this.props.classes.row
-      }, _react.default.createElement(_Typography.default, {
-        className: this.props.classes.label,
-        variant: "body1",
-        color: "inherit"
-      }, "<Typography variant=\"h4\">"), _react.default.createElement(_Paper.default, {
-        className: this.props.classes.item
-      }, _react.default.createElement(_Typography.default, {
-        variant: "h4",
-        color: "inherit"
-      }, "h4. Heading"))), _react.default.createElement("div", {
-        className: this.props.classes.row
-      }, _react.default.createElement(_Typography.default, {
-        className: this.props.classes.label,
-        variant: "body1",
-        color: "inherit"
-      }, "<Typography variant=\"h5\">"), _react.default.createElement(_Paper.default, {
-        className: this.props.classes.item
-      }, _react.default.createElement(_Typography.default, {
-        variant: "h5",
-        color: "inherit"
-      }, "h5. Heading"))), _react.default.createElement("div", {
-        className: this.props.classes.row
-      }, _react.default.createElement(_Typography.default, {
-        className: this.props.classes.label,
-        variant: "body1",
-        color: "inherit"
-      }, "<Typography variant=\"h6\">"), _react.default.createElement(_Paper.default, {
-        className: this.props.classes.item
-      }, _react.default.createElement(_Typography.default, {
-        variant: "h6",
-        color: "inherit"
-      }, "h6. Heading"))), _react.default.createElement("div", {
-        className: this.props.classes.row
-      }, _react.default.createElement(_Typography.default, {
-        className: this.props.classes.label,
-        variant: "body1",
-        color: "inherit"
-      }, "<Typography variant=\"subtitle1\">"), _react.default.createElement(_Paper.default, {
-        className: this.props.classes.item
-      }, _react.default.createElement(_Typography.default, {
-        variant: "subtitle1",
-        color: "inherit"
-      }, "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos blanditiis tenetur"))), _react.default.createElement("div", {
-        className: this.props.classes.row
-      }, _react.default.createElement(_Typography.default, {
-        className: this.props.classes.label,
-        variant: "body1",
-        color: "inherit"
-      }, "<Typography variant=\"subtitle2\">"), _react.default.createElement(_Paper.default, {
-        className: this.props.classes.item
-      }, _react.default.createElement(_Typography.default, {
-        variant: "subtitle2",
-        color: "inherit"
-      }, "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos blanditiis tenetur"))), _react.default.createElement("div", {
-        className: this.props.classes.row
-      }, _react.default.createElement(_Typography.default, {
-        className: this.props.classes.label,
-        variant: "body1",
-        color: "inherit"
-      }, "<Typography variant=\"body1\">"), _react.default.createElement(_Paper.default, {
-        className: this.props.classes.item
-      }, _react.default.createElement(_Typography.default, {
-        variant: "body1",
-        color: "inherit"
-      }, "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos blanditiis tenetur unde suscipit, quam beatae rerum inventore consectetur, neque doloribus, cupiditate numquam dignissimos laborum fugiat deleniti? Eum quasi quidem quibusdam."))), _react.default.createElement("div", {
-        className: this.props.classes.row
-      }, _react.default.createElement(_Typography.default, {
-        className: this.props.classes.label,
-        variant: "body1",
-        color: "inherit"
-      }, "<Typography variant=\"body2\">"), _react.default.createElement(_Paper.default, {
-        className: this.props.classes.item
-      }, _react.default.createElement(_Typography.default, {
-        variant: "body2",
-        color: "inherit"
-      }, "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos blanditiis tenetur unde suscipit, quam beatae rerum inventore consectetur, neque doloribus, cupiditate numquam dignissimos laborum fugiat deleniti? Eum quasi quidem quibusdam."))), _react.default.createElement("div", {
-        className: this.props.classes.row
-      }, _react.default.createElement(_Typography.default, {
-        className: this.props.classes.label,
-        variant: "body1",
-        color: "inherit"
-      }, "<Typography variant=\"button\">"), _react.default.createElement(_Paper.default, {
-        className: this.props.classes.item
-      }, _react.default.createElement(_Typography.default, {
-        variant: "button",
-        color: "inherit"
-      }, "Button text"))), _react.default.createElement("div", {
-        className: this.props.classes.row
-      }, _react.default.createElement(_Typography.default, {
-        className: this.props.classes.label,
-        variant: "body1",
-        color: "inherit"
-      }, "<Typography variant=\"caption\">"), _react.default.createElement(_Paper.default, {
-        className: this.props.classes.item
-      }, _react.default.createElement(_Typography.default, {
-        variant: "caption",
-        color: "inherit"
-      }, "Caption text"))), _react.default.createElement("div", {
-        className: this.props.classes.row
-      }, _react.default.createElement(_Typography.default, {
-        className: this.props.classes.label,
-        variant: "body1",
-        color: "inherit"
-      }, "<Typography variant=\"overline\">"), _react.default.createElement(_Paper.default, {
-        className: this.props.classes.item
-      }, _react.default.createElement(_Typography.default, {
-        variant: "overline",
-        color: "inherit"
-      }, "Overline text"))));
-    }
-  }]);
-  return TypographyDemo;
-}(_react.default.Component);
-
-var _default = TypographyDemo;
-exports.default = _default;
-
-/***/ }),
-
 /***/ "uXag":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -16743,7 +17008,7 @@ function (_React$Component) {
       }, _react.default.createElement(_ListItemAvatar.default, null, _react.default.createElement(_Avatar.default, {
         className: this.props.classes.inboxAvatar,
         alt: "Mitch Stigall",
-        src: this.props.apiServer + _constants.default.apiBase + "/avatars/x0?t=" + (0, _now.default)()
+        src: this.props.apiServer + _constants.default.apiBase + "/avatars/x0?size=small&t=" + (0, _now.default)()
       })), _react.default.createElement(_ListItemText.default, {
         primary: _react.default.createElement(_react.default.Fragment, null, _react.default.createElement("div", {
           className: this.props.classes.inboxName
@@ -16766,7 +17031,7 @@ function (_React$Component) {
       }, _react.default.createElement(_ListItemAvatar.default, null, _react.default.createElement(_Avatar.default, {
         className: this.props.classes.inboxAvatar,
         alt: "Marie Wineinger",
-        src: this.props.apiServer + _constants.default.apiBase + "/avatars/x1?t=" + (0, _now.default)()
+        src: this.props.apiServer + _constants.default.apiBase + "/avatars/x1?size=small&t=" + (0, _now.default)()
       })), _react.default.createElement(_ListItemText.default, {
         primary: _react.default.createElement(_react.default.Fragment, null, _react.default.createElement("div", {
           className: this.props.classes.inboxName
@@ -16789,7 +17054,7 @@ function (_React$Component) {
       }, _react.default.createElement(_ListItemAvatar.default, null, _react.default.createElement(_Avatar.default, {
         className: this.props.classes.inboxAvatar,
         alt: "Ted Eriksson",
-        src: this.props.apiServer + _constants.default.apiBase + "/avatars/x2?t=" + (0, _now.default)()
+        src: this.props.apiServer + _constants.default.apiBase + "/avatars/x2?size=small&t=" + (0, _now.default)()
       })), _react.default.createElement(_ListItemText.default, {
         primary: _react.default.createElement(_react.default.Fragment, null, _react.default.createElement("div", {
           className: this.props.classes.inboxName
@@ -16812,7 +17077,7 @@ function (_React$Component) {
       }, _react.default.createElement(_ListItemAvatar.default, null, _react.default.createElement(_Avatar.default, {
         className: this.props.classes.inboxAvatar,
         alt: "Martin Murry",
-        src: this.props.apiServer + _constants.default.apiBase + "/avatars/x3?t=" + (0, _now.default)()
+        src: this.props.apiServer + _constants.default.apiBase + "/avatars/x3?size=small&t=" + (0, _now.default)()
       })), _react.default.createElement(_ListItemText.default, {
         primary: _react.default.createElement(_react.default.Fragment, null, _react.default.createElement("div", {
           className: this.props.classes.inboxName
@@ -16962,6 +17227,13 @@ module.exports = require("@material-ui/core/Tooltip");
 /***/ (function(module, exports) {
 
 module.exports = require("@material-ui/icons/Dashboard");
+
+/***/ }),
+
+/***/ "vbly":
+/***/ (function(module, exports) {
+
+module.exports = require("@material-ui/icons/ThreeSixty");
 
 /***/ }),
 
@@ -18232,117 +18504,10 @@ module.exports = function validate(options, value, allValues) {
 
 /***/ }),
 
-/***/ "yOcD":
-/***/ (function(module, exports, __webpack_require__) {
+/***/ "yV47":
+/***/ (function(module, exports) {
 
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__("KI45");
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = exports.query = void 0;
-
-var _regenerator = _interopRequireDefault(__webpack_require__("ln6h"));
-
-var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__("+oT+"));
-
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__("/HRN"));
-
-var _createClass2 = _interopRequireDefault(__webpack_require__("WaGi"));
-
-var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__("ZDA2"));
-
-var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__("/+P4"));
-
-var _inherits2 = _interopRequireDefault(__webpack_require__("N9n2"));
-
-var _react = _interopRequireDefault(__webpack_require__("cDcd"));
-
-var _reactRelay = __webpack_require__("iuEU");
-
-var _Relay = __webpack_require__("5upH");
-
-var _TypographyDemoContainer = _interopRequireDefault(__webpack_require__("W8Wa"));
-
-var _LayoutContainer = _interopRequireDefault(__webpack_require__("hl3i"));
-
-var _SpinnerContainer = _interopRequireDefault(__webpack_require__("wkow"));
-
-var defaultVariables = {};
-
-var query = function query() {
-  return __webpack_require__("JZwh");
-};
-
-exports.query = query;
-
-var TypographyPage =
-/*#__PURE__*/
-function (_React$Component) {
-  (0, _inherits2.default)(TypographyPage, _React$Component);
-
-  function TypographyPage() {
-    (0, _classCallCheck2.default)(this, TypographyPage);
-    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(TypographyPage).apply(this, arguments));
-  }
-
-  (0, _createClass2.default)(TypographyPage, [{
-    key: "render",
-    value: function render() {
-      return _react.default.createElement(_Relay.QueryRenderer, {
-        query: query,
-        variables: defaultVariables,
-        render: function render(_ref) {
-          var error = _ref.error,
-              props = _ref.props;
-          return _react.default.createElement(_LayoutContainer.default, {
-            page: "/typography",
-            viewer: props ? props.viewer : null,
-            error: error
-          }, !error && !props && _react.default.createElement(_SpinnerContainer.default, null), !error && props && _react.default.createElement(_TypographyDemoContainer.default, {
-            viewer: props.viewer
-          }));
-        }
-      });
-    }
-  }], [{
-    key: "getInitialProps",
-    value: function () {
-      var _getInitialProps = (0, _asyncToGenerator2.default)(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee(_ref2) {
-        var fetchQuery;
-        return _regenerator.default.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                fetchQuery = _ref2.fetchQuery;
-                _context.next = 3;
-                return fetchQuery(query, defaultVariables);
-
-              case 3:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee);
-      }));
-
-      function getInitialProps(_x) {
-        return _getInitialProps.apply(this, arguments);
-      }
-
-      return getInitialProps;
-    }()
-  }]);
-  return TypographyPage;
-}(_react.default.Component);
-
-var _default = TypographyPage;
-exports.default = _default;
+module.exports = require("@material-ui/icons/Satellite");
 
 /***/ }),
 

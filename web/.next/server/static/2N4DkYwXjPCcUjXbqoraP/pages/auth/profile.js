@@ -17678,7 +17678,7 @@ function (_React$Component) {
       }, _react.default.createElement(_ListItemAvatar.default, null, _react.default.createElement(_Avatar.default, {
         className: this.props.classes.inboxAvatar,
         alt: "Mitch Stigall",
-        src: this.props.apiServer + _constants.default.apiBase + "/avatars/x0?t=" + (0, _now.default)()
+        src: this.props.apiServer + _constants.default.apiBase + "/avatars/x0?size=small&t=" + (0, _now.default)()
       })), _react.default.createElement(_ListItemText.default, {
         primary: _react.default.createElement(_react.default.Fragment, null, _react.default.createElement("div", {
           className: this.props.classes.inboxName
@@ -17701,7 +17701,7 @@ function (_React$Component) {
       }, _react.default.createElement(_ListItemAvatar.default, null, _react.default.createElement(_Avatar.default, {
         className: this.props.classes.inboxAvatar,
         alt: "Marie Wineinger",
-        src: this.props.apiServer + _constants.default.apiBase + "/avatars/x1?t=" + (0, _now.default)()
+        src: this.props.apiServer + _constants.default.apiBase + "/avatars/x1?size=small&t=" + (0, _now.default)()
       })), _react.default.createElement(_ListItemText.default, {
         primary: _react.default.createElement(_react.default.Fragment, null, _react.default.createElement("div", {
           className: this.props.classes.inboxName
@@ -17724,7 +17724,7 @@ function (_React$Component) {
       }, _react.default.createElement(_ListItemAvatar.default, null, _react.default.createElement(_Avatar.default, {
         className: this.props.classes.inboxAvatar,
         alt: "Ted Eriksson",
-        src: this.props.apiServer + _constants.default.apiBase + "/avatars/x2?t=" + (0, _now.default)()
+        src: this.props.apiServer + _constants.default.apiBase + "/avatars/x2?size=small&t=" + (0, _now.default)()
       })), _react.default.createElement(_ListItemText.default, {
         primary: _react.default.createElement(_react.default.Fragment, null, _react.default.createElement("div", {
           className: this.props.classes.inboxName
@@ -17747,7 +17747,7 @@ function (_React$Component) {
       }, _react.default.createElement(_ListItemAvatar.default, null, _react.default.createElement(_Avatar.default, {
         className: this.props.classes.inboxAvatar,
         alt: "Martin Murry",
-        src: this.props.apiServer + _constants.default.apiBase + "/avatars/x3?t=" + (0, _now.default)()
+        src: this.props.apiServer + _constants.default.apiBase + "/avatars/x3?size=small&t=" + (0, _now.default)()
       })), _react.default.createElement(_ListItemText.default, {
         primary: _react.default.createElement(_react.default.Fragment, null, _react.default.createElement("div", {
           className: this.props.classes.inboxName

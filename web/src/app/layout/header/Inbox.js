@@ -76,7 +76,7 @@ class Inbox extends React.Component {
               src={
                 this.props.apiServer +
                 constants.apiBase +
-                "/avatars/x0?t=" +
+                "/avatars/x0?size=small&t=" +
                 Date.now()
               }
             />
@@ -121,7 +121,7 @@ class Inbox extends React.Component {
               src={
                 this.props.apiServer +
                 constants.apiBase +
-                "/avatars/x1?t=" +
+                "/avatars/x1?size=small&t=" +
                 Date.now()
               }
             />
@@ -166,7 +166,7 @@ class Inbox extends React.Component {
               src={
                 this.props.apiServer +
                 constants.apiBase +
-                "/avatars/x2?t=" +
+                "/avatars/x2?size=small&t=" +
                 Date.now()
               }
             />
@@ -209,7 +209,7 @@ class Inbox extends React.Component {
               src={
                 this.props.apiServer +
                 constants.apiBase +
-                "/avatars/x3?t=" +
+                "/avatars/x3?size=small&t=" +
                 Date.now()
               }
             />
