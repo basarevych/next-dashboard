@@ -31,7 +31,7 @@ class RedirectRoute {
           return res.redirect("https://github.com/basarevych/next-dashboard");
         case "benchmarks":
           return res.redirect(
-            "https://gtmetrix.com/reports/dashboard.daemon-notes.com/GJbP3uSw"
+            "https://gtmetrix.com/reports/dashboard.daemon-notes.com/yK0ExUzJ"
           );
         case "responsiveness":
           return res.redirect(
