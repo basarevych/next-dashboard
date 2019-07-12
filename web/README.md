@@ -18,18 +18,9 @@ yarn install --prod
 
 cd ../web
 yarn install --prod
-yarn start
-```
-
-### Build Production
-
-```
-cd next-dashboard/api
-yarn schema
-
-cd ../web
 yarn relay
 yarn build
+yarn start
 ```
 
 ### Run Development
