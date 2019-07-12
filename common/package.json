@@ -8,10 +8,10 @@
     "immutable": "^4.0.0-rc.12",
     "json-immutable": "~0.4.0",
     "moment": "~2.24.0",
-    "moment-timezone": "~0.5.25",
+    "moment-timezone": "~0.5.26",
     "pako": "~1.0.10",
     "react-intl": "~2.9.0",
     "utf8": "~3.0.0",
-    "validator": "~11.0.0"
+    "validator": "~11.1.0"
   }
 }

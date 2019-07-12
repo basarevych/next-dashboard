@@ -6,7 +6,7 @@
 
 "use strict";
 
-const _ = require("lodash");
+if (!global._) global._ = require("lodash");
 
 module.exports = {
   testEnvironment: "node",

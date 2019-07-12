@@ -15,6 +15,7 @@ describe("Auth route", () => {
     for (let item of AuthService.$requires) di.registerInstance({}, item);
     di.registerInstance(
       {
+        jwtSecret: "zoo",
         apiOrigins: ["http://127.0.0.1"],
         apiAppServer: "http://127.0.0.1",
         facebookAuthId: "foo",
@@ -44,7 +45,7 @@ describe("Auth route", () => {
     test(`responds for ${provider} auth provider`, () => {
       let promise = request(app)
         .get(`/oauth/${name}`)
-        .expect(302);
+        .expect(200);
       tests.push(promise);
       return promise;
     });
