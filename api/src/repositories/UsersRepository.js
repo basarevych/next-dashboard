@@ -112,15 +112,7 @@ class UsersRepository {
       roles
     });
 
-    const { validator } = this.user.getValidator("password");
-    try {
-      await validator.bind(user)(password); // before it is encrypted
-    } catch (error) {
-      throw this.di.get("error.validation", {
-        errors: { password: { message: error } }
-      });
-    }
-
+    await user.validateField("password", password); // before it is encrypted
     await user.validate();
     await user.save();
     await this.publish("userCreated", user);
@@ -139,14 +131,7 @@ class UsersRepository {
     user.email = email;
     user.name = name;
     if (password) {
-      const { validator } = this.user.getValidator("password");
-      try {
-        await validator.bind(user)(password); // before it is encrypted
-      } catch (error) {
-        throw this.di.get("error.validation", {
-          errors: { password: { message: error } }
-        });
-      }
+      await user.validateField("password", password); // before it is encrypted
       user.password = await this.auth.encryptPassword(password);
     }
     user.roles = roles;

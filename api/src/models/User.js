@@ -91,6 +91,17 @@ class User extends BaseModel {
         this.roles.push(constants.roles.AUTHENTICATED);
     });
 
+    this.schema.methods.validateField = async function(field, value) {
+      const { validator } = this.getValidator(field);
+      try {
+        await validator.bind(this)(value);
+      } catch (error) {
+        throw this.di.get("error.validation", {
+          errors: { password: { message: error } }
+        });
+      }
+    };
+
     this.model = this.db.mongoose.model("User", this.schema);
   }
 

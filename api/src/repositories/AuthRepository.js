@@ -75,21 +75,13 @@ class AuthRepository {
       password: password && (await this.auth.encryptPassword(password))
     });
 
-    const { validator } = this.user.getValidator("password");
-    try {
-      await validator.bind(user)(password); // before it is encrypted
-    } catch (error) {
-      throw this.di.get("error.validation", {
-        errors: { password: { message: error } }
-      });
-    }
-
     let client = new this.userClient.model({
       agent: context.get("User-Agent"),
       ip: context.ip
     });
     user.clients.push(client.toObject());
 
+    await user.validateField("password", password); // before it is encrypted
     await user.validate();
     await user.save();
     await this.auth.sendVerificationEmail(context, user, locale);
@@ -236,14 +228,7 @@ class AuthRepository {
       user.isEmailVerified = false;
     }
     if (password) {
-      const { validator } = this.user.getValidator("password");
-      try {
-        await validator.bind(user)(password); // before it is encrypted
-      } catch (error) {
-        throw this.di.get("error.validation", {
-          errors: { password: { message: error } }
-        });
-      }
+      await user.validateField("password", password); // before it is encrypted
       user.password = await this.auth.encryptPassword(password);
     }
 
