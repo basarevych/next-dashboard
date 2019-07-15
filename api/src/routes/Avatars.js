@@ -191,7 +191,7 @@ class AvatarsRoute {
         res.set("content-type", "image/png");
         res.send(req.query.size === "small" ? image.small : image.large);
       } else {
-        throw this.di.get("error.notFound");
+        res.redirect(this.config.apiAppServer + "/static/img/anonymous.png");
       }
     } catch (error) {
       return next(error);

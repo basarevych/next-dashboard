@@ -6,7 +6,7 @@ const http = require("http");
 const https = require("https");
 const path = require("path");
 const fs = require("fs-extra");
-const App = require("../server/App");
+const App = require("../ssr-server/App");
 
 const root = path.join.bind(path, path.resolve(__dirname), "..");
 process.chdir(root());
