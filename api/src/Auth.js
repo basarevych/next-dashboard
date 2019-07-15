@@ -172,7 +172,7 @@ class Auth {
                     agent: req.get("User-Agent"),
                     ip: req.ip
                   });
-                  user.clients.push(client);
+                  user.clients.push(client.toObject());
                 }
 
                 await user.validate();
@@ -273,7 +273,7 @@ class Auth {
                     accessToken,
                     refreshToken
                   });
-                  curUser.providers.push(prov);
+                  curUser.providers.push(prov.toObject());
 
                   return returnSuccess(curUser, curClient);
                 }
@@ -335,7 +335,7 @@ class Auth {
                     // random password because the field cannot be empty
                     password: this.chance.string({ length: 30 }),
                     clients: [],
-                    providers: [prov]
+                    providers: [prov.toObject()]
                   });
 
                   return returnSuccess(user, null);
@@ -466,7 +466,7 @@ class Auth {
         agent: context.get("User-Agent"),
         ip: context.ip
       });
-      user.clients.push(client);
+      user.clients.push(client.toObject());
     }
 
     await user.validate();

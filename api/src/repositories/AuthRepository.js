@@ -88,7 +88,7 @@ class AuthRepository {
       agent: context.get("User-Agent"),
       ip: context.ip
     });
-    user.clients.push(client);
+    user.clients.push(client.toObject());
 
     await user.validate();
     await user.save();
