@@ -1,7 +1,8 @@
 node_modules/
 coverage/
+**/__generated__/
 .tmp/
 .next/
 out/
-**/__generated__/
+static/assets/
 .env

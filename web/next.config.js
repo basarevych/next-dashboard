@@ -163,7 +163,7 @@ module.exports = withPlugins([...plugins], {
   },
 
   exportPathMap: async () => {
-    const App = require("./server/App");
+    const App = require("./ssr-server/App");
     const app = new App();
     const map = {};
     for (let path of _.keys(constants.pages)) {
