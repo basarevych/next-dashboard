@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import Head from "next/head";
 import { intlShape, FormattedMessage } from "react-intl";
-import { ToastContainer, toast } from "react-toastify";
 import Button from "@material-ui/core/Button";
 import Hidden from "@material-ui/core/Hidden";
 import Snackbar from "@material-ui/core/Snackbar";
@@ -83,18 +82,6 @@ export const styles = theme => ({
     [theme.breakpoints.down("xs")]: {
       marginLeft: 0
     }
-  },
-  toastBox: {
-    borderRadius: theme.shape.borderRadius,
-    background: theme.palette.background.paper,
-    color: theme.palette.text.primary,
-    "& button": {
-      color: theme.palette.text.primary
-    }
-  },
-  toastProgress: {
-    background: theme.palette.secondary.main,
-    color: theme.palette.primary.contrastText
   }
 });
 
@@ -117,10 +104,6 @@ class Layout extends React.Component {
     onSetStatusCode: PropTypes.func.isRequired
   };
 
-  static getDerivedStateFromError(error) {
-    return { error };
-  }
-
   constructor(props) {
     super(props);
 
@@ -135,7 +118,6 @@ class Layout extends React.Component {
     this.handleSidebarClose = this.handleSidebarClose.bind(this);
     this.handleAuthUpdated = this.handleAuthUpdated.bind(this);
     this.handleUpdateMessage = this.handleUpdateMessage.bind(this);
-    this.handleToastMessage = this.handleToastMessage.bind(this);
     this.doUpdate = this.doUpdate.bind(this);
   }
 
@@ -148,12 +130,7 @@ class Layout extends React.Component {
       constants.events.UPDATE_READY,
       this.handleUpdateMessage
     );
-    window.addEventListener(constants.events.TOAST, this.handleToastMessage);
-    this.setState({ isLoaded: true });
-    this.checkAuth();
-  }
-
-  componentDidUpdate() {
+    this.setState({ isLoaded: true, isUpdateNeeded: !!global.__updateReady });
     this.checkAuth();
   }
 
@@ -166,7 +143,6 @@ class Layout extends React.Component {
       constants.events.UPDATE_READY,
       this.handleUpdateMessage
     );
-    window.removeEventListener(constants.events.TOAST, this.handleToastMessage);
   }
 
   isAuthenticated() {
@@ -224,20 +200,6 @@ class Layout extends React.Component {
     this.setState({ isUpdateNeeded: true });
   }
 
-  handleToastMessage(evt) {
-    toast(
-      <div>
-        <h3>{evt.detail.title}</h3>
-        <p>{evt.detail.content}</p>
-      </div>,
-      {
-        position: evt.detail.position,
-        className: this.props.classes.toastBox,
-        progressClassName: this.props.classes.toastProgress
-      }
-    );
-  }
-
   doUpdate() {
     this.setState({ isUpdateNeeded: false });
     window.location.reload(true);
@@ -247,12 +209,11 @@ class Layout extends React.Component {
     if (this.props.isStopped) return null;
 
     const title = this.getTitle();
-    const isError =
-      this.state.error || this.props.error || this.props.statusCode !== 200;
+    const isError = this.props.error || this.props.statusCode !== 200;
 
     return (
       <div className="app">
-        {title && (
+        {!!title && (
           <Head>
             <title>{this.props.intl.formatMessage({ id: title })}</title>
           </Head>
@@ -282,7 +243,7 @@ class Layout extends React.Component {
             onClose={this.handleSidebarClose}
           >
             <Sidebar
-            isAuthenticated={this.isAuthenticated()}
+              isAuthenticated={this.isAuthenticated()}
               user={this.getUser()}
               onMenuClick={this.handleSidebarClose}
             />
@@ -296,8 +257,8 @@ class Layout extends React.Component {
             classes={{ paper: this.props.classes.sidebar }}
           >
             <Sidebar
-            isAuthenticated={this.isAuthenticated()}
-            user={this.getUser()}
+              isAuthenticated={this.isAuthenticated()}
+              user={this.getUser()}
               onMenuClick={this.handleSidebarClose}
             />
           </Drawer>
@@ -307,7 +268,7 @@ class Layout extends React.Component {
           {isError && (
             <ErrorMessage
               statusCode={this.props.statusCode}
-              error={this.state.error || this.props.error}
+              error={this.props.error}
             />
           )}
           {!isError && (
@@ -324,8 +285,6 @@ class Layout extends React.Component {
         {this.props.isAuthModalOpen && (
           <AppAuthModal providers={this.getProviders()} />
         )}
-
-        <ToastContainer />
       </div>
     );
   }

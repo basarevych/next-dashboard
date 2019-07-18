@@ -59,15 +59,6 @@ if (global.Intl) {
 }
 
 if (process.browser) {
-  window.onerror = function(msg, url, line, col, error) {
-    var extra = !col ? "" : "\ncolumn: " + col;
-    extra += !error ? "" : "\nerror: " + error;
-    console.error(
-      "Error: " + msg + "\nurl: " + url + "\nline: " + line + extra
-    );
-    return false;
-  };
-
   // get rid of auto fill, not disabling auto complete
   window.addEventListener("load", () => {
     for (let el of document.querySelectorAll(

@@ -1,6 +1,7 @@
 import React from "react";
 import App, { Container } from "next/app";
 import { Provider as ReduxProvider } from "react-redux";
+import constants from "../common/constants";
 import serialize from "../common/src/serialize";
 import deserialize from "../common/src/deserialize";
 import getDiContainer from "../src/app/lib/getDiContainer";
@@ -11,6 +12,32 @@ import { fetchQuery, RelayProvider } from "../src/app/providers/Relay";
 import StylesProvider from "../src/app/providers/StylesContainer";
 import IntlProvider from "../src/app/providers/IntlContainer";
 import DateProvider from "../src/app/providers/DateContainer";
+import ToastProvider from "../src/app/providers/ToastContainer";
+
+if (process.browser) {
+  window.onerror = function(msg, url, line, col, error) {
+    let extra = !col ? "" : "\ncolumn: " + col;
+    extra += !error ? "" : "\nerror: " + error;
+    console.error(
+      "Error: " + msg + "\nurl: " + url + "\nline: " + line + extra
+    );
+    window.dispatchEvent(
+      new CustomEvent(constants.events.TOAST, {
+        detail: { title: "An Error Occurred", content: msg }
+      })
+    );
+    return false;
+  };
+  window.onunhandledrejection = function(evt) {
+    console.error(evt.reason);
+    window.dispatchEvent(
+      new CustomEvent(constants.events.TOAST, {
+        detail: { title: "An Error Occurred", content: evt.reason.message }
+      })
+    );
+    return false;
+  };
+}
 
 class MyApp extends App {
   static async getInitialProps({ Component, ctx }) {
@@ -64,7 +91,7 @@ class MyApp extends App {
     }
 
     statusCode = appSelectors.getStatusCode(store.getState());
-    if (statusCode !== 200 && res && res.statusCode !== statusCode)
+    if (res && res.statusCode !== statusCode && statusCode !== 200)
       res.status(statusCode);
 
     return {
@@ -89,14 +116,14 @@ class MyApp extends App {
   }
 
   componentDidMount() {
-    // Start the app
-    this.reduxStore.dispatch(appOperations.start()).catch(console.error);
-
     // Remove the server-side injected CSS.
     const jssStyles = document.querySelector("#jss-server-side");
     if (jssStyles) {
       jssStyles.parentNode.removeChild(jssStyles);
     }
+
+    // Start the app
+    this.reduxStore.dispatch(appOperations.start()).catch(console.error);
   }
 
   render() {
@@ -109,7 +136,9 @@ class MyApp extends App {
             <StylesProvider>
               <IntlProvider>
                 <DateProvider>
-                  <Component {...pageProps} />
+                  <ToastProvider>
+                    <Component {...pageProps} />
+                  </ToastProvider>
                 </DateProvider>
               </IntlProvider>
             </StylesProvider>
