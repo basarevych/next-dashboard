@@ -48,6 +48,7 @@ class ToastProvider extends React.Component {
       </div>,
       {
         position: evt.detail.position || toast.POSITION.TOP_RIGHT,
+        autoClose: evt.detail.autoClose,
         className: this.props.classes.toastBox,
         progressClassName: this.props.classes.toastProgress
       }

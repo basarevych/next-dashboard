@@ -203,6 +203,7 @@ class SalesMap extends React.Component {
   }
 
   animateHeight() {
+    this.cancelHeightAnimation();
     this.intervalTimer = setInterval(this.handleHeightTick, 20);
   }
 
@@ -215,9 +216,12 @@ class SalesMap extends React.Component {
 
   handleHeightTick() {
     if (this.isDestroyed) return;
-    if (this.state.elevationScale < elevationScale.max)
-      this.setState({ elevationScale: this.state.elevationScale + 1 });
-    else this.cancelHeightAnimation();
+    if (this.state.elevationScale < elevationScale.max) {
+      this.setState({ elevationScale: this.state.elevationScale + 2 });
+    } else {
+      this.setState({ elevationScale: elevationScale.max });
+      this.cancelHeightAnimation();
+    }
   }
 
   rotateCamera() {
@@ -254,7 +258,7 @@ class SalesMap extends React.Component {
     });
   }
 
-  updateViewState({ viewState }) {
+  updateViewState({ viewState }, cb) {
     const { latitude, longitude, zoom, bearing, pitch } = this.state.viewState;
     this.setState({
       viewState: {
@@ -264,7 +268,8 @@ class SalesMap extends React.Component {
         bearing,
         pitch,
         ...viewState
-      }
+      },
+      cb
     });
   }
 

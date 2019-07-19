@@ -23,7 +23,11 @@ if (process.browser) {
     );
     window.dispatchEvent(
       new CustomEvent(constants.events.TOAST, {
-        detail: { title: "An Error Occurred", content: msg }
+        detail: {
+          title: "An Error Occurred",
+          content: msg,
+          autoClose: false
+        }
       })
     );
     return false;
@@ -32,7 +36,11 @@ if (process.browser) {
     console.error(evt.reason);
     window.dispatchEvent(
       new CustomEvent(constants.events.TOAST, {
-        detail: { title: "An Error Occurred", content: evt.reason.message }
+        detail: {
+          title: "An Error Occurred",
+          content: evt.reason.message,
+          autoClose: false
+        }
       })
     );
     return false;
