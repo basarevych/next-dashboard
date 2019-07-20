@@ -2,7 +2,7 @@ import { connect } from "react-redux";
 import { graphql, createRefetchContainer } from "react-relay";
 import { injectIntl } from "react-intl";
 import { withStyles } from "@material-ui/styles";
-import { appOperations } from "../app/state";
+import { appOperations, appSelectors } from "../app/state";
 import { employeesSelectors, employeesOperations } from "./state";
 import EmployeesComponent, {
   pageSize,
@@ -13,6 +13,10 @@ import EmployeesComponent, {
 
 const mapStateToProps = state => {
   return {
+    isSubscribed: appSelectors.hasActiveSubscription(
+      state,
+      "EmployeesSubscription"
+    ),
     isEditModalOpen: employeesSelectors.isEditModalOpen(state),
     selected: employeesSelectors.getSelected(state)
   };

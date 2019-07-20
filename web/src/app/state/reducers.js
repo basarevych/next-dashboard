@@ -1,3 +1,4 @@
+import { Set } from "immutable";
 import { combineReducers } from "redux-immutable";
 import * as types from "./types";
 import l10n from "../../../common/locales";
@@ -16,6 +17,7 @@ Map({
   isStarted: Boolean,
   isStopped: Boolean,
   isConnected: Boolean, // WebSocket
+  activeSubscriptions: [String], // names
   isAuthModalOpen: false,
 })
 */
@@ -142,6 +144,18 @@ const isAuthModalOpenReducer = (state = false, action) => {
   return state;
 };
 
+const activeSubscriptionsReducer = (state = Set(), action) => {
+  switch (action.type) {
+    case types.ADD_ACTIVE_SUBSCRIPTION:
+      if (!_.isUndefined(action.name)) return state.add(action.name);
+      break;
+    case types.REMOVE_ACTIVE_SUBSCRIPTION:
+      if (!_.isUndefined(action.name)) return state.delete(action.name);
+      break;
+  }
+  return state;
+};
+
 const reducer = combineReducers({
   created: createdReducer,
   statusCode: statusCodeReducer,
@@ -155,6 +169,7 @@ const reducer = combineReducers({
   isStarted: isStartedReducer,
   isStopped: isStoppedReducer,
   isConnected: isConnectedReducer,
+  activeSubscriptions: activeSubscriptionsReducer,
   isAuthModalOpen: isAuthModalOpenReducer
 });
 

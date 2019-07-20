@@ -81,6 +81,7 @@ class Employees extends React.Component {
     classes: PropTypes.object.isRequired,
     relay: PropTypes.object.isRequired,
     viewer: PropTypes.object.isRequired,
+    isSubscribed: PropTypes.bool.isRequired,
     isEditModalOpen: PropTypes.bool.isRequired,
     selected: PropTypes.array.isRequired,
     getToken: PropTypes.func.isRequired,
@@ -115,7 +116,7 @@ class Employees extends React.Component {
     this.handleChangeRowsPerPage = this.handleChangeRowsPerPage.bind(this);
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
     const total = _.get(this.props.viewer, "employees.totalCount", 0);
     if (total && this.state.pageNumber * this.state.pageSize >= total) {
       // we fell off the list - reset to the beginning
@@ -129,7 +130,10 @@ class Employees extends React.Component {
           this.props.relay.refetch(variables, null, null, { force: true })
         );
       });
+    } else if (!prevProps.isSubscribed && this.props.isSubscribed) {
+      setTimeout(this.handleRefreshAction);
     }
+
     this.props.onDeselectAll(
       _.map(_.get(this.props.viewer, "employees.edges", []), "node.id")
     );
@@ -254,7 +258,11 @@ class Employees extends React.Component {
             <Typography variant="h3" color="inherit">
               <FormattedMessage id="TITLE_TABLES" />
             </Typography>
-            <IconButton color="inherit" onClick={this.handleRefreshAction}>
+            <IconButton
+              color="inherit"
+              onClick={this.handleRefreshAction}
+              disabled={!this.props.isSubscribed}
+            >
               <RefreshIcon />
             </IconButton>
           </div>
@@ -264,6 +272,7 @@ class Employees extends React.Component {
               color="secondary"
               classes={{ root: this.props.classes.button }}
               onClick={this.handleCreateAction}
+              disabled={!this.props.isSubscribed}
             >
               <FormattedMessage id="EMPLOYEES_CREATE_BUTTON" />
             </Button>
@@ -273,6 +282,7 @@ class Employees extends React.Component {
               disabled={this.props.selected.length === 0}
               classes={{ root: this.props.classes.button }}
               onClick={this.handleEditAction}
+              disabled={!this.props.isSubscribed || !this.props.selected.length}
             >
               <FormattedMessage id="EMPLOYEES_EDIT_BUTTON" />
             </Button>
@@ -282,6 +292,7 @@ class Employees extends React.Component {
               disabled={this.props.selected.length === 0}
               classes={{ root: this.props.classes.button }}
               onClick={this.handleDeleteAction}
+              disabled={!this.props.isSubscribed || !this.props.selected.length}
             >
               <FormattedMessage id="EMPLOYEES_DELETE_BUTTON" />
             </Button>
@@ -294,6 +305,7 @@ class Employees extends React.Component {
               sortBy={this.state.variables.sortBy}
               sortDir={this.state.variables.sortDir}
               onSort={this.handleSort}
+              isDisabled={!this.props.isSubscribed}
             />
 
             <TablePagination
@@ -305,6 +317,9 @@ class Employees extends React.Component {
               page={this.state.pageNumber}
               onChangeRowsPerPage={this.handleChangeRowsPerPage}
               onChangePage={this.handleChangePage}
+              nextIconButtonProps={{ disabled: !this.props.isSubscribed }}
+              backIconButtonProps={{ disabled: !this.props.isSubscribed }}
+              SelectProps={{ disabled: !this.props.isSubscribed }}
             />
           </Paper>
 

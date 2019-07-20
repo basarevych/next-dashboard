@@ -24,6 +24,7 @@ class EmployeeRow extends React.Component {
     hideSelect: PropTypes.bool.isRequired,
     hideDept: PropTypes.bool.isRequired,
     isSelected: PropTypes.bool.isRequired,
+    isDisabled: PropTypes.bool.isRequired,
     onToggle: PropTypes.func.isRequired,
     onSwitch: PropTypes.func.isRequired
   };
@@ -42,6 +43,7 @@ class EmployeeRow extends React.Component {
               classes={{ root: this.props.classes.checkbox }}
               onChange={() => this.props.onToggle(this.props.node.id)}
               value="on"
+              disabled={this.props.isDisabled}
             />
           </TableCell>
         )}
@@ -64,6 +66,7 @@ class EmployeeRow extends React.Component {
             }
             value="on"
             color="default"
+            disabled={this.props.isDisabled}
           />
         </TableCell>
         <TableCell className={classNames(this.props.isSelected && "selected")}>

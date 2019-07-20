@@ -26,6 +26,7 @@ class EmployeesTable extends React.Component {
     selected: PropTypes.array,
     sortBy: PropTypes.string.isRequired,
     sortDir: PropTypes.string.isRequired,
+    isDisabled: PropTypes.bool.isRequired,
     onSetSelected: PropTypes.func.isRequired,
     onSelectAll: PropTypes.func.isRequired,
     onDeselectAll: PropTypes.func.isRequired,
@@ -83,6 +84,7 @@ class EmployeesTable extends React.Component {
                   }
                   onChange={() => this.handleToggleAll()}
                   value="on"
+                  disabled={this.props.isDisabled}
                 />
               </TableCell>
             )}
@@ -95,6 +97,7 @@ class EmployeesTable extends React.Component {
                 active={this.props.sortBy === "uid"}
                 direction={this.props.sortDir}
                 onClick={() => this.props.onSort("uid")}
+                disabled={this.props.isDisabled}
               >
                 <FormattedMessage id="EMPLOYEES_UID_COLUMN" />
               </TableSortLabel>
@@ -109,6 +112,7 @@ class EmployeesTable extends React.Component {
                 active={this.props.sortBy === "name"}
                 direction={this.props.sortDir}
                 onClick={() => this.props.onSort("name")}
+                disabled={this.props.isDisabled}
               >
                 <FormattedMessage id="EMPLOYEES_NAME_COLUMN" />
               </TableSortLabel>
@@ -123,6 +127,7 @@ class EmployeesTable extends React.Component {
                   active={this.props.sortBy === "dept"}
                   direction={this.props.sortDir}
                   onClick={() => this.props.onSort("dept")}
+                  disabled={this.props.isDisabled}
                 >
                   <FormattedMessage id="EMPLOYEES_DEPT_COLUMN" />
                 </TableSortLabel>
@@ -137,6 +142,7 @@ class EmployeesTable extends React.Component {
                 active={this.props.sortBy === "title"}
                 direction={this.props.sortDir}
                 onClick={() => this.props.onSort("title")}
+                disabled={this.props.isDisabled}
               >
                 <FormattedMessage id="EMPLOYEES_TITLE_COLUMN" />
               </TableSortLabel>
@@ -150,6 +156,7 @@ class EmployeesTable extends React.Component {
                 active={this.props.sortBy === "country"}
                 direction={this.props.sortDir}
                 onClick={() => this.props.onSort("country")}
+                disabled={this.props.isDisabled}
               >
                 <FormattedMessage id="EMPLOYEES_COUNTRY_COLUMN" />
               </TableSortLabel>
@@ -163,6 +170,7 @@ class EmployeesTable extends React.Component {
                 active={this.props.sortBy === "salary"}
                 direction={this.props.sortDir}
                 onClick={() => this.props.onSort("salary")}
+                disabled={this.props.isDisabled}
               >
                 <FormattedMessage id="EMPLOYEES_SALARY_COLUMN" />
               </TableSortLabel>
@@ -177,6 +185,7 @@ class EmployeesTable extends React.Component {
               hideSelect={!this.props.selected}
               hideDept={!!this.props.dept}
               onToggle={this.handleToggle}
+              isDisabled={this.props.isDisabled}
             />
           ))}
         </TableBody>

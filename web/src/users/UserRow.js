@@ -23,6 +23,7 @@ class UserRow extends React.Component {
     classes: PropTypes.object.isRequired,
     node: PropTypes.object.isRequired,
     isSelected: PropTypes.bool.isRequired,
+    isDisabled: PropTypes.bool.isRequired,
     onToggle: PropTypes.func.isRequired
   };
 
@@ -39,6 +40,7 @@ class UserRow extends React.Component {
             classes={{ root: this.props.classes.checkbox }}
             onChange={() => this.props.onToggle(this.props.node.id)}
             value="on"
+            disabled={this.props.isDisabled}
           />
         </TableCell>
         <TableCell

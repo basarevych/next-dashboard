@@ -37,6 +37,7 @@ class DeptEmployees extends React.Component {
     intl: intlShape.isRequired,
     classes: PropTypes.object.isRequired,
     viewer: PropTypes.object.isRequired,
+    isSubscribed: PropTypes.bool.isRequired,
     relay: PropTypes.object.isRequired
   };
 
@@ -63,7 +64,7 @@ class DeptEmployees extends React.Component {
     this.handleChangeDept = this.handleChangeDept.bind(this);
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
     const total = _.get(this.props.viewer, "employees.totalCount", 0);
     if (total && this.state.pageNumber * this.state.pageSize >= total) {
       // we fell off the list - reset to the beginning
@@ -78,6 +79,8 @@ class DeptEmployees extends React.Component {
           this.props.relay.refetch(variables, null, null, { force: true })
         );
       });
+    } else if (!prevProps.isSubscribed && this.props.isSubscribed) {
+      setTimeout(this.handleRefreshAction);
     }
   }
 
@@ -174,6 +177,7 @@ class DeptEmployees extends React.Component {
           subscription={subscription}
           onNext={this.handleRefreshAction}
         />
+
         <AutoSizer disableHeight>
           {({ width }) => (
             <Paper style={{ width }} className={this.props.classes.paper}>
@@ -190,6 +194,7 @@ class DeptEmployees extends React.Component {
                       label={this.props.intl.formatMessage({
                         id: `DEPT_${dept}`
                       })}
+                      disabled={!this.props.isSubscribed}
                     />
                   ))}
                 </Tabs>
@@ -202,6 +207,7 @@ class DeptEmployees extends React.Component {
                 sortBy={this.state.variables.sortBy}
                 sortDir={this.state.variables.sortDir}
                 onSort={this.handleSort}
+                isDisabled={!this.props.isSubscribed}
               />
 
               <TablePagination
@@ -213,6 +219,9 @@ class DeptEmployees extends React.Component {
                 page={this.state.pageNumber}
                 onChangeRowsPerPage={this.handleChangeRowsPerPage}
                 onChangePage={this.handleChangePage}
+                nextIconButtonProps={{ disabled: !this.props.isSubscribed }}
+                backIconButtonProps={{ disabled: !this.props.isSubscribed }}
+                SelectProps={{ disabled: !this.props.isSubscribed }}
               />
             </Paper>
           )}

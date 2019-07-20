@@ -1,6 +1,6 @@
 import { SubscriptionClient } from "subscriptions-transport-ws";
 import constants from "../../../common/constants";
-import { appSelectors } from "../state";
+import { appSelectors, appOperations } from "../state";
 
 class Fetcher {
   constructor(di, getState, dispatch, storage) {
@@ -214,8 +214,40 @@ class Fetcher {
     let client, observable;
     let connect, disconnect, reconnect, dispose, authUpdated;
 
+    const handleConnected = async () => {
+      if (process.env.NODE_ENV === "development")
+        console.log(`[Subscription] ${config.name} connected`);
+      await this.dispatch(
+        appOperations.addActiveSubscription({ name: config.name })
+      );
+
+      if (isDestroyed) return disconnect();
+
+      observable = client
+        .request({
+          query: config.text,
+          variables
+        })
+        .subscribe({
+          next: observer.onNext,
+          complete: observer.onCompleted,
+          error: observer.onError
+        });
+    };
+
+    const handleDisconnected = async () => {
+      observable = null;
+      if (process.env.NODE_ENV === "development")
+        console.log(`[Subscription] ${config.name} disconnected`);
+      await this.dispatch(
+        appOperations.removeActiveSubscription({ name: config.name })
+      );
+      if (!isDestroyed) reconnect(true);
+    };
+
     connect = async () => {
       if (isDestroyed) return;
+
       client = new SubscriptionClient(
         appSelectors.getWsServer(this.getState()) + constants.graphqlBase,
         {
@@ -225,32 +257,15 @@ class Fetcher {
       );
       client.maxConnectTimeGenerator.duration = () =>
         client.maxConnectTimeGenerator.max;
-      client.onConnected(async () => {
-        if (isDestroyed) return disconnect();
-        if (process.env.NODE_ENV === "development")
-          console.log("[Subscriptions] Connected");
-        observable = client
-          .request({
-            query: config.text,
-            variables
-          })
-          .subscribe({
-            next: observer.onNext,
-            complete: observer.onCompleted,
-            error: observer.onError
-          });
-      });
-      client.onDisconnected(async () => {
-        observable = null;
-        if (process.env.NODE_ENV === "development")
-          console.log("[Subscriptions] Disconnected");
-        reconnect(true);
-      });
+      client.onConnected(handleConnected);
+      client.onDisconnected(handleDisconnected);
       client.onError(async error => {
-        observable = null;
         if (process.env.NODE_ENV === "development")
-          console.error("[Subscriptions]", error.message || "Network error");
-        reconnect(true);
+          console.error(
+            `[Subscription] ${config.name} error`,
+            error.message || "Network error"
+          );
+        handleDisconnected();
       });
     };
 
@@ -292,7 +307,7 @@ class Fetcher {
       await disconnect();
 
       if (process.env.NODE_ENV === "development")
-        console.log("[Subscriptions] Disposed");
+        console.log(`[Subscription] ${config.name} disposed`);
     };
 
     if (this.isAuthUpdated) connect().catch(console.error);

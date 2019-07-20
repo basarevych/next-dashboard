@@ -32,6 +32,16 @@ export const setConnected = ({ isConnected }) => ({
   isConnected
 });
 
+export const addActiveSubscription = ({ name }) => ({
+  type: types.ADD_ACTIVE_SUBSCRIPTION,
+  name
+});
+
+export const removeActiveSubscription = ({ name }) => ({
+  type: types.REMOVE_ACTIVE_SUBSCRIPTION,
+  name
+});
+
 export const showAuthModal = () => ({ type: types.SHOW_AUTH_MODAL });
 
 export const hideAuthModal = () => ({ type: types.HIDE_AUTH_MODAL });

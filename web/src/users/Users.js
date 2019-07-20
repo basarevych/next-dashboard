@@ -82,6 +82,7 @@ class Users extends React.Component {
     classes: PropTypes.object.isRequired,
     relay: PropTypes.object.isRequired,
     viewer: PropTypes.object.isRequired,
+    isSubscribed: PropTypes.bool.isRequired,
     isEditModalOpen: PropTypes.bool.isRequired,
     selected: PropTypes.array.isRequired,
     getToken: PropTypes.func.isRequired,
@@ -124,7 +125,7 @@ class Users extends React.Component {
     setTimeout(() => this.handleRefreshAction());
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
     const total = _.get(this.props.viewer, "users.totalCount", 0);
     if (total && this.state.pageNumber * this.state.pageSize >= total) {
       // we fell off the list - reset to the beginning
@@ -138,7 +139,10 @@ class Users extends React.Component {
           this.props.relay.refetch(variables, null, null, { force: true })
         );
       });
+    } else if (!prevProps.isSubscribed && this.props.isSubscribed) {
+      setTimeout(this.handleRefreshAction);
     }
+
     this.props.onDeselectAll(
       _.map(_.get(this.props.viewer, "users.edges", []), "node.id")
     );
@@ -257,7 +261,11 @@ class Users extends React.Component {
             <Typography variant="h3" color="inherit">
               <FormattedMessage id="TITLE_USERS" />
             </Typography>
-            <IconButton color="inherit" onClick={this.handleRefreshAction}>
+            <IconButton
+              color="inherit"
+              onClick={this.handleRefreshAction}
+              disabled={!this.props.isSubscribed}
+            >
               <RefreshIcon />
             </IconButton>
           </div>
@@ -267,6 +275,7 @@ class Users extends React.Component {
               color="secondary"
               classes={{ root: this.props.classes.button }}
               onClick={this.handleCreateAction}
+              disabled={!this.props.isSubscribed}
             >
               <FormattedMessage id="USERS_CREATE_BUTTON" />
             </Button>
@@ -276,6 +285,7 @@ class Users extends React.Component {
               disabled={this.props.selected.length === 0}
               classes={{ root: this.props.classes.button }}
               onClick={this.handleEditAction}
+              disabled={!this.props.isSubscribed || !this.props.selected.length}
             >
               <FormattedMessage id="USERS_EDIT_BUTTON" />
             </Button>
@@ -285,6 +295,7 @@ class Users extends React.Component {
               disabled={this.props.selected.length === 0}
               classes={{ root: this.props.classes.button }}
               onClick={this.handleDeleteAction}
+              disabled={!this.props.isSubscribed || !this.props.selected.length}
             >
               <FormattedMessage id="USERS_DELETE_BUTTON" />
             </Button>
@@ -297,6 +308,7 @@ class Users extends React.Component {
               sortBy={this.state.variables.sortBy}
               sortDir={this.state.variables.sortDir}
               onSort={this.handleSort}
+              isDisabled={!this.props.isSubscribed}
             />
 
             <TablePagination
@@ -308,6 +320,9 @@ class Users extends React.Component {
               page={this.state.pageNumber}
               onChangeRowsPerPage={this.handleChangeRowsPerPage}
               onChangePage={this.handleChangePage}
+              nextIconButtonProps={{ disabled: !this.props.isSubscribed }}
+              backIconButtonProps={{ disabled: !this.props.isSubscribed }}
+              SelectProps={{ disabled: !this.props.isSubscribed }}
             />
           </Paper>
 
@@ -315,10 +330,10 @@ class Users extends React.Component {
 
           {this.state.isConfirmOpen && (
             <ConfirmModal
-              title="DELETE_EMPLOYEE_TITLE"
-              text="DELETE_EMPLOYEE_TEXT"
-              cancel="DELETE_EMPLOYEE_CANCEL"
-              submit="DELETE_EMPLOYEE_SUBMIT"
+              title="DELETE_USER_TITLE"
+              text="DELETE_USER_TEXT"
+              cancel="DELETE_USER_CANCEL"
+              submit="DELETE_USER_SUBMIT"
               onCancel={this.handleCancelDelete}
               onSubmit={this.handleConfirmDelete}
             />

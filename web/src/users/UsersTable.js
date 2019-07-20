@@ -9,7 +9,7 @@ import TableRow from "@material-ui/core/TableRow";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import responsiveTable from "../../styles/responsiveTable";
-import UserItem, { styles as rowStyles } from "./UserRowContainer";
+import UserRow, { styles as rowStyles } from "./UserRowContainer";
 
 export const styles = theme => ({
   table: {
@@ -25,6 +25,7 @@ class UsersTable extends React.Component {
     selected: PropTypes.array.isRequired,
     sortBy: PropTypes.string.isRequired,
     sortDir: PropTypes.string.isRequired,
+    isDisabled: PropTypes.bool.isRequired,
     onSetSelected: PropTypes.func.isRequired,
     onSelectAll: PropTypes.func.isRequired,
     onDeselectAll: PropTypes.func.isRequired,
@@ -79,6 +80,7 @@ class UsersTable extends React.Component {
                 indeterminate={!this.isAllSelected() && !this.isAllDeselected()}
                 onChange={() => this.handleToggleAll()}
                 value="on"
+                disabled={this.props.isDisabled}
               />
             </TableCell>
             <TableCell
@@ -90,6 +92,7 @@ class UsersTable extends React.Component {
                 active={this.props.sortBy === "email"}
                 direction={this.props.sortDir}
                 onClick={() => this.handleSort("email")}
+                disabled={this.props.isDisabled}
               >
                 <FormattedMessage id="USERS_EMAIL_COLUMN" />
               </TableSortLabel>
@@ -105,6 +108,7 @@ class UsersTable extends React.Component {
                 active={this.props.sortBy === "isEmailVerified"}
                 direction={this.props.sortDir}
                 onClick={() => this.handleSort("isEmailVerified")}
+                disabled={this.props.isDisabled}
               >
                 <FormattedMessage id="USERS_EMAIL_VERIFIED_COLUMN" />
               </TableSortLabel>
@@ -118,6 +122,7 @@ class UsersTable extends React.Component {
                 active={this.props.sortBy === "name"}
                 direction={this.props.sortDir}
                 onClick={() => this.handleSort("name")}
+                disabled={this.props.isDisabled}
               >
                 <FormattedMessage id="USERS_NAME_COLUMN" />
               </TableSortLabel>
@@ -129,10 +134,11 @@ class UsersTable extends React.Component {
         </TableHead>
         <TableBody>
           {_.map(this.props.users, edge => (
-            <UserItem
+            <UserRow
               key={edge.cursor}
               node={edge.node}
               onToggle={this.handleToggle}
+              isDisabled={this.props.isDisabled}
             />
           ))}
         </TableBody>

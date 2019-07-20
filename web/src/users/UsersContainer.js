@@ -2,12 +2,16 @@ import { connect } from "react-redux";
 import { graphql, createRefetchContainer } from "react-relay";
 import { injectIntl } from "react-intl";
 import { withStyles } from "@material-ui/styles";
-import { appOperations } from "../app/state";
+import { appOperations, appSelectors } from "../app/state";
 import { usersSelectors, usersOperations } from "./state";
 import UsersComponent, { pageSize, sortBy, sortDir, styles } from "./Users";
 
 const mapStateToProps = state => {
   return {
+    isSubscribed: appSelectors.hasActiveSubscription(
+      state,
+      "UsersSubscription"
+    ),
     isEditModalOpen: usersSelectors.isEditModalOpen(state),
     selected: usersSelectors.getSelected(state)
   };

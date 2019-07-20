@@ -1,6 +1,8 @@
+import { connect } from "react-redux";
 import { graphql, createRefetchContainer } from "react-relay";
 import { injectIntl } from "react-intl";
 import { withStyles } from "@material-ui/styles";
+import { appSelectors } from "../../app/state";
 import DeptEmployeesComponent, {
   defaultDept,
   pageSize,
@@ -9,8 +11,19 @@ import DeptEmployeesComponent, {
   styles
 } from "./DeptEmployees";
 
+const mapStateToProps = state => {
+  return {
+    isSubscribed: appSelectors.hasActiveSubscription(
+      state,
+      "DeptEmployeesSubscription"
+    )
+  };
+};
+
 const DeptEmployees = createRefetchContainer(
-  withStyles(styles)(injectIntl(DeptEmployeesComponent)),
+  connect(mapStateToProps)(
+    withStyles(styles)(injectIntl(DeptEmployeesComponent))
+  ),
   {
     viewer: graphql`
       fragment DeptEmployeesContainer_viewer on Viewer

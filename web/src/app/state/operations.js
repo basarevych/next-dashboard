@@ -17,6 +17,8 @@ export const setStatusCode = actions.setStatusCode;
 export const setConnected = actions.setConnected;
 export const setLocale = actions.setLocale;
 export const setTheme = actions.setTheme;
+export const addActiveSubscription = actions.addActiveSubscription;
+export const removeActiveSubscription = actions.removeActiveSubscription;
 export const showAuthModal = actions.showAuthModal;
 export const hideAuthModal = actions.hideAuthModal;
 
