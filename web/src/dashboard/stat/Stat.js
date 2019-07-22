@@ -56,7 +56,7 @@ class Stat extends React.Component {
     classes: PropTypes.object.isRequired,
     theme: PropTypes.object.isRequired,
     label: PropTypes.string.isRequired,
-    data: PropTypes.object.isRequired,
+    data: PropTypes.object,
     precision: PropTypes.number
   };
 
