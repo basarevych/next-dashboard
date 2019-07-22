@@ -26,83 +26,75 @@ class DashboardRepository {
 
   async init() {
     if (this.promise) return this.promise;
-    this.promise = new Promise(async (resolve, reject) => {
-      try {
-        this.generateProfits();
-        this.generateSales();
-        this.generateClients();
-        this.generateAvgTimes();
+    this.promise = Promise.resolve().then(async () => {
+      this.generateProfits();
+      this.generateSales();
+      this.generateClients();
+      this.generateAvgTimes();
 
-        this.countries = {};
-        for (let country of allCountries) {
-          const id = _.toUpper(country.iso2);
-          this.countries[id] = new this.dashboard.CountryModel({
-            id,
-            name: country.name,
-            callingCode: country.dialCode
-          });
-        }
-
-        const text = await fs.readFile(
-          path.join(__dirname, "..", "..", "data", "uscitiesv1.5.csv"),
-          "utf8"
-        );
-
-        const data = await new Promise((resolve, reject) =>
-          parse(
-            text,
-            {
-              columns: true,
-              skip_empty_lines: true
-            },
-            (error, output) => {
-              if (error) return reject(error);
-              resolve(output);
-            }
-          )
-        );
-
-        this.usStatesById = {};
-        this.usStatesByName = {};
-        this.usCities = {};
-        for (let line of data) {
-          const id = line.id.toString();
-          const stateId = _.toUpper(line.state_id);
-          const stateName = line.state_name;
-          const lat = Number(line.lat);
-          const lng = Number(line.lng);
-          if (isNaN(lat) || isNaN(lng)) {
-            console.log("Garbage data for: " + line.city);
-            continue;
-          }
-          const model = new this.dashboard.USCityModel({
-            id,
-            name: line.city,
-            stateId,
-            stateName,
-            lat,
-            lng,
-            population: Number(line.population)
-          });
-          this.usCities[id] = model;
-          if (!this.usStatesById[stateId]) this.usStatesById[stateId] = [];
-          this.usStatesById[stateId].push(model);
-          if (!this.usStatesByName[stateName])
-            this.usStatesByName[stateName] = [];
-          this.usStatesByName[stateName].push(model);
-        }
-
-        for (let state of _.keys(this.usStatesById))
-          this.usStatesById[state].sort((a, b) => b.population - a.population);
-        for (let state of _.keys(this.usStatesByName))
-          this.usStatesByName[state].sort(
-            (a, b) => b.population - a.population
-          );
-
-        resolve();
-      } catch (error) {
-        reject(error);
+      this.countries = {};
+      for (let country of allCountries) {
+        const id = _.toUpper(country.iso2);
+        this.countries[id] = new this.dashboard.CountryModel({
+          id,
+          name: country.name,
+          callingCode: country.dialCode
+        });
       }
+
+      const text = await fs.readFile(
+        path.join(__dirname, "..", "..", "data", "uscitiesv1.5.csv"),
+        "utf8"
+      );
+
+      const data = await new Promise((resolve, reject) =>
+        parse(
+          text,
+          {
+            columns: true,
+            skip_empty_lines: true
+          },
+          (error, output) => {
+            if (error) return reject(error);
+            resolve(output);
+          }
+        )
+      );
+
+      this.usStatesById = {};
+      this.usStatesByName = {};
+      this.usCities = {};
+      for (let line of data) {
+        const id = line.id.toString();
+        const stateId = _.toUpper(line.state_id);
+        const stateName = line.state_name;
+        const lat = Number(line.lat);
+        const lng = Number(line.lng);
+        if (isNaN(lat) || isNaN(lng)) {
+          console.log("Garbage data for: " + line.city);
+          continue;
+        }
+        const model = new this.dashboard.USCityModel({
+          id,
+          name: line.city,
+          stateId,
+          stateName,
+          lat,
+          lng,
+          population: Number(line.population)
+        });
+        this.usCities[id] = model;
+        if (!this.usStatesById[stateId]) this.usStatesById[stateId] = [];
+        this.usStatesById[stateId].push(model);
+        if (!this.usStatesByName[stateName])
+          this.usStatesByName[stateName] = [];
+        this.usStatesByName[stateName].push(model);
+      }
+
+      for (let state of _.keys(this.usStatesById))
+        this.usStatesById[state].sort((a, b) => b.population - a.population);
+      for (let state of _.keys(this.usStatesByName))
+        this.usStatesByName[state].sort((a, b) => b.population - a.population);
     });
     return this.promise;
   }

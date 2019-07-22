@@ -79,13 +79,12 @@ class Fetcher {
 
   async refreshTokens() {
     if (this.refreshingPromise) return this.refreshingPromise;
-    this.refreshingPromise = new Promise(async resolve => {
+    this.refreshingPromise = Promise.resolve().then(async () => {
       const done = (accessToken, refreshToken) => {
         setTimeout(() =>
           this.setTokens(accessToken, refreshToken).catch(console.error)
         );
         this.refreshingPromise = null;
-        resolve();
       };
 
       for (;;) {

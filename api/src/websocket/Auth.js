@@ -23,15 +23,7 @@ class Auth {
 
   async init() {
     if (this.promise) return this.promise;
-    this.promise = new Promise(async (resolve, reject) => {
-      try {
-        await this.ws.init();
-        await this.cache.init();
-        resolve();
-      } catch (error) {
-        reject(error);
-      }
-    });
+    this.promise = Promise.all([this.ws.init(), this.cache.init()]);
     return this.promise;
   }
 

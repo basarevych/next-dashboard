@@ -27,7 +27,7 @@ class AvatarsRoute {
   async init() {
     if (this.promise) return this.promise;
 
-    this.promise = new Promise(async resolve => {
+    this.promise = Promise.resolve().then(async () => {
       this.router.get("/avatars/:id", this.getAvatar.bind(this));
 
       try {
@@ -75,8 +75,6 @@ class AvatarsRoute {
       } catch (error) {
         console.log(`> Random avatars service: ${error.message}`);
       }
-
-      resolve();
     });
 
     return this.promise;
@@ -139,8 +137,8 @@ class AvatarsRoute {
   async download(id) {
     if (this.avatarPromises[id]) return this.avatarPromises[id];
 
-    this.avatarPromises[id] = new Promise(async (resolve, reject) => {
-      try {
+    this.avatarPromises[id] = Promise.resolve()
+      .then(async () => {
         const match = /^x(\d)$/.exec(id);
         const data = match
           ? await this.downloadRandom(match[1])
@@ -158,16 +156,21 @@ class AvatarsRoute {
           ]);
           await this.cache.setAvatar(id, small, large);
           this.avatarPromises[id] = null;
-          return resolve({ small, large });
+          return { small, large };
         }
 
-        this.avatarPromises[id] = null;
-        resolve(null);
-      } catch (error) {
-        this.avatarPromises[id] = null;
-        reject(error);
-      }
-    });
+        return null;
+      })
+      .then(
+        result => {
+          this.avatarPromises[id] = null;
+          return result;
+        },
+        error => {
+          this.avatarPromises[id] = null;
+          throw error;
+        }
+      );
 
     return this.avatarPromises[id];
   }

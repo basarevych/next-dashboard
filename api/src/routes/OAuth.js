@@ -66,14 +66,17 @@ class OAuthRoute {
       if (token) {
         const { type, user, client } = (await this.auth.useToken(token)) || {};
         if (type === "oneTime") {
+          /* eslint-disable require-atomic-updates */
           req.session.userId = user.id;
           req.session.clientId = client.id;
+          /* eslint-enable require-atomic-updates */
         }
       } else {
         req.session.userId = null;
         req.session.clientId = null;
       }
 
+      // eslint-disable-next-line require-atomic-updates
       req.session.redirect = req.query.redirect || "";
 
       next();

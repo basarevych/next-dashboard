@@ -27,8 +27,8 @@ class Database {
   async init() {
     if (this.promise) return this.promise;
 
-    this.promise = new Promise(async (resolve, reject) => {
-      try {
+    this.promise = Promise.resolve()
+      .then(async () => {
         const UserClient = this.di.get("model.user.client");
         this.UserClientSchema = UserClient.schema;
         this.UserClientModel = UserClient.model;
@@ -45,65 +45,65 @@ class Database {
         this.EmployeeSchema = Employee.schema;
         this.EmployeeModel = Employee.model;
 
-        this.mongoose.connect(
-          this.config.mongoUrl,
-          {
-            useNewUrlParser: true
-          },
-          error => {
-            if (error) return reject(error);
-            if (process.env.NODE_ENV !== "test")
-              console.log("> MongoDB is online");
-            resolve();
-          }
-        );
-      } catch (error) {
-        reject(error);
-      }
-    }).then(async () => {
-      if (this.config.rootLogin && this.config.rootPassword) {
-        let user = await this.UserModel.findOne({
-          email: this.config.rootLogin
-        }); // eslint-disable-line lodash/prefer-lodash-method
-        let msg;
-        if (user) {
-          user.email = this.config.rootLogin;
-          user.password = await this.di
-            .get("auth")
-            .encryptPassword(this.config.rootPassword);
-          user.roles = [constants.roles.ADMIN];
-          msg = "> Admin user updated";
-        } else {
-          user = new this.UserModel({
-            name: "Charlie Root",
-            email: this.config.rootLogin,
-            password: await this.di
-              .get("auth")
-              .encryptPassword(this.config.rootPassword),
-            roles: [constants.roles.ADMIN]
-          });
-          msg = "> Admin user created";
-        }
-        await user.validate();
-        await user.save();
-        console.log(msg);
-      }
-
-      // eslint-disable-next-line lodash/prefer-lodash-method
-      let count = await this.EmployeeModel.countDocuments();
-      if (!count) {
-        let employees = [];
-        let usedNames = [];
-        for (let i = 0; i < 100 * _.keys(constants.depts).length; i++) {
-          employees.push(
-            new this.EmployeeModel(this.fake.createRandomEmployee(usedNames))
+        return new Promise((resolve, reject) => {
+          this.mongoose.connect(
+            this.config.mongoUrl,
+            {
+              useNewUrlParser: true
+            },
+            error => {
+              if (error) return reject(error);
+              if (process.env.NODE_ENV !== "test")
+                console.log("> MongoDB is online");
+              resolve();
+            }
           );
+        });
+      })
+      .then(async () => {
+        if (this.config.rootLogin && this.config.rootPassword) {
+          let user = await this.UserModel.findOne({
+            email: this.config.rootLogin
+          }); // eslint-disable-line lodash/prefer-lodash-method
+          let msg;
+          if (user) {
+            user.email = this.config.rootLogin;
+            user.password = await this.di
+              .get("auth")
+              .encryptPassword(this.config.rootPassword);
+            user.roles = [constants.roles.ADMIN];
+            msg = "> Admin user updated";
+          } else {
+            user = new this.UserModel({
+              name: "Charlie Root",
+              email: this.config.rootLogin,
+              password: await this.di
+                .get("auth")
+                .encryptPassword(this.config.rootPassword),
+              roles: [constants.roles.ADMIN]
+            });
+            msg = "> Admin user created";
+          }
+          await user.validate();
+          await user.save();
+          console.log(msg);
         }
-        _.shuffle(employees);
-        for (let employee of employees) await employee.save();
-        console.log("> Employees created");
-      }
-    });
+
+        // eslint-disable-next-line lodash/prefer-lodash-method
+        let count = await this.EmployeeModel.countDocuments();
+        if (!count) {
+          let employees = [];
+          let usedNames = [];
+          for (let i = 0; i < 100 * _.keys(constants.depts).length; i++) {
+            employees.push(
+              new this.EmployeeModel(this.fake.createRandomEmployee(usedNames))
+            );
+          }
+          _.shuffle(employees);
+          for (let employee of employees) await employee.save();
+          console.log("> Employees created");
+        }
+      });
 
     return this.promise;
   }

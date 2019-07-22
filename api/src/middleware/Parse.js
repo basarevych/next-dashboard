@@ -37,9 +37,11 @@ class Parse {
     //    payload - token payload when token is valid
 
     if (token) {
+      /* eslint-disable require-atomic-updates */
       req.token = await this.auth.useToken(token);
       if (req.token && !_.includes(["access", "oneTime"], req.token.type))
         req.token = false;
+      /* eslint-enable require-atomic-updates */
     }
 
     next();

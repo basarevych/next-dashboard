@@ -71,98 +71,92 @@ class GraphQL {
   async init() {
     if (this.promise) return this.promise;
 
-    this.promise = new Promise(async (resolve, reject) => {
-      try {
-        this.auth.init();
-        this.users.init();
-        this.employees.init();
-        this.dashboard.init();
+    this.promise = Promise.resolve().then(async () => {
+      this.auth.init();
+      this.users.init();
+      this.employees.init();
+      this.dashboard.init();
 
-        this.Viewer = new GraphQLObjectType({
-          name: "Viewer",
-          fields: _.merge(
-            this.auth.query,
-            this.users.query,
-            this.employees.query,
-            this.dashboard.query,
-            { node: this.nodeDefinitions.nodeField }
-          )
-        });
+      this.Viewer = new GraphQLObjectType({
+        name: "Viewer",
+        fields: _.merge(
+          this.auth.query,
+          this.users.query,
+          this.employees.query,
+          this.dashboard.query,
+          { node: this.nodeDefinitions.nodeField }
+        )
+      });
 
-        this.Query = new GraphQLObjectType({
-          name: "Query",
-          fields: {
-            viewer: {
-              type: this.Viewer,
-              resolve: _.constant({})
-            },
-            node: this.nodeDefinitions.nodeField
-          }
-        });
-
-        this.Mutation = new GraphQLObjectType({
-          name: "Mutation",
-          fields: _.merge(
-            {},
-            this.auth.mutation,
-            this.users.mutation,
-            this.employees.mutation,
-            this.dashboard.mutation
-          )
-        });
-
-        this.Subscription = new GraphQLObjectType({
-          name: "Subscription",
-          fields: _.merge(
-            {},
-            this.auth.subscription,
-            this.users.subscription,
-            this.employees.subscription,
-            this.dashboard.subscription
-          )
-        });
-
-        this.schema = new GraphQLSchema({
-          query: this.Query,
-          mutation: this.Mutation,
-          subscription: this.Subscription
-        });
-
-        if (this.app.server) {
-          await this.ws.init();
-          this.subscriptions = SubscriptionServer.create(
-            {
-              schema: this.schema,
-              execute,
-              subscribe,
-              onConnect: async connectionParams => {
-                // context.token equals to:
-                //    undefined - when no token was provided (anonymous),
-                //    payload - token payload when token is valid
-
-                // if provided token is invalid reject the connection
-
-                if (connectionParams.token) {
-                  let token = await this.authService.useToken(
-                    connectionParams.token
-                  );
-                  if (token === false) return false;
-                  return { token };
-                }
-
-                return true;
-              }
-            },
-            {
-              server: this.app.server,
-              path: constants.graphqlBase
-            }
-          );
+      this.Query = new GraphQLObjectType({
+        name: "Query",
+        fields: {
+          viewer: {
+            type: this.Viewer,
+            resolve: _.constant({})
+          },
+          node: this.nodeDefinitions.nodeField
         }
+      });
 
-        resolve();
-      } catch (error) {
-        reject(error);
+      this.Mutation = new GraphQLObjectType({
+        name: "Mutation",
+        fields: _.merge(
+          {},
+          this.auth.mutation,
+          this.users.mutation,
+          this.employees.mutation,
+          this.dashboard.mutation
+        )
+      });
+
+      this.Subscription = new GraphQLObjectType({
+        name: "Subscription",
+        fields: _.merge(
+          {},
+          this.auth.subscription,
+          this.users.subscription,
+          this.employees.subscription,
+          this.dashboard.subscription
+        )
+      });
+
+      this.schema = new GraphQLSchema({
+        query: this.Query,
+        mutation: this.Mutation,
+        subscription: this.Subscription
+      });
+
+      if (this.app.server) {
+        await this.ws.init();
+        this.subscriptions = SubscriptionServer.create(
+          {
+            schema: this.schema,
+            execute,
+            subscribe,
+            onConnect: async connectionParams => {
+              // context.token equals to:
+              //    undefined - when no token was provided (anonymous),
+              //    payload - token payload when token is valid
+
+              // if provided token is invalid reject the connection
+
+              if (connectionParams.token) {
+                let token = await this.authService.useToken(
+                  connectionParams.token
+                );
+                if (token === false) return false;
+                return { token };
+              }
+
+              return true;
+            }
+          },
+          {
+            server: this.app.server,
+            path: constants.graphqlBase
+          }
+        );
       }
     });
     return this.promise;

@@ -178,8 +178,10 @@ class Auth {
                 await user.validate();
                 await user.save();
 
+                /* eslint-disable require-atomic-updates */
                 req.user = user;
                 req.client = client;
+                /* eslint-enable require-atomic-updates */
 
                 next(null, user);
               } catch (error) {

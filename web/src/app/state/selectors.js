@@ -24,6 +24,7 @@ export const getActiveSubscriptions = state =>
   state.getIn(["app", "activeSubscriptions"]);
 
 export const hasActiveSubscription = (state, name) =>
+  // eslint-disable-next-line lodash/prefer-lodash-method
   state.getIn(["app", "activeSubscriptions"]).includes(name);
 
 export const isAuthModalOpen = state => state.getIn(["app", "isAuthModalOpen"]);

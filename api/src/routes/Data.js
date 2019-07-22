@@ -17,22 +17,16 @@ class DataRoute {
 
   async init() {
     if (this.promise) return this.promise;
-    this.promise = new Promise(async (resolve, reject) => {
-      try {
-        this.router.get("/data/:name", this.getData.bind(this));
+    this.promise = Promise.resolve().then(async () => {
+      this.router.get("/data/:name", this.getData.bind(this));
 
-        await this.dashboardRepo.init();
+      await this.dashboardRepo.init();
 
-        this.usCities = [];
-        for (let arr of _.values(this.dashboardRepo.usStatesById))
-          this.usCities = this.usCities.concat(arr);
+      this.usCities = [];
+      for (let arr of _.values(this.dashboardRepo.usStatesById))
+        this.usCities = this.usCities.concat(arr);
 
-        this.usCitiesJson = JSON.stringify(this.usCities);
-
-        resolve();
-      } catch (error) {
-        reject(error);
-      }
+      this.usCitiesJson = JSON.stringify(this.usCities);
     });
     return this.promise;
   }
