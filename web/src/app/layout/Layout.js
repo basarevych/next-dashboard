@@ -134,6 +134,15 @@ class Layout extends React.Component {
     this.checkAuth();
   }
 
+  componentDidUpdate(prevProps) {
+    if (
+      _.get(prevProps.viewer, "me.userId") !==
+      _.get(this.props.viewer, "me.userId")
+    ) {
+      this.checkAuth();
+    }
+  }
+
   componentWillUnmount() {
     window.removeEventListener(
       constants.events.AUTH_UPDATED,
