@@ -173,17 +173,19 @@ class Layout extends React.Component {
   }
 
   checkAuth() {
+    if (!this.props.viewer) return;
+
     const page = constants.pages[this.props.page];
     const isAllowed = page && page.isAllowed;
     if (
       this.props.statusCode === 200 &&
-      isAllowed &&
+      _.isFunction(isAllowed) &&
       !isAllowed(this.getUser())
     ) {
       this.props.onSetStatusCode(this.isAuthenticated() ? 403 : 401);
     } else if (
       _.includes([401, 403], this.props.statusCode) &&
-      (!isAllowed || isAllowed(this.getUser()))
+      (!_.isFunction(isAllowed) || isAllowed(this.getUser()))
     ) {
       this.props.onSetStatusCode(200);
     }

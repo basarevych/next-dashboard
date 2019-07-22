@@ -1,7 +1,6 @@
 "use strict";
 
 require("regenerator-runtime/runtime");
-require("isomorphic-unfetch");
 if (!global._) global._ = require("lodash");
 
 const Injectt = require("injectt");

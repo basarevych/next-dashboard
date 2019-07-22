@@ -1,6 +1,5 @@
 "use strict";
 
-require("isomorphic-unfetch");
 if (!global._) global._ = require("lodash");
 
 const nextApp = require("next");

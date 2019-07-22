@@ -2,7 +2,6 @@
 
 require("core-js/stable");
 require("regenerator-runtime/runtime");
-require("isomorphic-unfetch");
 
 const WebFont = require("webfontloader");
 const locales = require("../../../common/locales").locales;

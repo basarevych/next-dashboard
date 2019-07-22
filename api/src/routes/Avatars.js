@@ -1,6 +1,7 @@
 const debug = require("debug")("app:avatars");
 const concat = require("concat-stream");
 const sharp = require("sharp");
+const fetch = require("isomorphic-unfetch");
 const Router = require("express").Router;
 
 class AvatarsRoute {
