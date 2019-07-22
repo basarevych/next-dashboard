@@ -32,8 +32,8 @@ export const query = graphql`
 `;
 
 class TablesPage extends React.Component {
-  static async getInitialProps({ fetchQuery }) {
-    await fetchQuery(query, defaultVariables);
+  static async getInitialProps({ isSSR, isExported, fetchQuery }) {
+    if (isSSR && !isExported) await fetchQuery(query, defaultVariables);
   }
 
   render() {

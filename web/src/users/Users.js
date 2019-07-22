@@ -282,7 +282,6 @@ class Users extends React.Component {
             <Button
               variant="contained"
               color="primary"
-              disabled={this.props.selected.length === 0}
               classes={{ root: this.props.classes.button }}
               onClick={this.handleEditAction}
               disabled={!this.props.isSubscribed || !this.props.selected.length}
@@ -292,7 +291,6 @@ class Users extends React.Component {
             <Button
               variant="contained"
               color="primary"
-              disabled={this.props.selected.length === 0}
               classes={{ root: this.props.classes.button }}
               onClick={this.handleDeleteAction}
               disabled={!this.props.isSubscribed || !this.props.selected.length}

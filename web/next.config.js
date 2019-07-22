@@ -10,6 +10,7 @@ const RelayCompilerWebpackPlugin = require("relay-compiler-webpack-plugin");
 const withCSS = require("@zeit/next-css");
 const withBundleAnalyzer = require("@zeit/next-bundle-analyzer");
 const withPlugins = require("next-compose-plugins");
+const { PHASE_EXPORT } = require("next-server/constants");
 const constants = require("./common/constants");
 const l10n = require("./common/locales");
 const pkg = require("./package.json");
@@ -38,7 +39,7 @@ const plugins = [
   [withCSS, { cssModules: false }]
 ];
 
-module.exports = withPlugins([...plugins], {
+module.exports = withPlugins(plugins, {
   webpack(config, { dev, isServer }) {
     config.output.publicPath = "/_next/";
     if (!dev) config.devtool = false; // disable soucemaps
@@ -62,17 +63,17 @@ module.exports = withPlugins([...plugins], {
     });
 
     /*
-    // WebAssemmbly
-    config.module.rules.push({
-      test: /\.wasm$/,
-      type: "javascript/auto",
-      loader: "file-loader",
-      options: {
-        outputPath: `static/`,
-        publicPath: `${config.output.publicPath}/static/`
-      }
-    });
-    */
+        // WebAssemmbly
+        config.module.rules.push({
+          test: /\.wasm$/,
+          type: "javascript/auto",
+          loader: "file-loader",
+          options: {
+            outputPath: `static/`,
+            publicPath: `${config.output.publicPath}/static/`
+          }
+        });
+      */
 
     config.plugins.push(
       new ProvidePlugin({
@@ -166,10 +167,8 @@ module.exports = withPlugins([...plugins], {
     const App = require("./ssr-server/App");
     const app = new App();
     const map = {};
-    for (let path of _.keys(constants.pages)) {
+    for (let path of _.keys(constants.pages))
       map[path] = await app.analyzeRequest({ path });
-      map[path].query.isStaticSite = true; // appears when building with yarn export
-    }
     return map;
   }
 });

@@ -103,6 +103,7 @@
     "build": "node ./bin/prepare-build && env NODE_ENV=production TMPDIR=$PWD/.tmp next build",
     "export": "env NODE_ENV=production TMPDIR=$PWD/.tmp next export && node ./bin/finish-export",
     "dev": "node ./bin/prepare-build && env NODE_ENV=development DEBUG='app:*' node ./bin/www",
-    "start": "env NODE_ENV=production node ./bin/www"
+    "start": "env NODE_ENV=production node ./bin/www",
+    "serve": "cd ./out && serve -l 3000"
   }
 }

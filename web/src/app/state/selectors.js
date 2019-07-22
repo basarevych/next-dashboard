@@ -2,8 +2,6 @@ export const getCreated = state => state.getIn(["app", "created"]);
 
 export const getStatusCode = state => state.getIn(["app", "statusCode"]);
 
-export const isStaticSite = state => state.getIn(["app", "isStaticSite"]);
-
 export const getAppServer = state => state.getIn(["app", "appServer"]);
 
 export const getApiServer = state => state.getIn(["app", "apiServer"]);

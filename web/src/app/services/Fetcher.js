@@ -1,3 +1,4 @@
+import fetch from "isomorphic-unfetch";
 import { SubscriptionClient } from "subscriptions-transport-ws";
 import constants from "../../../common/constants";
 import { appSelectors, appOperations } from "../state";
@@ -56,7 +57,7 @@ class Fetcher {
       this.storage.set("accessToken", accessToken);
       this.storage.set("refreshToken", refreshToken);
 
-      if (!appSelectors.isStaticSite(this.getState())) {
+      if (!process.env.STATIC_SITE) {
         // Report the tokens to the SSR server
         try {
           await this.fetch({

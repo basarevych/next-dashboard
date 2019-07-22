@@ -21,10 +21,15 @@ class VerifyEmailPage extends React.Component {
     token: PropTypes.string
   };
 
-  static async getInitialProps({ query: urlQuery, fetchQuery }) {
-    await fetchQuery(query, defaultVariables);
+  static async getInitialProps({
+    isSSR,
+    isExported,
+    query: requestQuery,
+    fetchQuery
+  }) {
+    if (isSSR && !isExported) await fetchQuery(query, defaultVariables);
     return {
-      token: urlQuery.token
+      token: requestQuery.token
     };
   }
 

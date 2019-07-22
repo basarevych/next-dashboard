@@ -25,7 +25,6 @@ export const hideAuthModal = actions.hideAuthModal;
 // called in App.getInitialProps()
 export const create = ({
   statusCode,
-  isStaticSite,
   locale,
   theme,
   appServer,
@@ -36,7 +35,6 @@ export const create = ({
   return dispatch(
     actions.create({
       statusCode,
-      isStaticSite,
       locale,
       theme,
       appServer,

@@ -8,7 +8,6 @@ import themes from "../../../styles/themes";
 Map({
   created: Number, // timestamp
   statusCode: Number, // current HTTP status code
-  isStaticSite: Boolean,
   appServer: String,
   apiServer: String,
   mapboxToken: null,
@@ -39,15 +38,6 @@ const statusCodeReducer = (state = 200, action) => {
       break;
     case types.SET_STATUS_CODE:
       if (_.isFinite(action.code) && action.code >= 200) return action.code;
-      break;
-  }
-  return state;
-};
-
-const isStaticSiteReducer = (state = false, action) => {
-  switch (action.type) {
-    case types.CREATE:
-      if (!_.isUndefined(action.isStaticSite)) return action.isStaticSite;
       break;
   }
   return state;
@@ -159,7 +149,6 @@ const activeSubscriptionsReducer = (state = Set(), action) => {
 const reducer = combineReducers({
   created: createdReducer,
   statusCode: statusCodeReducer,
-  isStaticSite: isStaticSiteReducer,
   appServer: appServerReducer,
   apiServer: apiServerReducer,
   wsServer: wsServerReducer,

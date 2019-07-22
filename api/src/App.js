@@ -102,7 +102,7 @@ class App {
     this.di.registerInstance(this.config, "config");
   }
 
-  checkConfig() {
+  async init({ mainServer }) {
     if (!this.config.apiAppServer) {
       console.error("Please define env variable API_APP_SERVER");
       process.exit(1);
@@ -117,15 +117,11 @@ class App {
       );
       process.exit(1);
     }
-  }
-
-  async init({ mainServer }) {
-    this.checkConfig();
 
     // HTTP server
     this.server = mainServer;
 
-    // Retrieve all the singletons (thus instantiating them) and run
+    // Retrieve all the singletons (instantiating them) and run
     // their .init() method
     await Promise.all(
       _.invokeMap(Array.from(this.di.singletons().values()), "init")

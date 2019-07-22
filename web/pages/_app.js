@@ -51,8 +51,15 @@ class MyApp extends App {
   static async getInitialProps({ Component, ctx }) {
     const { req, res, err, query } = ctx;
 
+    // Initial status code
     let statusCode = (err && err.statusCode) || (res && res.statusCode) || 200;
     if (statusCode === 200 && err) statusCode = 500;
+
+    // Detect SSR phase
+    const isSSR = !!req && !!res;
+
+    // Detect static site mode
+    const isExported = !!req && (!res || _.isUndefined(res.status));
 
     // Dependency Injection Container
     // Available in Thunk as the third argument, i.e.:
@@ -64,7 +71,6 @@ class MyApp extends App {
     await store.dispatch(
       appOperations.create({
         statusCode,
-        isStaticSite: !!(query && query.isStaticSite),
         locale: query && query.locale,
         theme: query && query.theme,
         appServer: query && query.appServer,
@@ -77,15 +83,21 @@ class MyApp extends App {
     // Relay Environment
     const environment = getRelayEnvironment(di);
 
-    if (req) {
+    if (isSSR && !isExported) {
       // Let Fetcher know we are doing SSR right now
       di.get("fetcher").setReqRes(req, res);
     }
+
+    /* eslint-disable require-atomic-updates */
 
     ctx.di = di;
     ctx.store = store;
     ctx.fetchQuery = fetchQuery(environment);
     ctx.theme = appSelectors.getTheme(store.getState());
+    ctx.isSSR = isSSR;
+    ctx.isExported = isExported;
+
+    /* eslint-enable require-atomic-updates */
 
     let pageProps = {};
     if (Component.getInitialProps) {
@@ -99,8 +111,14 @@ class MyApp extends App {
     }
 
     statusCode = appSelectors.getStatusCode(store.getState());
-    if (res && res.statusCode !== statusCode && statusCode !== 200)
+    if (
+      isSSR &&
+      !isExported &&
+      statusCode !== 200 &&
+      res.statusCode !== statusCode
+    ) {
       res.status(statusCode);
+    }
 
     return {
       pageProps,

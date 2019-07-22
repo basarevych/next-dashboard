@@ -15,8 +15,8 @@ export const query = graphql`
 `;
 
 class ErrorPage extends React.Component {
-  static async getInitialProps({ store, fetchQuery }) {
-    await fetchQuery(query, defaultVariables);
+  static async getInitialProps({ isSSR, isExported, store, fetchQuery }) {
+    if (isSSR && !isExported) await fetchQuery(query, defaultVariables);
     if (appSelectors.getStatusCode(store.getState()) === 200)
       await store.dispatch(appOperations.setStatusCode({ code: 500 }));
   }

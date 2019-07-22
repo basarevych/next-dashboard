@@ -87,8 +87,8 @@ class App {
       console.error("Please define env variable APP_WS_SERVER");
       process.exit(1);
     }
-    if (!this.config.sessionSecret) {
-      console.error("Please define env variable SESSION_SECRET");
+    if (!this.config.mapboxToken) {
+      console.error("Please define env variable MAPBOX_TOKEN");
       process.exit(1);
     }
     if (!_.isArray(this.config.appOrigins)) {
@@ -100,6 +100,10 @@ class App {
 
   async init({ mainServer }) {
     this.checkConfig();
+    if (!this.config.sessionSecret) {
+      console.error("Please define env variable SESSION_SECRET");
+      process.exit(1);
+    }
 
     // HTTP server
     this.server = mainServer;
@@ -138,6 +142,7 @@ class App {
    */
   async analyzeRequest({ path, query, locale, theme } = {}) {
     this.checkConfig();
+
     return _.assign({}, constants.pages[path] || {}, {
       query: _.assign({}, query || {}, {
         appServer: this.config.appOrigins[0],

@@ -8,10 +8,10 @@ class ReturnPage extends React.Component {
     onReturn: PropTypes.func.isRequired
   };
 
-  static async getInitialProps({ query: urlQuery }) {
+  static async getInitialProps({ query: requestQuery }) {
     return {
-      token: urlQuery.token,
-      redirect: urlQuery.redirect
+      token: requestQuery.token,
+      redirect: requestQuery.redirect
     };
   }
 

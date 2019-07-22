@@ -23,6 +23,21 @@ yarn build
 yarn start
 ```
 
+### Run Static Mode Production
+
+```
+cd next-dashboard/common
+yarn install --prod
+
+cd ../web
+yarn install --prod
+yarn relay
+yarn build
+yarn export
+```
+
+Point your HTTP server to **/out** subdirectory or just do **yarn serve**
+
 ### Run Development
 
 ```

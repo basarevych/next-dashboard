@@ -23,10 +23,15 @@ class AuthErrorPage extends React.Component {
     service: PropTypes.string
   };
 
-  static async getInitialProps({ query: urlQuery, fetchQuery }) {
-    await fetchQuery(query, defaultVariables);
+  static async getInitialProps({
+    isSSR,
+    isExported,
+    query: requestQuery,
+    fetchQuery
+  }) {
+    if (isSSR && !isExported) await fetchQuery(query, defaultVariables);
     return {
-      type: urlQuery.type
+      type: requestQuery.type
     };
   }
 
