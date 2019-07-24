@@ -46,13 +46,14 @@ export const create = ({
   );
 };
 
-// called in App.costructor() client-side
+// called in App.componentDidMount() client-side
 export const start = () => {
   return async (dispatch, getState, di) => {
     di.singletons(); // instantiate
 
     // Refresh tokens client side
-    // The first AUTH_UPDATE event will activate app and subscriptions websockets
+    // This will fire IDENTITY_CHANGED event which will
+    // activate app and subscriptions websockets
     di.get("fetcher")
       .refreshTokens()
       .catch(console.error);
@@ -178,7 +179,7 @@ export const updateProfile = ({ email, name, password }) => async (
     password
   });
   if (_.get(data, "data.updateProfile.success", false)) {
-    window.dispatchEvent(new CustomEvent(constants.events.AUTH_REFRESHED));
+    window.dispatchEvent(new CustomEvent(constants.events.PROFILE_CHANGED));
     return true;
   }
   return getFormErrors(data);
@@ -247,7 +248,7 @@ export const unlinkProvider = ({ provider }) => async (
 ) => {
   let data = await UnlinkProviderMutation(di, { provider });
   if (_.get(data, "data.unlinkProvider.success", false)) {
-    window.dispatchEvent(new CustomEvent(constants.events.AUTH_REFRESHED));
+    window.dispatchEvent(new CustomEvent(constants.events.PROFILE_CHANGED));
     return true;
   }
   return getFormErrors(data);

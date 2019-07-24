@@ -119,7 +119,7 @@ class Users extends React.Component {
 
   componentDidMount() {
     window.addEventListener(
-      constants.events.AUTH_UPDATED,
+      constants.events.IDENTITY_CHANGED,
       this.handleRefreshAction
     );
     setTimeout(() => this.handleRefreshAction());
@@ -150,7 +150,7 @@ class Users extends React.Component {
 
   componentWillUnmount() {
     window.addEventListener(
-      constants.events.AUTH_UPDATED,
+      constants.events.IDENTITY_CHANGED,
       this.handleRefreshAction
     );
   }

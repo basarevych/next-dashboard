@@ -126,11 +126,11 @@ class Layout extends React.Component {
 
   componentDidMount() {
     window.addEventListener(
-      constants.events.AUTH_UPDATED,
+      constants.events.IDENTITY_CHANGED,
       this.handleAuthMessage
     );
     window.addEventListener(
-      constants.events.AUTH_REFRESHED,
+      constants.events.PROFILE_CHANGED,
       this.handleAuthMessage
     );
     window.addEventListener(
@@ -143,11 +143,11 @@ class Layout extends React.Component {
 
   componentWillUnmount() {
     window.removeEventListener(
-      constants.events.AUTH_UPDATED,
+      constants.events.IDENTITY_CHANGED,
       this.handleAuthMessage
     );
     window.removeEventListener(
-      constants.events.AUTH_REFRESHED,
+      constants.events.PROFILE_CHANGED,
       this.handleAuthMessage
     );
     window.removeEventListener(

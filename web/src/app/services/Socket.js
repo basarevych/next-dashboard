@@ -11,7 +11,7 @@ class Socket {
 
     if (process.browser) {
       window.addEventListener(
-        constants.events.AUTH_UPDATED,
+        constants.events.IDENTITY_CHANGED,
         this.reconnect.bind(this)
       );
     }

@@ -106,10 +106,10 @@ module.exports = {
     FONTS_LOADED: "FONTS_LOADED",
 
     // user identity might have changed
-    AUTH_UPDATED: "AUTH_UPDATED",
+    IDENTITY_CHANGED: "IDENTITY_CHANGED",
 
     // user info might have changed
-    AUTH_REFRESHED: "AUTH_REFRESHED",
+    PROFILE_CHANGED: "PROFILE_CHANGED",
 
     // service worker wants to update
     UPDATE_READY: "UPDATE_READY",

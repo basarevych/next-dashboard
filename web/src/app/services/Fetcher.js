@@ -11,8 +11,8 @@ class Fetcher {
     this.storage = storage;
 
     if (process.browser) {
-      window.addEventListener(constants.events.AUTH_UPDATED, () => {
-        this.isAuthUpdated = true;
+      window.addEventListener(constants.events.IDENTITY_CHANGED, () => {
+        this.isIdentityChanged = true;
       });
     }
   }
@@ -73,7 +73,7 @@ class Fetcher {
         }
       }
 
-      window.dispatchEvent(new CustomEvent(constants.events.AUTH_UPDATED));
+      window.dispatchEvent(new CustomEvent(constants.events.IDENTITY_CHANGED));
     }
   }
 
@@ -292,11 +292,14 @@ class Fetcher {
       reconnect(false);
     };
 
-    window.addEventListener(constants.events.AUTH_UPDATED, authUpdated);
+    window.addEventListener(constants.events.IDENTITY_CHANGED, authUpdated);
     dispose = async () => {
       if (isDestroyed) return;
       isDestroyed = true;
-      window.removeEventListener(constants.events.AUTH_UPDATED, authUpdated);
+      window.removeEventListener(
+        constants.events.IDENTITY_CHANGED,
+        authUpdated
+      );
 
       if (observable) {
         // graceful shutdown
@@ -310,7 +313,7 @@ class Fetcher {
         console.log(`[Subscription] ${config.name} disposed`);
     };
 
-    if (this.isAuthUpdated) connect().catch(console.error);
+    if (this.isIdentityChanged) connect().catch(console.error);
 
     return {
       dispose
