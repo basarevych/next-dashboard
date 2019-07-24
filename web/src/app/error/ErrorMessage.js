@@ -80,6 +80,16 @@ class ErrorMessage extends React.Component {
           <div className={this.props.classes.linkWrapper}>
             <div>
               &gt;&nbsp;&nbsp;
+              <a
+                href="javascript:void(0)"
+                className={this.props.classes.link}
+                onClick={() => window.location.reload(true)}
+              >
+                <FormattedMessage id="ERROR_REFRESH_LINK" />
+              </a>
+            </div>
+            <div>
+              &gt;&nbsp;&nbsp;
               <a href="/" className={this.props.classes.link}>
                 <FormattedMessage id="ERROR_GO_HOME_LINK" />
               </a>

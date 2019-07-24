@@ -6,6 +6,7 @@ import AppAuthModalComponent, { styles } from "./AppAuthModal";
 
 const mapStateToProps = state => {
   return {
+    user: appSelectors.getUserJS(state),
     apiServer: appSelectors.getApiServer(state)
   };
 };

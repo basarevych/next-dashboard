@@ -170,5 +170,7 @@ module.exports = withPlugins(plugins, {
     for (let path of _.keys(constants.pages))
       map[path] = await app.analyzeRequest({ path });
     return map;
-  }
+  },
+
+  useFileSystemPublicRoutes: false
 });

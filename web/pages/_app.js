@@ -15,34 +15,33 @@ import DateProvider from "../src/app/providers/DateContainer";
 import ToastProvider from "../src/app/providers/ToastContainer";
 
 if (process.browser) {
+  window.__notify = function(title, content, options = {}) {
+    window.dispatchEvent(
+      new CustomEvent(constants.events.TOAST, {
+        detail: {
+          title,
+          content,
+          ...options
+        }
+      })
+    );
+  };
+
   window.onerror = function(msg, url, line, col, error) {
     let extra = !col ? "" : "\ncolumn: " + col;
     extra += !error ? "" : "\nerror: " + error;
     console.error(
       "Error: " + msg + "\nurl: " + url + "\nline: " + line + extra
     );
-    window.dispatchEvent(
-      new CustomEvent(constants.events.TOAST, {
-        detail: {
-          title: "An Error Occurred",
-          content: msg,
-          autoClose: false
-        }
-      })
-    );
+    window.__notify("An Error Occurred", msg, { autoClose: false });
     return false;
   };
+
   window.onunhandledrejection = function(evt) {
     console.error(evt.reason);
-    window.dispatchEvent(
-      new CustomEvent(constants.events.TOAST, {
-        detail: {
-          title: "An Error Occurred",
-          content: evt.reason.message,
-          autoClose: false
-        }
-      })
-    );
+    window.__notify("An Error Occurred", evt.reason.message, {
+      autoClose: false
+    });
     return false;
   };
 }
@@ -68,17 +67,19 @@ class MyApp extends App {
 
     // Redux Store
     const store = getReduxStore(di);
-    await store.dispatch(
-      appOperations.create({
-        statusCode,
-        locale: query && query.locale,
-        theme: query && query.theme,
-        appServer: query && query.appServer,
-        apiServer: query && query.apiServer,
-        wsServer: query && query.wsServer,
-        mapboxToken: query && query.mapboxToken
-      })
-    );
+    if (!appSelectors.getCreated(store.getState())) {
+      await store.dispatch(
+        appOperations.create({
+          statusCode,
+          locale: query && query.locale,
+          theme: query && query.theme,
+          appServer: query && query.appServer,
+          apiServer: query && query.apiServer,
+          wsServer: query && query.wsServer,
+          mapboxToken: query && query.mapboxToken
+        })
+      );
+    }
 
     // Relay Environment
     const environment = getRelayEnvironment(di);
@@ -89,14 +90,11 @@ class MyApp extends App {
     }
 
     /* eslint-disable require-atomic-updates */
-
     ctx.di = di;
     ctx.store = store;
     ctx.fetchQuery = fetchQuery(environment);
-    ctx.theme = appSelectors.getTheme(store.getState());
     ctx.isSSR = isSSR;
     ctx.isExported = isExported;
-
     /* eslint-enable require-atomic-updates */
 
     let pageProps = {};

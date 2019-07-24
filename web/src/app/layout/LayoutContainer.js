@@ -1,7 +1,6 @@
 import { connect } from "react-redux";
 import { graphql, createRefetchContainer } from "react-relay";
 import { injectIntl } from "react-intl";
-import { withRouter } from "next/router";
 import { withStyles } from "@material-ui/styles";
 import { appSelectors, appOperations } from "../state";
 import LayoutComponent, { styles } from "./Layout";
@@ -20,7 +19,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onSetStatusCode: code => dispatch(appOperations.setStatusCode({ code }))
+    onSetUser: user => dispatch(appOperations.setUser(user))
   };
 };
 
@@ -30,7 +29,7 @@ const Layout = createRefetchContainer(
     mapDispatchToProps,
     null,
     { pure: false }
-  )(withRouter(withStyles(styles)(injectIntl(LayoutComponent)))),
+  )(withStyles(styles)(injectIntl(LayoutComponent))),
   {
     viewer: graphql`
       fragment LayoutContainer_viewer on Viewer {
@@ -39,9 +38,11 @@ const Layout = createRefetchContainer(
           userId
           name
           email
+          isEmailVerified
           roles
           providers {
             name
+            isLinked
           }
         }
       }

@@ -1,4 +1,4 @@
-import { Set } from "immutable";
+import { Set, List } from "immutable";
 import { combineReducers } from "redux-immutable";
 import * as types from "./types";
 import l10n from "../../../common/locales";
@@ -8,6 +8,17 @@ import themes from "../../../styles/themes";
 Map({
   created: Number, // timestamp
   statusCode: Number, // current HTTP status code
+  user: Map({
+    isAuthenticated: Boolean,
+    userId: String,
+    email: String,
+    isEmailVerified: Boolean,
+    name: String,
+    roles: [String],
+    providers: List([
+      Map({ name: String, isLinked: Boolean })
+    ])
+  }),
   appServer: String,
   apiServer: String,
   mapboxToken: null,
@@ -21,7 +32,7 @@ Map({
 })
 */
 
-const createdReducer = (state = Date.now(), action) => {
+const createdReducer = (state = 0, action) => {
   switch (action.type) {
     case types.CREATE:
       if (!_.isUndefined(action.created)) return action.created;
@@ -42,6 +53,108 @@ const statusCodeReducer = (state = 200, action) => {
   }
   return state;
 };
+
+const userProviderNameReducer = (state = "", action) => {
+  switch (action.type) {
+    case types.SET_USER:
+      if (!_.isUndefined(action.name)) return action.name;
+      break;
+  }
+  return state;
+};
+
+const userProviderLinkedReducer = (state = false, action) => {
+  switch (action.type) {
+    case types.SET_USER:
+      if (!_.isUndefined(action.isLinked)) return action.isLinked;
+      break;
+  }
+  return state;
+};
+
+const userProviderReducer = combineReducers({
+  name: userProviderNameReducer,
+  isLinked: userProviderLinkedReducer
+});
+
+const userProvidersReducer = (state = List(), action) => {
+  switch (action.type) {
+    case types.SET_USER:
+      if (!_.isUndefined(action.providers)) {
+        return List(
+          _.map(action.providers, item =>
+            userProviderReducer(undefined, { type: action.type, ...item })
+          )
+        );
+      }
+      break;
+  }
+  return state;
+};
+
+const userAuthenticatedReducer = (state = false, action) => {
+  switch (action.type) {
+    case types.SET_USER:
+      if (!_.isUndefined(action.isAuthenticated)) return action.isAuthenticated;
+      break;
+  }
+  return state;
+};
+
+const userIdReducer = (state = "", action) => {
+  switch (action.type) {
+    case types.SET_USER:
+      if (!_.isUndefined(action.userId)) return action.userId;
+      break;
+  }
+  return state;
+};
+
+const userEmailReducer = (state = "", action) => {
+  switch (action.type) {
+    case types.SET_USER:
+      if (!_.isUndefined(action.email)) return action.email;
+      break;
+  }
+  return state;
+};
+
+const userEmailVerifiedReducer = (state = false, action) => {
+  switch (action.type) {
+    case types.SET_USER:
+      if (!_.isUndefined(action.isEmailVerified)) return action.isEmailVerified;
+      break;
+  }
+  return state;
+};
+
+const userNameReducer = (state = "", action) => {
+  switch (action.type) {
+    case types.SET_USER:
+      if (!_.isUndefined(action.name)) return action.name;
+      break;
+  }
+  return state;
+};
+
+const userRolesReducer = (state = List(), action) => {
+  switch (action.type) {
+    case types.SET_USER:
+      if (!_.isUndefined(action.roles)) return List(action.roles);
+      break;
+  }
+  return state;
+};
+
+const userReducer = combineReducers({
+  isAuthenticated: userAuthenticatedReducer,
+  userId: userIdReducer,
+  email: userEmailReducer,
+  isEmailVerified: userEmailVerifiedReducer,
+  name: userNameReducer,
+  roles: userRolesReducer,
+  providers: userProvidersReducer
+});
 
 const appServerReducer = (state = "", action) => {
   switch (action.type) {
@@ -149,6 +262,7 @@ const activeSubscriptionsReducer = (state = Set(), action) => {
 const reducer = combineReducers({
   created: createdReducer,
   statusCode: statusCodeReducer,
+  user: userReducer,
   appServer: appServerReducer,
   apiServer: apiServerReducer,
   wsServer: wsServerReducer,

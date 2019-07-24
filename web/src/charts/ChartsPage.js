@@ -1,13 +1,12 @@
 import React from "react";
 import { graphql } from "react-relay";
 import { QueryRenderer } from "../app/providers/Relay";
-import ChartsDemo from "./ChartsDemoContainer";
 import Layout from "../app/layout/LayoutContainer";
-import Spinner from "../app/layout/SpinnerContainer";
+import ChartsDemo from "./ChartsDemoContainer";
 
 const defaultVariables = {};
 
-export const query = graphql`
+const query = graphql`
   query ChartsPageQuery {
     viewer {
       ...LayoutContainer_viewer
@@ -28,12 +27,10 @@ class ChartsPage extends React.Component {
         render={({ error, props }) => (
           <Layout
             page="/charts"
-            viewer={props ? props.viewer : null}
             error={error}
-          >
-            {!error && !props && <Spinner />}
-            {!error && props && <ChartsDemo viewer={props.viewer} />}
-          </Layout>
+            viewer={props && props.viewer}
+            render={() => <ChartsDemo viewer={props && props.viewer} />}
+          />
         )}
       />
     );

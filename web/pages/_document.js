@@ -6,7 +6,7 @@ import themes from "../styles/themes";
 
 class MyDocument extends Document {
   render() {
-    const { theme } = this.props;
+    const theme = _.get(this.props, "__NEXT_DATA__.query.theme");
     return (
       <html lang="en" dir="ltr">
         <Head>
@@ -19,7 +19,7 @@ class MyDocument extends Document {
           {/* PWA primary color */}
           <meta
             name="theme-color"
-            content={themes.defs[theme].palette.primary.main}
+            content={theme && themes.defs[theme].palette.primary.main}
           />
           <link
             rel="stylesheet"
@@ -68,9 +68,7 @@ MyDocument.getInitialProps = async ctx => {
     });
 
   const initialProps = await Document.getInitialProps(ctx);
-
   return {
-    theme: ctx.theme,
     ...initialProps,
     // Styles fragment is rendered after the app and page rendering finish.
     styles: (

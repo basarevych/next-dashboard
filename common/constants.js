@@ -17,7 +17,7 @@ module.exports = {
   },
   pages: {
     "/": {
-      page: "/",
+      page: "/dashboard",
       icon: "dashboard",
       menu: "MENU_DASHBOARD",
       title: "TITLE_DASHBOARD"
@@ -102,9 +102,19 @@ module.exports = {
     TOAST: "TOAST"
   },
   events: {
+    // web fonts loading complete
     FONTS_LOADED: "FONTS_LOADED",
+
+    // user identity might have changed
     AUTH_UPDATED: "AUTH_UPDATED",
+
+    // user info might have changed
+    AUTH_REFRESHED: "AUTH_REFRESHED",
+
+    // service worker wants to update
     UPDATE_READY: "UPDATE_READY",
+
+    // notification popup
     TOAST: "TOAST"
   }
 };

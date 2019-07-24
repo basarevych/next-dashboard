@@ -7,6 +7,7 @@ import { appSelectors, appOperations } from "../../app/state";
 
 const mapStateToProps = state => {
   return {
+    user: appSelectors.getUserJS(state),
     apiServer: appSelectors.getApiServer(state)
   };
 };

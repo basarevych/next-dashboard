@@ -1,8 +1,13 @@
 import { connect } from "react-redux";
 import { withStyles, withTheme } from "@material-ui/styles";
-import { appOperations } from "../app/state";
-import { graphql, createRefetchContainer } from "react-relay";
+import { appSelectors, appOperations } from "../app/state";
 import ProfileComponent, { styles } from "./Profile";
+
+const mapStateToProps = state => {
+  return {
+    user: appSelectors.getUserJS(state)
+  };
+};
 
 const mapDispatchToProps = dispatch => {
   return {
@@ -15,35 +20,9 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-const Profile = createRefetchContainer(
-  connect(
-    null,
-    mapDispatchToProps
-  )(withStyles(styles)(withTheme(ProfileComponent))),
-  {
-    viewer: graphql`
-      fragment ProfileContainer_viewer on Viewer {
-        me {
-          isAuthenticated
-          name
-          email
-          isEmailVerified
-          roles
-          providers {
-            name
-            isLinked
-          }
-        }
-      }
-    `
-  },
-  graphql`
-    query ProfileContainerQuery {
-      viewer {
-        ...ProfileContainer_viewer
-      }
-    }
-  `
-);
+const Profile = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles)(withTheme(ProfileComponent)));
 
 export default Profile;

@@ -77,9 +77,9 @@ export const styles = theme => ({
 
 class AppAuthModal extends React.Component {
   static propTypes = {
-    intl: intlShape,
+    intl: intlShape.isRequired,
     classes: PropTypes.object.isRequired,
-    providers: PropTypes.array.isRequired,
+    user: PropTypes.object.isRequired,
     apiServer: PropTypes.string.isRequired,
     onLink: PropTypes.func.isRequired,
     onSignIn: PropTypes.func.isRequired,
@@ -89,8 +89,6 @@ class AppAuthModal extends React.Component {
 
   constructor(props) {
     super(props);
-
-    this.state = {};
 
     this.submit = this.submit.bind(this);
   }
@@ -113,6 +111,12 @@ class AppAuthModal extends React.Component {
     }
   }
 
+  isEnabledProvider(provider) {
+    for (let item of this.props.user.providers)
+      if (_.toLower(provider) === _.toLower(item.name)) return true;
+    return false;
+  }
+
   renderButton(provider, submitting) {
     provider = _.toLower(provider);
 
@@ -121,7 +125,7 @@ class AppAuthModal extends React.Component {
         variant="contained"
         color="default"
         classes={{ contained: this.props.classes[provider] }}
-        disabled={submitting || !_.includes(this.props.providers, provider)}
+        disabled={submitting || !this.isEnabledProvider(provider)}
         onClick={() => this.props.onLink(provider)}
       >
         <Hidden xsDown>

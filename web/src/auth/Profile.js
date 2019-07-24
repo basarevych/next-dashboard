@@ -78,7 +78,7 @@ class ProfilePage extends React.Component {
     theme: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired,
     viewer: PropTypes.object.isRequired,
-    relay: PropTypes.object.isRequired,
+    user: PropTypes.object.isRequired,
     onSave: PropTypes.func.isRequired,
     onLink: PropTypes.func.isRequired,
     onUnlink: PropTypes.func.isRequired,
@@ -101,25 +101,8 @@ class ProfilePage extends React.Component {
     this.verify = this.verify.bind(this);
     this.destroy = this.destroy.bind(this);
 
-    this.handleRefreshAction = this.handleRefreshAction.bind(this);
     this.handleConfirmDelete = this.handleConfirmDelete.bind(this);
     this.handleCancelDelete = this.handleCancelDelete.bind(this);
-  }
-
-  getUser() {
-    return _.get(this.props.viewer, "me", { roles: [] });
-  }
-
-  getProviders() {
-    return _.get(this.props.viewer, "me.providers", []);
-  }
-
-  getUserVerified() {
-    return _.get(this.props.viewer, "me.isEmailVerified", false);
-  }
-
-  handleRefreshAction() {
-    this.props.relay.refetch(null, null, null, { force: true });
   }
 
   async save(
@@ -128,7 +111,6 @@ class ProfilePage extends React.Component {
   ) {
     let result = await this.props.onSave(name || null, email, password1);
     if (result === true) {
-      this.handleRefreshAction();
       setSubmitting(false);
       setFieldValue("password1", "");
       setFieldValue("password2", "");
@@ -230,10 +212,10 @@ class ProfilePage extends React.Component {
         <Paper className={this.props.classes.profile}>
           <Form
             fields={fields}
-            initialValues={this.getUser()}
+            initialValues={this.props.user}
             onSubmit={this.save}
             render={({ isSubmitting, status, handleSubmit }) => {
-              const services = _.map(this.getProviders(), provider =>
+              const services = _.map(this.props.user.providers, provider =>
                 this.renderButton(provider, isSubmitting)
               );
 
@@ -335,7 +317,7 @@ class ProfilePage extends React.Component {
                       <FormattedMessage id="PROFILE_DESTROY_BUTTON" />
                     </Button>
                   </Grid>
-                  {!this.getUserVerified() && (
+                  {!this.props.user.isEmailVerified && (
                     <Grid item xs={12} container justify="flex-start">
                       <Button
                         variant="contained"

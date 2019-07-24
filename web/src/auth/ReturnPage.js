@@ -1,11 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
+import Return from "./ReturnContainer";
 
 class ReturnPage extends React.Component {
   static propTypes = {
     token: PropTypes.string,
-    redirect: PropTypes.string,
-    onReturn: PropTypes.func.isRequired
+    redirect: PropTypes.string
   };
 
   static async getInitialProps({ query: requestQuery }) {
@@ -15,12 +15,9 @@ class ReturnPage extends React.Component {
     };
   }
 
-  componentDidMount() {
-    this.props.onReturn(this.props.token, this.props.redirect);
-  }
-
   render() {
-    return <div />;
+    const { token, redirect } = this.props;
+    return <Return token={token} redirect={redirect} />;
   }
 }
 

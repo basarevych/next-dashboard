@@ -200,6 +200,7 @@
   "APP_AUTH_EMAIL_TAKEN": "This email is already registered",
   "OPERATION_FAILED": "Operation failed",
   "ERROR": "Error",
+  "ERROR_REFRESH_LINK": "Reload this page",
   "ERROR_GO_HOME_LINK": "Go to the start page",
   "ERROR_TRY_AUTH_LINK": "Sign in and try again",
   "ERROR_FIELD_REQUIRED": "This field is required",

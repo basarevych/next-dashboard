@@ -201,6 +201,7 @@
   "APP_AUTH_EMAIL_TAKEN": "Этот email уже зарегистрирован",
   "OPERATION_FAILED": "Операция завершилась ошибкой",
   "ERROR": "Ошибка",
+  "ERROR_REFRESH_LINK": "Перезагрузить эту страницу",
   "ERROR_GO_HOME_LINK": "Открыть стартовую страницу",
   "ERROR_TRY_AUTH_LINK": "Авторизоваться и попробовать еще раз",
   "ERROR_FIELD_REQUIRED": "Это поле обязательно",

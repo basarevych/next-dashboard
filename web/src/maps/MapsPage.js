@@ -1,13 +1,12 @@
 import React from "react";
 import { graphql } from "react-relay";
 import { QueryRenderer } from "../app/providers/Relay";
-import MapsDemo from "./MapsDemoContainer";
 import Layout from "../app/layout/LayoutContainer";
-import Spinner from "../app/layout/SpinnerContainer";
+import MapsDemo from "./MapsDemoContainer";
 
 const defaultVariables = {};
 
-export const query = graphql`
+const query = graphql`
   query MapsPageQuery {
     viewer {
       ...LayoutContainer_viewer
@@ -28,12 +27,10 @@ class MapsPage extends React.Component {
         render={({ error, props }) => (
           <Layout
             page="/maps"
-            viewer={props ? props.viewer : null}
             error={error}
-          >
-            {!error && !props && <Spinner />}
-            {!error && props && <MapsDemo viewer={props.viewer} />}
-          </Layout>
+            viewer={props && props.viewer}
+            render={() => <MapsDemo viewer={props && props.viewer} />}
+          />
         )}
       />
     );

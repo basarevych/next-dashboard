@@ -101,12 +101,11 @@ export const styles = theme => ({
 
 class Sidebar extends React.Component {
   static propTypes = {
-    router: PropTypes.object.isRequired,
     intl: intlShape.isRequired,
+    router: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired,
+    user: PropTypes.object.isRequired,
     apiServer: PropTypes.string.isRequired,
-    isAuthenticated: PropTypes.bool.isRequired,
-    user: PropTypes.object,
     onMenuClick: PropTypes.func.isRequired,
     onLoginClick: PropTypes.func.isRequired
   };
@@ -117,27 +116,28 @@ class Sidebar extends React.Component {
   }
 
   renderHeader() {
-    const userId = this.props.user && this.props.user.userId;
+    const isAuthenticated = this.props.user.isAuthenticated;
+    const userId = this.props.user.userId;
+    const name = this.props.user.name;
+    const email = this.props.user.email;
+
     return (
       <div className={this.props.classes.avatar}>
         <img
           src={
-            this.props.isAuthenticated && userId
+            isAuthenticated && userId
               ? this.props.apiServer +
                 constants.apiBase +
                 "/avatars/" +
                 userId +
-                "?size=large&t=" +
-                Date.now()
+                "?size=large"
               : "/static/img/anonymous.png"
           }
         />
         <Typography variant="subtitle1" color="inherit">
-          {(this.props.isAuthenticated &&
-            (this.props.user.name || this.props.user.email)) ||
-            "Anonymous"}
+          {(isAuthenticated && (name || email)) || "Anonymous"}
         </Typography>
-        {!this.props.isAuthenticated && (
+        {!isAuthenticated && (
           <Button variant="contained" onClick={this.props.onLoginClick}>
             <FormattedMessage id="SIDEBAR_LOGIN_BUTTON" />
           </Button>
@@ -149,7 +149,7 @@ class Sidebar extends React.Component {
   renderItem(path) {
     const { icon, menu, isAllowed } = constants.pages[path];
     if (!icon || !menu) return null;
-    if (isAllowed && !isAllowed(this.props.user)) return null;
+    if (_.isFunction(isAllowed) && !isAllowed(this.props.user)) return null;
 
     return (
       <MenuItem
@@ -158,7 +158,7 @@ class Sidebar extends React.Component {
           root: this.props.classes.item,
           selected: this.props.classes.itemSelected
         }}
-        selected={this.props.router.pathname === path}
+        selected={this.props.router.asPath === path}
         onClick={() => this.handleMenuClick(path)}
       >
         <ListItemIcon>
@@ -189,7 +189,9 @@ class Sidebar extends React.Component {
         >
           {_.map(_.keys(constants.pages), path => this.renderItem(path))}
         </MenuList>
+
         <div className={this.props.classes.grow} />
+
         <div>
           <a
             href="javascript:void(0)"

@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 import { appOperations } from "../app/state";
-import ReturnPageComponent from "./ReturnPage";
+import ReturnComponent from "./Return";
 
 const mapDispatchToProps = dispatch => {
   return {
@@ -9,10 +9,9 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-const ReturnPage = connect(
+const Return = connect(
   null,
   mapDispatchToProps
-)(ReturnPageComponent);
+)(ReturnComponent);
 
-ReturnPage.getInitialProps = ReturnPageComponent.getInitialProps;
-export default ReturnPage;
+export default Return;

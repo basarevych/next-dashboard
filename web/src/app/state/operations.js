@@ -34,6 +34,7 @@ export const create = ({
 }) => async dispatch => {
   return dispatch(
     actions.create({
+      created: Date.now(),
       statusCode,
       locale,
       theme,
@@ -63,6 +64,30 @@ export const start = () => {
 export const stop = () => {
   return async dispatch => {
     return dispatch(actions.stop());
+  };
+};
+
+export const setUser = user => {
+  return async (dispatch, getState) => {
+    const oldUser = selectors.getUserJS(getState());
+    if (_.isMatch(user, oldUser)) return;
+    await dispatch(actions.setUser(user));
+
+    if (process.browser && oldUser.userId !== user.userId) {
+      const statusCode = selectors.getStatusCode(getState());
+      const page = constants.pages[Router.asPath];
+      const isAllowed = page && page.isAllowed;
+      if (statusCode === 200 && _.isFunction(isAllowed) && !isAllowed(user)) {
+        await dispatch(
+          setStatusCode({ code: user.isAuthenticated ? 403 : 401 })
+        );
+      } else if (
+        _.includes([403, 401], statusCode) &&
+        (!_.isFunction(isAllowed) || isAllowed(user))
+      ) {
+        await dispatch(setStatusCode({ code: 200 }));
+      }
+    }
   };
 };
 
@@ -152,7 +177,10 @@ export const updateProfile = ({ email, name, password }) => async (
     name,
     password
   });
-  if (_.get(data, "data.updateProfile.success", false)) return true;
+  if (_.get(data, "data.updateProfile.success", false)) {
+    window.dispatchEvent(new CustomEvent(constants.events.AUTH_REFRESHED));
+    return true;
+  }
   return getFormErrors(data);
 };
 
@@ -175,8 +203,8 @@ export const linkProvider = ({ provider }) => async (
 
   let redirect = window.location.href;
   if (
-    _.startsWith(Router.pathname, "/auth") &&
-    Router.pathname !== "/auth/profile"
+    _.startsWith(Router.asPath, "/auth") &&
+    Router.asPath !== "/auth/profile"
   ) {
     redirect = selectors.getAppServer(getState());
   }
@@ -218,7 +246,10 @@ export const unlinkProvider = ({ provider }) => async (
   di
 ) => {
   let data = await UnlinkProviderMutation(di, { provider });
-  if (_.get(data, "data.unlinkProvider.success", false)) return true;
+  if (_.get(data, "data.unlinkProvider.success", false)) {
+    window.dispatchEvent(new CustomEvent(constants.events.AUTH_REFRESHED));
+    return true;
+  }
   return getFormErrors(data);
 };
 

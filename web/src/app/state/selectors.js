@@ -1,6 +1,15 @@
+import { createSelector } from "reselect";
+
 export const getCreated = state => state.getIn(["app", "created"]);
 
 export const getStatusCode = state => state.getIn(["app", "statusCode"]);
+
+export const getUser = state => state.getIn(["app", "user"]);
+
+export const getUserJS = createSelector(
+  state => getUser(state),
+  user => user.toJS()
+);
 
 export const getAppServer = state => state.getIn(["app", "appServer"]);
 

@@ -82,11 +82,14 @@ class Stat extends React.Component {
   }
 
   renderStat() {
+    const data = this.getData();
+    if (!data.length) return null;
+
     return (
       <div className={this.props.classes.stat}>
         <Typography variant="h3" color="inherit">
           <FormattedNumber
-            value={_.last(this.getData()).value}
+            value={_.last(data).value}
             maximumFractionDigits={this.props.precision}
           />
         </Typography>
@@ -98,9 +101,10 @@ class Stat extends React.Component {
   }
 
   renderDelta() {
-    const items = _.slice(this.getData(), -2);
-    if (items.length !== 2) return null;
+    const data = this.getData();
+    if (data.length < 2) return null;
 
+    const items = _.slice(data, -2);
     const delta = (100 * (items[1].value - items[0].value)) / items[0].value;
     const symbol = delta > 0 ? "▲" : delta < 0 ? "▼" : "";
     const className =

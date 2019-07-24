@@ -1,1 +1,1 @@
-export { default } from "../../src/auth/ReturnPageContainer";
+export { default } from "../../src/auth/ReturnPage";

@@ -1,6 +1,7 @@
 import React from "react";
 import { graphql } from "react-relay";
 import { QueryRenderer } from "../app/providers/Relay";
+import Layout from "../app/layout/LayoutContainer";
 import Dashboard, {
   defaultState,
   defaultDept,
@@ -8,8 +9,6 @@ import Dashboard, {
   sortBy,
   sortDir
 } from "./DashboardContainer";
-import Layout from "../app/layout/LayoutContainer";
-import Spinner from "../app/layout/SpinnerContainer";
 
 const defaultVariables = {
   stateName: defaultState,
@@ -19,7 +18,7 @@ const defaultVariables = {
   sortDir
 };
 
-export const query = graphql`
+const query = graphql`
   query DashboardPageQuery(
     $stateName: String
     $dept: EmployeeDept
@@ -70,10 +69,12 @@ class DashboardPage extends React.Component {
         query={query}
         variables={defaultVariables}
         render={({ error, props }) => (
-          <Layout page="/" viewer={props ? props.viewer : null} error={error}>
-            {!error && !props && <Spinner />}
-            {!error && props && <Dashboard viewer={props.viewer} />}
-          </Layout>
+          <Layout
+            page="/"
+            error={error}
+            viewer={props && props.viewer}
+            render={() => <Dashboard viewer={props && props.viewer} />}
+          />
         )}
       />
     );

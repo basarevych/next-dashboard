@@ -2,13 +2,12 @@ import React from "react";
 import PropTypes from "prop-types";
 import { graphql } from "react-relay";
 import { QueryRenderer } from "../app/providers/Relay";
-import VerifyEmail from "./VerifyEmailContainer";
 import Layout from "../app/layout/LayoutContainer";
-import Spinner from "../app/layout/SpinnerContainer";
+import VerifyEmail from "./VerifyEmailContainer";
 
 const defaultVariables = {};
 
-export const query = graphql`
+const query = graphql`
   query VerifyEmailPageQuery {
     viewer {
       ...LayoutContainer_viewer
@@ -34,6 +33,8 @@ class VerifyEmailPage extends React.Component {
   }
 
   render() {
+    const { token } = this.props;
+
     return (
       <QueryRenderer
         query={query}
@@ -41,14 +42,12 @@ class VerifyEmailPage extends React.Component {
         render={({ error, props }) => (
           <Layout
             page="/auth/verify"
-            viewer={props ? props.viewer : null}
             error={error}
-          >
-            {!error && !props && <Spinner />}
-            {!error && props && (
-              <VerifyEmail viewer={props.viewer} token={this.props.token} />
+            viewer={props && props.viewer}
+            render={() => (
+              <VerifyEmail viewer={props && props.viewer} token={token} />
             )}
-          </Layout>
+          />
         )}
       />
     );

@@ -6,7 +6,7 @@ import { appOperations, appSelectors } from "../state";
 
 const defaultVariables = {};
 
-export const query = graphql`
+const query = graphql`
   query ErrorPageQuery {
     viewer {
       ...LayoutContainer_viewer
@@ -27,11 +27,7 @@ class ErrorPage extends React.Component {
         query={query}
         variables={defaultVariables}
         render={({ error, props }) => (
-          <Layout
-            page="/_error"
-            viewer={props ? props.viewer : null}
-            error={error}
-          />
+          <Layout page="/_error" error={error} viewer={props && props.viewer} />
         )}
       />
     );

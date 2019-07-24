@@ -93,16 +93,19 @@ class Layout extends React.Component {
     isDisconnected: PropTypes.bool.isRequired,
     isAuthModalOpen: PropTypes.bool.isRequired,
     statusCode: PropTypes.number.isRequired,
-    page: PropTypes.string,
+    page: PropTypes.string.isRequired,
+    relay: PropTypes.object.isRequired,
     error: PropTypes.object,
     viewer: PropTypes.object,
-    relay: PropTypes.object.isRequired,
-    children: PropTypes.oneOfType([
-      PropTypes.node,
-      PropTypes.arrayOf(PropTypes.node)
-    ]),
-    onSetStatusCode: PropTypes.func.isRequired
+    render: PropTypes.func,
+    onSetUser: PropTypes.func.isRequired
   };
+
+  static getDerivedStateFromProps(nextProps) {
+    const user = _.get(nextProps, "viewer.me");
+    if (user) nextProps.onSetUser(user);
+    return null;
+  }
 
   constructor(props) {
     super(props);
@@ -116,55 +119,41 @@ class Layout extends React.Component {
     this.handleSidebarToggle = this.handleSidebarToggle.bind(this);
     this.handleSidebarOpen = this.handleSidebarOpen.bind(this);
     this.handleSidebarClose = this.handleSidebarClose.bind(this);
-    this.handleAuthUpdated = this.handleAuthUpdated.bind(this);
-    this.handleUpdateMessage = this.handleUpdateMessage.bind(this);
+    this.handleAuthMessage = this.handleAuthMessage.bind(this);
+    this.handleUpdateReady = this.handleUpdateReady.bind(this);
     this.doUpdate = this.doUpdate.bind(this);
   }
 
   componentDidMount() {
     window.addEventListener(
       constants.events.AUTH_UPDATED,
-      this.handleAuthUpdated
+      this.handleAuthMessage
+    );
+    window.addEventListener(
+      constants.events.AUTH_REFRESHED,
+      this.handleAuthMessage
     );
     window.addEventListener(
       constants.events.UPDATE_READY,
-      this.handleUpdateMessage
+      this.handleUpdateReady
     );
-    this.setState({ isLoaded: true, isUpdateNeeded: !!global.__updateReady });
-    this.checkAuth();
-  }
 
-  componentDidUpdate(prevProps) {
-    if (
-      _.get(prevProps.viewer, "me.userId") !==
-      _.get(this.props.viewer, "me.userId")
-    ) {
-      this.checkAuth();
-    }
+    this.setState({ isLoaded: true, isUpdateNeeded: !!global.__updateReady });
   }
 
   componentWillUnmount() {
     window.removeEventListener(
       constants.events.AUTH_UPDATED,
-      this.handleAuthUpdated
+      this.handleAuthMessage
+    );
+    window.removeEventListener(
+      constants.events.AUTH_REFRESHED,
+      this.handleAuthMessage
     );
     window.removeEventListener(
       constants.events.UPDATE_READY,
-      this.handleUpdateMessage
+      this.handleUpdateReady
     );
-  }
-
-  isAuthenticated() {
-    return !!_.get(this.props.viewer, "me.isAuthenticated");
-  }
-
-  getUser() {
-    return this.isAuthenticated() ? _.get(this.props.viewer, "me") : null;
-  }
-
-  getProviders() {
-    let providers = _.get(this.props.viewer, "me.providers", []);
-    return _.map(providers, "name");
   }
 
   getTitle() {
@@ -172,26 +161,7 @@ class Layout extends React.Component {
     return page.title;
   }
 
-  checkAuth() {
-    if (!this.props.viewer) return;
-
-    const page = constants.pages[this.props.page];
-    const isAllowed = page && page.isAllowed;
-    if (
-      this.props.statusCode === 200 &&
-      _.isFunction(isAllowed) &&
-      !isAllowed(this.getUser())
-    ) {
-      this.props.onSetStatusCode(this.isAuthenticated() ? 403 : 401);
-    } else if (
-      _.includes([401, 403], this.props.statusCode) &&
-      (!_.isFunction(isAllowed) || isAllowed(this.getUser()))
-    ) {
-      this.props.onSetStatusCode(200);
-    }
-  }
-
-  handleAuthUpdated() {
+  handleAuthMessage() {
     this.props.relay.refetch(null, null, null, { force: true });
   }
 
@@ -207,7 +177,7 @@ class Layout extends React.Component {
     if (this.state.isSidebarOpen) this.setState({ isSidebarOpen: false });
   }
 
-  handleUpdateMessage() {
+  handleUpdateReady() {
     this.setState({ isUpdateNeeded: true });
   }
 
@@ -253,11 +223,7 @@ class Layout extends React.Component {
             onOpen={this.handleSidebarOpen}
             onClose={this.handleSidebarClose}
           >
-            <Sidebar
-              isAuthenticated={this.isAuthenticated()}
-              user={this.getUser()}
-              onMenuClick={this.handleSidebarClose}
-            />
+            <Sidebar onMenuClick={this.handleSidebarClose} />
           </SwipeableDrawer>
         </Hidden>
 
@@ -267,11 +233,7 @@ class Layout extends React.Component {
             open
             classes={{ paper: this.props.classes.sidebar }}
           >
-            <Sidebar
-              isAuthenticated={this.isAuthenticated()}
-              user={this.getUser()}
-              onMenuClick={this.handleSidebarClose}
-            />
+            <Sidebar onMenuClick={this.handleSidebarClose} />
           </Drawer>
         </Hidden>
 
@@ -284,18 +246,13 @@ class Layout extends React.Component {
           )}
           {!isError && (
             <>
-              <Header
-                isAuthenticated={this.isAuthenticated()}
-                onSidebarToggle={this.handleSidebarToggle}
-              />
-              {this.props.children}
+              <Header onSidebarToggle={this.handleSidebarToggle} />
+              {!!this.props.render && this.props.render()}
             </>
           )}
         </main>
 
-        {this.props.isAuthModalOpen && (
-          <AppAuthModal providers={this.getProviders()} />
-        )}
+        {this.props.isAuthModalOpen && <AppAuthModal />}
       </div>
     );
   }

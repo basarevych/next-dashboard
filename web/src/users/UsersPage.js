@@ -1,13 +1,12 @@
 import React from "react";
 import { graphql } from "react-relay";
 import { QueryRenderer } from "../app/providers/Relay";
-import Users, { pageSize, sortBy, sortDir } from "./UsersContainer";
 import Layout from "../app/layout/LayoutContainer";
-import Spinner from "../app/layout/SpinnerContainer";
+import Users, { pageSize, sortBy, sortDir } from "./UsersContainer";
 
 const defaultVariables = { first: pageSize, sortBy, sortDir };
 
-export const query = graphql`
+const query = graphql`
   query UsersPageQuery(
     $sortBy: UserSortBy
     $sortDir: UserSortDir
@@ -44,12 +43,10 @@ class UsersPage extends React.Component {
         render={({ error, props }) => (
           <Layout
             page="/users"
-            viewer={props ? props.viewer : null}
             error={error}
-          >
-            {!error && !props && <Spinner />}
-            {!error && props && <Users viewer={props.viewer} />}
-          </Layout>
+            viewer={props && props.viewer}
+            render={() => <Users viewer={props && props.viewer} />}
+          />
         )}
       />
     );

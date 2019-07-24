@@ -12,6 +12,8 @@ export const setStatusCode = ({ code }) => ({
   code
 });
 
+export const setUser = data => _.assign({ type: types.SET_USER }, data);
+
 export const setLocale = ({ locale }) => {
   moment.locale(locale);
   return {

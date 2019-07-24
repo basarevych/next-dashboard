@@ -1,13 +1,12 @@
 import React from "react";
 import { graphql } from "react-relay";
 import { QueryRenderer } from "../app/providers/Relay";
-import IconsDemo from "./IconsDemoContainer";
 import Layout from "../app/layout/LayoutContainer";
-import Spinner from "../app/layout/SpinnerContainer";
+import IconsDemo from "./IconsDemoContainer";
 
 const defaultVariables = {};
 
-export const query = graphql`
+const query = graphql`
   query IconsPageQuery {
     viewer {
       ...LayoutContainer_viewer
@@ -28,12 +27,10 @@ class IconsPage extends React.Component {
         render={({ error, props }) => (
           <Layout
             page="/icons"
-            viewer={props ? props.viewer : null}
             error={error}
-          >
-            {!error && !props && <Spinner />}
-            {!error && props && <IconsDemo viewer={props.viewer} />}
-          </Layout>
+            viewer={props && props.viewer}
+            render={() => <IconsDemo viewer={props && props.viewer} />}
+          />
         )}
       />
     );

@@ -1,13 +1,12 @@
 import React from "react";
 import { graphql } from "react-relay";
 import { QueryRenderer } from "../app/providers/Relay";
-import TypographyDemo from "./TypographyDemoContainer";
 import Layout from "../app/layout/LayoutContainer";
-import Spinner from "../app/layout/SpinnerContainer";
+import TypographyDemo from "./TypographyDemoContainer";
 
 const defaultVariables = {};
 
-export const query = graphql`
+const query = graphql`
   query TypographyPageQuery {
     viewer {
       ...LayoutContainer_viewer
@@ -28,12 +27,10 @@ class TypographyPage extends React.Component {
         render={({ error, props }) => (
           <Layout
             page="/typography"
-            viewer={props ? props.viewer : null}
             error={error}
-          >
-            {!error && !props && <Spinner />}
-            {!error && props && <TypographyDemo viewer={props.viewer} />}
-          </Layout>
+            viewer={props && props.viewer}
+            render={() => <TypographyDemo viewer={props && props.viewer} />}
+          />
         )}
       />
     );
