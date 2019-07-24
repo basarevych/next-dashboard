@@ -67,7 +67,7 @@ class UsersTable extends React.Component {
 
   render() {
     return (
-      <Table size="small" className={this.props.classes.table}>
+      <Table className={this.props.classes.table}>
         <TableHead>
           <TableRow>
             <TableCell

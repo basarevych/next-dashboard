@@ -78,19 +78,31 @@ class StateSales extends React.Component {
     onLoaded: PropTypes.func.isRequired
   };
 
+  constructor(props) {
+    super(props);
+
+    this.isDestroyed = false;
+  }
+
   componentDidMount() {
     this.props.onLoaded();
   }
 
   componentDidUpdate(prevProps) {
     if (prevProps.selected !== this.props.selected) {
-      this.props.relay.refetch(
-        { stateName: this.props.selected },
-        null,
-        () => this.props.onLoaded(),
-        { force: true }
-      );
+      if (!this.isDestroyed) {
+        this.props.relay.refetch(
+          { stateName: this.props.selected },
+          null,
+          () => this.props.onLoaded(),
+          { force: true }
+        );
+      }
     }
+  }
+
+  componentWillUnmount() {
+    this.isDestroyed = true;
   }
 
   getData() {

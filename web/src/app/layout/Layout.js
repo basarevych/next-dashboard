@@ -116,6 +116,8 @@ class Layout extends React.Component {
       isSidebarOpen: false
     };
 
+    this.isDestroyed = false;
+
     this.handleSidebarToggle = this.handleSidebarToggle.bind(this);
     this.handleSidebarOpen = this.handleSidebarOpen.bind(this);
     this.handleSidebarClose = this.handleSidebarClose.bind(this);
@@ -142,6 +144,8 @@ class Layout extends React.Component {
   }
 
   componentWillUnmount() {
+    this.isDestroyed = true;
+
     window.removeEventListener(
       constants.events.IDENTITY_CHANGED,
       this.handleAuthMessage
@@ -162,7 +166,8 @@ class Layout extends React.Component {
   }
 
   handleAuthMessage() {
-    this.props.relay.refetch(null, null, null, { force: true });
+    if (!this.isDestroyed)
+      this.props.relay.refetch(null, null, null, { force: true });
   }
 
   handleSidebarToggle() {
@@ -247,7 +252,9 @@ class Layout extends React.Component {
           {!isError && (
             <>
               <Header onSidebarToggle={this.handleSidebarToggle} />
-              {!!this.props.render && this.props.render()}
+              {!!this.props.viewer &&
+                !!this.props.render &&
+                this.props.render()}
             </>
           )}
         </main>

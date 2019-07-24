@@ -106,6 +106,8 @@ class Users extends React.Component {
       isConfirmOpen: false
     };
 
+    this.isDestroyed = false;
+
     this.handleCreateAction = this.handleCreateAction.bind(this);
     this.handleEditAction = this.handleEditAction.bind(this);
     this.handleDeleteAction = this.handleDeleteAction.bind(this);
@@ -122,7 +124,6 @@ class Users extends React.Component {
       constants.events.IDENTITY_CHANGED,
       this.handleRefreshAction
     );
-    setTimeout(() => this.handleRefreshAction());
   }
 
   componentDidUpdate(prevProps) {
@@ -135,9 +136,10 @@ class Users extends React.Component {
         first: this.state.pageSize
       };
       setTimeout(() => {
-        this.setState({ pageNumber: 0, variables }, () =>
-          this.props.relay.refetch(variables, null, null, { force: true })
-        );
+        this.setState({ pageNumber: 0, variables }, () => {
+          if (!this.isDestroyed)
+            this.props.relay.refetch(variables, null, null, { force: true });
+        });
       });
     } else if (!prevProps.isSubscribed && this.props.isSubscribed) {
       setTimeout(this.handleRefreshAction);
@@ -149,6 +151,8 @@ class Users extends React.Component {
   }
 
   componentWillUnmount() {
+    this.isDestroyed = true;
+
     window.addEventListener(
       constants.events.IDENTITY_CHANGED,
       this.handleRefreshAction
@@ -179,7 +183,11 @@ class Users extends React.Component {
   }
 
   handleRefreshAction() {
-    this.props.relay.refetch(this.state.variables, null, null, { force: true });
+    if (!this.isDestroyed) {
+      this.props.relay.refetch(this.state.variables, null, null, {
+        force: true
+      });
+    }
   }
 
   handleSort(sortBy) {
@@ -191,9 +199,10 @@ class Users extends React.Component {
       sortDir,
       first: this.state.pageSize
     };
-    this.setState({ pageNumber: 0, variables }, () =>
-      this.props.relay.refetch(variables, null, null, { force: true })
-    );
+    this.setState({ pageNumber: 0, variables }, () => {
+      if (!this.isDestroyed)
+        this.props.relay.refetch(variables, null, null, { force: true });
+    });
   }
 
   handleChangeRowsPerPage(evt) {
@@ -203,9 +212,10 @@ class Users extends React.Component {
       sortDir: this.state.variables.sortDir,
       first: pageSize
     };
-    this.setState({ pageSize, pageNumber: 0, variables }, () =>
-      this.props.relay.refetch(variables, null, null, { force: true })
-    );
+    this.setState({ pageSize, pageNumber: 0, variables }, () => {
+      if (!this.isDestroyed)
+        this.props.relay.refetch(variables, null, null, { force: true });
+    });
   }
 
   handleChangePage(evt, pageNumber) {
@@ -243,9 +253,10 @@ class Users extends React.Component {
       );
     }
 
-    this.setState({ pageNumber, variables }, () =>
-      this.props.relay.refetch(variables, null, null, { force: true })
-    );
+    this.setState({ pageNumber, variables }, () => {
+      if (!this.isDestroyed)
+        this.props.relay.refetch(variables, null, null, { force: true });
+    });
   }
 
   render() {

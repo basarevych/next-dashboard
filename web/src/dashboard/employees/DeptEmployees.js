@@ -57,6 +57,8 @@ class DeptEmployees extends React.Component {
       }
     };
 
+    this.isDestroyed = false;
+
     this.handleRefreshAction = this.handleRefreshAction.bind(this);
     this.handleSort = this.handleSort.bind(this);
     this.handleChangePage = this.handleChangePage.bind(this);
@@ -75,17 +77,26 @@ class DeptEmployees extends React.Component {
         first: this.state.pageSize
       };
       setTimeout(() => {
-        this.setState({ pageNumber: 0, variables }, () =>
-          this.props.relay.refetch(variables, null, null, { force: true })
-        );
+        this.setState({ pageNumber: 0, variables }, () => {
+          if (!this.isDestroyed)
+            this.props.relay.refetch(variables, null, null, { force: true });
+        });
       });
     } else if (!prevProps.isSubscribed && this.props.isSubscribed) {
       setTimeout(this.handleRefreshAction);
     }
   }
 
+  componentWillUnmount() {
+    this.isDestroyed = true;
+  }
+
   handleRefreshAction() {
-    this.props.relay.refetch(this.state.variables, null, null, { force: true });
+    if (!this.isDestroyed) {
+      this.props.relay.refetch(this.state.variables, null, null, {
+        force: true
+      });
+    }
   }
 
   handleSort(sortBy) {
@@ -98,9 +109,10 @@ class DeptEmployees extends React.Component {
       sortDir,
       first: this.state.pageSize
     };
-    this.setState({ pageNumber: 0, variables }, () =>
-      this.props.relay.refetch(variables, null, null, { force: true })
-    );
+    this.setState({ pageNumber: 0, variables }, () => {
+      if (!this.isDestroyed)
+        this.props.relay.refetch(variables, null, null, { force: true });
+    });
   }
 
   handleChangeRowsPerPage(evt) {
@@ -111,9 +123,10 @@ class DeptEmployees extends React.Component {
       sortDir: this.state.variables.sortDir,
       first: pageSize
     };
-    this.setState({ pageSize, pageNumber: 0, variables }, () =>
-      this.props.relay.refetch(variables, null, null, { force: true })
-    );
+    this.setState({ pageSize, pageNumber: 0, variables }, () => {
+      if (!this.isDestroyed)
+        this.props.relay.refetch(variables, null, null, { force: true });
+    });
   }
 
   handleChangePage(evt, pageNumber) {
@@ -153,9 +166,10 @@ class DeptEmployees extends React.Component {
       );
     }
 
-    this.setState({ pageNumber, variables }, () =>
-      this.props.relay.refetch(variables, null, null, { force: true })
-    );
+    this.setState({ pageNumber, variables }, () => {
+      if (!this.isDestroyed)
+        this.props.relay.refetch(variables, null, null, { force: true });
+    });
   }
 
   handleChangeDept(event, index) {
@@ -165,9 +179,10 @@ class DeptEmployees extends React.Component {
       sortDir,
       first: this.state.pageSize
     };
-    this.setState({ index, pageNumber: 0, variables }, () =>
-      this.props.relay.refetch(variables, null, null, { force: true })
-    );
+    this.setState({ index, pageNumber: 0, variables }, () => {
+      if (!this.isDestroyed)
+        this.props.relay.refetch(variables, null, null, { force: true });
+    });
   }
 
   render() {

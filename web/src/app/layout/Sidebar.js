@@ -49,6 +49,7 @@ export const styles = theme => ({
     color: theme.sidebar.color,
     "& img": {
       width: 160,
+      height: 160,
       borderRadius: theme.shape.borderRadius
     }
   },
