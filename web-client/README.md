@@ -4,7 +4,7 @@
 
 ```
 git clone https://github.com/basarevych/next-dashboard
-cd next-dashboard/web
+cd next-dashboard/web-client
 cp .env.example .env
 ```
 
@@ -16,7 +16,7 @@ Edit **.env** file and set your options
 cd next-dashboard/common
 yarn install --prod
 
-cd ../web
+cd ../web-client
 yarn install --prod
 yarn relay
 yarn build
@@ -29,7 +29,7 @@ yarn start
 cd next-dashboard/common
 yarn install --prod
 
-cd ../web
+cd ../web-client
 yarn install --prod
 yarn relay
 yarn build
@@ -44,11 +44,11 @@ Point your HTTP server to **/out** subdirectory or just do **yarn serve**
 cd next-dashboard/common
 yarn install
 
-cd ../api
+cd ../api-server
 yarn install
 yarn schema
 
-cd ../web
+cd ../web-client
 yarn install
 yarn relay
 yarn dev
@@ -59,10 +59,10 @@ yarn dev
 #### systemd
 
 ```
-cp systemd.service /etc/systemd/system/next-dashboard-web.service
+cp systemd.service /etc/systemd/system/next-dashboard-ssr.service
 systemctl daemon-reload
-systemctl enable next-dashboard-web
-systemctl start next-dashboard-web
+systemctl enable next-dashboard-ssr
+systemctl start next-dashboard-ssr
 ```
 
 #### PM2

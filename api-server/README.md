@@ -4,7 +4,7 @@
 
 ```
 git clone https://github.com/basarevych/next-dashboard
-cd next-dashboard/api
+cd next-dashboard/api-server
 cp .env.example .env
 ```
 
@@ -16,7 +16,7 @@ Edit **.env** file and set your options
 cd next-dashboard/common
 yarn install --prod
 
-cd ../api
+cd ../api-server
 yarn install --prod
 yarn start
 ```
@@ -27,7 +27,7 @@ yarn start
 cd next-dashboard/common
 yarn install
 
-cd ../api
+cd ../api-server
 yarn install
 yarn schema
 yarn dev

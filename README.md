@@ -34,11 +34,11 @@ This project is comprised of 4 servers:
 
 - **Redis** for the cache and PubSub
 
-- One or more API Servers: **[api/](api)**
+- One or more API Servers: **[api-server/](api-server)**
 
   These are serving API requests from the browser and the Front Server. Access to MongoDB and to Redis is required.
 
-- Optionally, one or more Front Servers: **[web/](web)**
+- Optionally, one or more Front Servers: **[web-client/ssr-server](web-client/ssr-server)**
 
   These are doing (cached) SSR for the user. Public domain name of the site is pointing to this server.
 
