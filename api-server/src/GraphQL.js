@@ -9,42 +9,12 @@ const { SubscriptionServer } = require("subscriptions-transport-ws");
 const constants = require("../../common/constants");
 
 class GraphQL {
-  constructor(app, ws, authService, cache, auth, users, employees, dashboard) {
+  constructor(di, app, ws, auth, cache) {
+    this.di = di;
     this.app = app;
     this.ws = ws;
-    this.authService = authService;
     this.auth = auth;
     this.cache = cache;
-    this.users = users;
-    this.employees = employees;
-    this.dashboard = dashboard;
-
-    this.nodeDefinitions = nodeDefinitions(
-      (globalId, context) => {
-        const result = _.find(
-          [
-            this.auth.idFetcher(globalId, context),
-            this.users.idFetcher(globalId, context),
-            this.employees.idFetcher(globalId, context),
-            this.dashboard.idFetcher(globalId, context)
-          ],
-          value => !!value
-        );
-        return result || null;
-      },
-      obj => {
-        const result = _.find(
-          [
-            this.auth.typeResolver(obj),
-            this.users.typeResolver(obj),
-            this.employees.typeResolver(obj),
-            this.dashboard.typeResolver(obj)
-          ],
-          value => !!value
-        );
-        return result || null;
-      }
-    );
   }
 
   static get $provides() {
@@ -52,16 +22,7 @@ class GraphQL {
   }
 
   static get $requires() {
-    return [
-      "app",
-      "ws",
-      "auth",
-      "cache",
-      "graphql.auth",
-      "graphql.users",
-      "graphql.employees",
-      "graphql.dashboard"
-    ];
+    return ["di", "app", "ws", "auth", "cache"];
   }
 
   static get $lifecycle() {
@@ -72,22 +33,44 @@ class GraphQL {
     if (this.promise) return this.promise;
 
     this.promise = Promise.resolve().then(async () => {
-      this.auth.init();
-      this.users.init();
-      this.employees.init();
-      this.dashboard.init();
+      this.modules = this.di.get(/^graphql\..+$/); // names starting with "graphql."
 
+      // Relay node definitions
+      this.nodeDefinitions = nodeDefinitions(
+        (globalId, context) => {
+          const result = _.find(
+            Array.from(this.modules.values()),
+            item => !!item.idFetcher(globalId, context)
+          );
+          return result || null;
+        },
+        obj => {
+          const result = _.find(
+            Array.from(this.modules.values()),
+            item => !!item.typeResolver(obj)
+          );
+          return result || null;
+        }
+      );
+
+      // Initialize modules
+      await Promise.all(
+        _.invokeMap(Array.from(this.modules.values()), "init", {
+          root: this
+        })
+      );
+
+      // Query definition
       this.Viewer = new GraphQLObjectType({
         name: "Viewer",
-        fields: _.merge(
-          this.auth.query,
-          this.users.query,
-          this.employees.query,
-          this.dashboard.query,
-          { node: this.nodeDefinitions.nodeField }
+        fields: _.reduce(
+          Array.from(this.modules.values()).concat({
+            node: this.nodeDefinitions.nodeField
+          }),
+          (acc, cur) => _.merge(acc, cur.query),
+          {}
         )
       });
-
       this.Query = new GraphQLObjectType({
         name: "Query",
         fields: {
@@ -99,37 +82,37 @@ class GraphQL {
         }
       });
 
+      // Mutation definition
       this.Mutation = new GraphQLObjectType({
         name: "Mutation",
-        fields: _.merge(
-          {},
-          this.auth.mutation,
-          this.users.mutation,
-          this.employees.mutation,
-          this.dashboard.mutation
+        fields: _.reduce(
+          Array.from(this.modules.values()),
+          (acc, cur) => _.merge(acc, cur.mutation),
+          {}
         )
       });
 
+      // Subscription definition
       this.Subscription = new GraphQLObjectType({
         name: "Subscription",
-        fields: _.merge(
-          {},
-          this.auth.subscription,
-          this.users.subscription,
-          this.employees.subscription,
-          this.dashboard.subscription
+        fields: _.reduce(
+          Array.from(this.modules.values()),
+          (acc, cur) => _.merge(acc, cur.subscription),
+          {}
         )
       });
 
+      // Create the schema
       this.schema = new GraphQLSchema({
         query: this.Query,
         mutation: this.Mutation,
         subscription: this.Subscription
       });
 
+      // Bind the subscriptions
       if (this.app.server) {
         await this.ws.init();
-        this.subscriptions = SubscriptionServer.create(
+        SubscriptionServer.create(
           {
             schema: this.schema,
             execute,
@@ -142,9 +125,7 @@ class GraphQL {
               // if provided token is invalid reject the connection
 
               if (connectionParams.token) {
-                let token = await this.authService.useToken(
-                  connectionParams.token
-                );
+                let token = await this.auth.useToken(connectionParams.token);
                 if (token === false) return false;
                 return { token };
               }

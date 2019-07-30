@@ -2940,10 +2940,10 @@ graphql-compiler@^2.0.0-rc.1:
     fb-watchman "^2.0.0"
     immutable "~3.7.6"
 
-graphql-redis-subscriptions@~2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/graphql-redis-subscriptions/-/graphql-redis-subscriptions-2.1.0.tgz#cd7804d9524c84800deaf81632539f3f2693ebf5"
-  integrity sha512-edur8YlwIsjk9K1Ao8vgEQkNKvt11FCTlOIFfxMKYIHOVv4zMvDsv7fs282LxMJBJGDCDDcdc1c5iKj0BjXO+Q==
+graphql-redis-subscriptions@~2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/graphql-redis-subscriptions/-/graphql-redis-subscriptions-2.1.1.tgz#61d5cf36ccc74abbc596d640eadbddf2cd1a7a91"
+  integrity sha512-oBd6thADySxLpLEYEtUmpGTxGQhHCN8M+9gaGZaUic11UYEfCtCpvuP6vwx8p7R8uhGZ3dYG8dhEJ01ZMg8E/A==
   dependencies:
     iterall "^1.2.2"
   optionalDependencies:
@@ -3226,23 +3226,23 @@ inquirer@^6.4.1:
     strip-ansi "^5.1.0"
     through "^2.3.6"
 
-intl-format-cache@^4.1.2:
-  version "4.1.2"
-  resolved "https://registry.yarnpkg.com/intl-format-cache/-/intl-format-cache-4.1.2.tgz#65dd214971a437434df0b9c6f464a9ec64330db7"
-  integrity sha512-bqBjBdVzQ5eYKcl1CHZZ2gwyEt9T6oWc8yrXkdT+sYBtNhNMyP5XiSzbv8q+6+6NtV7tgJ9u/WFNk9soz9IhSQ==
+intl-format-cache@^4.1.3:
+  version "4.1.3"
+  resolved "https://registry.yarnpkg.com/intl-format-cache/-/intl-format-cache-4.1.3.tgz#384f43617e0ac0605306ddf02899f190cab84b88"
+  integrity sha512-nh/HKx3vIKYC4wsQfwKxMedXuSiXZwVCtsmGPPgVTfl26CB30fkgJi3ZChxwZNdBqYpcmf+gdj8QgXWmdRBiOg==
 
-intl-messageformat-parser@^2.1.2:
-  version "2.1.2"
-  resolved "https://registry.yarnpkg.com/intl-messageformat-parser/-/intl-messageformat-parser-2.1.2.tgz#c26d275083900b4cffb01cd22306c2682e9b9744"
-  integrity sha512-mlUvCT1wGRG+vSxyo/bA6NMVCJ8E5e4PqF0lfy5Lw4nBVylrtrsKqY5BjGKE96DAClM9QOIepJMZtFHiGe5ueQ==
+intl-messageformat-parser@^2.1.3:
+  version "2.1.3"
+  resolved "https://registry.yarnpkg.com/intl-messageformat-parser/-/intl-messageformat-parser-2.1.3.tgz#c918e36a08bd7ff01349d8ea3736262c986aaeb1"
+  integrity sha512-YOP2GuQ8Y+f3j2Vti1/abcozYlkv/WsIffsRP8cgtN4Oha5hjhNnucxzyfmeAoDgDHw4s/lNyLylB01369a5lg==
 
-intl-messageformat@~5.1.2:
-  version "5.1.2"
-  resolved "https://registry.yarnpkg.com/intl-messageformat/-/intl-messageformat-5.1.2.tgz#93f4ad88bba0631764de897190ca9d54dff65f20"
-  integrity sha512-0xoKREoM5r64m76xsaGZpCmKYTPfHCUwmRFZ1/R5qp0uJdtJxPlUqfAXYLyBgosKKwWX3GY6I+aHvMsY9Lq6ng==
+intl-messageformat@~5.4.3:
+  version "5.4.3"
+  resolved "https://registry.yarnpkg.com/intl-messageformat/-/intl-messageformat-5.4.3.tgz#3864f6201d779e61b09c1afb6b8ed386163a18dc"
+  integrity sha512-wiGIeeokY6D/TFC6JYoBIUmZJ2AzkTHJuWp5QulDH4h77aghFTBm+8MvjTLIUiQ/z7xiY3SUQN2UBG7EtwYTAg==
   dependencies:
-    intl-format-cache "^4.1.2"
-    intl-messageformat-parser "^2.1.2"
+    intl-format-cache "^4.1.3"
+    intl-messageformat-parser "^2.1.3"
 
 invariant@^2.2.2, invariant@^2.2.4:
   version "2.2.4"
@@ -4525,10 +4525,10 @@ mongoose-legacy-pluralize@1.0.2:
   resolved "https://registry.yarnpkg.com/mongoose-legacy-pluralize/-/mongoose-legacy-pluralize-1.0.2.tgz#3ba9f91fa507b5186d399fb40854bff18fb563e4"
   integrity sha512-Yo/7qQU4/EyIS8YDFSeenIvXxZN+ld7YdV9LqFVQJzTLye8unujAWPZ4NWKfFA+RNjh+wvTWKY9Z3E5XM6ZZiQ==
 
-mongoose@~5.6.6:
-  version "5.6.6"
-  resolved "https://registry.yarnpkg.com/mongoose/-/mongoose-5.6.6.tgz#78953b9ea91b1bf685ce59d7737100352af627f6"
-  integrity sha512-5uecJSyl2TwbGM9vJteP4C54zsQL6qllq1qe/JPGO3oqIWcK/PnzCL91E0gfPH5VVpvWGX+6PafNYmU3NK8S7w==
+mongoose@~5.6.7:
+  version "5.6.7"
+  resolved "https://registry.yarnpkg.com/mongoose/-/mongoose-5.6.7.tgz#f98116e2740816c5be3cdf07040834abcd090f2a"
+  integrity sha512-42rbdZ9HLBbGjLvRSB4voqemgFkJTIyqSLLcJARKs1zdQzEJ3O77dWRllIy2bSo35GcY17ihEdoJX27pDqu3Mg==
   dependencies:
     async "2.6.2"
     bson "~1.1.1"
@@ -5793,7 +5793,7 @@ setprototypeof@1.1.1:
   resolved "https://registry.yarnpkg.com/setprototypeof/-/setprototypeof-1.1.1.tgz#7e95acb24aa92f5885e0abef5ba131330d4ae683"
   integrity sha512-JvdAWfbXeIGaZ9cILp38HntZSFSo3mWg6xGcJJsd+d4aRMOqauag1C63dJfDw7OaMYwEbHMOxEZ1lqVRYP2OAw==
 
-sharp@~0.22.1:
+sharp@0.22:
   version "0.22.1"
   resolved "https://registry.yarnpkg.com/sharp/-/sharp-0.22.1.tgz#a67c0e75567f03dd5a7861b901fec04072c5b0f4"
   integrity sha512-lXzSk/FL5b/MpWrT1pQZneKe25stVjEbl6uhhJcTULm7PhmJgKKRbTDM/vtjyUuC/RLqL2PRyC4rpKwbv3soEw==

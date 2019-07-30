@@ -1,6 +1,7 @@
+const debug = require("debug")("app:ws");
 const IO = require("socket.io");
 const constants = require("../../common/constants");
-const frontPackage = require("../../web/package.json");
+const frontPackage = require("../../web-client/package.json");
 
 class WebSocket {
   constructor(app, di) {
@@ -48,10 +49,38 @@ class WebSocket {
 
   async onConnection(socket) {
     try {
-      const commands = this.di.get(/^ws\..+$/); // names starting with "ws."
-      const inst = Array.from(commands.values());
-      await Promise.all(_.invokeMap(inst, "init"));
-      _.forEach(inst, command => command.accept({ socket }));
+      let { user: curUser, client: curClient } = socket.request.token || {};
+      debug(
+        `Socket of ${curUser ? curUser.id : "anonymous"} (${
+          curClient ? curClient.id : "unknown"
+        }) connected`
+      );
+
+      const handlers = this.di.get(/^ws\..+$/); // names starting with "ws."
+
+      // Initialize
+      await Promise.all(_.invokeMap(Array.from(handlers.values()), "init"));
+
+      // Subscribe
+      await Promise.all(
+        _.invokeMap(Array.from(handlers.values()), "subscribe", { socket })
+      );
+
+      socket.on("disconnect", async () => {
+        let { user: curUser, client: curClient } = socket.request.token || {};
+        debug(
+          `Socket of ${curUser ? curUser.id : "anonymous"} (${
+            curClient ? curClient.id : "unknown"
+          }) disconnected`
+        );
+
+        // Unsubscribe
+        await Promise.all(
+          _.invokeMap(Array.from(handlers.values()), "unsubscribe", { socket })
+        );
+      });
+
+      // Start
       socket.emit(constants.messages.HELLO, {
         version: frontPackage.version
       });

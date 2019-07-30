@@ -120,13 +120,12 @@ class App {
     // HTTP server
     this.server = mainServer;
 
-    // Retrieve all the singletons (instantiating them) and run
-    // their .init() method
+    // Retrieve all the singletons, which will instantiate them, and run their .init()
     await Promise.all(
       _.invokeMap(Array.from(this.di.singletons().values()), "init")
     );
 
-    // Express/Socket.IO middleware
+    // Express/Socket.io middleware
     this.middleware = _.reduce(
       [
         // Order matters
@@ -141,17 +140,14 @@ class App {
       new Map()
     );
 
-    // Initialize
-    await Promise.all(
-      _.invokeMap(Array.from(this.middleware.values()), "init")
-    );
-
     // Install
-    await Promise.all(
-      _.invokeMap(Array.from(this.middleware.values()), "accept", {
-        express: this.express,
-        io: this.di.get("ws").io
-      })
+    await _.reduce(
+      Array.from(this.middleware.values()),
+      (acc, cur) =>
+        acc.then(() =>
+          cur.init({ express: this.express, io: this.di.get("ws").io })
+        ),
+      Promise.resolve()
     );
   }
 }

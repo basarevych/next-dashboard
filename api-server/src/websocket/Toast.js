@@ -20,17 +20,26 @@ class Toast {
   }
 
   async init() {
-    if (this.promise) return this.promise;
-
-    this.promise = Promise.all([this.ws.init(), this.cache.init()]);
-
-    return this.promise;
+    return Promise.all([this.ws.init(), this.cache.init()]);
   }
 
-  accept({ socket }) {
+  async subscribe({ socket }) {
     this.socket = socket;
+
+    this.toastSubscription = await this.cache.pubsub.subscribe(
+      "toast",
+      this.onToastBroadcast
+    );
+
     socket.on(constants.messages.TOAST, this.onToastRequest);
-    this.cache.pubsub.subscribe("toast", this.onToastBroadcast);
+  }
+
+  async unsubscribe({ socket }) {
+    this.socket = null;
+
+    await this.cache.pubsub.unsubscribe(this.toastSubscription);
+
+    socket.removeListener(constants.messages.TOAST, this.onToastRequest);
   }
 
   // when a WebSocket sends "toast", broadcast the event via PubSub
@@ -41,6 +50,7 @@ class Toast {
 
   // somebody broadcasted "toast", notify the connected socket
   async onToastBroadcast({ toast }) {
+    if (!this.socket) return;
     debug("Toast broadcasted");
     this.socket.emit(constants.messages.TOAST, toast);
   }

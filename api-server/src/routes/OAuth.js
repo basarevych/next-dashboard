@@ -7,8 +7,17 @@ class OAuthRoute {
     this.config = config;
     this.cache = cache;
     this.auth = auth;
-    this.router = Router();
+  }
 
+  static get $provides() {
+    return "route.oauth";
+  }
+
+  static get $requires() {
+    return ["config", "cache", "auth"];
+  }
+
+  async init() {
     const store = new RedisStore({ client: this.cache.cacheRedis });
     this.sessionMiddleware = session({
       name: this.cookie,
@@ -23,33 +32,21 @@ class OAuthRoute {
         maxAge: 60 * 60 * 1000
       }
     });
-  }
 
-  static get $provides() {
-    return "route.oauth";
-  }
-
-  static get $requires() {
-    return ["config", "cache", "auth"];
-  }
-
-  async init() {
-    if (this.promise) return this.promse;
-
-    this.promise = Promise.resolve();
-
-    // Add routes for each provider
+    this.router = Router();
     for (let provider of this.auth.providers) {
-      // Route to start sign in
+      // Add routes for each provider
+
       this.router.get(
+        // Route to start sign in
         `/oauth/${provider.providerName}`,
         this.sessionMiddleware,
         this.saveToken(provider.providerName),
         this.authenticate(provider.providerName, provider.providerOptions)
       );
 
-      // Route to call back to after signing in
       this.router.get(
+        // Route to call back to after signing in
         `/oauth/${provider.providerName}/callback`,
         this.sessionMiddleware,
         this.authenticate(provider.providerName, {

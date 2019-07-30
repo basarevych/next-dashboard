@@ -16,16 +16,9 @@ class Routes {
     return ["di"];
   }
 
-  async init() {
-    if (this.promise) return this.promise;
+  async init({ express }) {
     this.routes = this.di.get(/^route\..+$/); // names starting with "route."
-    this.promise = Promise.all(
-      _.invokeMap(Array.from(this.routes.values()), "init")
-    );
-    return this.promise;
-  }
-
-  accept({ express }) {
+    await Promise.all(_.invokeMap(Array.from(this.routes.values()), "init"));
     _.forEach(Array.from(this.routes.values()), item =>
       express.use(constants.apiBase, item.router)
     );

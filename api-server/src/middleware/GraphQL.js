@@ -18,13 +18,8 @@ class GraphQL {
     return ["di", "graphql"];
   }
 
-  async init() {
-    if (this.promise) return this.promise;
-    this.promise = this.graphql.init();
-    return this.promise;
-  }
-
-  accept({ express }) {
+  async init({ express }) {
+    await this.graphql.init();
     express.use(constants.graphqlBase, function(req, res, next) {
       if (req.method === "OPTIONS") res.sendStatus(200);
       else next();

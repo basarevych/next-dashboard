@@ -19,9 +19,7 @@ class Early {
     return ["config"];
   }
 
-  async init() {}
-
-  accept({ express }) {
+  async init({ express }) {
     // CORS
     express.use(
       cors({

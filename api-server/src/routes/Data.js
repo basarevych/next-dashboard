@@ -4,7 +4,6 @@ const Router = require("express").Router;
 class DataRoute {
   constructor(dashboardRepo) {
     this.dashboardRepo = dashboardRepo;
-    this.router = Router();
   }
 
   static get $provides() {
@@ -17,9 +16,8 @@ class DataRoute {
 
   async init() {
     if (this.promise) return this.promise;
-    this.promise = Promise.resolve().then(async () => {
-      this.router.get("/data/:name", this.getData.bind(this));
 
+    this.promise = Promise.resolve().then(async () => {
       await this.dashboardRepo.init();
 
       this.usCities = [];
@@ -27,7 +25,11 @@ class DataRoute {
         this.usCities = this.usCities.concat(arr);
 
       this.usCitiesJson = JSON.stringify(this.usCities);
+
+      this.router = Router();
+      this.router.get("/data/:name", this.getData.bind(this));
     });
+
     return this.promise;
   }
 

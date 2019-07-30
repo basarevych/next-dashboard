@@ -22,22 +22,46 @@ class Auth {
   }
 
   async init() {
-    if (this.promise) return this.promise;
-    this.promise = Promise.all([this.ws.init(), this.cache.init()]);
-    return this.promise;
+    return Promise.all([this.ws.init(), this.cache.init()]);
   }
 
-  accept({ socket }) {
+  async subscribe({ socket }) {
     this.socket = socket;
-    socket.on(constants.messages.AUTH, this.onAuth);
 
-    this.cache.pubsub.subscribe("signOut", this.onSignOut);
-    this.cache.pubsub.subscribe("userDeleted", this.onUserDeleted);
+    if (!this.signOutSubscription) {
+      this.signOutSubscription = await this.cache.pubsub.subscribe(
+        "signOut",
+        this.onSignOut
+      );
+    }
+    if (!this.userDeletedSubscription) {
+      this.userDeletedSubscription = await this.cache.pubsub.subscribe(
+        "userDeleted",
+        this.onUserDeleted
+      );
+    }
+
+    socket.on(constants.messages.AUTH, this.onAuth);
+  }
+
+  async unsubscribe({ socket }) {
+    this.socket = null;
+
+    if (this.signOutSubscription) {
+      await this.cache.pubsub.unsubscribe(this.signOutSubscription);
+      this.signOutSubscription = null;
+    }
+    if (this.userDeletedSubscription) {
+      await this.cache.pubsub.unsubscribe(this.userDeletedSubscription);
+      this.userDeletedSubscription = null;
+    }
+
+    socket.removeListener(constants.messages.AUTH, this.onAuth);
   }
 
   async useToken(token) {
     if (!token) {
-      this.socket.request.token = undefined;
+      if (this.socket) this.socket.request.token = undefined;
       return;
     }
 
@@ -50,21 +74,32 @@ class Auth {
     ) {
       decoded = false;
     }
-    this.socket.request.token = decoded;
+
+    if (this.socket) this.socket.request.token = decoded;
   }
 
   async sendAuthMessage() {
     const msg = {
-      isValid: this.socket.request.token !== false,
-      isAuthenticated: !!this.socket.request.token
+      isValid: this.socket && this.socket.request.token !== false,
+      isAuthenticated: this.socket && !!this.socket.request.token
     };
     this.socket.emit(constants.messages.AUTH, msg);
   }
 
   async onAuth({ token }) {
-    let { user: oldUser, client: oldClient } = this.socket.request.token || {};
+    let { user: oldUser, client: oldClient } =
+      (this.socket && this.socket.request.token) || {};
+
     await this.useToken(token);
-    let { user, client } = this.socket.request.token || {};
+
+    let { user, client } = (this.socket && this.socket.request.token) || {};
+    debug(
+      `Socket of ${user ? user.id : "anonymous"} (${
+        client ? client.id : "unknown"
+      }) authenticated`
+    );
+
+    if (!this.socket) return;
 
     this.socket.leave(`user:${oldUser ? _.toUpper(oldUser.id) : "anonymous"}`);
     this.socket.leave(
@@ -74,16 +109,12 @@ class Auth {
     this.socket.join(`user:${user ? _.toUpper(user.id) : "anonymous"}`);
     this.socket.join(`client:${client ? _.toUpper(client.id) : "unknown"}`);
 
-    await this.sendAuthMessage();
-
-    debug(
-      `Socket of ${user ? user.id : "anonymous"} (${
-        client ? client.id : "unknown"
-      }) authenticated`
-    );
+    return this.sendAuthMessage();
   }
 
   async onSignOut({ signOut }) {
+    if (!this.socket) return;
+
     let { user: curUser, client: curClient } = this.socket.request.token || {};
     if (
       curUser &&
@@ -91,28 +122,30 @@ class Auth {
       curClient &&
       curClient.id === signOut.client.id
     ) {
-      this.socket.request.token = await this.auth.useToken(null);
-      await this.sendAuthMessage();
-
       debug(
         `Socket of ${curUser ? curUser.id : "anonymous"} (${
           curClient ? curClient.id : "unknown"
         }) deauthenticated`
       );
+
+      await this.useToken(null);
+      return this.sendAuthMessage();
     }
   }
 
   async onUserDeleted({ userDeleted }) {
+    if (!this.socket) return;
+
     let { user: curUser, client: curClient } = this.socket.request.token || {};
     if (curUser && curUser.id === userDeleted.id) {
-      this.socket.request.token = await this.auth.useToken(null);
-      await this.sendAuthMessage();
-
       debug(
         `Socket of ${curUser ? curUser.id : "anonymous"} (${
           curClient ? curClient.id : "unknown"
         }) deleted`
       );
+
+      await this.useToken(null);
+      return this.sendAuthMessage();
     }
   }
 }

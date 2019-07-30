@@ -22,6 +22,7 @@ class Users {
     this.di = di;
     this.userModel = userModel;
     this.usersRepo = usersRepo;
+    this.root = null;
   }
 
   static get $provides() {
@@ -39,15 +40,15 @@ class Users {
   }
 
   typeResolver(obj) {
-    if (obj instanceof this.userModel.model) return this.User;
+    if (obj instanceof this.userModel.model) return this.root.User;
     return null;
   }
 
-  init() {
-    const root = this.di.get("graphql");
-    const { nodeInterface } = root.nodeDefinitions;
+  async init({ root }) {
+    this.root = root;
+    const { nodeInterface } = this.root.nodeDefinitions;
 
-    this.UserRole = new GraphQLEnumType({
+    this.root.UserRole = new GraphQLEnumType({
       name: "UserRole",
       values: _.reduce(
         _.map(this.userModel.roles, (role, index) => ({ role, index })),
@@ -59,7 +60,7 @@ class Users {
       )
     });
 
-    this.User = new GraphQLObjectType({
+    this.root.User = new GraphQLObjectType({
       name: "User",
       fields: () => ({
         id: globalIdField("User"),
@@ -69,7 +70,7 @@ class Users {
         isEmailVerified: { type: new GraphQLNonNull(GraphQLBoolean) },
         name: { type: GraphQLString },
         roles: {
-          type: new GraphQLNonNull(new GraphQLList(this.UserRole)),
+          type: new GraphQLNonNull(new GraphQLList(this.root.UserRole)),
           resolve: source =>
             _.reduce(
               source.roles,
@@ -89,17 +90,17 @@ class Users {
       edgeType: UserEdge
     } = connectionDefinitions({
       name: "User",
-      nodeType: this.User,
+      nodeType: this.root.User,
       connectionFields: () => ({
         totalCount: {
           type: GraphQLInt
         }
       })
     });
-    this.UserConnection = UserConnection;
-    this.UserEdge = UserEdge;
+    this.root.UserConnection = UserConnection;
+    this.root.UserEdge = UserEdge;
 
-    this.UserSortBy = new GraphQLEnumType({
+    this.root.UserSortBy = new GraphQLEnumType({
       name: "UserSortBy",
       values: _.reduce(
         _.map(this.userModel.sortBy, (item, index) => ({ item, index })),
@@ -111,7 +112,7 @@ class Users {
       )
     });
 
-    this.UserSortDir = new GraphQLEnumType({
+    this.root.UserSortDir = new GraphQLEnumType({
       name: "UserSortDir",
       values: _.reduce(
         _.map(this.userModel.sortDir, (item, index) => ({ item, index })),
@@ -125,7 +126,7 @@ class Users {
 
     this.query = {
       user: {
-        type: this.User,
+        type: this.root.User,
         args: {
           id: { type: GraphQLID }
         },
@@ -136,10 +137,10 @@ class Users {
           )
       },
       users: {
-        type: this.UserConnection,
+        type: this.root.UserConnection,
         args: {
-          sortBy: { type: this.UserSortBy },
-          sortDir: { type: this.UserSortDir },
+          sortBy: { type: this.root.UserSortBy },
+          sortDir: { type: this.root.UserSortDir },
           ...connectionArgs
         },
         resolve: (source, args, context) =>
@@ -153,16 +154,16 @@ class Users {
       }
     };
 
-    this.CreateUserMutation = mutationWithClientMutationId({
+    this.root.CreateUserMutation = mutationWithClientMutationId({
       name: "CreateUser",
       inputFields: {
         email: { type: GraphQLString },
         name: { type: GraphQLString },
         password: { type: GraphQLString },
-        roles: { type: new GraphQLList(this.UserRole) }
+        roles: { type: new GraphQLList(this.root.UserRole) }
       },
       outputFields: {
-        user: { type: this.User }
+        user: { type: this.root.User }
       },
       mutateAndGetPayload: async (args, context) => {
         const user = await this.usersRepo.createUser(
@@ -184,17 +185,17 @@ class Users {
       }
     });
 
-    this.EditUserMutation = mutationWithClientMutationId({
+    this.root.EditUserMutation = mutationWithClientMutationId({
       name: "EditUser",
       inputFields: {
         id: { type: new GraphQLNonNull(GraphQLID) },
         email: { type: GraphQLString },
         name: { type: GraphQLString },
         password: { type: GraphQLString },
-        roles: { type: new GraphQLList(this.UserRole) }
+        roles: { type: new GraphQLList(this.root.UserRole) }
       },
       outputFields: {
-        user: { type: this.User }
+        user: { type: this.root.User }
       },
       mutateAndGetPayload: async (args, context) => {
         const user = await this.usersRepo.editUser(
@@ -217,13 +218,13 @@ class Users {
       }
     });
 
-    this.DeleteUserMutation = mutationWithClientMutationId({
+    this.root.DeleteUserMutation = mutationWithClientMutationId({
       name: "DeleteUser",
       inputFields: {
         id: { type: new GraphQLNonNull(GraphQLID) }
       },
       outputFields: {
-        user: { type: this.User }
+        user: { type: this.root.User }
       },
       mutateAndGetPayload: async (args, context) => {
         const user = await this.usersRepo.deleteUser(
@@ -235,29 +236,29 @@ class Users {
     });
 
     this.mutation = {
-      createUser: this.CreateUserMutation,
-      editUser: this.EditUserMutation,
-      deleteUser: this.DeleteUserMutation
+      createUser: this.root.CreateUserMutation,
+      editUser: this.root.EditUserMutation,
+      deleteUser: this.root.DeleteUserMutation
     };
 
     this.subscription = {
       userCreated: {
-        type: this.User,
+        type: this.root.User,
         args: {},
         subscribe: this.usersRepo.subscribe("userCreated")
       },
       userUpdated: {
-        type: this.User,
+        type: this.root.User,
         args: {},
         subscribe: this.usersRepo.subscribe("userUpdated")
       },
       userDeleted: {
-        type: this.User,
+        type: this.root.User,
         args: {},
         subscribe: this.usersRepo.subscribe("userDeleted")
       },
       userEvent: {
-        type: this.User,
+        type: this.root.User,
         args: {},
         resolve: ({ userCreated, userUpdated, userDeleted }) =>
           userCreated || userUpdated || userDeleted,

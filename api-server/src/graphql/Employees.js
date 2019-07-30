@@ -22,6 +22,7 @@ class Employees {
     this.employeeModel = employeeModel;
     this.employeesRepo = employeesRepo;
     this.dashboardRepo = dashboardRepo;
+    this.root = null;
   }
 
   static get $provides() {
@@ -45,15 +46,15 @@ class Employees {
   }
 
   typeResolver(obj) {
-    if (obj instanceof this.employeeModel.model) return this.Employee;
+    if (obj instanceof this.employeeModel.model) return this.root.Employee;
     return null;
   }
 
-  init() {
-    const root = this.di.get("graphql");
-    const { nodeInterface } = root.nodeDefinitions;
+  async init({ root }) {
+    this.root = root;
+    const { nodeInterface } = this.root.nodeDefinitions;
 
-    this.EmployeeDept = new GraphQLEnumType({
+    this.root.EmployeeDept = new GraphQLEnumType({
       name: "EmployeeDept",
       values: _.reduce(
         _.map(this.employeeModel.depts, (dept, index) => ({ dept, index })),
@@ -65,7 +66,7 @@ class Employees {
       )
     });
 
-    this.Employee = new GraphQLObjectType({
+    this.root.Employee = new GraphQLObjectType({
       name: "Employee",
       fields: () => ({
         id: globalIdField("Employee"),
@@ -75,12 +76,12 @@ class Employees {
         checked: { type: new GraphQLNonNull(GraphQLBoolean) },
         name: { type: new GraphQLNonNull(GraphQLString) },
         dept: {
-          type: new GraphQLNonNull(this.EmployeeDept),
+          type: new GraphQLNonNull(this.root.EmployeeDept),
           resolve: source => _.indexOf(this.employeeModel.depts, source.dept)
         },
         title: { type: new GraphQLNonNull(GraphQLString) },
         country: {
-          type: new GraphQLNonNull(root.dashboard.Country),
+          type: new GraphQLNonNull(this.root.Country),
           resolve: (source, args, context) =>
             this.dashboardRepo.getCountry(
               context,
@@ -99,17 +100,17 @@ class Employees {
       edgeType: EmployeeEdge
     } = connectionDefinitions({
       name: "Employee",
-      nodeType: this.Employee,
+      nodeType: this.root.Employee,
       connectionFields: () => ({
         totalCount: {
           type: GraphQLInt
         }
       })
     });
-    this.EmployeeConnection = EmployeeConnection;
-    this.EmployeeEdge = EmployeeEdge;
+    this.root.EmployeeConnection = EmployeeConnection;
+    this.root.EmployeeEdge = EmployeeEdge;
 
-    this.EmployeeSortBy = new GraphQLEnumType({
+    this.root.EmployeeSortBy = new GraphQLEnumType({
       name: "EmployeeSortBy",
       values: _.reduce(
         _.map(this.employeeModel.sortBy, (item, index) => ({ item, index })),
@@ -121,7 +122,7 @@ class Employees {
       )
     });
 
-    this.EmployeeSortDir = new GraphQLEnumType({
+    this.root.EmployeeSortDir = new GraphQLEnumType({
       name: "EmployeeSortDir",
       values: _.reduce(
         _.map(this.employeeModel.sortDir, (item, index) => ({ item, index })),
@@ -135,7 +136,7 @@ class Employees {
 
     this.query = {
       employee: {
-        type: this.Employee,
+        type: this.root.Employee,
         args: {
           id: { type: GraphQLID }
         },
@@ -146,11 +147,11 @@ class Employees {
           )
       },
       employees: {
-        type: this.EmployeeConnection,
+        type: this.root.EmployeeConnection,
         args: {
-          dept: { type: this.EmployeeDept },
-          sortBy: { type: this.EmployeeSortBy },
-          sortDir: { type: this.EmployeeSortDir },
+          dept: { type: this.root.EmployeeDept },
+          sortBy: { type: this.root.EmployeeSortBy },
+          sortDir: { type: this.root.EmployeeSortDir },
           ...connectionArgs
         },
         resolve: (source, args, context) =>
@@ -170,19 +171,19 @@ class Employees {
       }
     };
 
-    this.CreateEmployeeMutation = mutationWithClientMutationId({
+    this.root.CreateEmployeeMutation = mutationWithClientMutationId({
       name: "CreateEmployee",
       inputFields: {
         uid: { type: GraphQLID },
         checked: { type: GraphQLBoolean },
         name: { type: GraphQLString },
-        dept: { type: this.EmployeeDept },
+        dept: { type: this.root.EmployeeDept },
         title: { type: GraphQLString },
         country: { type: GraphQLID },
         salary: { type: GraphQLInt }
       },
       outputFields: {
-        employee: { type: this.Employee }
+        employee: { type: this.root.Employee }
       },
       mutateAndGetPayload: async (args, context) => {
         const employee = await this.employeesRepo.createEmployee(
@@ -195,20 +196,20 @@ class Employees {
       }
     });
 
-    this.EditEmployeeMutation = mutationWithClientMutationId({
+    this.root.EditEmployeeMutation = mutationWithClientMutationId({
       name: "EditEmployee",
       inputFields: {
         id: { type: new GraphQLNonNull(GraphQLID) },
         uid: { type: GraphQLID },
         checked: { type: GraphQLBoolean },
         name: { type: GraphQLString },
-        dept: { type: this.EmployeeDept },
+        dept: { type: this.root.EmployeeDept },
         title: { type: GraphQLString },
         country: { type: GraphQLID },
         salary: { type: GraphQLInt }
       },
       outputFields: {
-        employee: { type: this.Employee }
+        employee: { type: this.root.Employee }
       },
       mutateAndGetPayload: async (args, context) => {
         const employee = await this.employeesRepo.editEmployee(
@@ -222,13 +223,13 @@ class Employees {
       }
     });
 
-    this.DeleteEmployeeMutation = mutationWithClientMutationId({
+    this.root.DeleteEmployeeMutation = mutationWithClientMutationId({
       name: "DeleteEmployee",
       inputFields: {
         id: { type: new GraphQLNonNull(GraphQLID) }
       },
       outputFields: {
-        employee: { type: this.Employee }
+        employee: { type: this.root.Employee }
       },
       mutateAndGetPayload: async (args, context) => {
         const employee = await this.employeesRepo.deleteEmployee(
@@ -240,29 +241,29 @@ class Employees {
     });
 
     this.mutation = {
-      createEmployee: this.CreateEmployeeMutation,
-      editEmployee: this.EditEmployeeMutation,
-      deleteEmployee: this.DeleteEmployeeMutation
+      createEmployee: this.root.CreateEmployeeMutation,
+      editEmployee: this.root.EditEmployeeMutation,
+      deleteEmployee: this.root.DeleteEmployeeMutation
     };
 
     this.subscription = {
       employeeCreated: {
-        type: this.Employee,
+        type: this.root.Employee,
         args: {},
         subscribe: this.employeesRepo.subscribe("employeeCreated")
       },
       employeeUpdated: {
-        type: this.Employee,
+        type: this.root.Employee,
         args: {},
         subscribe: this.employeesRepo.subscribe("employeeUpdated")
       },
       employeeDeleted: {
-        type: this.Employee,
+        type: this.root.Employee,
         args: {},
         subscribe: this.employeesRepo.subscribe("employeeDeleted")
       },
       employeeEvent: {
-        type: this.Employee,
+        type: this.root.Employee,
         args: {},
         resolve: ({ employeeCreated, employeeUpdated, employeeDeleted }) =>
           employeeCreated || employeeUpdated || employeeDeleted,

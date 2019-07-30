@@ -22,6 +22,7 @@ class Dashboard {
     this.dashboardModel = dashboardModel;
     this.dashboardRepo = dashboardRepo;
     this.employeesRepo = employeesRepo;
+    this.root = null;
   }
 
   static get $provides() {
@@ -54,33 +55,34 @@ class Dashboard {
   }
 
   typeResolver(obj) {
-    if (obj instanceof this.dashboardModel.CountryModel) return this.Country;
-    if (obj instanceof this.dashboardModel.USCityModel) return this.USCity;
+    if (obj instanceof this.dashboardModel.CountryModel)
+      return this.root.Country;
+    if (obj instanceof this.dashboardModel.USCityModel) return this.root.USCity;
     if (obj instanceof this.dashboardModel.ProfitValueModel)
-      return this.ProfitValue;
+      return this.root.ProfitValue;
     if (obj instanceof this.dashboardModel.SalesValueModel)
-      return this.SalesValue;
+      return this.root.SalesValue;
     if (obj instanceof this.dashboardModel.ClientsValueModel)
-      return this.ClientsValue;
+      return this.root.ClientsValue;
     if (obj instanceof this.dashboardModel.AvgTimeValueModel)
-      return this.AvgTimeValue;
+      return this.root.AvgTimeValue;
     return null;
   }
 
-  init() {
-    const root = this.di.get("graphql");
-    const { nodeInterface } = root.nodeDefinitions;
+  async init({ root }) {
+    this.root = root;
+    const { nodeInterface } = this.root.nodeDefinitions;
 
-    this.Country = new GraphQLObjectType({
+    this.root.Country = new GraphQLObjectType({
       name: "Country",
       fields: () => ({
         id: globalIdField("Country"),
         name: { type: new GraphQLNonNull(GraphQLString) },
         callingCode: { type: new GraphQLNonNull(GraphQLString) },
         employees: {
-          type: root.employees.EmployeeConnection,
+          type: this.root.EmployeeConnection,
           args: {
-            dept: { type: root.employees.EmployeeDept },
+            dept: { type: this.root.EmployeeDept },
             ...connectionArgs
           },
           resolve: (source, args, context) =>
@@ -101,12 +103,12 @@ class Dashboard {
       edgeType: CountryEdge
     } = connectionDefinitions({
       name: "Country",
-      nodeType: this.Country
+      nodeType: this.root.Country
     });
-    this.CountryConnection = CountryConnection;
-    this.CountryEdge = CountryEdge;
+    this.root.CountryConnection = CountryConnection;
+    this.root.CountryEdge = CountryEdge;
 
-    this.USCity = new GraphQLObjectType({
+    this.root.USCity = new GraphQLObjectType({
       name: "USCity",
       fields: () => ({
         id: globalIdField("USCity"),
@@ -125,17 +127,17 @@ class Dashboard {
       edgeType: USCityEdge
     } = connectionDefinitions({
       name: "USCity",
-      nodeType: this.USCity,
+      nodeType: this.root.USCity,
       connectionFields: () => ({
         otherPopulation: {
           type: GraphQLInt
         }
       })
     });
-    this.USCityConnection = USCityConnection;
-    this.USCityEdge = USCityEdge;
+    this.root.USCityConnection = USCityConnection;
+    this.root.USCityEdge = USCityEdge;
 
-    this.ProfitValue = new GraphQLObjectType({
+    this.root.ProfitValue = new GraphQLObjectType({
       name: "ProfitValue",
       fields: () => ({
         id: globalIdField("ProfitValue"),
@@ -152,12 +154,12 @@ class Dashboard {
       edgeType: ProfitValueEdge
     } = connectionDefinitions({
       name: "ProfitValue",
-      nodeType: this.ProfitValue
+      nodeType: this.root.ProfitValue
     });
-    this.ProfitValueConnection = ProfitValueConnection;
-    this.ProfitValueEdge = ProfitValueEdge;
+    this.root.ProfitValueConnection = ProfitValueConnection;
+    this.root.ProfitValueEdge = ProfitValueEdge;
 
-    this.SalesValue = new GraphQLObjectType({
+    this.root.SalesValue = new GraphQLObjectType({
       name: "SalesValue",
       fields: () => ({
         id: globalIdField("SalesValue"),
@@ -172,12 +174,12 @@ class Dashboard {
       edgeType: SalesValueEdge
     } = connectionDefinitions({
       name: "SalesValue",
-      nodeType: this.SalesValue
+      nodeType: this.root.SalesValue
     });
-    this.SalesValueConnection = SalesValueConnection;
-    this.SalesValueEdge = SalesValueEdge;
+    this.root.SalesValueConnection = SalesValueConnection;
+    this.root.SalesValueEdge = SalesValueEdge;
 
-    this.ClientsValue = new GraphQLObjectType({
+    this.root.ClientsValue = new GraphQLObjectType({
       name: "ClientsValue",
       fields: () => ({
         id: globalIdField("ClientsValue"),
@@ -192,12 +194,12 @@ class Dashboard {
       edgeType: ClientsValueEdge
     } = connectionDefinitions({
       name: "ClientsValue",
-      nodeType: this.ClientsValue
+      nodeType: this.root.ClientsValue
     });
-    this.ClientsValueConnection = ClientsValueConnection;
-    this.ClientsValueEdge = ClientsValueEdge;
+    this.root.ClientsValueConnection = ClientsValueConnection;
+    this.root.ClientsValueEdge = ClientsValueEdge;
 
-    this.AvgTimeValue = new GraphQLObjectType({
+    this.root.AvgTimeValue = new GraphQLObjectType({
       name: "AvgTimeValue",
       fields: () => ({
         id: globalIdField("AvgTimeValue"),
@@ -212,14 +214,14 @@ class Dashboard {
       edgeType: AvgTimeValueEdge
     } = connectionDefinitions({
       name: "AvgTimeValue",
-      nodeType: this.AvgTimeValue
+      nodeType: this.root.AvgTimeValue
     });
-    this.AvgTimeValueConnection = AvgTimeValueConnection;
-    this.AvgTimeValueEdge = AvgTimeValueEdge;
+    this.root.AvgTimeValueConnection = AvgTimeValueConnection;
+    this.root.AvgTimeValueEdge = AvgTimeValueEdge;
 
     this.query = {
       country: {
-        type: this.Country,
+        type: this.root.Country,
         args: {
           id: { type: GraphQLID }
         },
@@ -230,7 +232,7 @@ class Dashboard {
           )
       },
       countries: {
-        type: this.CountryConnection,
+        type: this.root.CountryConnection,
         args: connectionArgs,
         resolve: (source, args, context) =>
           connectionFromPromisedArray(
@@ -239,7 +241,7 @@ class Dashboard {
           )
       },
       usCity: {
-        type: this.USCity,
+        type: this.root.USCity,
         args: {
           id: { type: GraphQLID }
         },
@@ -250,7 +252,7 @@ class Dashboard {
           )
       },
       usCities: {
-        type: this.USCityConnection,
+        type: this.root.USCityConnection,
         args: {
           ...connectionArgs,
           stateId: { type: GraphQLString },
@@ -265,7 +267,7 @@ class Dashboard {
         }
       },
       profitValues: {
-        type: this.ProfitValueConnection,
+        type: this.root.ProfitValueConnection,
         args: connectionArgs,
         resolve: (source, args, context) =>
           connectionFromPromisedArray(
@@ -274,7 +276,7 @@ class Dashboard {
           )
       },
       salesValues: {
-        type: this.SalesValueConnection,
+        type: this.root.SalesValueConnection,
         args: connectionArgs,
         resolve: (source, args, context) =>
           connectionFromPromisedArray(
@@ -283,7 +285,7 @@ class Dashboard {
           )
       },
       clientsValues: {
-        type: this.ClientsValueConnection,
+        type: this.root.ClientsValueConnection,
         args: connectionArgs,
         resolve: (source, args, context) =>
           connectionFromPromisedArray(
@@ -292,7 +294,7 @@ class Dashboard {
           )
       },
       avgTimeValues: {
-        type: this.AvgTimeValueConnection,
+        type: this.root.AvgTimeValueConnection,
         args: connectionArgs,
         resolve: (source, args, context) =>
           connectionFromPromisedArray(

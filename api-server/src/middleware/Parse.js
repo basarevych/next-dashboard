@@ -18,9 +18,7 @@ class Parse {
     return ["di", "auth"];
   }
 
-  async init() {}
-
-  accept({ express }) {
+  async init({ express }) {
     express.use(bodyParser.json());
     express.use(bodyParser.urlencoded({ extended: true }));
     express.use(cookieParser());

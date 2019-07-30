@@ -12,6 +12,7 @@ class Auth {
     this.di = di;
     this.userModel = userModel;
     this.authRepo = authRepo;
+    this.root = null;
   }
 
   static get $provides() {
@@ -30,10 +31,10 @@ class Auth {
     return null;
   }
 
-  init() {
-    const root = this.di.get("graphql");
+  async init({ root }) {
+    this.root = root;
 
-    this.ProviderStatus = new GraphQLObjectType({
+    this.root.ProviderStatus = new GraphQLObjectType({
       name: "ProviderStatus",
       fields: () => ({
         name: { type: new GraphQLNonNull(GraphQLString) },
@@ -41,7 +42,7 @@ class Auth {
       })
     });
 
-    this.Status = new GraphQLObjectType({
+    this.root.Status = new GraphQLObjectType({
       name: "Status",
       fields: () => ({
         isAuthenticated: { type: new GraphQLNonNull(GraphQLBoolean) },
@@ -50,7 +51,7 @@ class Auth {
         isEmailVerified: { type: new GraphQLNonNull(GraphQLBoolean) },
         name: { type: GraphQLString },
         roles: {
-          type: new GraphQLNonNull(new GraphQLList(root.users.UserRole)),
+          type: new GraphQLNonNull(new GraphQLList(this.root.UserRole)),
           resolve: source =>
             _.reduce(
               source.roles,
@@ -62,19 +63,19 @@ class Auth {
             )
         },
         providers: {
-          type: new GraphQLNonNull(new GraphQLList(this.ProviderStatus))
+          type: new GraphQLNonNull(new GraphQLList(this.root.ProviderStatus))
         }
       })
     });
 
     this.query = {
       me: {
-        type: this.Status,
+        type: this.root.Status,
         resolve: (source, args, context) => this.authRepo.getStatus(context)
       }
     };
 
-    this.SignInMutation = mutationWithClientMutationId({
+    this.root.SignInMutation = mutationWithClientMutationId({
       name: "SignIn",
       inputFields: {
         email: { type: GraphQLString },
@@ -89,7 +90,7 @@ class Auth {
         await this.authRepo.signIn(context, args)
     });
 
-    this.SignUpMutation = mutationWithClientMutationId({
+    this.root.SignUpMutation = mutationWithClientMutationId({
       name: "SignUp",
       inputFields: {
         email: { type: GraphQLString },
@@ -105,7 +106,7 @@ class Auth {
         await this.authRepo.signUp(context, args)
     });
 
-    this.SignOutMutation = mutationWithClientMutationId({
+    this.root.SignOutMutation = mutationWithClientMutationId({
       name: "SignOut",
       inputFields: {},
       outputFields: {
@@ -115,7 +116,7 @@ class Auth {
         await this.authRepo.signOut(context, args)
     });
 
-    this.GetTokenMutation = mutationWithClientMutationId({
+    this.root.GetTokenMutation = mutationWithClientMutationId({
       name: "GetToken",
       inputFields: {
         type: { type: GraphQLString },
@@ -130,7 +131,7 @@ class Auth {
         await this.authRepo.getToken(context, args)
     });
 
-    this.RequestEmailVerificationMutation = mutationWithClientMutationId({
+    this.root.RequestEmailVerificationMutation = mutationWithClientMutationId({
       name: "RequestEmailVerification",
       inputFields: {
         locale: { type: GraphQLString }
@@ -142,7 +143,7 @@ class Auth {
         await this.authRepo.requestEmailVerification(context, args)
     });
 
-    this.VerifyEmailMutation = mutationWithClientMutationId({
+    this.root.VerifyEmailMutation = mutationWithClientMutationId({
       name: "VerifyEmail",
       inputFields: {
         token: { type: GraphQLString }
@@ -156,7 +157,7 @@ class Auth {
         await this.authRepo.verifyEmail(context, args)
     });
 
-    this.UnlinkProviderMutation = mutationWithClientMutationId({
+    this.root.UnlinkProviderMutation = mutationWithClientMutationId({
       name: "UnlinkProvider",
       inputFields: {
         provider: { type: GraphQLString }
@@ -168,7 +169,7 @@ class Auth {
         await this.authRepo.unlinkProvider(context, args)
     });
 
-    this.UpdateProfileMutation = mutationWithClientMutationId({
+    this.root.UpdateProfileMutation = mutationWithClientMutationId({
       name: "UpdateProfile",
       inputFields: {
         name: { type: GraphQLString },
@@ -182,7 +183,7 @@ class Auth {
         await this.authRepo.updateProfile(context, args)
     });
 
-    this.DeleteProfileMutation = mutationWithClientMutationId({
+    this.root.DeleteProfileMutation = mutationWithClientMutationId({
       name: "DeleteProfile",
       inputFields: {},
       outputFields: {
@@ -193,15 +194,15 @@ class Auth {
     });
 
     this.mutation = {
-      signIn: this.SignInMutation,
-      signUp: this.SignUpMutation,
-      signOut: this.SignOutMutation,
-      getToken: this.GetTokenMutation,
-      requestEmailVerification: this.RequestEmailVerificationMutation,
-      verifyEmail: this.VerifyEmailMutation,
-      unlinkProvider: this.UnlinkProviderMutation,
-      updateProfile: this.UpdateProfileMutation,
-      deleteProfile: this.DeleteProfileMutation
+      signIn: this.root.SignInMutation,
+      signUp: this.root.SignUpMutation,
+      signOut: this.root.SignOutMutation,
+      getToken: this.root.GetTokenMutation,
+      requestEmailVerification: this.root.RequestEmailVerificationMutation,
+      verifyEmail: this.root.VerifyEmailMutation,
+      unlinkProvider: this.root.UnlinkProviderMutation,
+      updateProfile: this.root.UpdateProfileMutation,
+      deleteProfile: this.root.DeleteProfileMutation
     };
 
     this.subscription = {};

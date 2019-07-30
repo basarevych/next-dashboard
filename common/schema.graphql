@@ -245,12 +245,12 @@ type Mutation {
   unlinkProvider(input: UnlinkProviderInput!): UnlinkProviderPayload
   updateProfile(input: UpdateProfileInput!): UpdateProfilePayload
   deleteProfile(input: DeleteProfileInput!): DeleteProfilePayload
-  createUser(input: CreateUserInput!): CreateUserPayload
-  editUser(input: EditUserInput!): EditUserPayload
-  deleteUser(input: DeleteUserInput!): DeleteUserPayload
   createEmployee(input: CreateEmployeeInput!): CreateEmployeePayload
   editEmployee(input: EditEmployeeInput!): EditEmployeePayload
   deleteEmployee(input: DeleteEmployeeInput!): DeleteEmployeePayload
+  createUser(input: CreateUserInput!): CreateUserPayload
+  editUser(input: EditUserInput!): EditUserPayload
+  deleteUser(input: DeleteUserInput!): DeleteUserPayload
 }
 
 """An object with an ID"""
@@ -398,14 +398,14 @@ type Status {
 }
 
 type Subscription {
-  userCreated: User
-  userUpdated: User
-  userDeleted: User
-  userEvent: User
   employeeCreated: Employee
   employeeUpdated: Employee
   employeeDeleted: Employee
   employeeEvent: Employee
+  userCreated: User
+  userUpdated: User
+  userDeleted: User
+  userEvent: User
 }
 
 input UnlinkProviderInput {
@@ -519,10 +519,6 @@ type VerifyEmailPayload {
 
 type Viewer {
   me: Status
-  user(id: ID): User
-  users(sortBy: UserSortBy, sortDir: UserSortDir, after: String, first: Int, before: String, last: Int): UserConnection
-  employee(id: ID): Employee
-  employees(dept: EmployeeDept, sortBy: EmployeeSortBy, sortDir: EmployeeSortDir, after: String, first: Int, before: String, last: Int): EmployeeConnection
   country(id: ID): Country
   countries(after: String, first: Int, before: String, last: Int): CountryConnection
   usCity(id: ID): USCity
@@ -531,10 +527,8 @@ type Viewer {
   salesValues(after: String, first: Int, before: String, last: Int): SalesValueConnection
   clientsValues(after: String, first: Int, before: String, last: Int): ClientsValueConnection
   avgTimeValues(after: String, first: Int, before: String, last: Int): AvgTimeValueConnection
-
-  """Fetches an object given its ID"""
-  node(
-    """The ID of an object"""
-    id: ID!
-  ): Node
+  employee(id: ID): Employee
+  employees(dept: EmployeeDept, sortBy: EmployeeSortBy, sortDir: EmployeeSortDir, after: String, first: Int, before: String, last: Int): EmployeeConnection
+  user(id: ID): User
+  users(sortBy: UserSortBy, sortDir: UserSortDir, after: String, first: Int, before: String, last: Int): UserConnection
 }

@@ -6,9 +6,7 @@ class Error {
     return "middleware.error";
   }
 
-  async init() {}
-
-  accept({ express }) {
+  async init({ express }) {
     express.use((err, req, res, next) => {
       let details;
       if (process.env.NODE_ENV === "development")

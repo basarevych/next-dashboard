@@ -4,7 +4,6 @@ const Router = require("express").Router;
 class RedirectRoute {
   constructor(config) {
     this.config = config;
-    this.router = Router();
   }
 
   static get $provides() {
@@ -16,9 +15,7 @@ class RedirectRoute {
   }
 
   async init() {
-    if (this.promise) return this.promise;
-    this.promise = Promise.resolve();
-
+    this.router = Router();
     this.router.get("/redirect/:name", this.getRedirect.bind(this));
   }
 

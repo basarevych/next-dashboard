@@ -10,7 +10,6 @@ class AvatarsRoute {
     this.config = config;
     this.cache = cache;
     this.user = user;
-    this.router = Router();
 
     this.smallWidth = 60;
     this.largeWidth = 160;
@@ -29,8 +28,6 @@ class AvatarsRoute {
     if (this.promise) return this.promise;
 
     this.promise = Promise.resolve().then(async () => {
-      this.router.get("/avatars/:id", this.getAvatar.bind(this));
-
       try {
         let response = await fetch("https://tinyfac.es/api/users");
         if (response.status !== 200)
@@ -76,6 +73,9 @@ class AvatarsRoute {
       } catch (error) {
         console.log(`> Random avatars service: ${error.message}`);
       }
+
+      this.router = Router();
+      this.router.get("/avatars/:id", this.getAvatar.bind(this));
     });
 
     return this.promise;
