@@ -23,6 +23,8 @@ class Auth {
       access: "10m",
       oneTime: "1h"
     };
+
+    this.maxSessions = 10;
   }
 
   static get $provides() {
@@ -469,6 +471,14 @@ class Auth {
         ip: context.ip
       });
       user.clients.push(client.toObject());
+
+      for (
+        let i = 0, max = user.clients.length;
+        i < max - this.maxSessions;
+        i++
+      ) {
+        await user.clients[i].remove();
+      }
     }
 
     await user.validate();
