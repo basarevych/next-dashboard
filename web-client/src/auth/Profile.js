@@ -77,7 +77,6 @@ class ProfilePage extends React.Component {
   static propTypes = {
     theme: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired,
-    viewer: PropTypes.object.isRequired,
     user: PropTypes.object.isRequired,
     onSave: PropTypes.func.isRequired,
     onLink: PropTypes.func.isRequired,

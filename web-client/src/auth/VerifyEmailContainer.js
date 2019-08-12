@@ -10,8 +10,10 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-const VerifyEmail = connect(
-  null,
-  mapDispatchToProps
-)(withStyles(styles)(VerifyEmailComponent));
+const VerifyEmail = withStyles(styles)(
+  connect(
+    null,
+    mapDispatchToProps
+  )(VerifyEmailComponent)
+);
 export default VerifyEmail;

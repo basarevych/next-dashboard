@@ -10,9 +10,11 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-const NotificationsDemo = connect(
-  null,
-  mapDispatchToProps
-)(withStyles(styles)(NotificationsDemoComponent));
+const NotificationsDemo = withStyles(styles)(
+  connect(
+    null,
+    mapDispatchToProps
+  )(NotificationsDemoComponent)
+);
 
 export default NotificationsDemo;

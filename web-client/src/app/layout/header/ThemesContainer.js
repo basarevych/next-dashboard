@@ -18,9 +18,13 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-const Themes = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withStyles(styles)(injectIntl(ThemesComponent)));
+const Themes = withStyles(styles)(
+  injectIntl(
+    connect(
+      mapStateToProps,
+      mapDispatchToProps
+    )(ThemesComponent)
+  )
+);
 
 export default Themes;

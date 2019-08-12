@@ -16,10 +16,14 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-const Dashboard = connect(
-  null,
-  mapDispatchToProps
-)(withStyles(styles)(withTheme(DashboardComponent)));
+const Dashboard = withStyles(styles)(
+  withTheme(
+    connect(
+      null,
+      mapDispatchToProps
+    )(DashboardComponent)
+  )
+);
 
 export { defaultState, defaultDept, pageSize, sortBy, sortDir };
 export default Dashboard;

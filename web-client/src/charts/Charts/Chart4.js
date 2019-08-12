@@ -13,6 +13,7 @@ import theme from "./theme";
 class Chart4 extends React.Component {
   static propTypes = {
     theme: PropTypes.object.isRequired,
+    isStarted: PropTypes.bool.isRequired,
     className: PropTypes.string
   };
 
@@ -21,6 +22,8 @@ class Chart4 extends React.Component {
   }
 
   renderChart(width, height) {
+    if (!this.props.isStarted) return <div width={width} height={height} />;
+
     return (
       <svg width={width} height={height}>
         <VictoryChart

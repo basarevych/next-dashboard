@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { intlShape, FormattedMessage } from "react-intl";
+import { FormattedMessage } from "react-intl";
 import { lighten } from "@material-ui/core/styles/colorManipulator";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -77,7 +77,7 @@ export const styles = theme => ({
 
 class AppAuthModal extends React.Component {
   static propTypes = {
-    intl: intlShape.isRequired,
+    intl: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired,
     user: PropTypes.object.isRequired,
     apiServer: PropTypes.string.isRequired,

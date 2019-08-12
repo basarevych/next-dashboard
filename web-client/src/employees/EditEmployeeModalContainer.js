@@ -41,9 +41,13 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-const EditEmployeeModal = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withStyles(styles)(injectIntl(EditEmployeeModalComponent)));
+const EditEmployeeModal = withStyles(styles)(
+  injectIntl(
+    connect(
+      mapStateToProps,
+      mapDispatchToProps
+    )(EditEmployeeModalComponent)
+  )
+);
 
 export default EditEmployeeModal;

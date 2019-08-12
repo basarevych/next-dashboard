@@ -12,7 +12,7 @@ const mapStateToProps = (state, props) => {
 };
 
 const UserRow = createFragmentContainer(
-  connect(mapStateToProps)(withStyles(styles)(injectIntl(UserRowComponent))),
+  withStyles(styles)(injectIntl(connect(mapStateToProps)(UserRowComponent))),
   {
     node: graphql`
       fragment UserRowContainer_node on User {

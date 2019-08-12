@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
-import { intlShape, FormattedMessage, FormattedNumber } from "react-intl";
+import { FormattedMessage, FormattedNumber } from "react-intl";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import { fade } from "@material-ui/core/styles/colorManipulator";
@@ -52,7 +52,7 @@ export const styles = theme => ({
 
 class Stat extends React.Component {
   static propTypes = {
-    intl: intlShape.isRequired,
+    intl: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired,
     theme: PropTypes.object.isRequired,
     label: PropTypes.string.isRequired,

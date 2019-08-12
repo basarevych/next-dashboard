@@ -1,6 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { intlShape } from "react-intl";
 import { lighten } from "@material-ui/core/styles/colorManipulator";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -48,7 +47,7 @@ export const styles = theme => ({
 
 class Inbox extends React.Component {
   static propTypes = {
-    intl: intlShape,
+    intl: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired,
     apiServer: PropTypes.string.isRequired,
     anchor: PropTypes.object,

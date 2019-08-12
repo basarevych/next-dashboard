@@ -1,6 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { intlShape } from "react-intl";
 import { Field } from "formik";
 import FormContext from "./context";
 import normalize from "../../../common/src/normalize";
@@ -12,7 +11,7 @@ import ErrorField from "./fields/ErrorContainer";
 
 class FormField extends React.PureComponent {
   static propTypes = {
-    intl: intlShape.isRequired,
+    intl: PropTypes.object.isRequired,
     formik: PropTypes.object.isRequired,
     name: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,

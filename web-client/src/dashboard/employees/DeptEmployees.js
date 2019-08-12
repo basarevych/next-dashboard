@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { graphql } from "react-relay";
-import { intlShape } from "react-intl";
 import { AutoSizer } from "react-virtualized";
 import Paper from "@material-ui/core/Paper";
 import AppBar from "@material-ui/core/AppBar";
@@ -34,7 +33,7 @@ const subscription = graphql`
 
 class DeptEmployees extends React.Component {
   static propTypes = {
-    intl: intlShape.isRequired,
+    intl: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired,
     viewer: PropTypes.object.isRequired,
     isSubscribed: PropTypes.bool.isRequired,

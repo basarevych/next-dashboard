@@ -32,10 +32,14 @@ const mapDispatchToProps = dispatch => {
 };
 
 const Users = createRefetchContainer(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(withStyles(styles)(injectIntl(UsersComponent))),
+  withStyles(styles)(
+    injectIntl(
+      connect(
+        mapStateToProps,
+        mapDispatchToProps
+      )(UsersComponent)
+    )
+  ),
   {
     viewer: graphql`
       fragment UsersContainer_viewer on Viewer

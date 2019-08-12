@@ -14,22 +14,28 @@ import theme from "./theme";
 class Chart5 extends React.Component {
   static propTypes = {
     theme: PropTypes.object.isRequired,
+    isStarted: PropTypes.bool.isRequired,
     className: PropTypes.string
   };
 
   getData() {
-    return _.times(7, () => {
-      return [
-        { x: 1, y: _.random(1, 5) },
-        { x: 2, y: _.random(1, 10) },
-        { x: 3, y: _.random(2, 10) },
-        { x: 4, y: _.random(2, 10) },
-        { x: 5, y: _.random(2, 15) }
-      ];
-    });
+    if (!this.data) {
+      this.data = _.times(7, () => {
+        return [
+          { x: 1, y: _.random(1, 5) },
+          { x: 2, y: _.random(1, 10) },
+          { x: 3, y: _.random(2, 10) },
+          { x: 4, y: _.random(2, 10) },
+          { x: 5, y: _.random(2, 15) }
+        ];
+      });
+    }
+    return this.data;
   }
 
   renderChart(width, height) {
+    if (!this.props.isStarted) return <div width={width} height={height} />;
+
     return (
       <svg width={width} height={height}>
         <VictoryChart

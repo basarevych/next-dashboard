@@ -24,6 +24,7 @@
   "THEME_DARK_LABEL": "Темная тема",
   "THEME_LIGHT_MENU": "Светлая",
   "THEME_LIGHT_LABEL": "Светлая тема",
+  "LAYOUT_LOADING_MESSAGE": "Загрузка...",
   "LAYOUT_UPDATE_READY_MESSAGE": "Доступно обновление. Кликните здесь, чтобы перезагрузить страницу.",
   "LAYOUT_NOT_CONNECTED_MESSAGE": "Подключение...",
   "SIDEBAR_LOGIN_BUTTON": "Вход / Регистрация",

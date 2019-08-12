@@ -94,7 +94,10 @@ module.exports = withPlugins(plugins, {
       // bundle only locales we are actually using
       new ContextReplacementPlugin(/moment[/\\]locale$/, locales),
       new ContextReplacementPlugin(/intl[/\\]locale-data[/\\]jsonp$/, locales),
-      new ContextReplacementPlugin(/react-intl[/\\]locale-data$/, locales)
+      new ContextReplacementPlugin(
+        /@formatjs[/\\]intl-relativetimeformat[/\\]dist[/\\]locale-data$/,
+        locales
+      )
     );
 
     config.resolve.alias["graphql"] = path.resolve(

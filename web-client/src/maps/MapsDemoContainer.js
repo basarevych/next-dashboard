@@ -10,7 +10,7 @@ const mapStateToProps = state => {
   };
 };
 
-const MapsDemo = connect(mapStateToProps)(
-  withStyles(styles)(MapsDemoComponent)
+const MapsDemo = withStyles(styles)(
+  connect(mapStateToProps)(MapsDemoComponent)
 );
 export default MapsDemo;

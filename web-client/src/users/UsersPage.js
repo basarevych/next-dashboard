@@ -1,7 +1,7 @@
 import React from "react";
 import { graphql } from "react-relay";
 import { QueryRenderer } from "../app/providers/Relay";
-import Layout from "../app/layout/LayoutContainer";
+import ErrorMessage from "../app/error/ErrorMessageContainer";
 import Users, { pageSize, sortBy, sortDir } from "./UsersContainer";
 
 const defaultVariables = { first: pageSize, sortBy, sortDir };
@@ -16,7 +16,6 @@ const query = graphql`
     $before: String
   ) {
     viewer {
-      ...LayoutContainer_viewer
       ...UsersContainer_viewer
         @arguments(
           sortBy: $sortBy
@@ -40,14 +39,14 @@ class UsersPage extends React.Component {
       <QueryRenderer
         query={query}
         variables={defaultVariables}
-        render={({ error, props }) => (
-          <Layout
-            page="/users"
-            error={error}
-            viewer={props && props.viewer}
-            render={() => <Users viewer={props && props.viewer} />}
-          />
-        )}
+        render={({ error, props }) => {
+          if (error) return <ErrorMessage error={error} />;
+
+          const viewer = props && props.viewer;
+          if (!viewer) return null;
+
+          return <Users viewer={viewer} />;
+        }}
       />
     );
   }

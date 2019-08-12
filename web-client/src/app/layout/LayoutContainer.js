@@ -2,6 +2,7 @@ import { connect } from "react-redux";
 import { graphql, createRefetchContainer } from "react-relay";
 import { injectIntl } from "react-intl";
 import { withStyles } from "@material-ui/styles";
+import { withRouter } from "next/router";
 import { appSelectors, appOperations } from "../state";
 import LayoutComponent, { styles } from "./Layout";
 
@@ -24,12 +25,18 @@ const mapDispatchToProps = dispatch => {
 };
 
 const Layout = createRefetchContainer(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
-    null,
-    { pure: false }
-  )(withStyles(styles)(injectIntl(LayoutComponent))),
+  withRouter(
+    withStyles(styles)(
+      injectIntl(
+        connect(
+          mapStateToProps,
+          mapDispatchToProps,
+          null,
+          { pure: false }
+        )(LayoutComponent)
+      )
+    )
+  ),
   {
     viewer: graphql`
       fragment LayoutContainer_viewer on Viewer {

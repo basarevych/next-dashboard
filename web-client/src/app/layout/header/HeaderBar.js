@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Router from "next/router";
-import { intlShape, FormattedMessage } from "react-intl";
+import { FormattedMessage } from "react-intl";
 import { fade } from "@material-ui/core/styles/colorManipulator";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import Tooltip from "@material-ui/core/Tooltip";
@@ -88,7 +88,7 @@ export const styles = theme => ({
 
 class HeaderBar extends React.Component {
   static propTypes = {
-    intl: intlShape,
+    intl: PropTypes.object.isRequired,
     theme: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired,
     locale: PropTypes.string.isRequired,

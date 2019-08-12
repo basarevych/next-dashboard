@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Head from "next/head";
-import { intlShape, FormattedMessage } from "react-intl";
+import { FormattedMessage } from "react-intl";
 import Button from "@material-ui/core/Button";
 import Hidden from "@material-ui/core/Hidden";
 import Snackbar from "@material-ui/core/Snackbar";
@@ -9,8 +9,8 @@ import Drawer from "@material-ui/core/Drawer";
 import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
 import Sidebar from "./SidebarContainer";
 import Header from "./HeaderContainer";
-import AppAuthModal from "../modals/AppAuthModalContainer";
 import ErrorMessage from "../error/ErrorMessageContainer";
+import AppAuthModal from "../modals/AppAuthModalContainer";
 import constants from "../../../common/constants";
 
 import "../../../styles";
@@ -87,15 +87,14 @@ export const styles = theme => ({
 
 class Layout extends React.Component {
   static propTypes = {
-    intl: intlShape.isRequired,
+    intl: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired,
     isStopped: PropTypes.bool.isRequired,
     isDisconnected: PropTypes.bool.isRequired,
     isAuthModalOpen: PropTypes.bool.isRequired,
     statusCode: PropTypes.number.isRequired,
-    page: PropTypes.string.isRequired,
+    router: PropTypes.object.isRequired,
     relay: PropTypes.object.isRequired,
-    error: PropTypes.object,
     viewer: PropTypes.object,
     render: PropTypes.func,
     onSetUser: PropTypes.func.isRequired
@@ -123,6 +122,7 @@ class Layout extends React.Component {
     this.handleSidebarClose = this.handleSidebarClose.bind(this);
     this.handleAuthMessage = this.handleAuthMessage.bind(this);
     this.handleUpdateReady = this.handleUpdateReady.bind(this);
+    this.handleRouteChange = this.handleRouteChange.bind(this);
     this.doUpdate = this.doUpdate.bind(this);
   }
 
@@ -139,6 +139,8 @@ class Layout extends React.Component {
       constants.events.UPDATE_READY,
       this.handleUpdateReady
     );
+
+    this.props.router.events.on("routeChangeComplete", this.handleRouteChange);
 
     this.setState({ isLoaded: true, isUpdateNeeded: !!global.__updateReady });
   }
@@ -158,10 +160,12 @@ class Layout extends React.Component {
       constants.events.UPDATE_READY,
       this.handleUpdateReady
     );
+
+    this.props.router.events.off("routeChangeComplete", this.handleRouteChange);
   }
 
   getTitle() {
-    const page = constants.pages[this.props.page] || {};
+    const page = constants.pages[this.props.router.asPath] || {};
     return page.title;
   }
 
@@ -191,11 +195,15 @@ class Layout extends React.Component {
     window.location.reload(true);
   }
 
+  handleRouteChange() {
+    if (!this.isDestroyed)
+      this.props.relay.refetch(null, null, null, { force: true });
+  }
+
   render() {
     if (this.props.isStopped) return null;
 
     const title = this.getTitle();
-    const isError = this.props.error || this.props.statusCode !== 200;
 
     return (
       <div className="app">
@@ -243,19 +251,13 @@ class Layout extends React.Component {
         </Hidden>
 
         <main className={this.props.classes.main}>
-          {isError && (
-            <ErrorMessage
-              statusCode={this.props.statusCode}
-              error={this.props.error}
-            />
-          )}
-          {!isError && (
-            <>
-              <Header onSidebarToggle={this.handleSidebarToggle} />
-              {!!this.props.viewer &&
-                !!this.props.render &&
-                this.props.render()}
-            </>
+          <Header onSidebarToggle={this.handleSidebarToggle} />
+          {this.props.statusCode === 200 &&
+            !!this.props.viewer &&
+            !!this.props.render &&
+            this.props.render()}
+          {this.props.statusCode !== 200 && (
+            <ErrorMessage statusCode={this.props.statusCode} />
           )}
         </main>
 

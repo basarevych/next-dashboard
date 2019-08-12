@@ -18,9 +18,15 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-const Sidebar = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withRouter(withStyles(styles)(injectIntl(SidebarComponent))));
+const Sidebar = withRouter(
+  withStyles(styles)(
+    injectIntl(
+      connect(
+        mapStateToProps,
+        mapDispatchToProps
+      )(SidebarComponent)
+    )
+  )
+);
 
 export default Sidebar;

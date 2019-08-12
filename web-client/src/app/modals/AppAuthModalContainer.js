@@ -22,9 +22,13 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-const AppAuthModal = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withStyles(styles)(injectIntl(AppAuthModalComponent)));
+const AppAuthModal = withStyles(styles)(
+  injectIntl(
+    connect(
+      mapStateToProps,
+      mapDispatchToProps
+    )(AppAuthModalComponent)
+  )
+);
 
 export default AppAuthModal;

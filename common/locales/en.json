@@ -24,6 +24,7 @@
   "THEME_DARK_LABEL": "Dark Theme",
   "THEME_LIGHT_MENU": "Light",
   "THEME_LIGHT_LABEL": "Light Theme",
+  "LAYOUT_LOADING_MESSAGE": "Loading...",
   "LAYOUT_UPDATE_READY_MESSAGE": "An update is available. Click here to reload the page.",
   "LAYOUT_NOT_CONNECTED_MESSAGE": "Connecting...",
   "SIDEBAR_LOGIN_BUTTON": "Sign Up / Login",

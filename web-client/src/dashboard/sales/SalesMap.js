@@ -57,12 +57,12 @@ const colorRangeDark = [
 ];
 
 const colorRangeLight = [
-  [30, 136, 229],
-  [33, 150, 243],
-  [66, 165, 245],
-  [100, 181, 246],
-  [144, 202, 249],
-  [187, 222, 251]
+  [23, 189, 244],
+  [61, 202, 246],
+  [99, 115, 247],
+  [129, 212, 250],
+  [179, 229, 252],
+  [225, 245, 254]
 ];
 
 const elevationScale = { min: 1, max: 50 };
@@ -329,14 +329,10 @@ class SalesMap extends React.Component {
         lineWidthMinPixels: 1,
         lineWidthMaxPixels: 1,
         autoHighlight: true,
-        highlightColor:
-          this.props.theme === "dark"
-            ? [160, 160, 180, 100]
-            : [64, 64, 64, 100],
-        getFillColor:
-          this.props.theme === "dark" ? [160, 160, 180, 25] : [0, 0, 0, 25],
+        highlightColor: [160, 160, 180, 100],
+        getFillColor: [160, 160, 180, 25],
         getLineColor:
-          this.props.theme === "dark" ? [255, 255, 255, 100] : [121, 85, 72],
+          this.props.theme === "dark" ? [255, 255, 255, 100] : [0, 0, 0, 25],
         onHover: this.handleHover,
         onClick: this.handleClick
       })

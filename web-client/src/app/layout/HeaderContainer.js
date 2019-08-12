@@ -10,5 +10,5 @@ const mapStateToProps = state => {
   };
 };
 
-const Header = connect(mapStateToProps)(withStyles(styles)(HeaderComponent));
+const Header = withStyles(styles)(connect(mapStateToProps)(HeaderComponent));
 export default Header;

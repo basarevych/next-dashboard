@@ -14,20 +14,26 @@ import theme from "./theme";
 class Chart1 extends React.Component {
   static propTypes = {
     theme: PropTypes.object.isRequired,
+    isStarted: PropTypes.bool.isRequired,
     className: PropTypes.string
   };
 
   getData() {
-    return _.times(5, () => {
-      return [
-        { x: 1, y: Math.random() },
-        { x: 2, y: Math.random() },
-        { x: 3, y: Math.random() }
-      ];
-    });
+    if (!this.data) {
+      this.data = _.times(5, () => {
+        return [
+          { x: 1, y: Math.random() },
+          { x: 2, y: Math.random() },
+          { x: 3, y: Math.random() }
+        ];
+      });
+    }
+    return this.data;
   }
 
   renderChart(width, height) {
+    if (!this.props.isStarted) return <div width={width} height={height} />;
+
     return (
       <svg width={width} height={height}>
         <VictoryChart

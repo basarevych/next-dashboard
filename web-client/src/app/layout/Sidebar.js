@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { intlShape, FormattedMessage } from "react-intl";
+import { FormattedMessage } from "react-intl";
+import Link from "@material-ui/core/Link";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import MenuList from "@material-ui/core/MenuList";
@@ -102,7 +103,7 @@ export const styles = theme => ({
 
 class Sidebar extends React.Component {
   static propTypes = {
-    intl: intlShape.isRequired,
+    intl: PropTypes.object.isRequired,
     router: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired,
     user: PropTypes.object.isRequired,
@@ -194,8 +195,7 @@ class Sidebar extends React.Component {
         <div className={this.props.classes.grow} />
 
         <div>
-          <a
-            href="javascript:void(0)"
+          <Link
             className={this.props.classes.link}
             onClick={() =>
               window.open(
@@ -204,9 +204,8 @@ class Sidebar extends React.Component {
             }
           >
             <FormattedMessage id="SIDEBAR_GITHUB_LINK" />
-          </a>
-          <a
-            href="javascript:void(0)"
+          </Link>
+          <Link
             className={this.props.classes.link}
             onClick={() =>
               window.open(
@@ -217,9 +216,8 @@ class Sidebar extends React.Component {
             }
           >
             <FormattedMessage id="SIDEBAR_BENCHMARKS_LINK" />
-          </a>
-          <a
-            href="javascript:void(0)"
+          </Link>
+          <Link
             className={this.props.classes.link}
             onClick={() =>
               window.open(
@@ -230,7 +228,7 @@ class Sidebar extends React.Component {
             }
           >
             <FormattedMessage id="SIDEBAR_RESPONSIVENESS_LINK" />
-          </a>
+          </Link>
         </div>
       </div>
     );

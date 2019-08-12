@@ -1,6 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { intlShape } from "react-intl";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
@@ -27,7 +26,7 @@ export const styles = theme => ({
 
 class ErrorMessage extends React.PureComponent {
   static propTypes = {
-    intl: intlShape.isRequired,
+    intl: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired,
     messages: PropTypes.array,
     errors: PropTypes.array

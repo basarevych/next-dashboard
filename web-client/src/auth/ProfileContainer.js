@@ -20,9 +20,13 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-const Profile = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withStyles(styles)(withTheme(ProfileComponent)));
+const Profile = withStyles(styles)(
+  withTheme(
+    connect(
+      mapStateToProps,
+      mapDispatchToProps
+    )(ProfileComponent)
+  )
+);
 
 export default Profile;

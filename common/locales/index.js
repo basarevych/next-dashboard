@@ -30,11 +30,5 @@ module.exports = {
   messages: {
     en: parse(require("./en")),
     ru: parse(require("./ru"))
-  },
-  getLocaleData() {
-    return [
-      require("react-intl/locale-data/en.js"),
-      require("react-intl/locale-data/ru.js")
-    ];
   }
 };

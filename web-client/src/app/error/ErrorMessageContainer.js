@@ -10,8 +10,12 @@ const mapDispathToProps = dispatch => {
   };
 };
 
-const ErrorMessage = connect(
-  null,
-  mapDispathToProps
-)(withStyles(styles)(injectIntl(ErrorMessageComponent)));
+const ErrorMessage = withStyles(styles)(
+  injectIntl(
+    connect(
+      null,
+      mapDispathToProps
+    )(ErrorMessageComponent)
+  )
+);
 export default ErrorMessage;

@@ -27,9 +27,11 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-const EditUserModal = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withStyles(styles)(EditUserModalComponent));
+const EditUserModal = withStyles(styles)(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(EditUserModalComponent)
+);
 
 export default EditUserModal;

@@ -13,7 +13,7 @@ const primaryBackground = "#4b648d";
 const secondaryColor = "rgba(0, 0, 0, 0.9)";
 const secondaryBackground = "#fda50f";
 
-const bgPage = "#e0e0f0";
+const bgPage = "#e0e0ea";
 const bgPaper = "#ffffff";
 
 const textPrimary = "rgba(0, 0, 0, 0.9)";
@@ -119,11 +119,19 @@ module.exports = {
     }
   },
   props: {
+    MuiLink: {
+      underline: "none"
+    },
     MuiDialog: {
       scroll: "body"
     }
   },
   overrides: {
+    MuiLink: {
+      root: {
+        cursor: "pointer"
+      }
+    },
     MuiPaper: {
       root: {
         background: bgPaper,
@@ -180,7 +188,7 @@ module.exports = {
       },
       scrollButtons: {
         height: 48
-      },
+      }
     },
     MuiTab: {
       root: {

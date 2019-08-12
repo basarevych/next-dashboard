@@ -23,8 +23,12 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-const EmployeesTable = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withStyles(styles)(injectIntl(EmployeesTableComponent)));
+const EmployeesTable = withStyles(styles)(
+  injectIntl(
+    connect(
+      mapStateToProps,
+      mapDispatchToProps
+    )(EmployeesTableComponent)
+  )
+);
 export default EmployeesTable;

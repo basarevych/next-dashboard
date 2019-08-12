@@ -50,12 +50,14 @@ class Dashboard extends React.Component {
     this.handleStateLoaded = this.handleStateLoaded.bind(this);
   }
 
-  async componentDidMount() {
-    const response = await this.props.fetchCities();
-    if (response.status === 200) {
-      const usCities = await response.json();
-      if (!this.isDestroyed) this.setState({ usCities });
-    }
+  componentDidMount() {
+    setTimeout(async () => {
+      const response = await this.props.fetchCities();
+      if (response.status === 200) {
+        const usCities = await response.json();
+        if (!this.isDestroyed) this.setState({ usCities });
+      }
+    }, 1000);
   }
 
   componentWillUnmount() {

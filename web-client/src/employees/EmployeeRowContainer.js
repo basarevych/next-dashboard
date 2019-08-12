@@ -18,10 +18,12 @@ const mapDispatchToProps = dispatch => {
 };
 
 const EmployeeRow = createFragmentContainer(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(withStyles(styles)(EmployeeRowComponent)),
+  withStyles(styles)(
+    connect(
+      mapStateToProps,
+      mapDispatchToProps
+    )(EmployeeRowComponent)
+  ),
   {
     node: graphql`
       fragment EmployeeRowContainer_node on Employee {

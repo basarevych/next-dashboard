@@ -119,11 +119,19 @@ module.exports = {
     }
   },
   props: {
+    MuiLink: {
+      underline: "none"
+    },
     MuiDialog: {
       scroll: "body"
     }
   },
   overrides: {
+    MuiLink: {
+      root: {
+        cursor: "pointer"
+      }
+    },
     MuiPaper: {
       root: {
         background: bgPaper,

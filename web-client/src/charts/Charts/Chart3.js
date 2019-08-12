@@ -15,6 +15,7 @@ import theme from "./theme";
 class Chart3 extends React.Component {
   static propTypes = {
     theme: PropTypes.object.isRequired,
+    isStarted: PropTypes.bool.isRequired,
     className: PropTypes.string
   };
 
@@ -37,17 +38,17 @@ class Chart3 extends React.Component {
   getMaxima(data) {
     const groupedData = _.reduce(
       _.keys(data[0]),
-      (memo, key) => {
-        memo[key] = _.map(data, d => d[key]);
-        return memo;
+      (acc, cur) => {
+        acc[cur] = _.map(data, d => d[cur]);
+        return acc;
       },
       {}
     );
     return _.reduce(
       _.keys(groupedData),
-      (memo, key) => {
-        memo[key] = Math.max(...groupedData[key]);
-        return memo;
+      (acc, cur) => {
+        acc[cur] = Math.max(...groupedData[cur]);
+        return acc;
       },
       {}
     );
@@ -62,6 +63,8 @@ class Chart3 extends React.Component {
   }
 
   renderChart(width, height) {
+    if (!this.props.isStarted) return <div width={width} height={height} />;
+
     return (
       <svg width={width} height={height}>
         <VictoryChart

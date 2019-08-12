@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
-import { intlShape, FormattedMessage } from "react-intl";
+import { FormattedMessage } from "react-intl";
 import { AutoSizer, List } from "react-virtualized";
 import { darken } from "@material-ui/core/styles/colorManipulator";
 import Grid from "@material-ui/core/Grid";
@@ -104,7 +104,7 @@ export const styles = theme => ({
 
 class IconsDemo extends React.Component {
   static propTypes = {
-    intl: intlShape.isRequired,
+    intl: PropTypes.object.isRequired,
     theme: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired
   };

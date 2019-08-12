@@ -1,5 +1,6 @@
 import React from "react";
 import App, { Container } from "next/app";
+import Router from "next/router";
 import { Provider as ReduxProvider } from "react-redux";
 import constants from "../common/constants";
 import serialize from "../common/src/serialize";
@@ -13,6 +14,9 @@ import StylesProvider from "../src/app/providers/StylesContainer";
 import IntlProvider from "../src/app/providers/IntlContainer";
 import DateProvider from "../src/app/providers/DateContainer";
 import ToastProvider from "../src/app/providers/ToastContainer";
+import PageLoader, {
+  query as pageLoaderQuery
+} from "../src/app/layout/PageLoaderContainer";
 
 if (process.browser) {
   window.__notify = function(title, content, options = {}) {
@@ -100,13 +104,15 @@ class MyApp extends App {
     let pageProps = {};
     if (Component.getInitialProps) {
       try {
-        pageProps = await Component.getInitialProps(ctx);
+        pageProps = (await Component.getInitialProps(ctx)) || {};
       } catch (error) {
         console.error(error);
         if (statusCode === 200)
           await store.dispatch(appOperations.setStatusCode({ code: 500 }));
       }
     }
+
+    if (isSSR && !isExported) await ctx.fetchQuery(pageLoaderQuery);
 
     statusCode = appSelectors.getStatusCode(store.getState());
     if (
@@ -152,6 +158,7 @@ class MyApp extends App {
 
   render() {
     const { Component, pageProps } = this.props;
+    if (process.browser) pageProps.key = Router.route;
 
     return (
       <Container>
@@ -161,7 +168,9 @@ class MyApp extends App {
               <IntlProvider>
                 <DateProvider>
                   <ToastProvider>
-                    <Component {...pageProps} />
+                    <PageLoader>
+                      <Component {...pageProps} />
+                    </PageLoader>
                   </ToastProvider>
                 </DateProvider>
               </IntlProvider>

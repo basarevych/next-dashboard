@@ -1,6 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { intlShape } from "react-intl";
 import { AutoSizer } from "react-virtualized";
 import { VictoryTheme } from "victory";
 import { darken } from "@material-ui/core/styles/colorManipulator";
@@ -69,7 +68,7 @@ class StateLegendLabel extends React.Component {
 
 class StateSales extends React.Component {
   static propTypes = {
-    intl: intlShape.isRequired,
+    intl: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired,
     theme: PropTypes.object.isRequired,
     relay: PropTypes.object.isRequired,

@@ -39,10 +39,14 @@ const mapDispatchToProps = dispatch => {
 };
 
 const Employees = createRefetchContainer(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(withStyles(styles)(injectIntl(EmployeesComponent))),
+  withStyles(styles)(
+    injectIntl(
+      connect(
+        mapStateToProps,
+        mapDispatchToProps
+      )(EmployeesComponent)
+    )
+  ),
   {
     viewer: graphql`
       fragment EmployeesContainer_viewer on Viewer

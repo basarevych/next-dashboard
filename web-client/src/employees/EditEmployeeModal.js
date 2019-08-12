@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { intlShape, FormattedMessage } from "react-intl";
+import { FormattedMessage } from "react-intl";
 import { graphql } from "react-relay";
 import { fromGlobalId } from "graphql-relay";
 import Dialog from "@material-ui/core/Dialog";
@@ -54,7 +54,7 @@ export const query = graphql`
 
 class EditEmployeeModal extends React.Component {
   static propTypes = {
-    intl: intlShape.isRequired,
+    intl: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired,
     currentId: PropTypes.string,
     onClose: PropTypes.func.isRequired,

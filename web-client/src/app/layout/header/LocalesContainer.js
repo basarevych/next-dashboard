@@ -18,9 +18,13 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-const Locales = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withStyles(styles)(injectIntl(LocalesComponent)));
+const Locales = withStyles(styles)(
+  injectIntl(
+    connect(
+      mapStateToProps,
+      mapDispatchToProps
+    )(LocalesComponent)
+  )
+);
 
 export default Locales;

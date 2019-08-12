@@ -28,10 +28,37 @@ export const styles = theme => ({
 class ChartsDemo extends React.Component {
   static propTypes = {
     theme: PropTypes.object.isRequired,
-    classes: PropTypes.object.isRequired
+    classes: PropTypes.object.isRequired,
+    pageTransitionReadyToEnter: PropTypes.func
   };
 
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      isStarted: false
+    };
+
+    this.isDestroyed = false;
+  }
+
+  componentDidMount() {
+    setTimeout(() => {
+      if (this.props.pageTransitionReadyToEnter)
+        this.props.pageTransitionReadyToEnter();
+      setTimeout(() => {
+        if (!this.isDestroyed) this.setState({ isStarted: true });
+      });
+    }, 500);
+  }
+
+  componentWillUnmount() {
+    this.isDestroyed = true;
+  }
+
   render() {
+    const { isStarted } = this.state;
+
     return (
       <div className={this.props.classes.layout}>
         <Typography
@@ -44,36 +71,42 @@ class ChartsDemo extends React.Component {
         <Grid container spacing={2}>
           <Grid item xs={12} md={6} lg={4}>
             <Chart1
+              isStarted={isStarted}
               theme={this.props.theme}
               className={this.props.classes.paper}
             />
           </Grid>
           <Grid item xs={12} md={6} lg={4}>
             <Chart2
+              isStarted={isStarted}
               theme={this.props.theme}
               className={this.props.classes.paper}
             />
           </Grid>
           <Grid item xs={12} md={6} lg={4}>
             <Chart3
+              isStarted={isStarted}
               theme={this.props.theme}
               className={this.props.classes.paper}
             />
           </Grid>
           <Grid item xs={12} md={6} lg={4}>
             <Chart4
+              isStarted={isStarted}
               theme={this.props.theme}
               className={this.props.classes.paper}
             />
           </Grid>
           <Grid item xs={12} md={6} lg={4}>
             <Chart5
+              isStarted={isStarted}
               theme={this.props.theme}
               className={this.props.classes.paper}
             />
           </Grid>
           <Grid item xs={12} md={6} lg={4}>
             <Chart6
+              isStarted={isStarted}
               theme={this.props.theme}
               className={this.props.classes.paper}
             />

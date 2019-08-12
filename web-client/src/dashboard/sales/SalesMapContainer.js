@@ -10,8 +10,8 @@ const mapStateToProps = state => {
   };
 };
 
-const SalesMap = connect(mapStateToProps)(
-  withStyles(styles)(SalesMapComponent)
+const SalesMap = withStyles(styles)(
+  connect(mapStateToProps)(SalesMapComponent)
 );
 
 export default SalesMap;

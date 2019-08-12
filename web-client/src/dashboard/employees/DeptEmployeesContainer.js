@@ -21,8 +21,8 @@ const mapStateToProps = state => {
 };
 
 const DeptEmployees = createRefetchContainer(
-  connect(mapStateToProps)(
-    withStyles(styles)(injectIntl(DeptEmployeesComponent))
+  withStyles(styles)(
+    injectIntl(connect(mapStateToProps)(DeptEmployeesComponent))
   ),
   {
     viewer: graphql`

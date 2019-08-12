@@ -17,9 +17,15 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-const HeaderBar = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withStyles(styles)(withTheme(injectIntl(HeaderBarComponent))));
+const HeaderBar = withStyles(styles)(
+  withTheme(
+    injectIntl(
+      connect(
+        mapStateToProps,
+        mapDispatchToProps
+      )(HeaderBarComponent)
+    )
+  )
+);
 
 export default HeaderBar;

@@ -4,13 +4,13 @@ require("core-js/stable");
 require("regenerator-runtime/runtime");
 
 const WebFont = require("webfontloader");
-const locales = require("../../../common/locales").locales;
+const { locales } = require("../../../common/locales");
 const constants = require("../../../common/constants");
 
 const promises = [];
 
+// requestAnimationFrame polyfill
 if (!global.requestAnimationFrame) {
-  // requestAnimationFrame polyfill
   promises.push(
     new Promise((resolve, reject) => {
       require.ensure(
@@ -26,27 +26,23 @@ if (!global.requestAnimationFrame) {
   );
 }
 
+// Intl polyfill
 if (global.Intl) {
-  // Intl polyfill
   if (!process.browser) {
-    if (!require("intl-locales-supported")(locales.locales)) {
+    if (!require("intl-locales-supported")(locales)) {
       const IntlPolyfill = require("intl");
       Intl.NumberFormat = IntlPolyfill.NumberFormat;
       Intl.DateTimeFormat = IntlPolyfill.DateTimeFormat;
     }
   }
-} else {
-  if (!process.browser) {
-    global.Intl = require("intl");
-  } else {
+
+  if (!Intl.PluralRules) {
     promises.push(
       new Promise((resolve, reject) => {
         require.ensure(
           [],
           require => {
-            require("intl");
-            for (let locale of locales)
-              require("intl/locale-data/jsonp/" + locale + ".js");
+            require("intl-pluralrules");
             resolve();
           },
           error => reject(error),
@@ -55,15 +51,63 @@ if (global.Intl) {
       })
     );
   }
+
+  if (!Intl.RelativeTimeFormat) {
+    promises.push(
+      new Promise((resolve, reject) => {
+        require.ensure(
+          [],
+          require => {
+            require("@formatjs/intl-relativetimeformat/polyfill");
+            for (let locale of locales) {
+              require("@formatjs/intl-relativetimeformat/dist/locale-data/" +
+                locale +
+                ".js");
+            }
+            resolve();
+          },
+          error => reject(error),
+          "polyfills"
+        );
+      })
+    );
+  }
+} else {
+  promises.push(
+    new Promise((resolve, reject) => {
+      require.ensure(
+        [],
+        require => {
+          require("intl");
+          for (let locale of locales)
+            require("intl/locale-data/jsonp/" + locale + ".js");
+          require("intl-pluralrules");
+          require("@formatjs/intl-relativetimeformat/polyfill");
+          for (let locale of locales) {
+            require("@formatjs/intl-relativetimeformat/dist/locale-data/" +
+              locale +
+              ".js");
+          }
+          resolve();
+        },
+        error => reject(error),
+        "polyfills"
+      );
+    })
+  );
 }
+
+// React Intl requires Node to be built with full ICU
+if (!process.browser) require("full-icu");
 
 if (process.browser) {
   // get rid of auto fill, not disabling auto complete
   window.addEventListener("load", () => {
     for (let el of document.querySelectorAll(
       ".field.empty .input input, .field.empty textarea"
-    ))
+    )) {
       el.value = "";
+    }
     for (let el of document.querySelectorAll(".checkbox:not(.checked) input"))
       el.checked = false;
     for (let el of document.querySelectorAll(".checkbox.checked input"))
@@ -88,8 +132,8 @@ if (process.browser) {
     }
   }
 
+  // our fonts
   WebFont.load({
-    // our fonts
     active: () => {
       window.__fontsLoaded = true;
       window.dispatchEvent(new CustomEvent(constants.events.FONTS_LOADED));

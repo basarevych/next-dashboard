@@ -1,7 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { intlShape, FormattedMessage } from "react-intl";
+import { FormattedMessage } from "react-intl";
 import HttpStatus from "http-status-codes";
+import Link from "@material-ui/core/Link";
 
 export const styles = theme => ({
   layout: {
@@ -53,7 +54,7 @@ export const styles = theme => ({
 
 class ErrorMessage extends React.Component {
   static propTypes = {
-    intl: intlShape.isRequired,
+    intl: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired,
     statusCode: PropTypes.number,
     error: PropTypes.object,
@@ -80,30 +81,28 @@ class ErrorMessage extends React.Component {
           <div className={this.props.classes.linkWrapper}>
             <div>
               &gt;&nbsp;&nbsp;
-              <a
-                href="javascript:void(0)"
+              <Link
                 className={this.props.classes.link}
                 onClick={() => window.location.reload(true)}
               >
                 <FormattedMessage id="ERROR_REFRESH_LINK" />
-              </a>
+              </Link>
             </div>
             <div>
               &gt;&nbsp;&nbsp;
-              <a href="/" className={this.props.classes.link}>
+              <Link href="/" className={this.props.classes.link}>
                 <FormattedMessage id="ERROR_GO_HOME_LINK" />
-              </a>
+              </Link>
             </div>
             {this.getCode() === 401 && (
               <div>
                 &gt;&nbsp;&nbsp;
-                <a
-                  href="javascript:void(0)"
+                <Link
                   className={this.props.classes.link}
                   onClick={this.props.onSignIn}
                 >
                   <FormattedMessage id="ERROR_TRY_AUTH_LINK" />
-                </a>
+                </Link>
               </div>
             )}
           </div>
