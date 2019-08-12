@@ -1,7 +1,7 @@
 const debug = require("debug")("app:avatars");
 const concat = require("concat-stream");
-const sharp = require("sharp");
 const fetch = require("isomorphic-unfetch");
+const Jimp = require("jimp");
 const Router = require("express").Router;
 
 class AvatarsRoute {
@@ -11,8 +11,8 @@ class AvatarsRoute {
     this.cache = cache;
     this.user = user;
 
-    this.smallWidth = 60;
-    this.largeWidth = 160;
+    this.smallSize = 60;
+    this.largeSize = 160;
     this.avatarPromises = [];
   }
 
@@ -81,58 +81,39 @@ class AvatarsRoute {
     return this.promise;
   }
 
-  async fetch(urls) {
-    const doFetch = async url => {
-      let response = await fetch(url);
-      if (response.status === 200) {
-        return new Promise((resolve, reject) => {
-          let concatStream = concat(resolve);
-          response.body.on("error", reject);
-          response.body.pipe(concatStream);
-        });
-      }
-      return null;
-    };
-
-    const buffers = await Promise.all(
-      _.map(urls, url => (_.startsWith(url, "http") ? doFetch(url) : null))
-    );
-
-    const metadata = await Promise.all(
-      _.map(buffers, buffer => (buffer ? sharp(buffer).metadata() : null))
-    );
-
-    let result = null;
-    let size = 0;
-    for (let i = 0; i < metadata.length; i++) {
-      if (metadata[i] && metadata[i].width > size) {
-        size = metadata[i].width;
-        result = buffers[i];
-      }
+  async fetch(url) {
+    if (!url) return null;
+    let response = await fetch(url);
+    if (response.status === 200) {
+      return new Promise((resolve, reject) => {
+        let concatStream = concat(resolve);
+        response.body.on("error", reject);
+        response.body.pipe(concatStream);
+      });
     }
-
-    return result;
+    return null;
   }
 
   async downloadRandom(id) {
     const index = this.randomSelected[id];
 
-    const urls = [];
-    for (let j = 0; j < this.randomList[index].avatars.length; j++)
-      urls.push(this.randomList[index].avatars[j].url);
+    if (this.randomList[index].avatars.length)
+      return this.fetch(this.randomList[index].avatars[0].url);
 
-    return this.fetch(urls);
+    return null;
   }
 
   async downloadReal(id) {
     let user = await this.user.model.findById(id);
     if (!user) return null;
 
-    const urls = [];
-    for (let provider of user.providers)
-      for (let photo of provider.profile.photos || []) urls.push(photo.value);
+    for (let provider of user.providers) {
+      for (let photo of provider.profile.photos || []) {
+        if (photo.value) return this.fetch(photo.value);
+      }
+    }
 
-    return this.fetch(urls);
+    return null;
   }
 
   async download(id) {
@@ -148,12 +129,16 @@ class AvatarsRoute {
         if (data) {
           debug(`Got data for ${id}`);
           const [small, large] = await Promise.all([
-            sharp(Buffer.from(data))
-              .resize(this.smallWidth)
-              .toBuffer(),
-            sharp(Buffer.from(data))
-              .resize(this.largeWidth)
-              .toBuffer()
+            Jimp.read(Buffer.from(data)).then(image => {
+              return image
+                .resize(Jimp.AUTO, this.smallSize)
+                .getBufferAsync(Jimp.MIME_PNG);
+            }),
+            Jimp.read(Buffer.from(data)).then(image =>
+              image
+                .resize(Jimp.AUTO, this.largeSize)
+                .getBufferAsync(Jimp.MIME_PNG)
+            )
           ]);
           await this.cache.setAvatar(id, small, large);
           this.avatarPromises[id] = null;
