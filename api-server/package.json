@@ -24,7 +24,7 @@
     "graphql-relay": "~0.6.0",
     "graphql-subscriptions": "~1.1.0",
     "injectt": "~1.0.0",
-    "intl-messageformat": "~6.1.4",
+    "intl-messageformat": "~6.1.5",
     "ioredis": "~4.14.0",
     "isomorphic-unfetch": "~3.0.0",
     "jimp": "~0.6.4",

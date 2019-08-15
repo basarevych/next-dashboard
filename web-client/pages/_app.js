@@ -61,8 +61,8 @@ class MyApp extends App {
     // Detect SSR phase
     const isSSR = !!req && !!res;
 
-    // Detect static site mode
-    const isExported = !!req && (!res || !_.isFunction(res.status));
+    // Detect exporting as static site
+    const isExported = !!process.env.STATIC_SITE;
 
     // Dependency Injection Container
     // Available in Thunk as the third argument, i.e.:

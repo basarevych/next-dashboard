@@ -4,13 +4,13 @@ if (!global._) global._ = require("lodash");
 const path = require("path");
 const ProvidePlugin = require("webpack").ProvidePlugin;
 const ContextReplacementPlugin = require("webpack").ContextReplacementPlugin;
+const EnvironmentPlugin = require("webpack").EnvironmentPlugin;
 const { GenerateSW } = require("workbox-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 const RelayCompilerWebpackPlugin = require("relay-compiler-webpack-plugin");
 const withCSS = require("@zeit/next-css");
 const withBundleAnalyzer = require("@zeit/next-bundle-analyzer");
 const withPlugins = require("next-compose-plugins");
-const { PHASE_EXPORT } = require("next-server/constants");
 const constants = require("./common/constants");
 const l10n = require("./common/locales");
 const pkg = require("./package.json");
@@ -63,21 +63,28 @@ module.exports = withPlugins(plugins, {
     });
 
     /*
-        // WebAssemmbly
-        config.module.rules.push({
-          test: /\.wasm$/,
-          type: "javascript/auto",
-          loader: "file-loader",
-          options: {
-            outputPath: `static/`,
-            publicPath: `${config.output.publicPath}/static/`
-          }
-        });
-      */
+      // WebAssemmbly
+      config.module.rules.push({
+        test: /\.wasm$/,
+        type: "javascript/auto",
+        loader: "file-loader",
+        options: {
+          outputPath: `static/`,
+          publicPath: `${config.output.publicPath}/static/`
+        }
+      });
+    */
 
     config.plugins.push(
       new ProvidePlugin({
         _: "lodash" // lodash is defined as global variable
+      })
+    );
+
+    config.plugins.push(
+      new EnvironmentPlugin({
+        NODE_ENV: "production",
+        STATIC_SITE: false
       })
     );
 

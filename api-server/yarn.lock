@@ -3426,10 +3426,10 @@ intl-messageformat-parser@^3.0.7:
   resolved "https://registry.yarnpkg.com/intl-messageformat-parser/-/intl-messageformat-parser-3.0.7.tgz#d28493501a1bc40a094239b7ef26fe9412558e72"
   integrity sha512-L16VbbV3NFaiZV65XwOIH9fBe52TS2EkOR0k8Y4ratsgTE7KPEbcUCUrz/iEQwJo7BcWY4ohkZbeYZRgAiPR1Q==
 
-intl-messageformat@~6.1.4:
-  version "6.1.4"
-  resolved "https://registry.yarnpkg.com/intl-messageformat/-/intl-messageformat-6.1.4.tgz#a65c655ee593a16b7a86ea485ed0690b6e9a90f4"
-  integrity sha512-4pN+wRbmB9Vej1RVjV4e2KOse91y7AweUBXPzif/ZzYsACEhnng0HbExbbQcvNWBIxFu0m3RayNEINRPz0kI1Q==
+intl-messageformat@~6.1.5:
+  version "6.1.5"
+  resolved "https://registry.yarnpkg.com/intl-messageformat/-/intl-messageformat-6.1.5.tgz#0f80387dda5ff9bd82d4a1ccf908b026621b364b"
+  integrity sha512-Ae/3PwnShCkDtnPvx9FLlBj1xiooa5NeeFZBizOQZZ/iaLt8IvgkPCdadkOF3f++FWDOBVtP5RszhMkJQKqmng==
   dependencies:
     intl-format-cache "^4.1.10"
     intl-messageformat-parser "^3.0.7"

@@ -159,6 +159,9 @@ module.exports = {
         textTransform: "uppercase",
         color: textPrimary
       },
+      paddingCheckbox: {
+        padding: "0 0 0 1em"
+      },
       body: {
         "&.selected": {
           background: primaryBackground

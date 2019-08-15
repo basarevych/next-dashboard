@@ -32,7 +32,6 @@ yarn install --prod
 cd ../web-client
 yarn install --prod
 yarn relay
-yarn build
 yarn export
 ```
 
