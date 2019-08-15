@@ -91,7 +91,7 @@ class UsersTable extends React.Component {
               <TableSortLabel
                 active={this.props.sortBy === "email"}
                 direction={this.props.sortDir}
-                onClick={() => this.handleSort("email")}
+                onClick={() => this.props.onSort("email")}
                 disabled={this.props.isDisabled}
               >
                 <FormattedMessage id="USERS_EMAIL_COLUMN" />
@@ -107,7 +107,7 @@ class UsersTable extends React.Component {
               <TableSortLabel
                 active={this.props.sortBy === "isEmailVerified"}
                 direction={this.props.sortDir}
-                onClick={() => this.handleSort("isEmailVerified")}
+                onClick={() => this.props.onSort("isEmailVerified")}
                 disabled={this.props.isDisabled}
               >
                 <FormattedMessage id="USERS_EMAIL_VERIFIED_COLUMN" />
@@ -121,7 +121,7 @@ class UsersTable extends React.Component {
               <TableSortLabel
                 active={this.props.sortBy === "name"}
                 direction={this.props.sortDir}
-                onClick={() => this.handleSort("name")}
+                onClick={() => this.props.onSort("name")}
                 disabled={this.props.isDisabled}
               >
                 <FormattedMessage id="USERS_NAME_COLUMN" />
