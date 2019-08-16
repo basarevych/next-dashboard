@@ -47,12 +47,12 @@
   "devDependencies": {
     "@babel/core": "~7.5.5",
     "babel-eslint": "~10.0.2",
-    "babel-jest": "~24.8.0",
+    "babel-jest": "~24.9.0",
     "babel-plugin-lodash": "~3.3.4",
     "eslint": "~6.1.0",
     "eslint-plugin-lodash": "~6.0.0",
     "graphql-compiler": "^2.0.0-rc.1",
-    "jest": "~24.8.0",
+    "jest": "~24.9.0",
     "memorystore": "~1.6.1",
     "supertest": "~4.0.2"
   },
