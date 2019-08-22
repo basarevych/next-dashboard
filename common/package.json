@@ -10,7 +10,7 @@
     "moment": "~2.24.0",
     "moment-timezone": "~0.5.26",
     "pako": "~1.0.10",
-    "react-intl": "~3.1.8",
+    "react-intl": "~3.1.11",
     "utf8": "~3.0.0",
     "validator": "~11.1.0"
   }

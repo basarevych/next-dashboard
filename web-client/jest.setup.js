@@ -9,9 +9,6 @@ if (!require.ensure) {
   require.ensure = (deps, cb) => cb(require);
 }
 
-// Polyfills
-require("isomorphic-unfetch");
-
 // JSDOM and Enzyme
 global.initJsdomEnzyme = function() {
   const { configure } = require("enzyme");

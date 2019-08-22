@@ -58,10 +58,10 @@ yarn dev
 #### systemd
 
 ```
-cp systemd.service /etc/systemd/system/next-dashboard-ssr.service
+cp systemd.service /etc/systemd/system/next-dashboard-web.service
 systemctl daemon-reload
-systemctl enable next-dashboard-ssr
-systemctl start next-dashboard-ssr
+systemctl enable next-dashboard-web
+systemctl start next-dashboard-web
 ```
 
 #### PM2

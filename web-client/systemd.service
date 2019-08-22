@@ -1,5 +1,5 @@
 [Unit]
-Description=Next Dashboard SSR Server
+Description=Next Dashboard Front Server
 After=network.target
 
 [Service]

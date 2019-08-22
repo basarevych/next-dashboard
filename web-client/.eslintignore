@@ -1,9 +1,10 @@
 vendor/
 node_modules/
-.tmp/
-static/
-out/
 coverage/
+.tmp/
+.next/
+out/
+static/
 **/__generated__/
 **/__mocks__/
 *.config.js
