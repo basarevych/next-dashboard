@@ -38,12 +38,13 @@ class Cache extends BaseClass {
   async init() {
     if (this.promise) return this.promise;
     this.promise = Promise.resolve().then(async () => {
+      if (process.env.NODE_ENV !== "test") process.stdout.write("> Redis... ");
       await Promise.all([
         this.cacheRedis.connect(),
         this.pubRedis.connect(),
         this.subRedis.connect()
       ]);
-      console.log("> Redis is online");
+      if (process.env.NODE_ENV !== "test") console.log("online");
     });
     return this.promise;
   }

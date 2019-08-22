@@ -46,6 +46,8 @@ class Database {
         this.EmployeeModel = Employee.model;
 
         return new Promise((resolve, reject) => {
+          if (process.env.NODE_ENV !== "test")
+            process.stdout.write("> MongoDB... ");
           this.mongoose.connect(
             this.config.mongoUrl,
             {
@@ -53,8 +55,7 @@ class Database {
             },
             error => {
               if (error) return reject(error);
-              if (process.env.NODE_ENV !== "test")
-                console.log("> MongoDB is online");
+              if (process.env.NODE_ENV !== "test") console.log("online");
               resolve();
             }
           );

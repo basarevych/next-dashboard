@@ -54,10 +54,11 @@ class Mailer {
     this.promise = new Promise((resolve, reject) => {
       if (!this.config.emailServer) return resolve();
 
+      if (process.env.NODE_ENV !== "test") process.stdout.write("> Mailer... ");
       this.transport.verify((error, success) => {
         if (error || !success) return reject(error);
 
-        if (process.env.NODE_ENV !== "test") console.log("> Mailer is online");
+        if (process.env.NODE_ENV !== "test") console.log("online");
 
         resolve();
       });

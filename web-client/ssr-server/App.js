@@ -111,8 +111,9 @@ class App {
     await this.next.prepare();
 
     // Initialize Redis
+    process.stdout.write("> Redis... ");
     await this.redis.connect();
-    console.log("> Redis is online");
+    console.log("online");
 
     // Middleware, order matters
     this.middleware = _.reduce(

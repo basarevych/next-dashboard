@@ -120,9 +120,11 @@ class App {
     // HTTP server
     this.server = mainServer;
 
-    // Retrieve all the singletons, which will instantiate them, and run their .init()
-    await Promise.all(
-      _.invokeMap(Array.from(this.di.singletons().values()), "init")
+    // Retrieve all the singletons, instantiating them, and run their .init()
+    await _.reduce(
+      Array.from(this.di.singletons().values()),
+      (acc, cur) => acc.then(() => cur.init()),
+      Promise.resolve()
     );
 
     // Express/Socket.io middleware
