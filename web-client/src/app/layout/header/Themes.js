@@ -27,7 +27,6 @@ export const styles = theme => ({
 class Themes extends React.Component {
   static propTypes = {
     classes: PropTypes.object.isRequired,
-    apiServer: PropTypes.string.isRequired,
     anchor: PropTypes.object,
     onClose: PropTypes.func.isRequired,
     onSetCookie: PropTypes.func.isRequired,

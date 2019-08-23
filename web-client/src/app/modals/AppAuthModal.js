@@ -80,7 +80,6 @@ class AppAuthModal extends React.Component {
     intl: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired,
     user: PropTypes.object.isRequired,
-    apiServer: PropTypes.string.isRequired,
     onLink: PropTypes.func.isRequired,
     onSignIn: PropTypes.func.isRequired,
     onSignUp: PropTypes.func.isRequired,

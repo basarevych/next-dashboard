@@ -59,7 +59,7 @@ class MyApp extends App {
     if (statusCode === 200 && err) statusCode = 500;
 
     // Detect SSR phase
-    const isSSR = !!req && !!res;
+    const isSsr = !!req && !!res;
 
     // Detect exporting as static site
     const isExported = !!process.env.STATIC_SITE;
@@ -79,6 +79,7 @@ class MyApp extends App {
           theme: query && query.theme,
           appServer: query && query.appServer,
           apiServer: query && query.apiServer,
+          ssrApiServer: query && query.ssrApiServer,
           wsServer: query && query.wsServer,
           mapboxToken: query && query.mapboxToken
         })
@@ -88,16 +89,16 @@ class MyApp extends App {
     // Relay Environment
     const environment = getRelayEnvironment(di);
 
-    if (isSSR && !isExported) {
+    if (isSsr && !isExported) {
       // Let Fetcher know we are doing SSR right now
-      di.get("fetcher").setReqRes(req, res);
+      di.get("fetcher").setSsrMode(req, res);
     }
 
     /* eslint-disable require-atomic-updates */
     ctx.di = di;
     ctx.store = store;
     ctx.fetchQuery = fetchQuery(environment);
-    ctx.isSSR = isSSR;
+    ctx.isSsr = isSsr;
     ctx.isExported = isExported;
     /* eslint-enable require-atomic-updates */
 
@@ -112,11 +113,11 @@ class MyApp extends App {
       }
     }
 
-    if (isSSR && !isExported) await ctx.fetchQuery(pageLoaderQuery);
+    if (isSsr && !isExported) await ctx.fetchQuery(pageLoaderQuery);
 
     statusCode = appSelectors.getStatusCode(store.getState());
     if (
-      isSSR &&
+      isSsr &&
       !isExported &&
       statusCode !== 200 &&
       res.statusCode !== statusCode

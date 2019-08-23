@@ -29,6 +29,7 @@ export const create = ({
   theme,
   appServer,
   apiServer,
+  ssrApiServer,
   wsServer,
   mapboxToken
 }) => async dispatch => {
@@ -40,6 +41,7 @@ export const create = ({
       theme,
       appServer,
       apiServer,
+      ssrApiServer,
       wsServer,
       mapboxToken
     })
@@ -283,10 +285,7 @@ export const fetchCities = () => {
   return async (dispatch, getState, di) => {
     return di.get("fetcher").fetch({
       method: "GET",
-      resource:
-        selectors.getApiServer(getState()) +
-        constants.apiBase +
-        "/data/us-cities"
+      resource: constants.apiBase + "/data/us-cities"
     });
   };
 };

@@ -1,14 +1,8 @@
 import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
 import { withStyles } from "@material-ui/styles";
-import { appSelectors, appOperations } from "../../state";
+import { appOperations } from "../../state";
 import LocalesComponent, { styles } from "./Locales";
-
-const mapStateToProps = state => {
-  return {
-    apiServer: appSelectors.getApiServer(state)
-  };
-};
 
 const mapDispatchToProps = dispatch => {
   return {
@@ -21,7 +15,7 @@ const mapDispatchToProps = dispatch => {
 const Locales = withStyles(styles)(
   injectIntl(
     connect(
-      mapStateToProps,
+      null,
       mapDispatchToProps
     )(LocalesComponent)
   )

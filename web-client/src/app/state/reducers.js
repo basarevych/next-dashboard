@@ -21,6 +21,7 @@ Map({
   }),
   appServer: String,
   apiServer: String,
+  ssrApiServer: String,
   mapboxToken: null,
   locale: String,
   theme: String,
@@ -174,6 +175,15 @@ const apiServerReducer = (state = "", action) => {
   return state;
 };
 
+const ssrApiServerReducer = (state = "", action) => {
+  switch (action.type) {
+    case types.CREATE:
+      if (!_.isUndefined(action.ssrApiServer)) return action.ssrApiServer;
+      break;
+  }
+  return state;
+};
+
 const wsServerReducer = (state = "", action) => {
   switch (action.type) {
     case types.CREATE:
@@ -265,6 +275,7 @@ const reducer = combineReducers({
   user: userReducer,
   appServer: appServerReducer,
   apiServer: apiServerReducer,
+  ssrApiServer: ssrApiServerReducer,
   wsServer: wsServerReducer,
   locale: localeReducer,
   theme: themeReducer,

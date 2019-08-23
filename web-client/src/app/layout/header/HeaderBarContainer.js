@@ -6,8 +6,7 @@ import { appSelectors, appOperations } from "../../state";
 
 const mapStateToProps = state => {
   return {
-    locale: appSelectors.getLocale(state),
-    apiServer: appSelectors.getApiServer(state)
+    locale: appSelectors.getLocale(state)
   };
 };
 

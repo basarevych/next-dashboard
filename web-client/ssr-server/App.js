@@ -20,6 +20,7 @@ let appPort = parseInt(process.env.APP_PORT, 10) || 3000;
 let appOrigins = process.env.APP_ORIGINS;
 let appTrustProxy = process.env.APP_TRUST_PROXY === "true" ? 1 : 0;
 let appApiServer = process.env.APP_API_SERVER;
+let appSsrApiServer = process.env.APP_SSR_API_SERVER;
 let appWsServer = process.env.APP_WS_SERVER;
 let appSslKey = process.env.APP_SSL_KEY;
 let appSslCert = process.env.APP_SSL_CERT;
@@ -54,6 +55,7 @@ class App {
       appOrigins,
       appTrustProxy,
       appApiServer,
+      appSsrApiServer,
       appWsServer,
       appSslKey,
       appSslCert,
@@ -147,6 +149,7 @@ class App {
       query: _.assign({}, query || {}, {
         appServer: this.config.appOrigins[0],
         apiServer: this.config.appApiServer,
+        ssrApiServer: this.config.appSsrApiServer || this.config.appApiServer,
         wsServer: this.config.appWsServer,
         locale: locale || l10n.defaultLocale || null,
         theme: theme || styles.defaultTheme || null,

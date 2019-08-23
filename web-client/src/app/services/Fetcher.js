@@ -29,14 +29,15 @@ class Fetcher {
     return "singleton";
   }
 
-  setReqRes(req, res) {
+  setSsrMode(req, res) {
+    this.isSsr = true;
     this.req = req;
     this.res = res;
   }
 
   async getAccessToken() {
     return (
-      (this.req
+      (this.isSsr
         ? this.req.session.accessToken
         : this.storage.get("accessToken")) || null
     );
@@ -44,14 +45,14 @@ class Fetcher {
 
   async getRefreshToken() {
     return (
-      (this.req
+      (this.isSsr
         ? this.req.session.refreshToken
         : this.storage.get("refreshToken")) || null
     );
   }
 
   async setTokens(accessToken, refreshToken) {
-    if (this.req) {
+    if (this.isSsr) {
       this.req.setTokens(accessToken, refreshToken);
     } else {
       this.storage.set("accessToken", accessToken);
@@ -78,6 +79,7 @@ class Fetcher {
   }
 
   async refreshTokens() {
+    if (this.isSsr) return;
     if (this.refreshingPromise) return this.refreshingPromise;
     this.refreshingPromise = Promise.resolve().then(async () => {
       const done = (accessToken, refreshToken) => {
@@ -92,12 +94,9 @@ class Fetcher {
           let refreshToken = await this.getRefreshToken();
           if (!refreshToken) return done(null, null);
 
-          let resource =
-            appSelectors.getApiServer(this.getState()) + constants.graphqlBase;
-
           const params = {
             method: "POST",
-            resource,
+            resource: constants.graphqlBase,
             data: {
               query: `mutation GetTokenMutation( $input: GetTokenInput! ) {
                 getToken(input: $input) {
@@ -143,10 +142,10 @@ class Fetcher {
   }
 
   async fetch({ method, resource, data, token }) {
-    if (!_.startsWith(resource, "http")) {
-      if (process.env.APP_API_SERVER)
-        resource = process.env.APP_API_SERVER + resource;
-      else throw new Error(`Invalid resource: ${resource}`);
+    if (!/^https?:\/\//.test(resource)) {
+      if (this.isSsr)
+        resource = appSelectors.getSsrApiServer(this.getState()) + resource;
+      else resource = appSelectors.getApiServer(this.getState()) + resource;
     }
 
     const headers = {
@@ -166,13 +165,10 @@ class Fetcher {
   async query(operation, variables /*, cacheConfig, uploadables */) {
     for (;;) {
       try {
-        let resource =
-          appSelectors.getApiServer(this.getState()) + constants.graphqlBase;
-
         const token = await this.getAccessToken();
         const params = {
           method: "POST",
-          resource,
+          resource: constants.graphqlBase,
           data: {
             query: operation.text, // GraphQL text from input
             variables

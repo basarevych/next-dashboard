@@ -92,7 +92,6 @@ class HeaderBar extends React.Component {
     theme: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired,
     locale: PropTypes.string.isRequired,
-    apiServer: PropTypes.string.isRequired,
     isAuthenticated: PropTypes.bool.isRequired,
     isVisible: PropTypes.bool.isRequired,
     withShadow: PropTypes.bool.isRequired,
