@@ -19,12 +19,12 @@
     "express-session": "~1.16.2",
     "fast-relay-pagination": "~2.0.2",
     "fs-extra": "~8.1.0",
-    "graphql": "~14.4.2",
+    "graphql": "~14.5.0",
     "graphql-redis-subscriptions": "~2.1.1",
     "graphql-relay": "~0.6.0",
     "graphql-subscriptions": "~1.1.0",
     "injectt": "~1.0.0",
-    "intl-messageformat": "~6.1.10",
+    "intl-messageformat": "~6.1.11",
     "ioredis": "~4.14.0",
     "isomorphic-unfetch": "~3.0.0",
     "jimp": "~0.6.4",
@@ -57,8 +57,8 @@
     "supertest": "~4.0.2"
   },
   "resolutions": {
-    "graphql": "~14.4.2",
-    "**/graphql": "~14.3.1"
+    "graphql": "~14.5.0",
+    "**/graphql": "~14.5.0"
   },
   "engines": {
     "node": ">=10.0"

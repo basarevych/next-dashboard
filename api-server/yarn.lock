@@ -3183,17 +3183,10 @@ graphql-subscriptions@~1.1.0:
   dependencies:
     iterall "^1.2.1"
 
-graphql@~14.3.1:
-  version "14.3.1"
-  resolved "https://registry.yarnpkg.com/graphql/-/graphql-14.3.1.tgz#b3aa50e61a841ada3c1f9ccda101c483f8e8c807"
-  integrity sha512-FZm7kAa3FqKdXy8YSSpAoTtyDFMIYSpCDOr+3EqlI1bxmtHu+Vv/I2vrSeT1sBOEnEniX3uo4wFhFdS/8XN6gA==
-  dependencies:
-    iterall "^1.2.2"
-
-graphql@~14.4.2:
-  version "14.4.2"
-  resolved "https://registry.yarnpkg.com/graphql/-/graphql-14.4.2.tgz#553a7d546d524663eda49ed6df77577be3203ae3"
-  integrity sha512-6uQadiRgnpnSS56hdZUSvFrVcQ6OF9y6wkxJfKquFtHlnl7+KSuWwSJsdwiK1vybm1HgcdbpGkCpvhvsVQ0UZQ==
+graphql@~14.5.0:
+  version "14.5.0"
+  resolved "https://registry.yarnpkg.com/graphql/-/graphql-14.5.0.tgz#4801e6460942c9c591944617f6dd224a9e531520"
+  integrity sha512-wnGcTD181L2xPnIwHHjx/moV4ulxA2Kms9zcUY+B/SIrK+2N+iOC6WNgnR2zVTmg1Z8P+CZq5KXibTnatg3WUw==
   dependencies:
     iterall "^1.2.2"
 
@@ -3453,22 +3446,22 @@ inquirer@^6.4.1:
     strip-ansi "^5.1.0"
     through "^2.3.6"
 
-intl-format-cache@^4.1.14:
-  version "4.1.14"
-  resolved "https://registry.yarnpkg.com/intl-format-cache/-/intl-format-cache-4.1.14.tgz#bd0e8f511ef5d253e067b258818b757fe80fa0f6"
-  integrity sha512-wXDqD40ESpc9YiSy3yIt+ABQnFm+i+8y2S9fEa8hQmakrDKY068ECiwIcm8Y/hTU1/iSboqeW4+7RB4L9JrrwQ==
+intl-format-cache@^4.1.15:
+  version "4.1.15"
+  resolved "https://registry.yarnpkg.com/intl-format-cache/-/intl-format-cache-4.1.15.tgz#325e6e45656ac12aa7ba528a800a57b0ee9c799a"
+  integrity sha512-b/wDoQRAV0wzwmYMMmUGt36pXNxTq4I4KVJa0q1CTvex2dsCpivCFwLcf44D+fhFQ09LMxq9a+P9F+4CYXTDIg==
 
 intl-messageformat-parser@^3.0.7:
   version "3.0.7"
   resolved "https://registry.yarnpkg.com/intl-messageformat-parser/-/intl-messageformat-parser-3.0.7.tgz#d28493501a1bc40a094239b7ef26fe9412558e72"
   integrity sha512-L16VbbV3NFaiZV65XwOIH9fBe52TS2EkOR0k8Y4ratsgTE7KPEbcUCUrz/iEQwJo7BcWY4ohkZbeYZRgAiPR1Q==
 
-intl-messageformat@~6.1.10:
-  version "6.1.10"
-  resolved "https://registry.yarnpkg.com/intl-messageformat/-/intl-messageformat-6.1.10.tgz#4fdb41662b34a828a24ed0efb7b264b55ed91214"
-  integrity sha512-h5lIjqbmQZIQE9c2ay7dTGeU13ME5pX1MwNFyXVTrzR7DPQYderQMSrnWN25OYVCeplgxNmmFu7nDlmx3bDbkg==
+intl-messageformat@~6.1.11:
+  version "6.1.11"
+  resolved "https://registry.yarnpkg.com/intl-messageformat/-/intl-messageformat-6.1.11.tgz#e4c2eb4c0779bb5714dc925ed8c8fb81284ee23b"
+  integrity sha512-1Y9hJzkBzXepBLR1JoXHJeNJV8jTk3P4Bmnwx2UmoOwfZtYqMVixI2C/g6qdcIcLNazV/f3UzHu4Sq0y/Njinw==
   dependencies:
-    intl-format-cache "^4.1.14"
+    intl-format-cache "^4.1.15"
     intl-messageformat-parser "^3.0.7"
 
 invariant@^2.2.2, invariant@^2.2.4:
