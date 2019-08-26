@@ -153,7 +153,7 @@ class Users extends React.Component {
   componentWillUnmount() {
     this.isDestroyed = true;
 
-    window.addEventListener(
+    window.removeEventListener(
       constants.events.IDENTITY_CHANGED,
       this.handleRefreshAction
     );

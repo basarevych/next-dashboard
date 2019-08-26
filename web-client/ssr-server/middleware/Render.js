@@ -28,7 +28,8 @@ class Render {
         if (
           process.env.NODE_ENV === "production" &&
           html &&
-          res.statusCode === 200
+          res.statusCode === 200 &&
+          _.get(req, "session.user.userId", null) === userId
         ) {
           await this.app.cache.setPage({ page, query, userId, html });
         }

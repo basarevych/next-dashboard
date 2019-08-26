@@ -79,7 +79,6 @@ class Fetcher {
   }
 
   async refreshTokens() {
-    if (this.isSsr) return;
     if (this.refreshingPromise) return this.refreshingPromise;
     this.refreshingPromise = Promise.resolve().then(async () => {
       const done = (accessToken, refreshToken) => {

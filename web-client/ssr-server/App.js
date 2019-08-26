@@ -55,7 +55,7 @@ class App {
       appOrigins,
       appTrustProxy,
       appApiServer,
-      appSsrApiServer,
+      appSsrApiServer: appSsrApiServer || appApiServer,
       appWsServer,
       appSslKey,
       appSslCert,
@@ -149,7 +149,7 @@ class App {
       query: _.assign({}, query || {}, {
         appServer: this.config.appOrigins[0],
         apiServer: this.config.appApiServer,
-        ssrApiServer: this.config.appSsrApiServer || this.config.appApiServer,
+        ssrApiServer: this.config.appSsrApiServer,
         wsServer: this.config.appWsServer,
         locale: locale || l10n.defaultLocale || null,
         theme: theme || styles.defaultTheme || null,
