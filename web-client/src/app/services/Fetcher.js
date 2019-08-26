@@ -81,10 +81,12 @@ class Fetcher {
   async refreshTokens() {
     if (this.refreshingPromise) return this.refreshingPromise;
     this.refreshingPromise = Promise.resolve().then(async () => {
-      const done = (accessToken, refreshToken) => {
-        setTimeout(() =>
-          this.setTokens(accessToken, refreshToken).catch(console.error)
-        );
+      const done = async (accessToken, refreshToken) => {
+        try {
+          await this.setTokens(accessToken, refreshToken);
+        } catch (error) {
+          console.log(error);
+        }
         this.refreshingPromise = null;
       };
 
@@ -183,7 +185,7 @@ class Fetcher {
         let result = await response.json();
 
         let isUnauthorized = false;
-        if ((await this.getRefreshToken()) && result.errors) {
+        if (token && result.errors) {
           for (let error of result.errors) {
             if (error.code === "E_UNAUTHORIZED") {
               isUnauthorized = true;
