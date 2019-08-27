@@ -84,6 +84,8 @@ class MyApp extends App {
           mapboxToken: query && query.mapboxToken
         })
       );
+    } else {
+      await store.dispatch(appOperations.setStatusCode({ code: statusCode }));
     }
 
     // Relay Environment
@@ -135,8 +137,6 @@ class MyApp extends App {
   constructor(props) {
     super(props);
 
-    this.handleRouteChangeStart = this.handleRouteChangeStart.bind(this);
-
     this.di = getDiContainer();
     this.reduxStore = getReduxStore(
       this.di,
@@ -156,16 +156,7 @@ class MyApp extends App {
     }
 
     // Start the app
-    Router.events.on("routeChangeStart", this.handleRouteChangeStart);
     this.reduxStore.dispatch(appOperations.start()).catch(console.error);
-  }
-
-  componentWillUnmount() {
-    Router.events.off("routeChangeStart", this.handleRouteChangeStart);
-  }
-
-  handleRouteChangeStart() {
-    this.reduxStore.dispatch(appOperations.setStatusCode({ code: 200 }));
   }
 
   render() {
