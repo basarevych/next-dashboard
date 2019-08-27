@@ -27,7 +27,7 @@ class Chart extends React.Component {
         responsive={false}
         voronoiDimension="x"
         voronoiBlacklist={["line"]}
-        labels={d => d.tooltip}
+        labels={d => d.datum.tooltip}
         labelComponent={<VictoryTooltip renderInPortal orientation="left" />}
       />
     );
