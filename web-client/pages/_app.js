@@ -1,5 +1,5 @@
 import React from "react";
-import App, { Container } from "next/app";
+import App from "next/app";
 import Router from "next/router";
 import { Provider as ReduxProvider } from "react-redux";
 import constants from "../common/constants";
@@ -162,23 +162,21 @@ class MyApp extends App {
     if (process.browser) pageProps.key = Router.route;
 
     return (
-      <Container>
-        <ReduxProvider store={this.reduxStore}>
-          <RelayProvider environment={this.relayEnvironment}>
-            <StylesProvider>
-              <IntlProvider>
-                <DateProvider>
-                  <ToastProvider>
-                    <PageLoader>
-                      <Component {...pageProps} />
-                    </PageLoader>
-                  </ToastProvider>
-                </DateProvider>
-              </IntlProvider>
-            </StylesProvider>
-          </RelayProvider>
-        </ReduxProvider>
-      </Container>
+      <ReduxProvider store={this.reduxStore}>
+        <RelayProvider environment={this.relayEnvironment}>
+          <StylesProvider>
+            <IntlProvider>
+              <DateProvider>
+                <ToastProvider>
+                  <PageLoader>
+                    <Component {...pageProps} />
+                  </PageLoader>
+                </ToastProvider>
+              </DateProvider>
+            </IntlProvider>
+          </StylesProvider>
+        </RelayProvider>
+      </ReduxProvider>
     );
   }
 }

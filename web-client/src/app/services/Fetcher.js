@@ -148,6 +148,15 @@ class Fetcher {
         resource = appSelectors.getSsrApiServer(this.getState()) + resource;
       else resource = appSelectors.getApiServer(this.getState()) + resource;
     }
+    if (!/^https?:\/\//.test(resource)) {
+      console.error(
+        "Could not get absolute URL\n" +
+          "ssrApiServer: " +
+          appSelectors.getSsrApiServer(this.getState()) +
+          "\napiServer: " +
+          appSelectors.getApiServer(this.getState())
+      );
+    }
 
     const headers = {
       "Content-Type": "application/json",
