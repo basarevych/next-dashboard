@@ -63,9 +63,17 @@ class Early {
 
     // Shortcuts to static
     express.use(
+      "/_next/static",
+      Express.static(path.join(__dirname, "..", "..", ".next", "static"), {
+        maxAge: this.maxAge,
+        fallthrough: false
+      })
+    );
+    express.use(
       "/static",
       Express.static(path.join(__dirname, "..", "..", "static"), {
-        maxAge: this.maxAge
+        maxAge: this.maxAge,
+        fallthrough: false
       })
     );
     express.use(

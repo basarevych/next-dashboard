@@ -38,7 +38,7 @@ class Fetcher {
   async getAccessToken() {
     return (
       (this.isSsr
-        ? this.req.session.accessToken
+        ? _.get(this.req, "session.accessToken")
         : this.storage.get("accessToken")) || null
     );
   }
@@ -46,7 +46,7 @@ class Fetcher {
   async getRefreshToken() {
     return (
       (this.isSsr
-        ? this.req.session.refreshToken
+        ? _.get(this.req, "session.refreshToken")
         : this.storage.get("refreshToken")) || null
     );
   }

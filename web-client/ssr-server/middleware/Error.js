@@ -11,7 +11,13 @@ class Error {
       if (!res.headersSent) {
         const { page, query } = await this.app.analyzeRequest(req);
         if (res.statusCode === 200) res.status(error.statusCode || 500);
-        this.app.next.renderError(error, req, res, page || "/", query || {});
+        this.app.next.renderError(
+          error,
+          req,
+          res,
+          page || "/_error",
+          query || {}
+        );
       }
     });
   }
