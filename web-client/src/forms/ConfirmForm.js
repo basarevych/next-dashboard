@@ -4,6 +4,7 @@ import { FormattedMessage } from "react-intl";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import { allCountries, iso2Lookup } from "../../common/src/countries";
+import shippingFields from "../../common/forms/shipping";
 
 export const styles = theme => ({
   root: {
@@ -51,7 +52,17 @@ class ConfirmForm extends React.PureComponent {
   static formName = "confirmForm";
 
   renderField(form, field) {
-    let value = this.props[`${form}Values`][field];
+    let value;
+    if (
+      form === "billing" &&
+      !_.isUndefined(shippingFields[field]) &&
+      this.props.billingValues.isSameAddress
+    ) {
+      value = this.props.shippingValues[field];
+    } else {
+      value = this.props[`${form}Values`][field];
+    }
+
     if (!value) return null;
 
     let label;
