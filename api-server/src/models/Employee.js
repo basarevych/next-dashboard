@@ -30,56 +30,56 @@ class Employee extends BaseModel {
         type: Date,
         default: Date.now,
         required: [true, "ERROR_FIELD_REQUIRED"],
-        validate: this.getValidator("whenCreated")
+        validate: this.getFieldValidator("whenCreated")
       },
       whenUpdated: {
         type: Date,
         default: Date.now,
         required: [true, "ERROR_FIELD_REQUIRED"],
-        validate: this.getValidator("whenUpdated")
+        validate: this.getFieldValidator("whenUpdated")
       },
       uid: {
         type: String,
         required: [true, "ERROR_FIELD_REQUIRED"],
-        validate: this.getValidator("uid")
+        validate: this.getFieldValidator("uid")
       },
       checked: {
         type: Boolean,
         required: [true, "ERROR_FIELD_REQUIRED"],
-        validate: this.getValidator("checked")
+        validate: this.getFieldValidator("checked")
       },
       name: {
         type: String,
         required: [true, "ERROR_FIELD_REQUIRED"],
-        validate: this.getValidator("name")
+        validate: this.getFieldValidator("name")
       },
       dept: {
         type: String,
         enum: this.depts,
         required: [true, "ERROR_FIELD_REQUIRED"],
-        validate: this.getValidator("dept")
+        validate: this.getFieldValidator("dept")
       },
       title: {
         type: String,
         required: [true, "ERROR_FIELD_REQUIRED"],
-        validate: this.getValidator("title")
+        validate: this.getFieldValidator("title")
       },
       country: {
         id: {
           type: String,
           required: [true, "ERROR_FIELD_REQUIRED"],
-          validate: this.getValidator("countryId")
+          validate: this.getFieldValidator("countryId")
         },
         name: {
           type: String,
           required: [true, "ERROR_FIELD_REQUIRED"],
-          validate: this.getValidator("countryName")
+          validate: this.getFieldValidator("countryName")
         }
       },
       salary: {
         type: Number,
         required: [true, "ERROR_FIELD_REQUIRED"],
-        validate: this.getValidator("salary")
+        validate: this.getFieldValidator("salary")
       }
     });
 
@@ -95,6 +95,8 @@ class Employee extends BaseModel {
     this.schema.pre("save", function() {
       this.whenUpdated = Date.now();
     });
+
+    this.schema.methods.validateField = this.getValidateMethod();
 
     this.model = this.db.mongoose.model("Employee", this.schema);
   }

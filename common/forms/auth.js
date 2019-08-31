@@ -3,13 +3,13 @@ module.exports = {
     label: "APP_AUTH_NEW_USER_LABEL"
   },
   email: {
-    normalize: "rows:1|remove:spaces",
+    label: "APP_AUTH_EMAIL_LABEL",
+    normalize: "remove:spaces",
     transform: "trim",
-    validate: "required|email",
-    label: "APP_AUTH_EMAIL_LABEL"
+    validate: "required|email"
   },
   password: {
-    validate: "required",
-    label: "APP_AUTH_PASSWORD_LABEL"
+    label: "APP_AUTH_PASSWORD_LABEL",
+    validate: "required|password"
   }
 };

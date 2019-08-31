@@ -15,23 +15,23 @@ class UserClient extends BaseModel {
         type: Date,
         default: Date.now,
         required: [true, "ERROR_FIELD_REQUIRED"],
-        validate: this.getValidator("whenCreated")
+        validate: this.getFieldValidator("whenCreated")
       },
       whenUpdated: {
         type: Date,
         default: Date.now,
         required: [true, "ERROR_FIELD_REQUIRED"],
-        validate: this.getValidator("whenUpdated")
+        validate: this.getFieldValidator("whenUpdated")
       },
       agent: {
         type: String,
         required: [true, "ERROR_FIELD_REQUIRED"],
-        validate: this.getValidator("agent")
+        validate: this.getFieldValidator("agent")
       },
       ip: {
         type: String,
         required: [true, "ERROR_FIELD_REQUIRED"],
-        validate: this.getValidator("ip")
+        validate: this.getFieldValidator("ip")
       }
     });
 
@@ -47,6 +47,8 @@ class UserClient extends BaseModel {
     this.schema.pre("save", function() {
       this.whenUpdated = Date.now();
     });
+
+    this.schema.methods.validateField = this.getValidateMethod();
 
     this.model = this.db.mongoose.model("UserClient", this.schema);
   }

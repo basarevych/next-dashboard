@@ -11,7 +11,7 @@ class Session {
   }
 
   async accept({ express }) {
-    const store = new RedisStore({ client: this.app.cache.redis });
+    const store = new RedisStore({ client: this.app.redis });
 
     express.use(
       session({

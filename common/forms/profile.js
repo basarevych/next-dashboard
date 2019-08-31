@@ -1,14 +1,14 @@
 module.exports = {
   name: {
-    normalize: "rows:1|compact:spaces",
     label: "PROFILE_NAME_LABEL",
+    normalize: "compact:spaces",
     transform: "trim"
   },
   email: {
-    normalize: "rows:1|remove:spaces",
+    label: "PROFILE_EMAIL_LABEL",
+    normalize: "remove:spaces",
     transform: "trim",
-    validate: "required|email",
-    label: "PROFILE_EMAIL_LABEL"
+    validate: "required|email"
   },
   password1: {
     label: "PROFILE_PASSWORD1_LABEL",

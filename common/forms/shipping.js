@@ -1,60 +1,60 @@
 module.exports = {
   firstName: {
-    normalize: "rows:1|compact:spaces",
+    label: "SHIPPING_FIRST_NAME_LABEL",
+    normalize: "compact:spaces",
     transform: "trim",
-    validate: "required",
-    label: "SHIPPING_FIRST_NAME_LABEL"
+    validate: "required"
   },
   middleName: {
-    normalize: "rows:1|compact:spaces",
-    transform: "trim",
-    label: "SHIPPING_MIDDLE_NAME_LABEL"
+    label: "SHIPPING_MIDDLE_NAME_LABEL",
+    normalize: "compact:spaces",
+    transform: "trim"
   },
   lastName: {
-    normalize: "rows:1|compact:spaces",
+    label: "SHIPPING_LAST_NAME_LABEL",
+    normalize: "compact:spaces",
     transform: "trim",
-    validate: "required",
-    label: "SHIPPING_LAST_NAME_LABEL"
+    validate: "required"
   },
   address: {
+    label: "SHIPPING_ADDRESS_LABEL",
     normalize: "rows:2|compact:spaces",
     transform: "trim",
-    validate: "required",
-    label: "SHIPPING_ADDRESS_LABEL"
+    validate: "required"
   },
   city: {
-    normalize: "rows:1|compact:spaces",
+    label: "SHIPPING_CITY_LABEL",
+    normalize: "compact:spaces",
     transform: "trim",
-    validate: "required",
-    label: "SHIPPING_CITY_LABEL"
+    validate: "required"
   },
   state: {
-    normalize: "rows:1|compact:spaces",
-    transform: "trim",
-    label: "SHIPPING_STATE_LABEL"
+    label: "SHIPPING_STATE_LABEL",
+    normalize: "compact:spaces",
+    transform: "trim"
   },
   code: {
-    normalize: "rows:1|compact:spaces",
+    label: "SHIPPING_CODE_LABEL",
+    normalize: "compact:spaces",
     transform: "trim",
-    validate: "required",
-    label: "SHIPPING_CODE_LABEL"
+    validate: "required"
   },
   country: {
-    normalize: "rows:1|compact:spaces",
+    label: "SHIPPING_COUNTRY_LABEL",
+    normalize: "compact:spaces",
     transform: "trim",
-    validate: "required",
-    label: "SHIPPING_COUNTRY_LABEL"
+    validate: "required"
   },
   phone: {
+    label: "SHIPPING_PHONE_LABEL",
     normalize: "phone",
     transform: "trim",
-    validate: "required|phone",
-    label: "SHIPPING_PHONE_LABEL"
+    validate: "required|phone"
   },
   email: {
-    normalize: "rows:1|remove:spaces",
+    label: "SHIPPING_EMAIL_LABEL",
+    normalize: "remove:spaces",
     transform: "trim",
-    validate: "required|email",
-    label: "SHIPPING_EMAIL_LABEL"
+    validate: "required|email"
   }
 };

@@ -1,35 +1,35 @@
 module.exports = {
   uid: {
+    label: "EDIT_EMPLOYEE_UID_LABEL",
     normalize: "integer",
-    validate: "required",
-    label: "EDIT_EMPLOYEE_UID_LABEL"
+    validate: "required"
   },
   checked: {
     label: "EDIT_EMPLOYEE_CHECKED_LABEL"
   },
   name: {
-    normalize: "rows:1|compact:spaces",
+    label: "EDIT_EMPLOYEE_NAME_LABEL",
+    normalize: "compact:spaces",
     transform: "trim",
-    validate: "required",
-    label: "EDIT_EMPLOYEE_NAME_LABEL"
+    validate: "required"
   },
   dept: {
-    validate: "required",
-    label: "EDIT_EMPLOYEE_DEPT_LABEL"
+    label: "EDIT_EMPLOYEE_DEPT_LABEL",
+    validate: "required"
   },
   title: {
-    normalize: "rows:1|compact:spaces",
+    label: "EDIT_EMPLOYEE_TITLE_LABEL",
+    normalize: "compact:spaces",
     transform: "trim",
-    validate: "required",
-    label: "EDIT_EMPLOYEE_TITLE_LABEL"
+    validate: "required"
   },
   country: {
-    validate: "required",
-    label: "EDIT_EMPLOYEE_COUNTRY_LABEL"
+    label: "EDIT_EMPLOYEE_COUNTRY_LABEL",
+    validate: "required"
   },
   salary: {
+    label: "EDIT_EMPLOYEE_SALARY_LABEL",
     normalize: "integer",
-    validate: "required",
-    label: "EDIT_EMPLOYEE_SALARY_LABEL"
+    validate: "required"
   }
 };

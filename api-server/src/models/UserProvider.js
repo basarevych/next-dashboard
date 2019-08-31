@@ -15,31 +15,31 @@ class UserProvider extends BaseModel {
         type: Date,
         default: Date.now,
         required: [true, "ERROR_FIELD_REQUIRED"],
-        validate: this.getValidator("whenCreated")
+        validate: this.getFieldValidator("whenCreated")
       },
       whenUpdated: {
         type: Date,
         default: Date.now,
         required: [true, "ERROR_FIELD_REQUIRED"],
-        validate: this.getValidator("whenUpdated")
+        validate: this.getFieldValidator("whenUpdated")
       },
       name: {
         type: String,
         required: [true, "ERROR_FIELD_REQUIRED"],
-        validate: this.getValidator("name")
+        validate: this.getFieldValidator("name")
       },
       profile: {
         type: this.db.mongoose.Schema.Types.Mixed,
         required: [true, "ERROR_FIELD_REQUIRED"],
-        validate: this.getValidator("profile")
+        validate: this.getFieldValidator("profile")
       },
       accessToken: {
         type: String,
-        validate: this.getValidator("accessToken")
+        validate: this.getFieldValidator("accessToken")
       },
       refreshToken: {
         type: String,
-        validate: this.getValidator("refreshToken")
+        validate: this.getFieldValidator("refreshToken")
       }
     });
 
@@ -55,6 +55,8 @@ class UserProvider extends BaseModel {
     this.schema.pre("save", function() {
       this.whenUpdated = Date.now();
     });
+
+    this.schema.methods.validateField = this.getValidateMethod();
 
     this.model = this.db.mongoose.model("UserProvider", this.schema);
   }

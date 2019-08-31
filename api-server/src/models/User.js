@@ -24,55 +24,55 @@ class User extends BaseModel {
         type: Date,
         default: Date.now,
         required: [true, "ERROR_FIELD_REQUIRED"],
-        validate: this.getValidator("whenCreated")
+        validate: this.getFieldValidator("whenCreated")
       },
       whenUpdated: {
         type: Date,
         default: Date.now,
         required: [true, "ERROR_FIELD_REQUIRED"],
-        validate: this.getValidator("whenUpdated")
+        validate: this.getFieldValidator("whenUpdated")
       },
       email: {
         type: String,
         required: [true, "ERROR_FIELD_REQUIRED"],
-        validate: this.getValidator("email")
+        validate: this.getFieldValidator("email")
       },
       emailToken: {
         type: String,
-        validate: this.getValidator("emailToken")
+        validate: this.getFieldValidator("emailToken")
       },
       isEmailVerified: {
         type: Boolean,
         default: false,
-        validate: this.getValidator("isEmailVerified")
+        validate: this.getFieldValidator("isEmailVerified")
       },
       name: {
         type: String,
-        validate: this.getValidator("name")
+        validate: this.getFieldValidator("name")
       },
       password: {
         type: String,
         required: [true, "ERROR_FIELD_REQUIRED"],
-        validate: this.getValidator("password")
+        validate: this.getFieldValidator("password")
       },
       roles: {
         type: [String],
         enum: this.roles,
         default: [],
         required: [true, "ERROR_FIELD_REQUIRED"],
-        validate: this.getValidator("roles")
+        validate: this.getFieldValidator("roles")
       },
       clients: {
         type: [this.client.schema],
         default: [],
         required: [true, "ERROR_FIELD_REQUIRED"],
-        validate: this.getValidator("clients")
+        validate: this.getFieldValidator("clients")
       },
       providers: {
         type: [this.provider.schema],
         default: [],
         required: [true, "ERROR_FIELD_REQUIRED"],
-        validate: this.getValidator("providers")
+        validate: this.getFieldValidator("providers")
       }
     });
 
@@ -91,17 +91,7 @@ class User extends BaseModel {
         this.roles.push(constants.roles.AUTHENTICATED);
     });
 
-    const self = this;
-    this.schema.methods.validateField = async function(field, value) {
-      const { validator } = self.getValidator(field);
-      try {
-        await validator.bind(this)(value);
-      } catch (error) {
-        throw this.di.get("error.validation", {
-          errors: { password: { message: error } }
-        });
-      }
-    };
+    this.schema.methods.validateField = this.getValidateMethod();
 
     this.model = this.db.mongoose.model("User", this.schema);
   }
