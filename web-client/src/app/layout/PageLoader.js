@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import { FormattedMessage } from "react-intl";
 import { PageTransition } from "next-page-transitions";
-import SVG from "react-inlinesvg";
 import Paper from "@material-ui/core/Paper";
 import { graphql } from "react-relay";
 import { QueryRenderer } from "../providers/Relay";
@@ -80,14 +79,17 @@ export const styles = theme => ({
     transform: "translate3d(-50%, -50%, 0)",
     display: "flex",
     alignItems: "center",
-    paddingRight: 30,
+    padding: "10px 50px 10px 30px",
     background: theme.palette.primary.main,
     color: theme.palette.primary.contrastText
   },
   loaderIcon: {
-    width: 100,
-    height: 100,
-    animation: "page-loader-rotation 5s infinite linear"
+    animation: "page-loader-rotation 5s infinite linear",
+    "& svg": {
+      height: 40,
+      fill: "currentColor",
+      verticalAlign: "middle"
+    }
   },
   loaderText: {
     fontSize: 32
@@ -114,8 +116,10 @@ class PageLoader extends React.Component {
   renderLoader() {
     const { classes } = this.props;
     return (
-      <Paper className={classes.loaderWrapper}>
-        <SVG src={logo} className={classes.loaderIcon} />
+      <Paper className={classes.loaderWrapper} elevation={5}>
+        <div className={classes.loaderIcon}>
+          <span dangerouslySetInnerHTML={{ __html: logo }} />
+        </div>
         <div className={classes.loaderText}>
           <FormattedMessage id="LAYOUT_LOADING_MESSAGE" />
         </div>

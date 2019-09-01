@@ -2,8 +2,24 @@ const request = require("supertest");
 const express = require("express");
 const constants = require("../../../../common/constants");
 const Injectt = require("injectt");
+const CacheService = require("../../Cache");
 const AuthService = require("../../Auth");
 const AuthRoute = require("../OAuth");
+
+jest.mock("ioredis", () => {
+  const Redis = require("ioredis-mock");
+  if (_.isObject(Redis)) {
+    // the first mock is an ioredis shim because ioredis-mock depends on it
+    // https://github.com/stipsan/ioredis-mock/blob/master/src/index.js#L101-L111
+    return {
+      Command: { _transformer: { argument: {}, reply: {} } }
+    };
+  }
+  // second mock for our code
+  return function(...args) {
+    return new Redis(args);
+  };
+});
 
 describe("Auth route", () => {
   let di;
@@ -27,9 +43,11 @@ describe("Auth route", () => {
       },
       "config"
     );
+    di.registerClass(CacheService);
     di.registerClass(AuthService);
     di.registerClass(AuthRoute);
 
+    await di.get("cache").init();
     await di.get("auth").init();
     route = di.get("route.oauth");
     route.authenticate = jest.fn(() => (req, res, next) => res.end());
