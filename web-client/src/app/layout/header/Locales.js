@@ -1,5 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { useDispatch } from "react-redux";
+import { makeStyles } from "@material-ui/styles";
 import { lighten } from "@material-ui/core/styles/colorManipulator";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -7,8 +9,9 @@ import ListItemText from "@material-ui/core/ListItemText";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import Flag from "react-flags";
 import l10n from "../../../../common/locales";
+import { appOperations } from "../../state";
 
-export const styles = theme => ({
+const useStyles = makeStyles(theme => ({
   menu: {
     width: "100%",
     maxWidth: theme.spacing(45),
@@ -21,52 +24,50 @@ export const styles = theme => ({
       maxWidth: "90%"
     }
   }
-});
+}));
 
-class Locales extends React.Component {
-  static propTypes = {
-    classes: PropTypes.object.isRequired,
-    anchor: PropTypes.object,
-    onClose: PropTypes.func.isRequired,
-    onSetCookie: PropTypes.func.isRequired,
-    onSetLocale: PropTypes.func.isRequired
+function Locales(props) {
+  const classes = useStyles(props);
+  const dispatch = useDispatch();
+
+  const handleLocaleSwitch = locale => {
+    props.onClose();
+    dispatch(appOperations.setCookie({ name: "locale", value: locale }));
+    dispatch(appOperations.setLocale({ locale }));
   };
 
-  handleLocaleSwitch(locale) {
-    this.props.onClose();
-    this.props.onSetCookie("locale", locale);
-    this.props.onSetLocale(locale);
-  }
-
-  render() {
-    return (
-      <Menu
-        classes={{ paper: this.props.classes.menu }}
-        anchorEl={this.props.anchor}
-        anchorOrigin={{ vertical: "top", horizontal: "left" }}
-        transformOrigin={{ vertical: "top", horizontal: "left" }}
-        open={!!this.props.anchor}
-        onClose={this.props.onClose}
-      >
-        {_.map(l10n.locales, locale => (
-          <MenuItem
-            key={`locale-${locale}`}
-            onClick={() => this.handleLocaleSwitch(locale)}
-          >
-            <ListItemIcon>
-              <Flag
-                name={l10n.flags[locale]}
-                format="png"
-                pngSize={24}
-                basePath={"/static/img/flags"}
-              />
-            </ListItemIcon>
-            <ListItemText>{l10n.names[locale]}</ListItemText>
-          </MenuItem>
-        ))}
-      </Menu>
-    );
-  }
+  return (
+    <Menu
+      classes={{ paper: classes.menu }}
+      anchorEl={props.anchor}
+      anchorOrigin={{ vertical: "top", horizontal: "left" }}
+      transformOrigin={{ vertical: "top", horizontal: "left" }}
+      open={!!props.anchor}
+      onClose={props.onClose}
+    >
+      {_.map(l10n.locales, locale => (
+        <MenuItem
+          key={`locale-${locale}`}
+          onClick={() => handleLocaleSwitch(locale)}
+        >
+          <ListItemIcon>
+            <Flag
+              name={l10n.flags[locale]}
+              format="png"
+              pngSize={24}
+              basePath={"/static/img/flags"}
+            />
+          </ListItemIcon>
+          <ListItemText>{l10n.names[locale]}</ListItemText>
+        </MenuItem>
+      ))}
+    </Menu>
+  );
 }
+
+Locales.propTypes = {
+  anchor: PropTypes.object,
+  onClose: PropTypes.func.isRequired
+};
 
 export default Locales;

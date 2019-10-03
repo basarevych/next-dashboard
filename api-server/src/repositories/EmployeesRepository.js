@@ -118,16 +118,6 @@ class EmployeesRepository {
     });
     if (!countryModel) throw this.di.get("error.notFound");
 
-    if (uid) {
-      uid = parseInt(uid);
-      if (!uid) {
-        throw this.di.get("error.validation", {
-          errors: { uid: "ERROR_INVALID_PATTERN" }
-        });
-      }
-      uid = _.padStart(uid, 6, "0");
-    }
-
     let employee = new this.employee.model({
       uid,
       checked,
@@ -159,15 +149,7 @@ class EmployeesRepository {
     let employee = await this.employee.model.findById(id);
     if (!employee) throw this.di.get("error.notFound");
 
-    if (_.isString(uid)) {
-      uid = parseInt(uid);
-      if (!uid) {
-        throw this.di.get("error.validation", {
-          errors: { uid: "ERROR_INVALID_PATTERN" }
-        });
-      }
-      employee.uid = _.padStart(uid, 6, "0");
-    }
+    if (_.isNumber(uid)) employee.uid = uid;
     if (_.isBoolean(checked)) employee.checked = checked;
     if (_.isString(name)) employee.name = name;
     if (_.isString(dept)) employee.dept = dept;

@@ -2,53 +2,21 @@ import React from "react";
 import App from "next/app";
 import Router from "next/router";
 import { Provider as ReduxProvider } from "react-redux";
-import constants from "../common/constants";
 import serialize from "../common/src/serialize";
 import deserialize from "../common/src/deserialize";
 import getDiContainer from "../src/app/lib/getDiContainer";
 import getReduxStore from "../src/app/lib/getReduxStore";
 import getRelayEnvironment from "../src/app/lib/getRelayEnvironment";
 import { appOperations, appSelectors } from "../src/app/state";
-import { fetchQuery, RelayProvider } from "../src/app/providers/Relay";
-import StylesProvider from "../src/app/providers/StylesContainer";
-import IntlProvider from "../src/app/providers/IntlContainer";
-import DateProvider from "../src/app/providers/DateContainer";
-import ToastProvider from "../src/app/providers/ToastContainer";
-import PageLoader, {
-  query as pageLoaderQuery
-} from "../src/app/layout/PageLoaderContainer";
-
-if (process.browser) {
-  window.__notify = function(title, content, options = {}) {
-    window.dispatchEvent(
-      new CustomEvent(constants.events.TOAST, {
-        detail: {
-          title,
-          content,
-          ...options
-        }
-      })
-    );
-  };
-
-  window.onerror = function(msg, url, line, col, error) {
-    let extra = !col ? "" : "\ncolumn: " + col;
-    extra += !error ? "" : "\nerror: " + error;
-    console.error(
-      "Error: " + msg + "\nurl: " + url + "\nline: " + line + extra
-    );
-    window.__notify("An Error Occurred", msg, { autoClose: false });
-    return false;
-  };
-
-  window.onunhandledrejection = function(evt) {
-    console.error(evt.reason);
-    window.__notify("An Error Occurred", evt.reason.message, {
-      autoClose: false
-    });
-    return false;
-  };
-}
+import RelayProvider, { fetchQuery } from "../src/app/providers/RelayProvider";
+import StylesProvider from "../src/app/providers/StylesProvider";
+import IntlProvider from "../src/app/providers/IntlProvider";
+import DateProvider from "../src/app/providers/DateProvider";
+import ToastProvider from "../src/app/providers/ToastProvider";
+import UserProvider, {
+  query as userProviderQuery
+} from "../src/app/providers/UserProvider";
+import Layout from "../src/app/layout/Layout";
 
 class MyApp extends App {
   static async getInitialProps({ Component, ctx }) {
@@ -91,11 +59,6 @@ class MyApp extends App {
     // Relay Environment
     const environment = getRelayEnvironment(di);
 
-    if (isSsr && !isExported) {
-      // Let Fetcher know we are doing SSR right now
-      di.get("fetcher").setSsrMode(req, res);
-    }
-
     /* eslint-disable require-atomic-updates */
     ctx.di = di;
     ctx.store = store;
@@ -104,8 +67,17 @@ class MyApp extends App {
     ctx.isExported = isExported;
     /* eslint-enable require-atomic-updates */
 
+    if (isSsr && !isExported) {
+      // Let Fetcher know we are doing SSR right now
+      di.get("fetcher").setSsrMode(req, res);
+
+      // Prepopulate user info context
+      await ctx.fetchQuery(userProviderQuery);
+    }
+
     let pageProps = {};
     if (Component.getInitialProps) {
+      // Run .getInitialProps() of the page
       try {
         pageProps = (await Component.getInitialProps(ctx)) || {};
       } catch (error) {
@@ -115,15 +87,10 @@ class MyApp extends App {
       }
     }
 
-    if (isSsr && !isExported) await ctx.fetchQuery(pageLoaderQuery);
-
+    // Check the resulting status code
     statusCode = appSelectors.getStatusCode(store.getState());
-    if (
-      isSsr &&
-      !isExported &&
-      statusCode !== 200 &&
-      res.statusCode !== statusCode
-    ) {
+    if (isSsr && !isExported && res.statusCode !== statusCode) {
+      // Make Express respond with the correct code
       res.status(statusCode);
     }
 
@@ -170,9 +137,11 @@ class MyApp extends App {
             <IntlProvider>
               <DateProvider>
                 <ToastProvider>
-                  <PageLoader>
-                    <Component {...pageProps} />
-                  </PageLoader>
+                  <UserProvider>
+                    <Layout>
+                      <Component {...pageProps} />
+                    </Layout>
+                  </UserProvider>
                 </ToastProvider>
               </DateProvider>
             </IntlProvider>

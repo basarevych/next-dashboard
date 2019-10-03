@@ -12,12 +12,13 @@ class Render {
   }
 
   async renderPage(req, res, next) {
-    const userId = _.get(req, "session.user.userId", null);
     const { page, query, isAllowed } = await this.app.analyzeRequest(req);
     if (!page) return next();
 
-    if (isAllowed && !isAllowed(req.session.user))
-      res.status(_.get(req, "session.user.isAuthenticated") ? 403 : 401);
+    const user = req.session.user || {};
+    const userId = user.userId || null;
+    if (_.isFunction(isAllowed) && !isAllowed(user))
+      res.status(user.isAuthenticated ? 403 : 401);
 
     try {
       let html = null;
@@ -29,7 +30,7 @@ class Render {
           process.env.NODE_ENV === "production" &&
           html &&
           res.statusCode === 200 &&
-          _.get(req, "session.user.userId", null) === userId
+          req.session.userId === userId
         ) {
           await this.app.cache.setPage({ page, query, userId, html });
         }

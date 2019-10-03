@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import PropTypes from "prop-types";
 import { AutoSizer } from "react-virtualized";
+import { useIntl } from "react-intl";
 import { VictoryTheme } from "victory";
-import { darken } from "@material-ui/core/styles/colorManipulator";
+import { makeStyles, useTheme } from "@material-ui/styles";
 import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
 import {
@@ -11,12 +12,56 @@ import {
   VictoryLegend,
   VictoryPie
 } from "victory";
+import {
+  getColor,
+  getColorStart,
+  getColorEnd
+} from "../../../common/src/colors";
 
-export const styles = () => ({
+function StateLegendLabel(props) {
+  const intl = useIntl();
+
+  const { index, x, y, offsetX, offsetY, text, chart, theme } = props;
+  if (!chart || !text) return null;
+
+  return (
+    <g>
+      <text
+        x={x}
+        y={y + offsetY}
+        alignmentBaseline="middle"
+        fill={theme.palette.text.primary}
+      >
+        {text}
+      </text>
+      <text
+        x={x + offsetX}
+        y={y + offsetY}
+        alignmentBaseline="middle"
+        fill={theme.palette.text.primary}
+      >
+        {intl.formatNumber(chart[index].y)}
+      </text>
+    </g>
+  );
+}
+
+StateLegendLabel.propTypes = {
+  index: PropTypes.number,
+  x: PropTypes.number,
+  y: PropTypes.number,
+  offsetX: PropTypes.number,
+  offsetY: PropTypes.number,
+  text: PropTypes.string,
+  chart: PropTypes.array,
+  theme: PropTypes.object
+};
+
+const useStyles = makeStyles(() => ({
   root: {
     width: "100%",
     height: "100%",
-    minHeight: 300,
+    minHeight: 500,
     padding: "1rem",
     display: "flex",
     flexDirection: "column",
@@ -26,145 +71,135 @@ export const styles = () => ({
   chart: {
     flex: 1
   }
-});
+}));
 
-class StateLegendLabel extends React.Component {
-  static propTypes = {
-    index: PropTypes.number,
-    x: PropTypes.number,
-    y: PropTypes.number,
-    offsetX: PropTypes.number,
-    offsetY: PropTypes.number,
-    text: PropTypes.string,
-    chart: PropTypes.array,
-    theme: PropTypes.object
-  };
+function StateSales(props) {
+  const classes = useStyles(props);
+  const theme = useTheme();
+  const intl = useIntl();
 
-  render() {
-    const { index, x, y, offsetX, offsetY, text, chart, theme } = this.props;
-    if (!chart || !text) return null;
-    return (
-      <g>
-        <text
-          x={x}
-          y={y + offsetY}
-          alignmentBaseline="middle"
-          fill={theme.palette.text.primary}
-        >
-          {text}
-        </text>
-        <text
-          x={x + offsetX}
-          y={y + offsetY}
-          alignmentBaseline="middle"
-          fill={theme.palette.text.primary}
-        >
-          {chart[index].y}
-        </text>
-      </g>
-    );
-  }
-}
+  const [selected, setSelected] = useState(props.selected);
 
-class StateSales extends React.Component {
-  static propTypes = {
-    intl: PropTypes.object.isRequired,
-    classes: PropTypes.object.isRequired,
-    theme: PropTypes.object.isRequired,
-    relay: PropTypes.object.isRequired,
-    selected: PropTypes.string.isRequired,
-    viewer: PropTypes.object.isRequired,
-    onLoaded: PropTypes.func.isRequired
-  };
-
-  constructor(props) {
-    super(props);
-
-    this.isDestroyed = false;
-  }
-
-  componentDidMount() {
-    this.props.onLoaded();
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.selected !== this.props.selected) {
-      if (!this.isDestroyed) {
-        this.props.relay.refetch(
-          { stateName: this.props.selected },
-          null,
-          () => this.props.onLoaded(),
-          { force: true }
-        );
-      }
+  useEffect(() => {
+    if (selected !== props.selected) {
+      props.relay.refetch({ stateName: props.selected }, null, null, {
+        force: true
+      });
+      setSelected(props.selected);
     }
-  }
+  }, [props.selected, setSelected]);
 
-  componentWillUnmount() {
-    this.isDestroyed = true;
-  }
+  const edges = _.get(props, "viewer.stateCities.edges", []);
 
-  getData() {
-    const cities = _.map(
-      _.get(this.props.viewer, "stateCities.edges", []),
-      edge => ({
-        x: _.get(edge, "node.name"),
-        y: _.get(edge, "node.population")
-      })
-    );
+  const data = useMemo(() => {
+    const cities = _.map(edges, edge => ({
+      x: _.get(edge, "node.name"),
+      y: _.get(edge, "node.population")
+    }));
     if (!cities.length) return null;
     const otherPopulation = _.get(
-      this.props.viewer,
+      props.viewer,
       "stateCities.otherPopulation",
       0
     );
     if (otherPopulation) {
       cities.push({
-        x: this.props.intl.formatMessage({ id: "DASHBOARD_OTHER_LABEL" }),
+        x: intl.formatMessage({ id: "DASHBOARD_OTHER_LABEL" }),
         y: otherPopulation
       });
     }
     return cities;
-  }
+  }, [edges]);
 
-  renderTitle() {
-    return (
+  const legends = useMemo(
+    () =>
+      _.map(data, (item, i) => {
+        const [r, g, b] = getColor(i, data.length);
+        return {
+          name: `${i + 1}: ${item.x}`,
+          symbol: {
+            fill: `rgb(${r},${g},${b})`,
+            stroke: "rgba(0,0,0,0.5)",
+            strokeWidth: 0.5
+          }
+        };
+      }),
+    [data]
+  );
+
+  const colorScale = useMemo(() => {
+    const result = [];
+    for (let i = 0; i < data.length; i++)
+      result.push(`url(#stateChartGradient${i})`);
+    return result;
+  }, [data]);
+
+  const labels = useMemo(() => {
+    const result = [];
+    for (let i = 0; i < data.length; i++) result.push(i + 1);
+    return result;
+  }, [data]);
+
+  const gradients = useMemo(
+    () =>
+      _.map(_.range(0, data.length), i => {
+        const [r1, g1, b1] = getColorStart(i, data.length);
+        const [r2, g2, b2] = getColorEnd(i, data.length);
+        return (
+          <linearGradient
+            key={`stateChartGradient${i}`}
+            id={`stateChartGradient${i}`}
+            x1="0%"
+            y1="0%"
+            x2="0%"
+            y2="100%"
+          >
+            <stop offset="0%" stopColor={`rgb(${r1},${g1},${b1})`} />
+            <stop offset="100%" stopColor={`rgb(${r2},${g2},${b2})`} />
+          </linearGradient>
+        );
+      }),
+    [data]
+  );
+
+  const title = useMemo(
+    () => (
       <React.Fragment>
         <Typography variant="h4" color="inherit">
-          {this.props.selected}
+          {selected}
         </Typography>
       </React.Fragment>
-    );
-  }
+    ),
+    [selected]
+  );
 
-  renderChart(width, height) {
-    const data = this.getData();
-    if (!data) return null;
+  const renderChart = useCallback(({ width, height }) => {
+    if (!data || !width || !height) return null;
 
     let legendLineHeight = height / 2 / 10 / 2;
     let radius = Math.min(width / 2, height / 2) - 10;
-    let colorScale = [];
-    let labels = [];
-    let legends = _.map(data, (item, i) => ({
-      name: `${i + 1}: ${item.x}`,
-      symbol: {
-        fill:
-          this.props.theme.name === "dark"
-            ? darken("rgb(255, 167, 38)", i * 0.05)
-            : darken("rgb(66, 165, 245)", i * 0.05)
-      }
-    }));
-    for (let i = 0; i <= 10; i++) {
-      colorScale.push(
-        this.props.theme.name === "dark"
-          ? darken("rgb(255, 167, 38)", i * 0.05)
-          : darken("rgb(66, 165, 245)", i * 0.05)
-      );
-      labels.push(i + 1);
-    }
 
     return (
       <svg width={width} height={height}>
+        <defs>
+          <filter
+            id="stateChartShadow"
+            xmlns="http://www.w3.org/2000/svg"
+            height="130%"
+            width="130%"
+          >
+            <feGaussianBlur in="SourceAlpha" stdDeviation="2" />
+            <feOffset dx="2" dy="2" result="offsetblur" />
+            <feComponentTransfer>
+              <feFuncA type="linear" slope="0.2"></feFuncA>
+            </feComponentTransfer>
+            <feMerge>
+              <feMergeNode />
+              <feMergeNode in="SourceGraphic"></feMergeNode>
+            </feMerge>
+          </filter>
+          {gradients}
+        </defs>
         <VictoryChart
           width={width}
           height={radius + height / 2}
@@ -182,7 +217,10 @@ class StateSales extends React.Component {
             },
             pie: {
               style: {
-                data: { strokeWidth: 0 },
+                data: {
+                  strokeWidth: 0,
+                  filter: "url(#stateChartShadow)"
+                },
                 labels: {
                   fill: "#ffffff",
                   textShadow: "0 0 3px #000000"
@@ -220,7 +258,7 @@ class StateSales extends React.Component {
             labelComponent={
               <StateLegendLabel
                 chart={data}
-                theme={this.props.theme}
+                theme={theme}
                 offsetY={0.45 * legendLineHeight}
                 offsetX={radius}
               />
@@ -230,22 +268,22 @@ class StateSales extends React.Component {
         </VictoryChart>
       </svg>
     );
-  }
+  });
 
-  render() {
-    return (
-      <Paper className={this.props.classes.root}>
-        {this.renderTitle()}
-        <div className={this.props.classes.chart}>
-          <AutoSizer>
-            {({ width, height }) =>
-              !!width && !!height && this.renderChart(width, height)
-            }
-          </AutoSizer>
-        </div>
-      </Paper>
-    );
-  }
+  return (
+    <Paper className={classes.root}>
+      {title}
+      <div className={classes.chart}>
+        <AutoSizer>{renderChart}</AutoSizer>
+      </div>
+    </Paper>
+  );
 }
+
+StateSales.propTypes = {
+  relay: PropTypes.object.isRequired,
+  selected: PropTypes.string.isRequired,
+  viewer: PropTypes.object.isRequired
+};
 
 export default StateSales;

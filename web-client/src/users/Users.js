@@ -1,52 +1,36 @@
-import React from "react";
+import React, {
+  useContext,
+  useState,
+  useCallback,
+  useLayoutEffect,
+  useEffect
+} from "react";
 import PropTypes from "prop-types";
+import { useSelector, useDispatch } from "react-redux";
 import { FormattedMessage } from "react-intl";
-import { graphql } from "react-relay";
+import { graphql, requestSubscription } from "react-relay";
+import { makeStyles } from "@material-ui/styles";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import TablePagination from "@material-ui/core/TablePagination";
 import Paper from "@material-ui/core/Paper";
 import RefreshIcon from "@material-ui/icons/Refresh";
-import { lighten } from "@material-ui/core/styles/colorManipulator";
-import UsersTable from "./UsersTableContainer";
-import EditUserModal from "./EditUserModalContainer";
-import ConfirmModal from "../app/modals/ConfirmModalContainer";
-import { Subscription } from "../app/providers/Relay";
+import UsersTable from "./UsersTable";
+import EditUserModal from "./EditUserModal";
+import ConfirmModal from "../app/modals/ConfirmModal";
+import { RelayContext } from "../app/providers/RelayProvider";
 import constants from "../../common/constants";
+import { appSelectors } from "../app/state";
+import { usersOperations, usersSelectors } from "./state";
 
-export const pageSize = 10;
-export const sortBy = "email";
-export const sortDir = "asc";
+const useIsomorphicLayoutEffect = process.browser ? useLayoutEffect : useEffect;
 
-export const styles = theme => ({
-  message: {
-    background: lighten(theme.palette.background.paper, 0.1),
-    width: "100%",
-    marginTop: "-2rem",
-    display: "flex",
-    justifyContent: "stretch",
-    alignItems: "center",
-    [theme.breakpoints.down("sm")]: {
-      flexDirection: "column"
-    }
-  },
-  messageTitle: {
-    fontSize: 26,
-    margin: "3rem 3rem 1rem 3rem"
-  },
-  messageContent: {
-    flex: 1,
-    maxWidth: "600px",
-    margin: "3rem 1rem 1rem 1rem",
-    [theme.breakpoints.down("sm")]: {
-      marginTop: 0
-    }
-  },
+const useStyles = makeStyles(theme => ({
   layout: {
     width: "100%",
     flex: 1,
-    padding: theme.spacing(1)
+    padding: theme.spacing(2)
   },
   paper: {
     background: theme.main.paper
@@ -67,7 +51,7 @@ export const styles = theme => ({
   button: {
     margin: "0.5rem"
   }
-});
+}));
 
 const subscription = graphql`
   subscription UsersSubscription {
@@ -77,280 +61,300 @@ const subscription = graphql`
   }
 `;
 
-class Users extends React.Component {
-  static propTypes = {
-    classes: PropTypes.object.isRequired,
-    relay: PropTypes.object.isRequired,
-    viewer: PropTypes.object.isRequired,
-    isSubscribed: PropTypes.bool.isRequired,
-    isEditModalOpen: PropTypes.bool.isRequired,
-    selected: PropTypes.array.isRequired,
-    getToken: PropTypes.func.isRequired,
-    onCreate: PropTypes.func.isRequired,
-    onEdit: PropTypes.func.isRequired,
-    onDelete: PropTypes.func.isRequired,
-    onDeselectAll: PropTypes.func.isRequired
-  };
+function Users(props) {
+  const classes = useStyles();
+  const dispatch = useDispatch();
+  const { environment } = useContext(RelayContext);
 
-  constructor(props) {
-    super(props);
+  const users = _.get(props, "viewer.users.edges", []);
+  const totalCount = _.get(props, "viewer.users.totalCount", 0);
+  const startCursor = _.get(props, "viewer.users.pageInfo.startCursor", null);
+  const endCursor = _.get(props, "viewer.users.pageInfo.endCursor", null);
 
-    this.state = {
-      pageSize,
-      pageNumber: 0,
-      variables: {
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [pageWasRefreshed, setPageWasRefreshed] = useState(false);
+
+  const pageSize = useSelector(state => usersSelectors.getTablePageSize(state));
+  const pageNumber = useSelector(state =>
+    usersSelectors.getTablePageNumber(state)
+  );
+  const params = useSelector(state => usersSelectors.getTableParams(state));
+  const selected = useSelector(state => usersSelectors.getSelected(state));
+  const isEditModalOpen = useSelector(state =>
+    usersSelectors.getIsEditModalOpen(state)
+  );
+  const isSubscribed = useSelector(state =>
+    appSelectors.hasActiveSubscription(state, "UsersSubscription")
+  );
+
+  const setPageSize = useCallback(
+    pageSize => dispatch(usersOperations.setTablePageSize({ pageSize })),
+    [dispatch]
+  );
+
+  const setPageNumber = useCallback(
+    pageNumber => dispatch(usersOperations.setTablePageNumber({ pageNumber })),
+    [dispatch]
+  );
+
+  const setParams = useCallback(
+    params => dispatch(usersOperations.setTableParams({ params })),
+    [dispatch]
+  );
+
+  const refresh = useCallback(
+    () => dispatch(usersOperations.touchTableParams()),
+    [dispatch]
+  );
+
+  const create = useCallback(() => dispatch(usersOperations.showEditModal()), [
+    dispatch
+  ]);
+
+  const edit = useCallback(
+    () => dispatch(usersOperations.editFirstSelected()),
+    [dispatch]
+  );
+
+  const askToRemove = useCallback(() => {
+    setIsConfirmOpen(true);
+  }, [dispatch]);
+
+  const cancelRemove = useCallback(() => {
+    setIsConfirmOpen(false);
+  }, [dispatch]);
+
+  const remove = useCallback(() => {
+    setIsConfirmOpen(false);
+    return Promise.all(
+      _.map(selected, userId =>
+        dispatch(usersOperations.remove({ id: userId }))
+      )
+    );
+  }, [selected, dispatch]);
+
+  const changeSort = useCallback(
+    sortBy => {
+      let sortDir = "asc";
+      if (params.sortBy === sortBy)
+        sortDir = params.sortDir === "asc" ? "desc" : "asc";
+      setPageNumber(0);
+      setParams({
         sortBy,
         sortDir,
         first: pageSize
-      },
-      isConfirmOpen: false
-    };
-
-    this.isDestroyed = false;
-
-    this.handleCreateAction = this.handleCreateAction.bind(this);
-    this.handleEditAction = this.handleEditAction.bind(this);
-    this.handleDeleteAction = this.handleDeleteAction.bind(this);
-    this.handleCancelDelete = this.handleCancelDelete.bind(this);
-    this.handleConfirmDelete = this.handleConfirmDelete.bind(this);
-    this.handleRefreshAction = this.handleRefreshAction.bind(this);
-    this.handleSort = this.handleSort.bind(this);
-    this.handleChangePage = this.handleChangePage.bind(this);
-    this.handleChangeRowsPerPage = this.handleChangeRowsPerPage.bind(this);
-  }
-
-  componentDidMount() {
-    window.addEventListener(
-      constants.events.IDENTITY_CHANGED,
-      this.handleRefreshAction
-    );
-  }
-
-  componentDidUpdate(prevProps) {
-    const total = _.get(this.props.viewer, "users.totalCount", 0);
-    if (total && this.state.pageNumber * this.state.pageSize >= total) {
-      // we fell off the list - reset to the beginning
-      let variables = {
-        sortBy,
-        sortDir,
-        first: this.state.pageSize
-      };
-      setTimeout(() => {
-        this.setState({ pageNumber: 0, variables }, () => {
-          if (!this.isDestroyed)
-            this.props.relay.refetch(variables, null, null, { force: true });
-        });
       });
-    } else if (!prevProps.isSubscribed && this.props.isSubscribed) {
-      setTimeout(this.handleRefreshAction);
-    }
+    },
+    [params.sortBy, params.sortDir, pageSize, setPageNumber, setParams]
+  );
 
-    this.props.onDeselectAll(
-      _.map(_.get(this.props.viewer, "users.edges", []), "node.id")
-    );
-  }
-
-  componentWillUnmount() {
-    this.isDestroyed = true;
-
-    window.removeEventListener(
-      constants.events.IDENTITY_CHANGED,
-      this.handleRefreshAction
-    );
-  }
-
-  async handleCreateAction() {
-    await this.props.onCreate();
-  }
-
-  async handleEditAction() {
-    await this.props.onEdit();
-  }
-
-  handleDeleteAction() {
-    this.setState({ isConfirmOpen: true });
-  }
-
-  handleCancelDelete() {
-    this.setState({ isConfirmOpen: false });
-  }
-
-  async handleConfirmDelete() {
-    this.setState({ isConfirmOpen: false });
-    await Promise.all(
-      _.map(this.props.selected, userId => this.props.onDelete(userId))
-    );
-  }
-
-  handleRefreshAction() {
-    if (!this.isDestroyed) {
-      this.props.relay.refetch(this.state.variables, null, null, {
-        force: true
+  const changeRowsPerPage = useCallback(
+    evt => {
+      const newPageSize = evt.target.value;
+      setPageSize(newPageSize);
+      setPageNumber(0);
+      setParams({
+        sortBy: params.sortBy,
+        sortDir: params.sortDir,
+        first: newPageSize
       });
-    }
-  }
+    },
+    [params.sortBy, params.sortDir, setPageSize, setPageNumber, setParams]
+  );
 
-  handleSort(sortBy) {
-    let sortDir = "asc";
-    if (this.state.variables.sortBy === sortBy)
-      sortDir = this.state.variables.sortDir === "asc" ? "desc" : "asc";
-    let variables = {
-      sortBy,
-      sortDir,
-      first: this.state.pageSize
-    };
-    this.setState({ pageNumber: 0, variables }, () => {
-      if (!this.isDestroyed)
-        this.props.relay.refetch(variables, null, null, { force: true });
-    });
-  }
-
-  handleChangeRowsPerPage(evt) {
-    const pageSize = evt.target.value;
-    let variables = {
-      sortBy: this.state.variables.sortBy,
-      sortDir: this.state.variables.sortDir,
-      first: pageSize
-    };
-    this.setState({ pageSize, pageNumber: 0, variables }, () => {
-      if (!this.isDestroyed)
-        this.props.relay.refetch(variables, null, null, { force: true });
-    });
-  }
-
-  handleChangePage(evt, pageNumber) {
-    if (this.state.pageNumber === pageNumber) return;
-
-    let variables = {
-      sortBy: this.state.variables.sortBy,
-      sortDir: this.state.variables.sortDir
-    };
-
-    if (pageNumber === 0) {
-      variables.first = this.state.pageSize;
-    } else if (pageNumber > this.state.pageNumber) {
+  const changePage = useCallback(
+    (evt, newPageNumber) => {
       if (
-        pageNumber + 1 >
-        Math.ceil(
-          _.get(this.props.viewer, "users.totalCount", 0) / this.state.pageSize
-        )
+        newPageNumber >= Math.ceil(totalCount / pageSize) ||
+        newPageNumber < 0
       ) {
         return;
       }
-      variables.first = this.state.pageSize;
-      variables.after = _.get(
-        this.props.viewer,
-        "users.pageInfo.endCursor",
-        null
-      );
-    } else {
-      if (this.state.pageNumber <= 0) return;
-      variables.last = this.state.pageSize;
-      variables.before = _.get(
-        this.props.viewer,
-        "users.pageInfo.startCursor",
-        null
-      );
-    }
 
-    this.setState({ pageNumber, variables }, () => {
-      if (!this.isDestroyed)
-        this.props.relay.refetch(variables, null, null, { force: true });
-    });
-  }
+      const newParams = {
+        sortBy: params.sortBy,
+        sortDir: params.sortDir
+      };
 
-  render() {
-    return (
-      <React.Fragment>
-        <Subscription
-          subscription={subscription}
-          onNext={this.handleRefreshAction}
-        />
+      if (newPageNumber === 0) {
+        newParams.first = pageSize;
+      } else if (newPageNumber > pageNumber) {
+        newParams.first = pageSize;
+        newParams.after = endCursor;
+      } else if (newPageNumber < pageNumber) {
+        newParams.last = pageSize;
+        newParams.before = startCursor;
+      }
 
-        <div className={this.props.classes.layout}>
-          <div className={this.props.classes.header}>
-            <Typography variant="h3" color="inherit">
-              <FormattedMessage id="TITLE_USERS" />
-            </Typography>
-            <IconButton
-              color="inherit"
-              onClick={this.handleRefreshAction}
-              disabled={!this.props.isSubscribed}
-            >
-              <RefreshIcon />
-            </IconButton>
-          </div>
-          <div className={this.props.classes.buttons}>
-            <Button
-              variant="contained"
-              color="secondary"
-              classes={{ root: this.props.classes.button }}
-              onClick={this.handleCreateAction}
-              disabled={!this.props.isSubscribed}
-            >
-              <FormattedMessage id="USERS_CREATE_BUTTON" />
-            </Button>
-            <Button
-              variant="contained"
-              color="primary"
-              classes={{ root: this.props.classes.button }}
-              onClick={this.handleEditAction}
-              disabled={!this.props.isSubscribed || !this.props.selected.length}
-            >
-              <FormattedMessage id="USERS_EDIT_BUTTON" />
-            </Button>
-            <Button
-              variant="contained"
-              color="primary"
-              classes={{ root: this.props.classes.button }}
-              onClick={this.handleDeleteAction}
-              disabled={!this.props.isSubscribed || !this.props.selected.length}
-            >
-              <FormattedMessage id="USERS_DELETE_BUTTON" />
-            </Button>
-          </div>
+      setPageNumber(newPageNumber);
+      setParams(newParams);
+    },
+    [
+      totalCount,
+      pageSize,
+      params.sortBy,
+      params.sortDir,
+      startCursor,
+      endCursor,
+      setPageNumber,
+      setParams
+    ]
+  );
 
-          <Paper className={this.props.classes.paper}>
-            <UsersTable
-              users={_.get(this.props.viewer, "users.edges", [])}
-              selected={this.props.selected}
-              sortBy={this.state.variables.sortBy}
-              sortDir={this.state.variables.sortDir}
-              onSort={this.handleSort}
-              isDisabled={!this.props.isSubscribed}
-            />
+  useEffect(
+    // subscribe and refresh the page on any subscription event
+    () => {
+      const request = requestSubscription(environment, {
+        subscription,
+        onNext: refresh
+      });
+      return () => request.dispose();
+    },
+    []
+  );
 
-            <TablePagination
-              rowsPerPageOptions={[10, 20, 30, 50, 100]}
-              component="div"
-              count={_.get(this.props.viewer, "users.totalCount", 0)}
-              rowsPerPage={this.state.pageSize}
-              labelRowsPerPage=""
-              page={this.state.pageNumber}
-              onChangeRowsPerPage={this.handleChangeRowsPerPage}
-              onChangePage={this.handleChangePage}
-              nextIconButtonProps={{ disabled: !this.props.isSubscribed }}
-              backIconButtonProps={{ disabled: !this.props.isSubscribed }}
-              SelectProps={{ disabled: !this.props.isSubscribed }}
-            />
-          </Paper>
+  useEffect(
+    // refresh immediately after (re)subscribing
+    () => {
+      const handleSubscribed = evt => {
+        if (_.get(evt, "detail.name") === "UsersSubscription") refresh();
+      };
+      window.addEventListener(constants.events.SUBSCRIBED, handleSubscribed);
+      return () =>
+        window.removeEventListener(
+          constants.events.SUBSCRIBED,
+          handleSubscribed
+        );
+    },
+    []
+  );
 
-          {this.props.isEditModalOpen && <EditUserModal />}
+  useIsomorphicLayoutEffect(
+    // check if we fell off the list
+    () => {
+      if (totalCount && pageNumber * pageSize >= totalCount) {
+        setPageNumber(0);
+        dispatch(usersOperations.resetTableParams());
+      }
+    },
+    [pageNumber, pageSize, totalCount, setPageNumber, dispatch]
+  );
 
-          {this.state.isConfirmOpen && (
-            <ConfirmModal
-              title="DELETE_USER_TITLE"
-              text="DELETE_USER_TEXT"
-              cancel="DELETE_USER_CANCEL"
-              submit="DELETE_USER_SUBMIT"
-              onCancel={this.handleCancelDelete}
-              onSubmit={this.handleConfirmDelete}
-            />
-          )}
+  useIsomorphicLayoutEffect(
+    // automatically refetch when variables change
+    () => {
+      props.relay.refetch(params, null, () => setPageWasRefreshed(true), {
+        force: true
+      });
+    },
+    [params]
+  );
+
+  useIsomorphicLayoutEffect(
+    // deselect rows that are not on the current page
+    () => {
+      if (pageWasRefreshed) {
+        setPageWasRefreshed(false);
+        dispatch(
+          usersOperations.deselectAll({
+            exceptUserIds: _.map(users, "node.id")
+          })
+        );
+      }
+    },
+    [pageWasRefreshed]
+  );
+
+  return (
+    <React.Fragment>
+      <div className={classes.layout}>
+        <div className={classes.header}>
+          <Typography variant="h3" color="inherit">
+            <FormattedMessage id="TITLE_USERS" />
+          </Typography>
+          <IconButton
+            color="inherit"
+            onClick={refresh}
+            disabled={!isSubscribed}
+          >
+            <RefreshIcon />
+          </IconButton>
         </div>
-      </React.Fragment>
-    );
-  }
+        <div className={classes.buttons}>
+          <Button
+            variant="contained"
+            color="secondary"
+            classes={{ root: classes.button }}
+            onClick={create}
+            disabled={!isSubscribed}
+          >
+            <FormattedMessage id="USERS_CREATE_BUTTON" />
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            classes={{ root: classes.button }}
+            onClick={edit}
+            disabled={!isSubscribed || !selected.length}
+          >
+            <FormattedMessage id="USERS_EDIT_BUTTON" />
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            classes={{ root: classes.button }}
+            onClick={askToRemove}
+            disabled={!isSubscribed || !selected.length}
+          >
+            <FormattedMessage id="USERS_DELETE_BUTTON" />
+          </Button>
+        </div>
+
+        <Paper className={classes.paper}>
+          <UsersTable
+            users={users}
+            selected={selected}
+            sortBy={params.sortBy}
+            sortDir={params.sortDir}
+            onSort={changeSort}
+            isDisabled={!isSubscribed}
+          />
+
+          <TablePagination
+            rowsPerPageOptions={[10, 20, 30, 50, 100]}
+            component="div"
+            count={totalCount}
+            rowsPerPage={pageSize}
+            labelRowsPerPage=""
+            page={pageNumber}
+            onChangeRowsPerPage={changeRowsPerPage}
+            onChangePage={changePage}
+            nextIconButtonProps={{ disabled: !isSubscribed }}
+            backIconButtonProps={{ disabled: !isSubscribed }}
+            SelectProps={{ disabled: !isSubscribed }}
+          />
+        </Paper>
+
+        {isEditModalOpen && <EditUserModal />}
+
+        {isConfirmOpen && (
+          <ConfirmModal
+            title="DELETE_USER_TITLE"
+            text="DELETE_USER_TEXT"
+            cancel="DELETE_USER_CANCEL"
+            submit="DELETE_USER_SUBMIT"
+            onCancel={cancelRemove}
+            onSubmit={remove}
+          />
+        )}
+      </div>
+    </React.Fragment>
+  );
 }
+
+Users.propTypes = {
+  relay: PropTypes.object.isRequired,
+  viewer: PropTypes.object.isRequired
+};
 
 export default Users;

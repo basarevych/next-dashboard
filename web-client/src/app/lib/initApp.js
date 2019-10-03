@@ -97,9 +97,6 @@ if (global.Intl) {
   );
 }
 
-// React Intl requires Node to be built with full ICU
-if (!process.browser) require("full-icu");
-
 if (process.browser) {
   // get rid of auto fill, not disabling auto complete
   window.addEventListener("load", () => {
@@ -146,6 +143,40 @@ if (process.browser) {
     }
   });
 
+  // function to show a popup
+  window.__popup = function(title, content, options = {}) {
+    window.dispatchEvent(
+      new CustomEvent(constants.events.TOAST, {
+        detail: {
+          title,
+          content,
+          ...options
+        }
+      })
+    );
+  };
+
+  // error handlers
+  if (process.env.NODE_ENV === "production") {
+    window.onerror = function(msg, url, line, col, error) {
+      let extra = !col ? "" : "\ncolumn: " + col;
+      extra += !error ? "" : "\nerror: " + error;
+      console.error(
+        "Error: " + msg + "\nurl: " + url + "\nline: " + line + extra
+      );
+      window.__popup("An Error Occurred", msg, { autoClose: false });
+      return false;
+    };
+    window.onunhandledrejection = function(evt) {
+      console.error(evt.reason);
+      window.__popup("An Error Occurred", evt.reason.message, {
+        autoClose: false
+      });
+      return false;
+    };
+  }
+
+  // service worker
   if ("serviceWorker" in navigator) {
     window.addEventListener("load", () => {
       let promise;

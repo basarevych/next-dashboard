@@ -1,140 +1,112 @@
-import React from "react";
+import React, { useCallback } from "react";
 import PropTypes from "prop-types";
+import { makeStyles } from "@material-ui/styles";
+import NumberFormat from "react-number-format";
 import TextField from "@material-ui/core/TextField";
-import FieldMessages from "./FieldMessagesContainer";
+import FieldMessages from "./FieldMessages";
 
-export const styles = () => ({
+const useStyles = makeStyles(() => ({
   formHelper: {
     margin: 0
   }
-});
+}));
 
-class MyText extends React.PureComponent {
-  static propTypes = {
-    classes: PropTypes.object.isRequired,
-    field: PropTypes.object.isRequired,
-    form: PropTypes.object.isRequired,
-    name: PropTypes.string.isRequired,
-    type: PropTypes.oneOf(["text", "password", "textarea"]).isRequired,
-    label: PropTypes.string.isRequired,
-    messages: PropTypes.arrayOf(PropTypes.string),
-    autoFocus: PropTypes.bool,
-    rows: PropTypes.number,
-    className: PropTypes.string,
-    variant: PropTypes.string,
-    color: PropTypes.string,
-    disabled: PropTypes.bool,
-    onChange: PropTypes.func.isRequired,
-    onBlur: PropTypes.func.isRequired,
-    handleSubmit: PropTypes.func.isRequired
-  };
+function MyText(props) {
+  const classes = useStyles(props);
 
-  constructor(props) {
-    super(props);
+  const handleChange = useCallback(
+    evt => {
+      if (props.onChange) props.onChange(evt);
+      return props.field.onChange(evt);
+    },
+    [props.onChange, props.field.onChange]
+  );
 
-    this.input = React.createRef();
-    this.cachedValue = props.field.value;
-    this.cachedPosition = 0;
+  const handleBlur = useCallback(
+    evt => {
+      if (props.onBlur) props.onBlur(evt);
+      return props.field.onBlur(evt);
+    },
+    [props.onBlur, props.field.onBlur]
+  );
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleFocus = this.handleFocus.bind(this);
-    this.handleBlur = this.handleBlur.bind(this);
-  }
+  const {
+    className,
+    variant,
+    type,
+    name,
+    field,
+    label,
+    form,
+    format,
+    disabled,
+    messages,
+    forwardedRef,
+    handleSubmit,
+    ...restProps
+  } = props;
 
-  componentDidUpdate() {
-    if (this.input.current) {
-      // Fixes case when input is normalized in onChange() and
-      // because of that cursor sometimes jumps to the end of input.
-      let cur = this.props.field.value || "";
-      let cached = this.cachedValue || "";
-      if (this.cachedPosition !== cached.length) {
-        let str = cached.substr(0, this.cachedPosition);
-        let index = cur.indexOf(str);
-        index =
-          index === -1 ? this.cachedPosition : index + this.cachedPosition;
-        let delta = cur.length - cached.length;
-        if (cached !== str && delta > 0) index += delta;
-        if (index <= cur.length)
-          this.input.current.setSelectionRange(index, index);
+  const Component = format ? NumberFormat : TextField;
+  const extraProps = format ? { customInput: TextField, format } : {};
+  const errors = !!form.touched[name] && form.errors[name];
+
+  return (
+    <Component
+      fullWidth
+      {...extraProps}
+      {...restProps}
+      className={className}
+      autoComplete="off"
+      variant={variant || (type === "textarea" ? "outlined" : "standard")}
+      type={type}
+      multiline={type === "textarea"}
+      name={name}
+      value={field.value ? field.value.toString() : ""}
+      label={label}
+      disabled={form.isSubmitting || disabled}
+      error={!!errors}
+      FormHelperTextProps={{
+        component: messages || errors ? "div" : undefined,
+        classes: { root: classes.formHelper }
+      }}
+      helperText={
+        messages || errors ? (
+          <FieldMessages messages={messages || null} errors={errors || null} />
+        ) : (
+          undefined
+        )
       }
-    }
-  }
-
-  handleChange(evt) {
-    this.cachedPosition = evt.target.selectionEnd;
-    this.cachedValue = evt.target.value;
-    this.props.onChange(evt);
-    return this.props.field.onChange(evt);
-  }
-
-  handleFocus(evt) {
-    this.cachedPosition = evt.target.value.length;
-    if (this.input.current) {
-      this.input.current.setSelectionRange(
-        this.cachedPosition,
-        this.cachedPosition
-      );
-    }
-  }
-
-  handleBlur(evt) {
-    this.props.onBlur(evt);
-    return this.props.field.onBlur(evt);
-  }
-
-  render() {
-    let errors =
-      !!this.props.form.touched[this.props.name] &&
-      this.props.form.errors[this.props.name];
-
-    return (
-      <TextField
-        className={this.props.className}
-        autoComplete="off"
-        autoFocus={this.props.autoFocus}
-        fullWidth
-        variant={
-          this.props.variant ||
-          (this.props.type === "textarea" ? "outlined" : "standard")
-        }
-        type={this.props.type}
-        multiline={this.props.type === "textarea"}
-        rows={this.props.rows}
-        name={this.props.name}
-        value={this.props.field.value ? this.props.field.value.toString() : ""}
-        label={this.props.label}
-        disabled={this.props.form.isSubmitting || this.props.disabled}
-        error={!!errors}
-        FormHelperTextProps={{
-          component: this.props.messages || errors ? "div" : undefined,
-          classes: { root: this.props.classes.formHelper }
-        }}
-        helperText={
-          this.props.messages || errors ? (
-            <FieldMessages
-              messages={this.props.messages || null}
-              errors={errors || null}
-            />
-          ) : (
-            undefined
-          )
-        }
-        onChange={this.handleChange}
-        onFocus={this.handleFocus}
-        onBlur={this.handleBlur}
-        inputRef={this.input}
-        inputProps={{
-          onKeyDown: evt => {
-            if (this.props.type !== "textarea" && evt.keyCode === 13) {
-              evt.preventDefault();
-              evt.stopPropagation();
-              this.props.handleSubmit();
-            }
+      onChange={handleChange}
+      onBlur={handleBlur}
+      inputRef={forwardedRef}
+      inputProps={{
+        onKeyDown: evt => {
+          if (type !== "textarea" && evt.keyCode === 13) {
+            evt.preventDefault();
+            evt.stopPropagation();
+            handleSubmit();
           }
-        }}
-      />
-    );
-  }
+        }
+      }}
+    />
+  );
 }
+
+MyText.propTypes = {
+  handleSubmit: PropTypes.func.isRequired,
+  forwardedRef: PropTypes.object,
+  field: PropTypes.object.isRequired,
+  form: PropTypes.object.isRequired,
+  name: PropTypes.string.isRequired,
+  type: PropTypes.oneOf(["text", "password", "textarea"]).isRequired,
+  label: PropTypes.string.isRequired,
+  messages: PropTypes.arrayOf(PropTypes.string),
+  className: PropTypes.string,
+  variant: PropTypes.string,
+  format: PropTypes.string,
+  disabled: PropTypes.bool,
+  onChange: PropTypes.func,
+  onBlur: PropTypes.func
+};
 
 export default MyText;

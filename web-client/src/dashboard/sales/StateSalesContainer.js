@@ -1,10 +1,8 @@
-import { withStyles, withTheme } from "@material-ui/styles";
-import { injectIntl } from "react-intl";
 import { graphql, createRefetchContainer } from "react-relay";
-import StateSalesComponent, { styles } from "./StateSales";
+import StateSalesComponent from "./StateSales";
 
 const StateSales = createRefetchContainer(
-  withStyles(styles)(withTheme(injectIntl(StateSalesComponent))),
+  StateSalesComponent,
   {
     viewer: graphql`
       fragment StateSalesContainer_viewer on Viewer

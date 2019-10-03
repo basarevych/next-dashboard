@@ -1,22 +1,10 @@
-import React from "react";
+import React, { useCallback } from "react";
+import PropTypes from "prop-types";
 import { graphql } from "react-relay";
-import { QueryRenderer } from "../app/providers/Relay";
-import ErrorMessage from "../app/error/ErrorMessageContainer";
-import Dashboard, {
-  defaultState,
-  defaultDept,
-  pageSize,
-  sortBy,
-  sortDir
-} from "./DashboardContainer";
-
-const defaultVariables = {
-  stateName: defaultState,
-  dept: defaultDept,
-  first: pageSize,
-  sortBy,
-  sortDir
-};
+import { QueryRenderer } from "../app/providers/RelayProvider";
+import ErrorMessage from "../app/errors/ErrorMessage";
+import Dashboard from "./Dashboard";
+import { dashboardSelectors, defaultState } from "./state";
 
 const query = graphql`
   query DashboardPageQuery(
@@ -57,27 +45,35 @@ const query = graphql`
   }
 `;
 
-class DashboardPage extends React.Component {
-  static async getInitialProps({ isSsr, isExported, fetchQuery }) {
-    if (isSsr && !isExported) await fetchQuery(query, defaultVariables);
-  }
+function DashboardPage(props) {
+  const render = useCallback(({ error, props: renderProps }) => {
+    if (error) return <ErrorMessage error={error} />;
 
-  render() {
-    return (
-      <QueryRenderer
-        query={query}
-        variables={defaultVariables}
-        render={({ error, props }) => {
-          if (error) return <ErrorMessage error={error} />;
+    if (renderProps && renderProps.viewer)
+      return <Dashboard viewer={renderProps.viewer} />;
 
-          const viewer = props && props.viewer;
-          if (!viewer) return null;
+    return null;
+  }, []);
 
-          return <Dashboard viewer={viewer} />;
-        }}
-      />
-    );
-  }
+  return (
+    <QueryRenderer query={query} variables={props.params} render={render} />
+  );
 }
+
+DashboardPage.propTypes = {
+  params: PropTypes.object.isRequired
+};
+
+DashboardPage.getInitialProps = async ({
+  isSsr,
+  isExported,
+  store,
+  fetchQuery
+}) => {
+  const tableParams = dashboardSelectors.getTableParams(store.getState());
+  const params = { ...tableParams, stateName: defaultState };
+  if (isSsr && !isExported) await fetchQuery(query, params);
+  return { params };
+};
 
 export default DashboardPage;

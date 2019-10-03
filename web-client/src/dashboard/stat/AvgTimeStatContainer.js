@@ -1,7 +1,7 @@
 import { graphql, createFragmentContainer } from "react-relay";
-import StatContainer from "./StatContainer";
+import StatComponent from "./Stat";
 
-const AvgTimeStat = createFragmentContainer(StatContainer, {
+const AvgTimeStat = createFragmentContainer(StatComponent, {
   data: graphql`
     fragment AvgTimeStatContainer_data on AvgTimeValueConnection {
       edges {

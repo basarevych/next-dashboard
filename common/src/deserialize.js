@@ -6,7 +6,10 @@ const { byteDecode } = require("base64util");
 const { deserialize } = require("json-immutable");
 
 /**
- * Deserialize BASE64 string into Immutable state
+ * Deserialize and decompress BASE64 string into state
+ * @param {string} input - BASE64-encoded string
+ * @param {string} type - Either "redux" or "relay"
+ * @return {object} The state
  */
 module.exports = function(input, type) {
   if (!input) return undefined;
@@ -15,6 +18,7 @@ module.exports = function(input, type) {
   let obj = JSON.parse(str, (key, value) =>
     _.isString(value) ? utf8.decode(value) : value
   );
+
   let state;
   if (type === "redux") state = deserialize(obj);
   else state = obj;

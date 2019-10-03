@@ -6,7 +6,7 @@ const validator = require("validator");
 const { allCountries, iso2Lookup } = require("country-telephone-data");
 
 /**
- * Normalizer function for Redux Form
+ * Normalizer function for a Form
  * takes input like "rule1:param1:param2|rule2:param1:param2|..."
  *
  * trim                       remove white space from the beginning and the end of value

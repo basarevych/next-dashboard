@@ -7,6 +7,7 @@ class OAuthRoute {
     this.config = config;
     this.cache = cache;
     this.auth = auth;
+    this.cookie = "next.dashboard.api";
   }
 
   static get $provides() {
@@ -18,13 +19,17 @@ class OAuthRoute {
   }
 
   async init() {
-    const store = new RedisStore({ client: this.cache.cacheRedis });
+    const store = new RedisStore({
+      client: this.cache.cacheRedis,
+      disableTouch: true
+    });
+
     this.sessionMiddleware = session({
       name: this.cookie,
       secret: this.config.jwtSecret,
       store,
       resave: false,
-      rolling: false,
+      rolling: true,
       saveUninitialized: false,
       cookie: {
         httpOnly: true,

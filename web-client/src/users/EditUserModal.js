@@ -1,209 +1,182 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React, { useCallback } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { FormattedMessage } from "react-intl";
 import { graphql } from "react-relay";
+import { makeStyles } from "@material-ui/styles";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import red from "@material-ui/core/colors/red";
-import { QueryRenderer } from "../app/providers/Relay";
-import { Form, Field } from "../app/forms";
+import { QueryRenderer } from "../app/providers/RelayProvider";
+import { Form, Field, Status } from "../app/forms";
+import createSchema from "../../common/forms/createUser";
+import editSchema from "../../common/forms/editUser";
+import { usersOperations, usersSelectors } from "./state";
+import ErrorMessage from "../app/errors/ErrorMessage";
 import constants from "../../common/constants";
-import fieldsEdit from "../../common/forms/editUser";
-import fieldsCreate from "../../common/forms/createUser";
 
-export const styles = () => ({
+const useStyles = makeStyles(theme => ({
   error: {
     color: red[500]
+  },
+  radioError: {
+    marginLeft: 16,
+    borderTop: `2px solid ${theme.palette.text.secondary}`
   },
   actions: {
     paddingLeft: "1rem",
     paddingRight: "1rem",
     paddingBottom: "1rem"
   }
-});
+}));
 
-export const query = graphql`
+const query = graphql`
   query EditUserModalQuery($currentId: ID) {
     viewer {
       user(id: $currentId) {
         id
-        name
         email
+        name
         roles
       }
     }
   }
 `;
 
-class EditUserModal extends Form {
-  static propTypes = {
-    classes: PropTypes.object.isRequired,
-    currentId: PropTypes.string,
-    onClose: PropTypes.func.isRequired,
-    onCreate: PropTypes.func.isRequired,
-    onEdit: PropTypes.func.isRequired
-  };
+function EditUserModal() {
+  const classes = useStyles();
+  const dispatch = useDispatch();
 
-  constructor(props) {
-    super(props);
+  const currentId = useSelector(state =>
+    usersSelectors.getEditModalUserId(state)
+  );
 
-    this.state = {
-      initialValues: null
-    };
+  const close = useCallback(() => dispatch(usersOperations.hideEditModal()), [
+    dispatch
+  ]);
 
-    this.submit = this.submit.bind(this);
-  }
-
-  async submit(
-    { name, email, password, isAdmin },
-    { setSubmitting, setErrors, setStatus }
-  ) {
-    let result;
-    if (this.props.currentId) {
-      result = await this.props.onEdit(
-        this.props.currentId,
-        name || null,
-        email,
-        password,
-        isAdmin
-      );
-    } else {
-      result = await this.props.onCreate(
-        name || null,
-        email,
-        password,
-        isAdmin
-      );
-    }
-    if (result === true) {
-      setSubmitting(false);
-      this.props.onClose();
-    } else {
-      let { _status, ...errors } = result;
-      setSubmitting(false);
-      setErrors(errors);
-      setStatus(_status);
-    }
-  }
-
-  renderForm() {
-    return (
-      <Form
-        fields={this.props.currentId ? fieldsEdit : fieldsCreate}
-        initialValues={this.state.initialValues}
-        onSubmit={this.submit}
-        render={({ isSubmitting, status, handleSubmit }) => (
-          <Dialog
-            maxWidth="xs"
-            classes={{ paper: this.props.classes.paper }}
-            open
-            onClose={this.props.onClose}
-          >
-            <DialogTitle>
-              <FormattedMessage
-                id={
-                  this.props.currentId
-                    ? "EDIT_USER_TITLE_EDIT"
-                    : "EDIT_USER_TITLE_CREATE"
-                }
-              />
-            </DialogTitle>
-            {!!status && (
-              <DialogContent>
-                {_.map(
-                  _.isArray(status) ? status : [status],
-                  (error, index) => (
-                    <DialogContentText
-                      key={`error-${index}`}
-                      classes={{ root: this.props.classes.error }}
-                    >
-                      {_.isArray(error) ? (
-                        <FormattedMessage id={error[0]} values={error[1]} />
-                      ) : (
-                        <FormattedMessage id={error} />
-                      )}
-                    </DialogContentText>
-                  )
-                )}
-              </DialogContent>
-            )}
-            <DialogContent>
-              <Grid container spacing={1}>
-                <Grid item xs={12}>
-                  <Field name="name" type="text" />
-                </Grid>
-                <Grid item xs={12}>
-                  <Field name="email" type="text" />
-                </Grid>
-                <Grid item xs={12}>
-                  <Field name="password" type="password" />
-                </Grid>
-                <Grid item xs={12}>
-                  <Field name="isAdmin" type="checkbox" />
-                </Grid>
-              </Grid>
-            </DialogContent>
-            <DialogActions classes={{ root: this.props.classes.actions }}>
-              <Button
-                variant="contained"
-                color="primary"
-                disabled={isSubmitting}
-                onClick={this.props.onClose}
-              >
-                <FormattedMessage id="EDIT_USER_CANCEL" />
-              </Button>
-              <Button
-                variant="contained"
-                color="secondary"
-                disabled={isSubmitting}
-                onClick={handleSubmit}
-              >
-                <FormattedMessage id="EDIT_USER_SUBMIT" />
-              </Button>
-            </DialogActions>
-          </Dialog>
-        )}
-      />
-    );
-  }
-
-  async loadData(viewer) {
-    await new Promise(resolve => setTimeout(resolve));
-
-    this.setState({
-      initialValues: {
-        name: _.get(viewer, "user.name", ""),
-        email: _.get(viewer, "user.email", ""),
-        password: "",
-        isAdmin: _.includes(
-          _.get(viewer, "user.roles", []),
-          constants.roles.ADMIN
-        )
+  const submit = useCallback(
+    async (
+      { email, name, password, isAdmin },
+      { setSubmitting, setErrors, setStatus }
+    ) => {
+      let result;
+      if (currentId) {
+        result = await dispatch(
+          usersOperations.edit({
+            id: currentId,
+            email,
+            name,
+            password,
+            isAdmin
+          })
+        );
+      } else {
+        result = await dispatch(
+          usersOperations.create({
+            email,
+            name,
+            password,
+            isAdmin
+          })
+        );
       }
-    });
-  }
+      if (result === true) {
+        setSubmitting(false);
+        dispatch(usersOperations.hideEditModal());
+      } else {
+        let { _status, ...errors } = result;
+        setSubmitting(false);
+        setErrors(errors);
+        setStatus(_status);
+      }
+    },
+    [currentId, dispatch]
+  );
 
-  render() {
-    if (!this.props.currentId) return this.renderForm();
+  const renderForm = useCallback(
+    ({ isSubmitting, status, handleSubmit }) => (
+      <Dialog maxWidth="xs" open onClose={close}>
+        <DialogTitle>
+          <FormattedMessage
+            id={currentId ? "EDIT_USER_TITLE_EDIT" : "EDIT_USER_TITLE_CREATE"}
+          />
+        </DialogTitle>
+        <Status error={status} classes={classes} />
+        <DialogContent>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <Field name="email" type="text" />
+            </Grid>
+            <Grid item xs={12}>
+              <Field name="name" type="text" />
+            </Grid>
+            <Grid item xs={12}>
+              <Field name="password" type="password" />
+            </Grid>
+            <Grid item xs={12}>
+              <Field name="isAdmin" type="checkbox" />
+            </Grid>
+          </Grid>
+        </DialogContent>
+        <DialogActions classes={{ root: classes.actions }}>
+          <Button
+            variant="contained"
+            color="primary"
+            disabled={isSubmitting}
+            onClick={close}
+          >
+            <FormattedMessage id="EDIT_USER_CANCEL" />
+          </Button>
+          <Button
+            variant="contained"
+            color="secondary"
+            disabled={isSubmitting}
+            onClick={handleSubmit}
+          >
+            <FormattedMessage id="EDIT_USER_SUBMIT" />
+          </Button>
+        </DialogActions>
+      </Dialog>
+    ),
+    [classes, close]
+  );
 
-    return (
-      <QueryRenderer
-        query={query}
-        variables={{ currentId: this.props.currentId }}
-        render={({ error, props }) => {
-          if (error || !props) return null;
-          if (this.state.initialValues) return this.renderForm();
-          this.loadData(props.viewer);
-          return null;
-        }}
-      />
-    );
-  }
+  const getForm = (schema, initialValues) => (
+    <Form
+      schema={schema}
+      onSubmit={submit}
+      initialValues={initialValues}
+      render={renderForm}
+    />
+  );
+
+  const renderQuery = useCallback(({ error, props: renderProps }) => {
+    if (error) return <ErrorMessage error={error} />;
+
+    if (renderProps && renderProps.viewer) {
+      const user = _.get(renderProps, "viewer.user");
+      return getForm(editSchema, {
+        ...user,
+        isAdmin: _.includes(user.roles, constants.roles.ADMIN)
+      });
+    }
+
+    return null;
+  });
+
+  if (!currentId) return getForm(createSchema);
+
+  return (
+    <QueryRenderer
+      query={query}
+      variables={{ currentId }}
+      render={renderQuery}
+    />
+  );
 }
 
 export default EditUserModal;

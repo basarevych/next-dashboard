@@ -24,7 +24,7 @@ class Fake {
     let country = allCountries[iso2Lookup[_.toLower(code)]].name;
 
     return {
-      uid: _.padStart(usedNames.length, 6, "0"),
+      uid: usedNames.length,
       checked: Math.random() > 0.3,
       name,
       dept,

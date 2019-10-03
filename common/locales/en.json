@@ -205,6 +205,7 @@
   "ERROR_GO_HOME_LINK": "Go to the start page",
   "ERROR_TRY_AUTH_LINK": "Sign in and try again",
   "ERROR_FIELD_REQUIRED": "This field is required",
+  "ERROR_INVALID_NUMBER": "This field expects a number value",
   "ERROR_INVALID_PATTERN": "Please provide a valid value",
   "ERROR_INVALID_EMAIL": "Please provide a valid email address",
   "ERROR_INVALID_PHONE": "Please, provide a valid phone number",

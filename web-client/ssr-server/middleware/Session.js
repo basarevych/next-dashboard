@@ -7,11 +7,14 @@ const RedisStore = require("connect-redis")(session);
 class Session {
   constructor(app) {
     this.app = app;
-    this.cookie = "connect.sid";
+    this.cookie = "next.dashboard.ssr";
   }
 
   async accept({ express }) {
-    const store = new RedisStore({ client: this.app.redis });
+    const store = new RedisStore({
+      client: this.app.redis,
+      disableTouch: true
+    });
 
     express.use(
       session({
@@ -19,7 +22,7 @@ class Session {
         secret: this.app.config.sessionSecret,
         store,
         resave: false,
-        rolling: false,
+        rolling: true,
         saveUninitialized: false,
         cookie: {
           httpOnly: true,

@@ -50,9 +50,8 @@ module.exports = withPlugins(plugins, {
     };
 
     if (config.optimization.minimizer && config.optimization.minimizer.length) {
-      let options = config.optimization.minimizer[0].options;
-      let terserOptions = options.terserOptions;
-      terserOptions.ecma = 5;
+      const options = config.optimization.minimizer[0].options;
+      options.terserOptions.ecma = 5;
       config.optimization.minimizer[0] = new TerserPlugin(options);
     }
 
@@ -83,34 +82,38 @@ module.exports = withPlugins(plugins, {
 
     config.plugins.push(
       new EnvironmentPlugin({
+        // pass NODE_ENV var to the code
         NODE_ENV: "production",
+        // truthy when exporting to static site
         STATIC_SITE: false
       })
     );
 
+    // make sure there is only one instance of lodash
     config.resolve.alias["lodash"] = path.resolve(
       __dirname,
       "node_modules",
       "lodash"
     );
 
+    // make sure there is only one instance of graphql
+    config.resolve.alias["graphql"] = path.resolve(
+      __dirname,
+      "node_modules",
+      "graphql"
+    );
+
+    // bundle only the locales we actually use
     let locales = new RegExp(
       "^\\.[/\\\\](" + l10n.locales.join("|") + ")\\.js$"
     );
     config.plugins.push(
-      // bundle only locales we are actually using
       new ContextReplacementPlugin(/moment[/\\]locale$/, locales),
       new ContextReplacementPlugin(/intl[/\\]locale-data[/\\]jsonp$/, locales),
       new ContextReplacementPlugin(
         /@formatjs[/\\]intl-relativetimeformat[/\\]dist[/\\]locale-data$/,
         locales
       )
-    );
-
-    config.resolve.alias["graphql"] = path.resolve(
-      __dirname,
-      "node_modules",
-      "graphql"
     );
 
     if (dev) {
@@ -124,6 +127,7 @@ module.exports = withPlugins(plugins, {
 
     if (!isServer) {
       config.plugins.push(
+        // Service Worker
         new GenerateSW({
           cacheId: pkg.name,
           clientsClaim: true,
@@ -162,10 +166,12 @@ module.exports = withPlugins(plugins, {
     config.entry = async () => {
       const entries = await originalEntry();
 
-      if (entries["main.js"])
+      if (entries["main.js"]) {
+        // inject polyfills and init code before the app
         entries["main.js"].unshift(
           path.resolve(__dirname, "src", "app", "lib", "initApp.js")
-        ); // polyfills and init
+        );
+      }
 
       return entries;
     };
@@ -173,14 +179,18 @@ module.exports = withPlugins(plugins, {
     return config;
   },
 
+  useFileSystemPublicRoutes: false,
   exportPathMap: async () => {
     const App = require("./ssr-server/App");
     const app = new App();
-    const map = {};
-    for (let path of _.keys(constants.pages))
-      map[path] = await app.analyzeRequest({ path });
-    return map;
-  },
-
-  useFileSystemPublicRoutes: false
+    return _.reduce(
+      _.keys(constants.pages),
+      (acc, cur) =>
+        acc.then(async map => {
+          map[cur] = await app.analyzeRequest({ path: cur });
+          return map;
+        }),
+      Promise.resolve({})
+    );
+  }
 });

@@ -1,12 +1,13 @@
+const yup = require("yup");
 const BaseModel = require("./BaseModel");
 const constants = require("../../common/constants");
-const fields = require("../../common/forms/createUser");
+const validationSchema = require("../../common/forms/createUser");
 
 class User extends BaseModel {
   constructor(db, client, provider) {
     super();
 
-    this.fields = fields;
+    this.validationSchema = validationSchema;
     this.roles = _.values(constants.roles);
     this.sortBy = ["email", "name"];
     this.sortDir = ["asc", "desc"];
@@ -85,8 +86,15 @@ class User extends BaseModel {
         this.set("_id", this.db.ObjectId(id));
       });
 
+    const self = this;
     this.schema.pre("save", function() {
+      const values = self.cast(
+        this.toObject({ getters: true, virtuals: true })
+      );
+      for (let field of _.keys(values)) this[field] = values[field];
+
       this.whenUpdated = Date.now();
+
       if (!_.includes(this.roles, constants.roles.AUTHENTICATED))
         this.roles.push(constants.roles.AUTHENTICATED);
     });

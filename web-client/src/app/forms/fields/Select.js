@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useCallback } from "react";
 import PropTypes from "prop-types";
+import { makeStyles } from "@material-ui/styles";
 import Select from "@material-ui/core/Select";
 import FormControl from "@material-ui/core/FormControl";
 import FormHelperText from "@material-ui/core/FormHelperText";
@@ -7,117 +8,117 @@ import MenuItem from "@material-ui/core/MenuItem";
 import InputLabel from "@material-ui/core/InputLabel";
 import FilledInput from "@material-ui/core/FilledInput";
 import Input from "@material-ui/core/Input";
-import FieldMessages from "./FieldMessagesContainer";
+import FieldMessages from "./FieldMessages";
 
-export const styles = () => ({
+const useStyles = makeStyles(() => ({
   formHelper: {
     margin: 0
   }
-});
+}));
 
-class MySelect extends React.PureComponent {
-  static propTypes = {
-    classes: PropTypes.object.isRequired,
-    field: PropTypes.object.isRequired,
-    form: PropTypes.object.isRequired,
-    name: PropTypes.string.isRequired,
-    options: PropTypes.array.isRequired,
-    label: PropTypes.string.isRequired,
-    messages: PropTypes.arrayOf(PropTypes.string),
-    native: PropTypes.bool,
-    autoFocus: PropTypes.bool,
-    className: PropTypes.string,
-    variant: PropTypes.string,
-    color: PropTypes.string,
-    disabled: PropTypes.bool,
-    onChange: PropTypes.func.isRequired,
-    onBlur: PropTypes.func.isRequired,
-    handleSubmit: PropTypes.func.isRequired
-  };
+function MySelect(props) {
+  const classes = useStyles(props);
 
-  constructor(props) {
-    super(props);
+  const handleChange = useCallback(
+    evt => {
+      if (props.onChange) props.onChange(evt);
+      return props.field.onChange(evt);
+    },
+    [props.onChange, props.field.onChange]
+  );
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleBlur = this.handleBlur.bind(this);
-  }
+  const handleBlur = useCallback(
+    evt => {
+      if (props.onBlur) props.onBlur(evt);
+      return props.field.onBlur(evt);
+    },
+    [props.onBlur, props.field.onBlur]
+  );
 
-  handleChange(evt) {
-    this.props.onChange(evt);
-    return this.props.field.onChange(evt);
-  }
+  const {
+    className,
+    variant,
+    label,
+    name,
+    field,
+    form,
+    disabled,
+    forwardedRef,
+    handleSubmit,
+    messages,
+    ...restProps
+  } = props;
 
-  handleBlur(evt) {
-    this.props.onBlur(evt);
-    return this.props.field.onBlur(evt);
-  }
+  const SelectInput = variant === "filled" ? FilledInput : Input;
+  const errors = !!form.touched[name] && form.errors[name];
 
-  render() {
-    let errors =
-      !!this.props.form.touched[this.props.name] &&
-      this.props.form.errors[this.props.name];
-
-    const SelectInput = this.props.variant === "filled" ? FilledInput : Input;
-
-    return (
-      <FormControl
-        className={this.props.className}
-        variant={this.props.variant || "standard"}
-        fullWidth
-        error={!!errors}
-      >
-        <InputLabel>{this.props.label}</InputLabel>
-        <Select
-          name={this.props.field.name}
-          value={
-            this.props.field.value ? this.props.field.value.toString() : ""
-          }
-          native={this.props.native}
-          autoFocus={this.props.autoFocus}
-          disabled={this.props.form.isSubmitting || this.props.disabled}
-          onChange={this.handleChange}
-          onBlur={this.handleBlur}
-          input={
-            <SelectInput
-              inputProps={{
-                onKeyDown: evt => {
-                  if (evt.keyCode === 13) {
-                    evt.preventDefault();
-                    evt.stopPropagation();
-                    this.props.handleSubmit();
-                  }
+  return (
+    <FormControl
+      className={className}
+      variant={variant || "standard"}
+      fullWidth
+      error={!!errors}
+    >
+      <InputLabel>{label}</InputLabel>
+      <Select
+        {...restProps}
+        ref={forwardedRef}
+        name={name}
+        value={field.value ? field.value.toString() : ""}
+        disabled={form.isSubmitting || disabled}
+        onChange={handleChange}
+        onBlur={handleBlur}
+        input={
+          <SelectInput
+            inputProps={{
+              onKeyDown: evt => {
+                if (evt.keyCode === 13) {
+                  evt.preventDefault();
+                  evt.stopPropagation();
+                  handleSubmit();
                 }
-              }}
-            />
-          }
-        >
-          {!this.props.native &&
-            _.map(this.props.options, (item, index) => (
-              <MenuItem key={`item-${index}`} value={item.value}>
-                {item.label}
-              </MenuItem>
-            ))}
-          {!!this.props.native &&
-            _.map(this.props.options, (item, index) => (
-              <option key={`item-${index}`} value={item.value}>
-                {item.label}
-              </option>
-            ))}
-        </Select>
-        {!!(this.props.messages || errors) && (
-          <FormHelperText
-            component="div"
-            classes={{ root: this.props.classes.formHelper }}
-          >
-            <FieldMessages
-              messages={this.props.messages || null}
-              errors={errors || null}
-            />
-          </FormHelperText>
-        )}
-      </FormControl>
-    );
-  }
+              }
+            }}
+          />
+        }
+      >
+        {!props.native &&
+          _.map(props.options, (item, index) => (
+            <MenuItem key={`item-${index}`} value={item.value}>
+              {item.label}
+            </MenuItem>
+          ))}
+        {!!props.native &&
+          _.map(props.options, (item, index) => (
+            <option key={`item-${index}`} value={item.value}>
+              {item.label}
+            </option>
+          ))}
+      </Select>
+      {!!(messages || errors) && (
+        <FormHelperText component="div" classes={{ root: classes.formHelper }}>
+          <FieldMessages messages={messages || null} errors={errors || null} />
+        </FormHelperText>
+      )}
+    </FormControl>
+  );
 }
+
+MySelect.propTypes = {
+  handleSubmit: PropTypes.func.isRequired,
+  forwardedRef: PropTypes.object,
+  field: PropTypes.object.isRequired,
+  form: PropTypes.object.isRequired,
+  name: PropTypes.string.isRequired,
+  options: PropTypes.array.isRequired,
+  label: PropTypes.string.isRequired,
+  messages: PropTypes.arrayOf(PropTypes.string),
+  className: PropTypes.string,
+  native: PropTypes.bool,
+  variant: PropTypes.string,
+  disabled: PropTypes.bool,
+  onChange: PropTypes.func,
+  onBlur: PropTypes.func
+};
 
 export default MySelect;

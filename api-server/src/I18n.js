@@ -1,4 +1,4 @@
-const IntlMessageFormat = require("intl-messageformat");
+const IntlMessageFormat = require("intl-messageformat").default;
 const l10n = require("../common/locales");
 
 class I18n {

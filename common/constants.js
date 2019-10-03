@@ -9,12 +9,24 @@ module.exports = {
   apiBase: "/v1",
   socketsBase: "/ws",
   graphqlBase: "/graphql",
+
   roles,
+
   oauthProviders: {
     GOOGLE: "GOOGLE",
     FACEBOOK: "FACEBOOK",
     TWITTER: "TWITTER"
   },
+
+  depts: {
+    PRODUCTION: "PRODUCTION",
+    RD: "RD",
+    PURCHASING: "PURCHASING",
+    MARKETING: "MARKETING",
+    HR: "HR",
+    ACCOUNTING: "ACCOUNTING"
+  },
+
   pages: {
     "/": {
       page: "/dashboard",
@@ -67,7 +79,7 @@ module.exports = {
     "/auth/profile": {
       page: "/auth/profile",
       title: "TITLE_PROFILE",
-      isAllowed: user => !!user
+      isAllowed: user => user.isAuthenticated
     },
     "/auth/verify": {
       page: "/auth/verify",
@@ -85,34 +97,44 @@ module.exports = {
       icon: "users",
       menu: "MENU_USERS",
       title: "TITLE_USERS",
-      isAllowed: user => !!user && _.includes(user.roles, roles.ADMIN)
+      isAllowed: user => _.includes(user.roles || [], roles.ADMIN)
     }
   },
-  depts: {
-    PRODUCTION: "PRODUCTION",
-    RD: "RD",
-    PURCHASING: "PURCHASING",
-    MARKETING: "MARKETING",
-    HR: "HR",
-    ACCOUNTING: "ACCOUNTING"
-  },
+
+  // WebSocket messages
   messages: {
+    // sent by server on connection, client must reply with AUTH
     HELLO: "HELLO",
+
+    // then the server replies with his AUTH on client's AUTH
     AUTH: "AUTH",
+
+    // request for client to display a popup
     TOAST: "TOAST"
   },
+
+  // client-side custom window events
   events: {
     // web fonts loading complete
     FONTS_LOADED: "FONTS_LOADED",
 
-    // user identity might have changed
+    // user identity might have changed,
+    // websockets should reconnect to the server
+    // with new access tokens
     IDENTITY_CHANGED: "IDENTITY_CHANGED",
 
-    // user info might have changed
+    // profile might have been changed,
+    // user info should be refetched
     PROFILE_CHANGED: "PROFILE_CHANGED",
 
     // service worker wants to update
     UPDATE_READY: "UPDATE_READY",
+
+    // GraphQL Subscription is active
+    SUBSCRIBED: "SUBSCRIBED",
+
+    // GraphQL Subscription is ended
+    UNSUBSCRIBED: "UNSUBSCRIBED",
 
     // notification popup
     TOAST: "TOAST"

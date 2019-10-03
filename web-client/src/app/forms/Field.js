@@ -1,131 +1,121 @@
-import React from "react";
+import React, { forwardRef, useContext, useCallback, useMemo } from "react";
 import PropTypes from "prop-types";
-import { Field } from "formik";
-import FormContext from "./context";
-import normalize from "../../../common/src/normalize";
-import TextField from "./fields/TextContainer";
-import SelectField from "./fields/SelectContainer";
-import CheckboxField from "./fields/CheckboxContainer";
-import RadioField from "./fields/RadioContainer";
-import ErrorField from "./fields/ErrorContainer";
+import { reach } from "yup";
+import { Field, connect } from "formik";
+import { useIntl } from "react-intl";
+import { FormContext } from "./Form";
+import TextField from "./fields/Text";
+import SelectField from "./fields/Select";
+import CheckboxField from "./fields/Checkbox";
+import RadioField from "./fields/Radio";
+import ErrorField from "./fields/Error";
 
-class FormField extends React.PureComponent {
-  static propTypes = {
-    intl: PropTypes.object.isRequired,
-    formik: PropTypes.object.isRequired,
-    name: PropTypes.string.isRequired,
-    type: PropTypes.string.isRequired,
-    label: PropTypes.string,
-    messages: PropTypes.arrayOf(PropTypes.string),
-    options: PropTypes.array,
-    autoFocus: PropTypes.bool,
-    className: PropTypes.string,
-    variant: PropTypes.string,
-    color: PropTypes.string,
-    disabled: PropTypes.bool,
-    onChange: PropTypes.func,
-    onBlur: PropTypes.func
-  };
+function FormField(props) {
+  const intl = useIntl();
 
-  static contextType = FormContext;
+  const { schema } = useContext(FormContext);
 
-  constructor(props) {
-    super(props);
+  const handleChange = useCallback(
+    evt => {
+      if (props.onChange) props.onChange(evt, props.formik);
+      props.formik.setFieldError(props.name, undefined);
+    },
+    [props.name, props.onChange, props.formik]
+  );
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleBlur = this.handleBlur.bind(this);
-  }
+  const handleFocus = useCallback(
+    evt => {
+      if (props.onFocus) props.onFocus(evt, props.formik);
+    },
+    [props.onFocus, props.formik]
+  );
 
-  handleChange(evt) {
-    let { fields } = this.context;
-    if (fields[this.props.name]) {
-      let normalizeOptions = fields[this.props.name].normalize;
-      if (normalizeOptions) {
-        evt.target.value = normalize(
-          normalizeOptions,
-          evt.target.value,
-          this.props.formik.values
-        );
+  const handleBlur = useCallback(
+    evt => {
+      if (props.onBlur) props.onBlur(evt, props.formik);
+    },
+    [props.onBlur, props.formik]
+  );
+
+  let { name, type, label, formik, forwardedRef, ...fieldProps } = props;
+
+  if (!label) {
+    const fieldSchema = reach(schema, name);
+    if (fieldSchema) {
+      const descr = fieldSchema.describe();
+      if (descr) {
+        const key = _.get(descr, "meta.label");
+        if (key) label = intl.formatMessage({ id: key });
       }
     }
-    if (this.props.onChange) this.props.onChange(evt, this.props.formik);
-    this.props.formik.setFieldError(this.props.name, undefined);
   }
 
-  handleBlur(evt) {
-    let { fields } = this.context;
-    let initialValue = evt.target.value;
-    if (fields[this.props.name]) {
-      let transformOptions = fields[this.props.name].transform;
-      if (transformOptions) {
-        evt.target.value = normalize(
-          transformOptions,
-          evt.target.value,
-          this.props.formik.values
-        );
-      }
-    }
-    if (this.props.onBlur) this.props.onBlur(evt, this.props.formik);
-    if (evt.target.value !== initialValue)
-      this.props.formik.setFieldValue(this.props.name, evt.target.value);
-  }
-
-  render() {
-    let { name, type, label, ...fieldProps } = this.props;
-    let { fields } = this.context;
-
-    if (!label && fields[name] && fields[name].label)
-      label = this.props.intl.formatMessage({ id: fields[name].label });
-
-    let Component;
+  const Component = useMemo(() => {
     switch (type) {
       case "text":
       case "password":
       case "textarea":
-        Component = TextField;
-        break;
+        return TextField;
       case "select":
-        Component = SelectField;
-        break;
+        return SelectField;
       case "checkbox":
-        Component = CheckboxField;
-        break;
+        return CheckboxField;
       case "radio":
-        Component = RadioField;
-        break;
+        return RadioField;
       case "error":
-        Component = ErrorField;
-        break;
+        return ErrorField;
+      default:
+        throw new Error(`Unknown field type: ${type}`);
     }
+  }, [type]);
 
-    return (
-      <Field
+  const render = useCallback(
+    renderProps => (
+      <Component
+        {...fieldProps}
+        {...renderProps}
+        forwardedRef={forwardedRef}
+        formik={formik}
         name={name}
-        render={props => {
-          const handleSubmit = () => {
-            setTimeout(() => {
-              let touched = _.assign({}, props.form.touched);
-              for (let field of _.keys(fields)) touched[field] = true;
-              props.form.setTouched(touched);
-            });
-            return props.form.handleSubmit();
-          };
-          return (
-            <Component
-              {...fieldProps}
-              {...props}
-              name={name}
-              type={type}
-              label={label}
-              onChange={this.handleChange}
-              onBlur={this.handleBlur}
-              handleSubmit={handleSubmit}
-            />
-          );
-        }}
+        type={type}
+        label={label}
+        onChange={handleChange}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
+        handleSubmit={formik.handleSubmit}
       />
-    );
-  }
+    ),
+    [
+      Component,
+      name,
+      type,
+      label,
+      formik,
+      forwardedRef,
+      fieldProps,
+      handleChange,
+      handleBlur
+    ]
+  );
+
+  return <Field name={name} render={render} />;
 }
 
-export default FormField;
+FormField.propTypes = {
+  forwardedRef: PropTypes.object,
+  formik: PropTypes.object.isRequired,
+  name: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
+  label: PropTypes.string,
+  onChange: PropTypes.func,
+  onFocus: PropTypes.func,
+  onBlur: PropTypes.func
+};
+
+const FieldComponent = connect(FormField);
+
+const MyField = forwardRef((props, ref) => {
+  return <FieldComponent {...props} forwardedRef={ref} />;
+});
+MyField.displayName = "MyField";
+export default MyField;

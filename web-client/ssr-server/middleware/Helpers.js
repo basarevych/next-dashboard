@@ -32,15 +32,12 @@ class Helpers {
         if (!theme && themes.names.length) theme = themes.names[0];
         req.theme = theme;
 
-        // Set tokens
+        // Save tokens
         req.setTokens = async (accessToken, refreshToken) => {
-          req.session.user = null;
-          req.session.accessToken = null;
-          req.session.refreshToken = null;
-
+          let user = null;
           if (accessToken) {
             const response = await fetch(
-              this.app.config.appApiServer + constants.graphqlBase,
+              this.app.config.appSsrApiServer + constants.graphqlBase,
               {
                 method: "POST",
                 credentials: "include",
@@ -51,25 +48,41 @@ class Helpers {
                 },
                 body: JSON.stringify({
                   query: `{
-                    viewer {
-                      me {
-                        isAuthenticated
-                        userId
-                        email
-                        roles
+                      viewer {
+                        me {
+                          isAuthenticated
+                          userId
+                          name
+                          email
+                          isEmailVerified
+                          roles
+                          providers {
+                            name
+                            isLinked
+                          }
+                        }
                       }
-                    }
-                  }`
+                    }`
                 })
               }
             );
             if (response.status === 200) {
               const result = await response.json();
-              req.session.user = _.get(result, "data.viewer.me", null);
-              req.session.accessToken = accessToken;
-              req.session.refreshToken = refreshToken;
+              user = _.get(result, "data.viewer.me", null);
             }
           }
+
+          const isAuthenticated = user && user.isAuthenticated;
+          req.session.user = isAuthenticated ? user : null;
+          req.session.accessToken = isAuthenticated ? accessToken : null;
+          req.session.refreshToken = isAuthenticated ? refreshToken : null;
+
+          return new Promise((resolve, reject) => {
+            req.session.save(error => {
+              if (error) return reject(error);
+              resolve();
+            });
+          });
         };
 
         return next();

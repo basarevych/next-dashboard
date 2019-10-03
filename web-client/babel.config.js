@@ -25,6 +25,6 @@ module.exports = api => {
         }
       ]
     ],
-    plugins: ["relay", "lodash"]
+    plugins: ["@babel/transform-strict-mode", "relay", "lodash"]
   };
 };

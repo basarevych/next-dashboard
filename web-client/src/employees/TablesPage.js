@@ -1,10 +1,10 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { graphql } from "react-relay";
-import { QueryRenderer } from "../app/providers/Relay";
-import ErrorMessage from "../app/error/ErrorMessageContainer";
-import Employees, { pageSize, sortBy, sortDir } from "./EmployeesContainer";
-
-const defaultVariables = { first: pageSize, sortBy, sortDir };
+import { QueryRenderer } from "../app/providers/RelayProvider";
+import ErrorMessage from "../app/errors/ErrorMessage";
+import Employees from "./EmployeesContainer";
+import { employeesSelectors } from "./state";
 
 const query = graphql`
   query TablesPageQuery(
@@ -29,27 +29,36 @@ const query = graphql`
   }
 `;
 
-class TablesPage extends React.Component {
-  static async getInitialProps({ isSsr, isExported, fetchQuery }) {
-    if (isSsr && !isExported) await fetchQuery(query, defaultVariables);
-  }
+function TablesPage(props) {
+  return (
+    <QueryRenderer
+      query={query}
+      variables={props.params}
+      render={({ error, props: renderProps }) => {
+        if (error) return <ErrorMessage error={error} />;
 
-  render() {
-    return (
-      <QueryRenderer
-        query={query}
-        variables={defaultVariables}
-        render={({ error, props }) => {
-          if (error) return <ErrorMessage error={error} />;
+        if (renderProps && renderProps.viewer)
+          return <Employees viewer={renderProps.viewer} />;
 
-          const viewer = props && props.viewer;
-          if (!viewer) return null;
-
-          return <Employees viewer={viewer} />;
-        }}
-      />
-    );
-  }
+        return null;
+      }}
+    />
+  );
 }
+
+TablesPage.propTypes = {
+  params: PropTypes.object.isRequired
+};
+
+TablesPage.getInitialProps = async ({
+  isSsr,
+  isExported,
+  store,
+  fetchQuery
+}) => {
+  const params = employeesSelectors.getTableParams(store.getState());
+  if (isSsr && !isExported) await fetchQuery(query, params);
+  return { params };
+};
 
 export default TablesPage;

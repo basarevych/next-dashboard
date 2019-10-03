@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useContext, useState, useCallback } from "react";
 import PropTypes from "prop-types";
+import { makeStyles } from "@material-ui/styles";
 import Hidden from "@material-ui/core/Hidden";
-import HeaderBar from "./header/HeaderBarContainer";
+import HeaderBar from "./header/HeaderBar";
+import { UserContext } from "../providers/User";
 
-export const styles = () => ({
+const useStyles = makeStyles(() => ({
   spacer: {
     height: "2rem"
   },
@@ -19,78 +21,63 @@ export const styles = () => ({
     zIndex: 1400,
     alignSelf: "stretch"
   }
-});
+}));
 
-class Header extends React.Component {
-  static propTypes = {
-    classes: PropTypes.object.isRequired,
-    isAuthenticated: PropTypes.bool.isRequired,
-    onSidebarToggle: PropTypes.func.isRequired
-  };
+function Header(props) {
+  const classes = useStyles(props);
 
-  constructor(props) {
-    super(props);
+  const user = useContext(UserContext);
+  const isAuthenticated = user ? user.isAuthenticated : false;
 
-    this.state = {
-      isVisible: false
-    };
+  const [isVisible, setIsVisible] = useState(false);
 
-    this.isDestroyed = false;
+  const handleWrapperMouseEnter = useCallback(() => {
+    setIsVisible(true);
+  }, [setIsVisible]);
 
-    this.handleWrapperMouseEnter = this.handleWrapperMouseEnter.bind(this);
-    this.handleWrapperMouseLeave = this.handleWrapperMouseLeave.bind(this);
-    this.handleClose = this.handleClose.bind(this);
-  }
+  const handleWrapperMouseLeave = useCallback(() => {
+    setIsVisible(false);
+  }, [setIsVisible]);
 
-  componentWillUnmount() {
-    this.isDestroyed = true;
-  }
+  const handleClose = useCallback(() => {
+    setIsVisible(false);
+  }, [setIsVisible]);
 
-  handleWrapperMouseEnter() {
-    if (!this.state.isVisible) this.setState({ isVisible: true });
-  }
-
-  handleWrapperMouseLeave() {
-    if (this.state.isVisible) this.setState({ isVisible: false });
-  }
-
-  handleClose() {
-    if (this.state.isVisible) this.setState({ isVisible: false });
-  }
-
-  render() {
-    return (
-      <>
-        <Hidden smUp initialWidth="lg">
-          <div className={this.props.classes.smallWrapper}>
-            <HeaderBar
-              isVisible={true}
-              withShadow={false}
-              isAuthenticated={this.props.isAuthenticated}
-              onSidebarToggle={this.props.onSidebarToggle}
-              onClose={this.handleClose}
-            />
-          </div>
-        </Hidden>
-        <Hidden xsDown initialWidth="lg">
-          <div
-            className={this.props.classes.wrapper}
-            onMouseEnter={this.handleWrapperMouseEnter}
-            onMouseLeave={this.handleWrapperMouseLeave}
-          >
-            <HeaderBar
-              isVisible={this.state.isVisible}
-              withShadow={true}
-              isAuthenticated={this.props.isAuthenticated}
-              onSidebarToggle={this.props.onSidebarToggle}
-              onClose={this.handleClose}
-            />
-          </div>
-          <div className={this.props.classes.spacer} />
-        </Hidden>
-      </>
-    );
-  }
+  return (
+    <>
+      <Hidden smUp initialWidth="lg">
+        <div className={classes.smallWrapper}>
+          <HeaderBar
+            withShadow={false}
+            isVisible={true}
+            isAuthenticated={isAuthenticated}
+            onSidebarToggle={props.onSidebarToggle}
+            onClose={handleClose}
+          />
+        </div>
+      </Hidden>
+      <Hidden xsDown initialWidth="lg">
+        <div
+          className={classes.wrapper}
+          onMouseEnter={handleWrapperMouseEnter}
+          onMouseLeave={handleWrapperMouseLeave}
+        >
+          <HeaderBar
+            withShadow={true}
+            isVisible={isVisible}
+            isAuthenticated={isAuthenticated}
+            onSidebarToggle={props.onSidebarToggle}
+            onClose={handleClose}
+          />
+        </div>
+        <div className={classes.spacer} />
+      </Hidden>
+    </>
+  );
 }
+
+Header.propTypes = {
+  onSidebarToggle: PropTypes.func.isRequired
+};
 
 export default Header;

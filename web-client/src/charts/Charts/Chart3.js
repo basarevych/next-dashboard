@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo, useCallback } from "react";
 import PropTypes from "prop-types";
 import { AutoSizer } from "react-virtualized";
 import {
@@ -9,37 +9,24 @@ import {
   VictoryPolarAxis,
   VictoryLabel
 } from "victory";
+import { useTheme } from "@material-ui/styles";
 import Paper from "@material-ui/core/Paper";
 import theme from "./theme";
 
-class Chart3 extends React.Component {
-  static propTypes = {
-    theme: PropTypes.object.isRequired,
-    isStarted: PropTypes.bool.isRequired,
-    className: PropTypes.string
-  };
+function Chart3(props) {
+  const materialTheme = useTheme();
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      data: this.processData(this.getCharacterData()),
-      maxima: this.getMaxima(this.getCharacterData())
-    };
-  }
+  const characterData = [
+    { strength: 1, intelligence: 250, luck: 1, stealth: 40, charisma: 50 },
+    { strength: 2, intelligence: 300, luck: 2, stealth: 80, charisma: 90 },
+    { strength: 5, intelligence: 225, luck: 3, stealth: 60, charisma: 120 }
+  ];
 
-  getCharacterData() {
-    return [
-      { strength: 1, intelligence: 250, luck: 1, stealth: 40, charisma: 50 },
-      { strength: 2, intelligence: 300, luck: 2, stealth: 80, charisma: 90 },
-      { strength: 5, intelligence: 225, luck: 3, stealth: 60, charisma: 120 }
-    ];
-  }
-
-  getMaxima(data) {
+  const maxima = useMemo(() => {
     const groupedData = _.reduce(
-      _.keys(data[0]),
+      _.keys(characterData[0]),
       (acc, cur) => {
-        acc[cur] = _.map(data, d => d[cur]);
+        acc[cur] = _.map(characterData, d => d[cur]);
         return acc;
       },
       {}
@@ -52,71 +39,73 @@ class Chart3 extends React.Component {
       },
       {}
     );
-  }
+  }, [characterData]);
 
-  processData(data) {
-    const maxByGroup = this.getMaxima(data);
-    const makeDataArray = d => {
-      return _.map(_.keys(d), key => ({ x: key, y: d[key] / maxByGroup[key] }));
-    };
-    return _.map(data, datum => makeDataArray(datum));
-  }
+  const data = useMemo(() => {
+    const makeDataArray = d =>
+      _.map(_.keys(d), key => ({
+        x: key,
+        y: d[key] / maxima[key]
+      }));
+    return _.map(characterData, datum => makeDataArray(datum));
+  }, [characterData, maxima]);
 
-  renderChart(width, height) {
-    if (!this.props.isStarted) return <div width={width} height={height} />;
+  const renderChart = useCallback(
+    ({ width }) => {
+      if (!width) return null;
+      const height = 0.8 * width;
 
-    return (
-      <svg width={width} height={height}>
-        <VictoryChart
-          polar
-          domain={{ y: [0, 1] }}
-          width={width}
-          height={height}
-          standalone={false}
-          containerComponent={<VictoryContainer responsive={false} />}
-          theme={theme({
-            theme: this.props.theme,
-            withGrid: true
-          })}
-        >
-          <VictoryGroup
-            colorScale={["gold", "orange", "tomato"]}
-            style={{ data: { fillOpacity: 0.2, strokeWidth: 2 } }}
+      return (
+        <svg width={width} height={height}>
+          <VictoryChart
+            polar
+            domain={{ y: [0, 1] }}
+            width={width}
+            height={height}
+            standalone={false}
+            containerComponent={<VictoryContainer responsive={false} />}
+            theme={theme({ theme: materialTheme, withGrid: true })}
           >
-            {_.map(this.state.data, (data, i) => (
-              <VictoryArea key={i} data={data} />
+            <VictoryGroup
+              colorScale={["gold", "orange", "tomato"]}
+              style={{ data: { fillOpacity: 0.2, strokeWidth: 2 } }}
+            >
+              {_.map(data, (item, i) => (
+                <VictoryArea key={i} data={item} />
+              ))}
+            </VictoryGroup>
+            {_.map(_.keys(maxima), (key, i) => (
+              <VictoryPolarAxis
+                key={i}
+                dependentAxis
+                tickLabelComponent={<VictoryLabel labelPlacement="vertical" />}
+                labelPlacement="perpendicular"
+                axisValue={i + 1}
+                label={key}
+                tickFormat={t => Math.ceil(t * maxima[key])}
+                tickValues={[0.25, 0.5, 0.75]}
+              />
             ))}
-          </VictoryGroup>
-          {_.map(_.keys(this.state.maxima), (key, i) => (
             <VictoryPolarAxis
-              key={i}
-              dependentAxis
-              tickLabelComponent={<VictoryLabel labelPlacement="vertical" />}
-              labelPlacement="perpendicular"
-              axisValue={i + 1}
-              label={key}
-              tickFormat={t => Math.ceil(t * this.state.maxima[key])}
-              tickValues={[0.25, 0.5, 0.75]}
+              labelPlacement="parallel"
+              tickFormat={_.constant("")}
             />
-          ))}
-          <VictoryPolarAxis
-            labelPlacement="parallel"
-            tickFormat={_.constant("")}
-          />
-        </VictoryChart>
-      </svg>
-    );
-  }
+          </VictoryChart>
+        </svg>
+      );
+    },
+    [data, materialTheme]
+  );
 
-  render() {
-    return (
-      <Paper className={this.props.className}>
-        <AutoSizer disableHeight>
-          {({ width }) => !!width && this.renderChart(width, 0.8 * width)}
-        </AutoSizer>
-      </Paper>
-    );
-  }
+  return (
+    <Paper className={props.className}>
+      <AutoSizer disableHeight>{renderChart}</AutoSizer>
+    </Paper>
+  );
 }
+
+Chart3.propTypes = {
+  className: PropTypes.string
+};
 
 export default Chart3;

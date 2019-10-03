@@ -23,7 +23,8 @@ class Routes {
    */
   async postSession(req, res, next) {
     try {
-      await req.setTokens(req.body.accessToken, req.body.refreshToken);
+      const { accessToken, refreshToken } = req.body;
+      await req.setTokens(accessToken, refreshToken);
       res.json({ success: true });
     } catch (error) {
       next(error);

@@ -1,12 +1,12 @@
 const BaseModel = require("./BaseModel");
-const fields = require("../../common/forms/employee");
+const validationSchema = require("../../common/forms/employee");
 const constants = require("../../common/constants");
 
 class Employee extends BaseModel {
   constructor(db) {
     super();
 
-    this.fields = fields;
+    this.validationSchema = validationSchema;
     this.depts = _.values(constants.depts);
     this.sortBy = [
       "uid",
@@ -39,7 +39,7 @@ class Employee extends BaseModel {
         validate: this.getFieldValidator("whenUpdated")
       },
       uid: {
-        type: String,
+        type: Number,
         required: [true, "ERROR_FIELD_REQUIRED"],
         validate: this.getFieldValidator("uid")
       },
@@ -92,7 +92,13 @@ class Employee extends BaseModel {
         this.set("_id", this.db.ObjectId(id));
       });
 
+    const self = this;
     this.schema.pre("save", function() {
+      const values = self.cast(
+        this.toObject({ getters: true, virtuals: true })
+      );
+      for (let field of _.keys(values)) this[field] = values[field];
+
       this.whenUpdated = Date.now();
     });
 

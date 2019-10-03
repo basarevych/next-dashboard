@@ -15,21 +15,19 @@ class Early {
 
   async accept({ express }) {
     // CORS
-    if (process.env.NODE_ENV === "production") {
-      express.use(
-        cors({
-          origin: (origin, callback) => {
-            let match =
-              !origin || _.includes(this.app.config.appOrigins, origin);
-            if (match) return callback(null, true);
-            console.log(`CORS! ${origin}`);
-            let error = new Error("Not allowed by CORS");
-            error.statusCode = 403;
-            return callback(error);
-          }
-        })
-      );
-    }
+    express.use(
+      cors({
+        credentials: true,
+        origin: (origin, callback) => {
+          let match = !origin || _.includes(this.app.config.appOrigins, origin);
+          if (match) return callback(null, true);
+          console.log(`CORS! ${origin}`);
+          let error = new Error("Not allowed by CORS");
+          error.statusCode = 403;
+          return callback(error);
+        }
+      })
+    );
 
     // HTTP compression
     express.use(compression());

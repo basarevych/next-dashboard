@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useContext, useCallback, useMemo } from "react";
 import PropTypes from "prop-types";
-import { FormattedMessage } from "react-intl";
+import { useRouter } from "next/router";
+import { useSelector, useDispatch } from "react-redux";
+import { useIntl, FormattedMessage } from "react-intl";
+import { makeStyles } from "@material-ui/styles";
 import Link from "@material-ui/core/Link";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
@@ -18,8 +21,10 @@ import TypographyIcon from "@material-ui/icons/BrightnessAuto";
 import IconsIcon from "@material-ui/icons/Pets";
 import UsersIcon from "@material-ui/icons/People";
 import constants from "../../../common/constants";
+import { appSelectors, appOperations } from "../../app/state";
+import { UserContext } from "../providers/User";
 
-export const styles = theme => ({
+const useStyles = makeStyles(theme => ({
   root: {
     height: "100%",
     display: "flex",
@@ -99,36 +104,56 @@ export const styles = theme => ({
       }
     }
   }
-});
+}));
 
-class Sidebar extends React.Component {
-  static propTypes = {
-    intl: PropTypes.object.isRequired,
-    router: PropTypes.object.isRequired,
-    classes: PropTypes.object.isRequired,
-    user: PropTypes.object.isRequired,
-    apiServer: PropTypes.string.isRequired,
-    onMenuClick: PropTypes.func.isRequired,
-    onLoginClick: PropTypes.func.isRequired
-  };
+function Sidebar(props) {
+  const classes = useStyles(props);
+  const intl = useIntl();
+  const router = useRouter();
+  const dispatch = useDispatch();
 
-  handleMenuClick(path) {
-    this.props.router.push(path);
-    this.props.onMenuClick();
-  }
+  const user = useContext(UserContext);
 
-  renderHeader() {
-    const isAuthenticated = this.props.user.isAuthenticated;
-    const userId = this.props.user.userId;
-    const name = this.props.user.name;
-    const email = this.props.user.email;
+  const apiServer = useSelector(state => appSelectors.getApiServer(state));
 
+  const handleLoginClick = useCallback(
+    () => dispatch(appOperations.showAuthModal()),
+    [dispatch]
+  );
+
+  const handleMenuClick = useCallback(
+    (path, asPath) => {
+      router.push(path, asPath);
+      props.onMenuClick();
+    },
+    [router, props.onMenuClick]
+  );
+
+  const handleRedirectClick = useCallback(
+    () => window.open(apiServer + constants.apiBase + "/redirect/github"),
+    [apiServer]
+  );
+
+  const handleBenchmarksClick = useCallback(
+    () => window.open(apiServer + constants.apiBase + "/redirect/benchmarks"),
+    [apiServer]
+  );
+
+  const handleResponsivenessClick = useCallback(
+    () =>
+      window.open(apiServer + constants.apiBase + "/redirect/responsiveness"),
+    [apiServer]
+  );
+
+  const { isAuthenticated, userId, name, email } = user;
+
+  const header = useMemo(() => {
     return (
-      <div className={this.props.classes.avatar}>
+      <div className={classes.avatar}>
         <img
           src={
             isAuthenticated && userId
-              ? this.props.apiServer +
+              ? apiServer +
                 constants.apiBase +
                 "/avatars/" +
                 userId +
@@ -140,28 +165,36 @@ class Sidebar extends React.Component {
           {(isAuthenticated && (name || email)) || "Anonymous"}
         </Typography>
         {!isAuthenticated && (
-          <Button variant="contained" onClick={this.props.onLoginClick}>
+          <Button variant="contained" onClick={handleLoginClick}>
             <FormattedMessage id="SIDEBAR_LOGIN_BUTTON" />
           </Button>
         )}
       </div>
     );
-  }
+  }, [
+    classes,
+    isAuthenticated,
+    userId,
+    name,
+    email,
+    apiServer,
+    handleLoginClick
+  ]);
 
-  renderItem(path) {
-    const { icon, menu, isAllowed } = constants.pages[path];
-    if (!icon || !menu) return null;
-    if (_.isFunction(isAllowed) && !isAllowed(this.props.user)) return null;
+  const renderItem = path => {
+    const { page, icon, menu, isAllowed } = constants.pages[path] || {};
+    if (!page || !icon || !menu) return null;
+    if (_.isFunction(isAllowed) && !isAllowed(user)) return null;
 
     return (
       <MenuItem
         key={`page-${path}`}
         classes={{
-          root: this.props.classes.item,
-          selected: this.props.classes.itemSelected
+          root: classes.item,
+          selected: classes.itemSelected
         }}
-        selected={this.props.router.asPath === path}
-        onClick={() => this.handleMenuClick(path)}
+        selected={router.asPath === path}
+        onClick={() => handleMenuClick(page, path)}
       >
         <ListItemIcon>
           <>
@@ -177,62 +210,36 @@ class Sidebar extends React.Component {
           </>
         </ListItemIcon>
 
-        <ListItemText primary={this.props.intl.formatMessage({ id: menu })} />
+        <ListItemText primary={intl.formatMessage({ id: menu })} />
       </MenuItem>
     );
-  }
+  };
 
-  render() {
-    return (
-      <div className={this.props.classes.root}>
-        <MenuList
-          classes={{ root: this.props.classes.list }}
-          subheader={this.renderHeader()}
-        >
-          {_.map(_.keys(constants.pages), path => this.renderItem(path))}
-        </MenuList>
+  return (
+    <div className={classes.root}>
+      <MenuList classes={{ root: classes.list }} subheader={header}>
+        {_.map(_.keys(constants.pages), path => renderItem(path))}
+      </MenuList>
 
-        <div className={this.props.classes.grow} />
+      <div className={classes.grow} />
 
-        <div>
-          <Link
-            className={this.props.classes.link}
-            onClick={() =>
-              window.open(
-                this.props.apiServer + constants.apiBase + "/redirect/github"
-              )
-            }
-          >
-            <FormattedMessage id="SIDEBAR_GITHUB_LINK" />
-          </Link>
-          <Link
-            className={this.props.classes.link}
-            onClick={() =>
-              window.open(
-                this.props.apiServer +
-                  constants.apiBase +
-                  "/redirect/benchmarks"
-              )
-            }
-          >
-            <FormattedMessage id="SIDEBAR_BENCHMARKS_LINK" />
-          </Link>
-          <Link
-            className={this.props.classes.link}
-            onClick={() =>
-              window.open(
-                this.props.apiServer +
-                  constants.apiBase +
-                  "/redirect/responsiveness"
-              )
-            }
-          >
-            <FormattedMessage id="SIDEBAR_RESPONSIVENESS_LINK" />
-          </Link>
-        </div>
+      <div>
+        <Link className={classes.link} onClick={handleRedirectClick}>
+          <FormattedMessage id="SIDEBAR_GITHUB_LINK" />
+        </Link>
+        <Link className={classes.link} onClick={handleBenchmarksClick}>
+          <FormattedMessage id="SIDEBAR_BENCHMARKS_LINK" />
+        </Link>
+        <Link className={classes.link} onClick={handleResponsivenessClick}>
+          <FormattedMessage id="SIDEBAR_RESPONSIVENESS_LINK" />
+        </Link>
       </div>
-    );
-  }
+    </div>
+  );
 }
+
+Sidebar.propTypes = {
+  onMenuClick: PropTypes.func.isRequired
+};
 
 export default Sidebar;

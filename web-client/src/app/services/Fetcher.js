@@ -3,7 +3,17 @@ import { SubscriptionClient } from "subscriptions-transport-ws";
 import constants from "../../../common/constants";
 import { appSelectors, appOperations } from "../state";
 
+/**
+ * Fetch API facade
+ */
 class Fetcher {
+  /**
+   * Constructor
+   * @param {*} di
+   * @param {*} getState
+   * @param {*} dispatch
+   * @param {*} storage
+   */
   constructor(di, getState, dispatch, storage) {
     this.di = di;
     this.getState = getState;
@@ -11,30 +21,55 @@ class Fetcher {
     this.storage = storage;
 
     if (process.browser) {
-      window.addEventListener(constants.events.IDENTITY_CHANGED, () => {
-        this.isIdentityChanged = true;
-      });
+      const handleIdentityChanged = () => {
+        this.isStarted = true;
+        window.removeEventListener(
+          constants.events.IDENTITY_CHANGED,
+          handleIdentityChanged
+        );
+      };
+      window.addEventListener(
+        constants.events.IDENTITY_CHANGED,
+        handleIdentityChanged
+      );
     }
   }
 
+  /**
+   * DI name
+   */
   static get $provides() {
     return "fetcher";
   }
 
+  /**
+   * DI dependecies
+   */
   static get $requires() {
     return ["di", "getState", "dispatch", "storage"];
   }
 
+  /**
+   * DI lifecycle
+   */
   static get $lifecycle() {
     return "singleton";
   }
 
+  /**
+   * Switch to SSR mode
+   * @param {Object} req
+   * @param {Object} res
+   */
   setSsrMode(req, res) {
     this.isSsr = true;
     this.req = req;
     this.res = res;
   }
 
+  /**
+   * Get access JWT
+   */
   async getAccessToken() {
     return (
       (this.isSsr
@@ -43,6 +78,9 @@ class Fetcher {
     );
   }
 
+  /**
+   * Get refresh JWT
+   */
   async getRefreshToken() {
     return (
       (this.isSsr
@@ -51,9 +89,14 @@ class Fetcher {
     );
   }
 
+  /**
+   * Store JWTs
+   * @param {string} accessToken
+   * @param {string} refreshToken
+   */
   async setTokens(accessToken, refreshToken) {
     if (this.isSsr) {
-      this.req.setTokens(accessToken, refreshToken);
+      await this.req.setTokens(accessToken, refreshToken);
     } else {
       this.storage.set("accessToken", accessToken);
       this.storage.set("refreshToken", refreshToken);
@@ -78,76 +121,94 @@ class Fetcher {
     }
   }
 
-  async refreshTokens() {
-    if (this.refreshingPromise) return this.refreshingPromise;
-    this.refreshingPromise = Promise.resolve().then(async () => {
-      const done = async (accessToken, refreshToken) => {
-        try {
-          await this.setTokens(accessToken, refreshToken);
-        } catch (error) {
-          console.log(error);
-        }
-        this.refreshingPromise = null;
-      };
+  /**
+   * Get new JWTs
+   */
+  async getTokens() {
+    const done = async (accessToken, refreshToken) => {
+      try {
+        await this.setTokens(accessToken, refreshToken);
+      } catch (error) {
+        console.log(error);
+      }
+    };
 
-      for (;;) {
-        try {
-          let refreshToken = await this.getRefreshToken();
-          if (!refreshToken) return done(null, null);
+    for (;;) {
+      try {
+        let refreshToken = await this.getRefreshToken();
+        if (!refreshToken) return done(null, null);
 
-          const params = {
-            method: "POST",
-            resource: constants.graphqlBase,
-            data: {
-              query: `mutation GetTokenMutation( $input: GetTokenInput! ) {
-                getToken(input: $input) {
-                  success
-                  token
-                  refreshToken
-                }
-              }`,
-              variables: {
-                input: {
-                  type: "access",
-                  token: refreshToken
-                }
+        const params = {
+          method: "POST",
+          resource: constants.graphqlBase,
+          data: {
+            query: `mutation GetTokenMutation( $input: GetTokenInput! ) {
+              getToken(input: $input) {
+                success
+                token
+                refreshToken
+              }
+            }`,
+            variables: {
+              input: {
+                type: "access",
+                token: refreshToken
               }
             }
-          };
-
-          const response = await this.fetch(params);
-
-          if (response.status !== 200)
-            throw new Error(`GraphQL: GetToken Response ${response.status}`);
-
-          let data = await response.json();
-
-          let result = _.get(data, "data.getToken.success", null);
-          if (result === true) {
-            let accessToken = _.get(data, "data.getToken.token", null);
-            let refreshToken = _.get(data, "data.getToken.refreshToken", null);
-            if (!accessToken || !refreshToken) return done(null, null);
-            return done(accessToken, refreshToken);
-          } else if (result === false) {
-            return done(null, null);
           }
-        } catch (error) {
-          console.error(error);
-        }
+        };
 
-        if (!process.browser) return done(null, null);
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        const response = await this.fetch(params);
+
+        if (response.status !== 200)
+          throw new Error(`GraphQL: GetToken Response ${response.status}`);
+
+        let data = await response.json();
+
+        let result = _.get(data, "data.getToken.success", null);
+        if (result === true) {
+          let accessToken = _.get(data, "data.getToken.token", null);
+          let refreshToken = _.get(data, "data.getToken.refreshToken", null);
+          if (!accessToken || !refreshToken) return done(null, null);
+          return done(accessToken, refreshToken);
+        } else if (result === false) {
+          return done(null, null);
+        }
+      } catch (error) {
+        console.error(error);
       }
+
+      if (!process.browser) return done(null, null);
+      await new Promise(resolve => setTimeout(resolve, 1000));
+    }
+  }
+
+  /**
+   * Refresh the JWTs
+   */
+  async refreshTokens() {
+    if (this.refreshingPromise) return this.refreshingPromise;
+    this.refreshingPromise = this.getTokens().then(() => {
+      this.refreshingPromise = null;
     });
     return this.refreshingPromise;
   }
 
+  /**
+   * Fetch the resource
+   * @param {Object} params
+   * @param {string} [params.method]
+   * @param {string} params.resource
+   * @param {Object} [params.data]
+   * @param {string} [params.token]
+   */
   async fetch({ method, resource, data, token }) {
     if (!/^https?:\/\//.test(resource)) {
       if (this.isSsr)
         resource = appSelectors.getSsrApiServer(this.getState()) + resource;
       else resource = appSelectors.getApiServer(this.getState()) + resource;
     }
+
     if (!/^https?:\/\//.test(resource)) {
       console.error(
         "Could not get absolute URL\n" +
@@ -166,12 +227,18 @@ class Fetcher {
 
     return fetch(resource, {
       method: method || "GET",
+      mode: "cors",
       credentials: "include",
       headers,
       body: data && JSON.stringify(data)
     });
   }
 
+  /**
+   * Relay query
+   * @param {Object} operation
+   * @param {Object} variables
+   */
   async query(operation, variables /*, cacheConfig, uploadables */) {
     for (;;) {
       try {
@@ -212,6 +279,13 @@ class Fetcher {
     }
   }
 
+  /**
+   * Relay subscriptiton
+   * @param {Object} config
+   * @param {Object} variables
+   * @param {Object} cacheConfig
+   * @param {Object} observer
+   */
   subscribe(config, variables, cacheConfig, observer) {
     if (!process.browser) return { dispose: _.noop };
 
@@ -298,7 +372,6 @@ class Fetcher {
       reconnect(false);
     };
 
-    window.addEventListener(constants.events.IDENTITY_CHANGED, authUpdated);
     dispose = async () => {
       if (isDestroyed) return;
       isDestroyed = true;
@@ -319,7 +392,10 @@ class Fetcher {
         console.log(`[Subscription] ${config.name} disposed`);
     };
 
-    if (this.isIdentityChanged) connect().catch(console.error);
+    // postpone subscription to the first IDENTITY_CHNAGED event
+    // which will fire authUpdated() above, otherwise connect immediately
+    window.addEventListener(constants.events.IDENTITY_CHANGED, authUpdated);
+    if (this.isStarted) connect().catch(console.error);
 
     return {
       dispose

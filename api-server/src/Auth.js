@@ -20,7 +20,7 @@ class Auth {
 
     this.tokenLifetime = {
       refresh: "30d",
-      access: "10m",
+      access: "15m",
       oneTime: "1h"
     };
 
@@ -511,9 +511,7 @@ class Auth {
   }
 
   sendVerificationEmail(context, user, locale) {
-    let url = `${this.config.apiAppServer}/auth/verify?token=${
-      user.emailToken
-    }`;
+    let url = `${this.config.apiAppServer}/auth/verify?token=${user.emailToken}`;
     return this.mailer.send({
       to: user.email,
       from: this.config.emailFrom,

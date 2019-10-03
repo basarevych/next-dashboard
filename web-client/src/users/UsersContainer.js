@@ -1,45 +1,8 @@
-import { connect } from "react-redux";
 import { graphql, createRefetchContainer } from "react-relay";
-import { injectIntl } from "react-intl";
-import { withStyles } from "@material-ui/styles";
-import { appOperations, appSelectors } from "../app/state";
-import { usersSelectors, usersOperations } from "./state";
-import UsersComponent, { pageSize, sortBy, sortDir, styles } from "./Users";
-
-const mapStateToProps = state => {
-  return {
-    isSubscribed: appSelectors.hasActiveSubscription(
-      state,
-      "UsersSubscription"
-    ),
-    isEditModalOpen: usersSelectors.isEditModalOpen(state),
-    selected: usersSelectors.getSelected(state)
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    getToken: () => dispatch(appOperations.getToken()),
-    onCreate: () => dispatch(usersOperations.showEditModal()),
-    onEdit: () => dispatch(usersOperations.editFirstSelected()),
-    onDelete: userId => dispatch(usersOperations.remove({ id: userId })),
-    onSetSelected: (userId, isSelected) =>
-      dispatch(usersOperations.setSelected({ userId, isSelected })),
-    onSelectAll: userIds => dispatch(usersOperations.selectAll({ userIds })),
-    onDeselectAll: exceptUserIds =>
-      dispatch(usersOperations.deselectAll({ exceptUserIds }))
-  };
-};
+import UsersComponent from "./Users";
 
 const Users = createRefetchContainer(
-  withStyles(styles)(
-    injectIntl(
-      connect(
-        mapStateToProps,
-        mapDispatchToProps
-      )(UsersComponent)
-    )
-  ),
+  UsersComponent,
   {
     viewer: graphql`
       fragment UsersContainer_viewer on Viewer
@@ -63,7 +26,7 @@ const Users = createRefetchContainer(
             cursor
             node {
               id
-              ...UserRowContainer_node
+              ...UsersRowContainer_node
             }
           }
           pageInfo {
@@ -99,5 +62,4 @@ const Users = createRefetchContainer(
   `
 );
 
-export { pageSize, sortBy, sortDir };
 export default Users;

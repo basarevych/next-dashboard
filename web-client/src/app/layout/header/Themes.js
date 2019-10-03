@@ -1,6 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { useDispatch } from "react-redux";
 import { FormattedMessage } from "react-intl";
+import { makeStyles } from "@material-ui/styles";
 import { lighten } from "@material-ui/core/styles/colorManipulator";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -8,8 +10,9 @@ import ListItemText from "@material-ui/core/ListItemText";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ThemeIcon from "@material-ui/icons/ColorLens";
 import themes from "../../../../styles/themes";
+import { appOperations } from "../../state";
 
-export const styles = theme => ({
+const useStyles = makeStyles(theme => ({
   menu: {
     width: "100%",
     maxWidth: theme.spacing(45),
@@ -22,49 +25,47 @@ export const styles = theme => ({
       maxWidth: "90%"
     }
   }
-});
+}));
 
-class Themes extends React.Component {
-  static propTypes = {
-    classes: PropTypes.object.isRequired,
-    anchor: PropTypes.object,
-    onClose: PropTypes.func.isRequired,
-    onSetCookie: PropTypes.func.isRequired,
-    onSetTheme: PropTypes.func.isRequired
+function Themes(props) {
+  const classes = useStyles(props);
+  const dispatch = useDispatch();
+
+  const handleThemeSwitch = theme => {
+    props.onClose();
+    dispatch(appOperations.setCookie({ name: "theme", value: theme }));
+    dispatch(appOperations.setTheme({ theme }));
   };
 
-  handleThemeSwitch(theme) {
-    this.props.onClose();
-    this.props.onSetCookie("theme", theme);
-    this.props.onSetTheme(theme);
-  }
-
-  render() {
-    return (
-      <Menu
-        classes={{ paper: this.props.classes.menu }}
-        anchorEl={this.props.anchor}
-        anchorOrigin={{ vertical: "top", horizontal: "left" }}
-        transformOrigin={{ vertical: "top", horizontal: "left" }}
-        open={!!this.props.anchor}
-        onClose={this.props.onClose}
-      >
-        {_.map(themes.names, theme => (
-          <MenuItem
-            key={`theme-${theme}`}
-            onClick={() => this.handleThemeSwitch(theme)}
-          >
-            <ListItemIcon>
-              <ThemeIcon />
-            </ListItemIcon>
-            <ListItemText>
-              <FormattedMessage id={"THEME_" + _.upperCase(theme) + "_LABEL"} />
-            </ListItemText>
-          </MenuItem>
-        ))}
-      </Menu>
-    );
-  }
+  return (
+    <Menu
+      classes={{ paper: classes.menu }}
+      anchorEl={props.anchor}
+      anchorOrigin={{ vertical: "top", horizontal: "left" }}
+      transformOrigin={{ vertical: "top", horizontal: "left" }}
+      open={!!props.anchor}
+      onClose={props.onClose}
+    >
+      {_.map(themes.names, theme => (
+        <MenuItem
+          key={`theme-${theme}`}
+          onClick={() => handleThemeSwitch(theme)}
+        >
+          <ListItemIcon>
+            <ThemeIcon />
+          </ListItemIcon>
+          <ListItemText>
+            <FormattedMessage id={"THEME_" + _.upperCase(theme) + "_LABEL"} />
+          </ListItemText>
+        </MenuItem>
+      ))}
+    </Menu>
+  );
 }
+
+Themes.propTypes = {
+  anchor: PropTypes.object,
+  onClose: PropTypes.func.isRequired
+};
 
 export default Themes;

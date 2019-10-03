@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo, useCallback } from "react";
 import PropTypes from "prop-types";
 import { AutoSizer } from "react-virtualized";
 import {
@@ -8,73 +8,73 @@ import {
   VictoryStack,
   VictoryBar
 } from "victory";
+import { useTheme } from "@material-ui/styles";
 import Paper from "@material-ui/core/Paper";
 import theme from "./theme";
 
-class Chart1 extends React.Component {
-  static propTypes = {
-    theme: PropTypes.object.isRequired,
-    isStarted: PropTypes.bool.isRequired,
-    className: PropTypes.string
-  };
+function Chart1(props) {
+  const materialTheme = useTheme();
 
-  getData() {
-    if (!this.data) {
-      this.data = _.times(5, () => {
+  const data = useMemo(
+    () =>
+      _.times(5, () => {
         return [
           { x: 1, y: Math.random() },
           { x: 2, y: Math.random() },
           { x: 3, y: Math.random() }
         ];
-      });
-    }
-    return this.data;
-  }
+      }),
+    []
+  );
 
-  renderChart(width, height) {
-    if (!this.props.isStarted) return <div width={width} height={height} />;
+  const renderChart = useCallback(
+    ({ width }) => {
+      if (!width) return null;
+      const height = 0.8 * width;
 
-    return (
-      <svg width={width} height={height}>
-        <VictoryChart
-          domainPadding={{ x: 50 }}
-          width={width}
-          height={height}
-          standalone={false}
-          containerComponent={<VictoryContainer responsive={false} />}
-          theme={theme({ theme: this.props.theme, withAxis: true })}
-        >
-          <VictoryGroup offset={20} style={{ data: { width: 15 } }}>
-            <VictoryStack colorScale={"red"}>
-              {_.map(this.getData(), (data, index) => (
-                <VictoryBar key={index} data={data} />
-              ))}
-            </VictoryStack>
-            <VictoryStack colorScale={"green"}>
-              {_.map(this.getData(), (data, index) => (
-                <VictoryBar key={index} data={data} />
-              ))}
-            </VictoryStack>
-            <VictoryStack colorScale={"blue"}>
-              {_.map(this.getData(), (data, index) => (
-                <VictoryBar key={index} data={data} />
-              ))}
-            </VictoryStack>
-          </VictoryGroup>
-        </VictoryChart>
-      </svg>
-    );
-  }
+      return (
+        <svg width={width} height={height}>
+          <VictoryChart
+            domainPadding={{ x: 50 }}
+            width={width}
+            height={height}
+            standalone={false}
+            containerComponent={<VictoryContainer responsive={false} />}
+            theme={theme({ theme: materialTheme, withAxis: true })}
+          >
+            <VictoryGroup offset={20} style={{ data: { width: 15 } }}>
+              <VictoryStack colorScale={"red"}>
+                {_.map(data, (item, index) => (
+                  <VictoryBar key={index} data={item} />
+                ))}
+              </VictoryStack>
+              <VictoryStack colorScale={"green"}>
+                {_.map(data, (item, index) => (
+                  <VictoryBar key={index} data={item} />
+                ))}
+              </VictoryStack>
+              <VictoryStack colorScale={"blue"}>
+                {_.map(data, (item, index) => (
+                  <VictoryBar key={index} data={item} />
+                ))}
+              </VictoryStack>
+            </VictoryGroup>
+          </VictoryChart>
+        </svg>
+      );
+    },
+    [data, materialTheme]
+  );
 
-  render() {
-    return (
-      <Paper className={this.props.className}>
-        <AutoSizer disableHeight>
-          {({ width }) => !!width && this.renderChart(width, 0.8 * width)}
-        </AutoSizer>
-      </Paper>
-    );
-  }
+  return (
+    <Paper className={props.className}>
+      <AutoSizer disableHeight>{renderChart}</AutoSizer>
+    </Paper>
+  );
 }
+
+Chart1.propTypes = {
+  className: PropTypes.string
+};
 
 export default Chart1;

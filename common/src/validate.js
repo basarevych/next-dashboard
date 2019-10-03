@@ -6,8 +6,10 @@ const validator = require("validator");
 const { allCountries, iso2Lookup } = require("country-telephone-data");
 
 /**
- * Validation function for Redux Form
+ * Validation function for a Form
  * takes input like "rule1:param1:param2|rule2:param1:param2|..."
+ *
+ * custom error message: "!CUSTOM_ERROR_MESSAGE:rule1:param1:param2|..."
  *
  * re:regexp:flags            value should match the regular expression "regexp" with "flags"
  * required                   value is required

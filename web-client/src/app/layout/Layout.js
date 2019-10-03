@@ -1,22 +1,31 @@
-import React from "react";
+import React, { useMemo, useState, useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
+import { useRouter } from "next/router";
 import Head from "next/head";
-import { FormattedMessage } from "react-intl";
+import { PageTransition } from "next-page-transitions";
+import { useSelector } from "react-redux";
+import { useIntl, FormattedMessage } from "react-intl";
+import { makeStyles } from "@material-ui/styles";
+import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
 import Hidden from "@material-ui/core/Hidden";
 import Snackbar from "@material-ui/core/Snackbar";
 import Drawer from "@material-ui/core/Drawer";
 import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
-import Sidebar from "./SidebarContainer";
-import Header from "./HeaderContainer";
-import ErrorMessage from "../error/ErrorMessageContainer";
-import AppAuthModal from "../modals/AppAuthModalContainer";
+import Sidebar from "./Sidebar";
+import Header from "./Header";
+import ErrorMessage from "../errors/ErrorMessage";
+import AppAuthModal from "../modals/AppAuthModal";
 import constants from "../../../common/constants";
+import { appSelectors } from "../state";
+import logo from "../../../static/img/react-logo.svg";
 
 import "../../../styles";
 import styledScroll from "../../../styles/styledScroll";
 
-export const styles = theme => ({
+const TIMEOUT = 500;
+
+const useStyles = makeStyles(theme => ({
   "@global": {
     html: {
       fontSize: `${theme.typography.fontSize}px`
@@ -31,7 +40,87 @@ export const styles = theme => ({
     ),
     pre: {
       fontFamily: '"Roboto Mono", monospace'
+    },
+    ".page-transition-enter": {
+      flex: 1,
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "stretch",
+      justifyContent: "stretch",
+      opacity: 0
+    },
+    ".page-transition-enter-active": {
+      flex: 1,
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "stretch",
+      justifyContent: "stretch",
+      opacity: 1,
+      transition: `opacity ${TIMEOUT}ms`
+    },
+    ".page-transition-enter-done": {
+      flex: 1,
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "stretch",
+      justifyContent: "stretch"
+    },
+    ".page-transition-exit": {
+      flex: 1,
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "stretch",
+      justifyContent: "stretch",
+      opacity: 1
+    },
+    ".page-transition-exit-active": {
+      flex: 1,
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "stretch",
+      justifyContent: "stretch",
+      opacity: 0,
+      transition: `opacity ${TIMEOUT}ms`
+    },
+    ".page-transition-exit-done": {
+      flex: 1,
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "stretch",
+      justifyContent: "stretch"
+    },
+    "@keyframes page-loader-rotation": {
+      from: {
+        transform: "rotate(0deg)"
+      },
+      to: {
+        transform: "rotate(359deg)"
+      }
     }
+  },
+  loaderWrapper: {
+    position: "fixed",
+    top: "50vh",
+    left: "50vw",
+    width: "auto",
+    height: "auto",
+    transform: "translate3d(-50%, -50%, 0)",
+    display: "flex",
+    alignItems: "center",
+    padding: "10px 50px 10px 30px",
+    background: theme.palette.primary.main,
+    color: theme.palette.primary.contrastText
+  },
+  loaderIcon: {
+    animation: "page-loader-rotation 5s infinite linear",
+    "& svg": {
+      height: 40,
+      fill: "currentColor",
+      verticalAlign: "middle"
+    }
+  },
+  loaderText: {
+    fontSize: 32
   },
   app: {
     position: "relative"
@@ -70,6 +159,7 @@ export const styles = theme => ({
     background: theme.main.background,
     color: theme.main.color,
     zIndex: 1200,
+    height: "100%",
     minHeight: "100vh",
     display: "flex",
     flexDirection: "column",
@@ -83,188 +173,149 @@ export const styles = theme => ({
       marginLeft: 0
     }
   }
-});
+}));
 
-class Layout extends React.Component {
-  static propTypes = {
-    intl: PropTypes.object.isRequired,
-    classes: PropTypes.object.isRequired,
-    isStopped: PropTypes.bool.isRequired,
-    isDisconnected: PropTypes.bool.isRequired,
-    isAuthModalOpen: PropTypes.bool.isRequired,
-    statusCode: PropTypes.number.isRequired,
-    router: PropTypes.object.isRequired,
-    relay: PropTypes.object.isRequired,
-    viewer: PropTypes.object,
-    render: PropTypes.func,
-    onSetUser: PropTypes.func.isRequired
-  };
+function Layout(props) {
+  const classes = useStyles(props);
+  const intl = useIntl();
+  const router = useRouter();
 
-  static getDerivedStateFromProps(nextProps) {
-    const user = _.get(nextProps, "viewer.me");
-    if (user) nextProps.onSetUser(user);
-    return null;
-  }
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [isUpdateNeeded, setIsUpdateNeeded] = useState(!!global.__updateReady);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  constructor(props) {
-    super(props);
+  const statusCode = useSelector(state => appSelectors.getStatusCode(state));
+  const isStopped = useSelector(state => appSelectors.isStopped(state));
+  const isDisconnected = useSelector(
+    state =>
+      appSelectors.isStarted(state) &&
+      !appSelectors.isStopped(state) &&
+      !appSelectors.isConnected(state)
+  );
+  const isAuthModalOpen = useSelector(state =>
+    appSelectors.isAuthModalOpen(state)
+  );
 
-    this.state = {
-      isLoaded: false,
-      isUpdateNeeded: !!global.__updateReady,
-      isSidebarOpen: false
-    };
+  const handleSidebarToggle = useCallback(() => {
+    setIsSidebarOpen(!isSidebarOpen);
+  }, [isSidebarOpen, setIsSidebarOpen]);
 
-    this.isDestroyed = false;
+  const handleSidebarOpen = useCallback(() => {
+    setIsSidebarOpen(true);
+  }, [setIsSidebarOpen]);
 
-    this.handleSidebarToggle = this.handleSidebarToggle.bind(this);
-    this.handleSidebarOpen = this.handleSidebarOpen.bind(this);
-    this.handleSidebarClose = this.handleSidebarClose.bind(this);
-    this.handleAuthMessage = this.handleAuthMessage.bind(this);
-    this.handleUpdateReady = this.handleUpdateReady.bind(this);
-    this.handleRouteChange = this.handleRouteChange.bind(this);
-    this.doUpdate = this.doUpdate.bind(this);
-  }
+  const handleSidebarClose = useCallback(() => {
+    setIsSidebarOpen(false);
+  }, [setIsSidebarOpen]);
 
-  componentDidMount() {
-    window.addEventListener(
-      constants.events.IDENTITY_CHANGED,
-      this.handleAuthMessage
-    );
-    window.addEventListener(
-      constants.events.PROFILE_CHANGED,
-      this.handleAuthMessage
-    );
-    window.addEventListener(
-      constants.events.UPDATE_READY,
-      this.handleUpdateReady
-    );
-
-    this.props.router.events.on("routeChangeComplete", this.handleRouteChange);
-
-    this.setState({ isLoaded: true, isUpdateNeeded: !!global.__updateReady });
-  }
-
-  componentWillUnmount() {
-    this.isDestroyed = true;
-
-    window.removeEventListener(
-      constants.events.IDENTITY_CHANGED,
-      this.handleAuthMessage
-    );
-    window.removeEventListener(
-      constants.events.PROFILE_CHANGED,
-      this.handleAuthMessage
-    );
-    window.removeEventListener(
-      constants.events.UPDATE_READY,
-      this.handleUpdateReady
-    );
-
-    this.props.router.events.off("routeChangeComplete", this.handleRouteChange);
-  }
-
-  getTitle() {
-    const page = constants.pages[this.props.router.asPath] || {};
-    return page.title;
-  }
-
-  handleAuthMessage() {
-    if (!this.isDestroyed)
-      this.props.relay.refetch(null, null, null, { force: true });
-  }
-
-  handleSidebarToggle() {
-    this.setState({ isSidebarOpen: !this.state.isSidebarOpen });
-  }
-
-  handleSidebarOpen() {
-    if (!this.state.isSidebarOpen) this.setState({ isSidebarOpen: true });
-  }
-
-  handleSidebarClose() {
-    if (this.state.isSidebarOpen) this.setState({ isSidebarOpen: false });
-  }
-
-  handleUpdateReady() {
-    this.setState({ isUpdateNeeded: true });
-  }
-
-  doUpdate() {
-    this.setState({ isUpdateNeeded: false });
+  const doUpdate = useCallback(() => {
+    setIsUpdateNeeded(false);
     window.location.reload(true);
-  }
+  }, [setIsUpdateNeeded]);
 
-  handleRouteChange() {
-    if (!this.isDestroyed)
-      this.props.relay.refetch(null, null, null, { force: true });
-  }
+  useEffect(() => {
+    setIsLoaded(true);
+    setIsUpdateNeeded(!!global.__updateReady);
 
-  render() {
-    if (this.props.isStopped) return null;
+    const handleUpdateReady = () => {
+      setIsUpdateNeeded(true);
+    };
+    window.addEventListener(constants.events.UPDATE_READY, handleUpdateReady);
 
-    const title = this.getTitle();
+    return () => {
+      window.removeEventListener(
+        constants.events.UPDATE_READY,
+        handleUpdateReady
+      );
+    };
+  }, []);
 
-    return (
-      <div className="app">
-        {!!title && (
-          <Head>
-            <title>{this.props.intl.formatMessage({ id: title })}</title>
-          </Head>
-        )}
+  const loader = useMemo(
+    () => (
+      <Paper className={classes.loaderWrapper} elevation={5}>
+        <div className={classes.loaderIcon}>
+          <span dangerouslySetInnerHTML={{ __html: logo }} />
+        </div>
+        <div className={classes.loaderText}>
+          <FormattedMessage id="LAYOUT_LOADING_MESSAGE" />
+        </div>
+      </Paper>
+    ),
+    [classes, logo]
+  );
 
-        {this.state.isLoaded && this.state.isUpdateNeeded && (
-          <div className={this.props.classes.update}>
-            <Button variant="text" color="inherit" onClick={this.doUpdate}>
-              <FormattedMessage id="LAYOUT_UPDATE_READY_MESSAGE" />
-            </Button>
-          </div>
-        )}
+  if (isStopped) return null;
 
-        {this.state.isLoaded && this.props.isDisconnected && (
-          <Snackbar
-            open
-            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-            message={<FormattedMessage id="LAYOUT_NOT_CONNECTED_MESSAGE" />}
-          />
-        )}
+  const page = constants.pages[router.asPath] || {};
+  const title = page.title;
 
-        <Hidden implementation="css" smUp>
-          <SwipeableDrawer
-            open={this.state.isSidebarOpen}
-            classes={{ paper: this.props.classes.sidebar }}
-            onOpen={this.handleSidebarOpen}
-            onClose={this.handleSidebarClose}
+  return (
+    <div className="app">
+      {!!title && (
+        <Head>
+          <title>{intl.formatMessage({ id: title })}</title>
+        </Head>
+      )}
+
+      {isLoaded && isUpdateNeeded && (
+        <div className={classes.update}>
+          <Button variant="text" color="inherit" onClick={doUpdate}>
+            <FormattedMessage id="LAYOUT_UPDATE_READY_MESSAGE" />
+          </Button>
+        </div>
+      )}
+
+      {isLoaded && isDisconnected && (
+        <Snackbar
+          open
+          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+          message={<FormattedMessage id="LAYOUT_NOT_CONNECTED_MESSAGE" />}
+        />
+      )}
+
+      <Hidden implementation="css" smUp>
+        <SwipeableDrawer
+          open={isSidebarOpen}
+          classes={{ paper: classes.sidebar }}
+          onOpen={handleSidebarOpen}
+          onClose={handleSidebarClose}
+        >
+          <Sidebar onMenuClick={handleSidebarClose} />
+        </SwipeableDrawer>
+      </Hidden>
+
+      <Hidden implementation="css" xsDown>
+        <Drawer variant="permanent" open classes={{ paper: classes.sidebar }}>
+          <Sidebar onMenuClick={handleSidebarClose} />
+        </Drawer>
+      </Hidden>
+
+      <main className={classes.main}>
+        <Header onSidebarToggle={handleSidebarToggle} />
+        {statusCode === 200 && (
+          <PageTransition
+            timeout={TIMEOUT}
+            classNames="page-transition"
+            loadingComponent={loader}
+            loadingDelay={300}
+            loadingTimeout={0}
           >
-            <Sidebar onMenuClick={this.handleSidebarClose} />
-          </SwipeableDrawer>
-        </Hidden>
+            {props.children}
+          </PageTransition>
+        )}
+        {statusCode !== 200 && <ErrorMessage statusCode={statusCode} />}
+      </main>
 
-        <Hidden implementation="css" xsDown>
-          <Drawer
-            variant="permanent"
-            open
-            classes={{ paper: this.props.classes.sidebar }}
-          >
-            <Sidebar onMenuClick={this.handleSidebarClose} />
-          </Drawer>
-        </Hidden>
-
-        <main className={this.props.classes.main}>
-          <Header onSidebarToggle={this.handleSidebarToggle} />
-          {this.props.statusCode === 200 &&
-            !!this.props.viewer &&
-            !!this.props.render &&
-            this.props.render()}
-          {this.props.statusCode !== 200 && (
-            <ErrorMessage statusCode={this.props.statusCode} />
-          )}
-        </main>
-
-        {this.props.isAuthModalOpen && <AppAuthModal />}
-      </div>
-    );
-  }
+      {isAuthModalOpen && <AppAuthModal />}
+    </div>
+  );
 }
+
+Layout.propTypes = {
+  children: PropTypes.oneOfType([
+    PropTypes.node,
+    PropTypes.arrayOf(PropTypes.node)
+  ]).isRequired
+};
 
 export default Layout;

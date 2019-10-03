@@ -35,6 +35,7 @@ class AuthRepository {
   }
 
   async getStatus(context) {
+    if (!this.isValid(context)) throw this.di.get("error.unauthorized");
     return this.auth.getStatus(context);
   }
 

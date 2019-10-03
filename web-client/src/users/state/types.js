@@ -1,3 +1,8 @@
+export const SET_TABLE_PAGE_SIZE = "app/users/SET_TABLE_PAGE_SIZE";
+export const SET_TABLE_PAGE_NUMBER = "app/users/SET_TABLE_PAGE_NUMBER";
+export const SET_TABLE_PARAMS = "app/users/SET_TABLE_PARAMS";
+export const RESET_TABLE_PARAMS = "app/users/RESET_TABLE_PARAMS";
+export const TOUCH_TABLE_PARAMS = "app/users/TOUCH_TABLE_PARAMS";
 export const SET_SELECTED = "app/users/SET_SELECTED";
 export const SELECT_ALL = "app/users/SELECT_ALL";
 export const DESELECT_ALL = "app/users/DESELECT_ALL";

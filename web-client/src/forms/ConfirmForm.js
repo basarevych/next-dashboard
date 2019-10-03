@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useMemo } from "react";
 import PropTypes from "prop-types";
 import { FormattedMessage } from "react-intl";
+import { makeStyles } from "@material-ui/styles";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import { allCountries, iso2Lookup } from "../../common/src/countries";
-import shippingFields from "../../common/forms/shipping";
+import shippingSchema from "../../common/forms/shipping";
+import billingSchema from "../../common/forms/billing";
 
-export const styles = theme => ({
+const useStyles = makeStyles(theme => ({
   root: {
     display: "flex",
     justifyContent: "stretch",
@@ -40,27 +42,32 @@ export const styles = theme => ({
   data: {
     fontSize: "90%"
   }
-});
+}));
 
-class ConfirmForm extends React.PureComponent {
-  static propTypes = {
-    classes: PropTypes.object.isRequired,
-    shippingValues: PropTypes.object.isRequired,
-    billingValues: PropTypes.object.isRequired
-  };
+function ConfirmForm(props) {
+  const classes = useStyles(props);
 
-  static formName = "confirmForm";
+  const shippingValues = useMemo(
+    () => shippingSchema.cast(props.shippingValues),
+    [props.shippingValues]
+  );
 
-  renderField(form, field) {
+  const billingValues = useMemo(() => billingSchema.cast(props.billingValues), [
+    props.billingValues
+  ]);
+
+  const renderField = (form, field) => {
     let value;
     if (
-      form === "billing" &&
-      !_.isUndefined(shippingFields[field]) &&
-      this.props.billingValues.isSameAddress
+      form === "shipping" ||
+      (billingValues.isSameAddress &&
+        !_.includes(["cardNumber", "cardDate", "cardSecret"], field))
     ) {
-      value = this.props.shippingValues[field];
+      if (props.shippingErrors[field]) return null;
+      value = shippingValues[field];
     } else {
-      value = this.props[`${form}Values`][field];
+      if (props.billingErrors[field]) return null;
+      value = billingValues[field];
     }
 
     if (!value) return null;
@@ -78,6 +85,9 @@ class ConfirmForm extends React.PureComponent {
         break;
       case "address":
         label = "CONFIRM_ADDRESS_LABEL";
+        value = _.map(_.split(value, /\n/), (line, index) => (
+          <div key={index}>{line}</div>
+        ));
         break;
       case "city":
         label = "CONFIRM_CITY_LABEL";
@@ -101,7 +111,7 @@ class ConfirmForm extends React.PureComponent {
         break;
       case "cardNumber":
         label = "CONFIRM_CARD_NUMBER_LABEL";
-        value = _.replace(value, /\d{4}(?= \d{4})/g, "••••");
+        value = _.repeat("**** ", 3) + value.slice(-4);
         break;
       case "cardDate":
         label = "CONFIRM_CARD_DATE_LABEL";
@@ -110,58 +120,65 @@ class ConfirmForm extends React.PureComponent {
 
     return (
       <React.Fragment>
-        <dt className={this.props.classes.term}>
+        <dt className={classes.term}>
           <FormattedMessage id={label} />
         </dt>
-        <dd className={this.props.classes.data}>{value}</dd>
+        <dd className={classes.data}>{value}</dd>
       </React.Fragment>
     );
-  }
+  };
 
-  render() {
-    return (
-      <div className={this.props.classes.root}>
-        <div className={this.props.classes.paneLeft}>
-          <Typography variant="h6">
-            <FormattedMessage id="CONFIRM_SHIPPING_LABEL" />
-          </Typography>
-          <Divider />
-          <dl>
-            {this.renderField("shipping", "firstName")}
-            {this.renderField("shipping", "middleName")}
-            {this.renderField("shipping", "lastName")}
-            {this.renderField("shipping", "address")}
-            {this.renderField("shipping", "city")}
-            {this.renderField("shipping", "state")}
-            {this.renderField("shipping", "code")}
-            {this.renderField("shipping", "country")}
-            {this.renderField("shipping", "phone")}
-            {this.renderField("shipping", "email")}
-          </dl>
-        </div>
-        <div className={this.props.classes.paneRight}>
-          <Typography variant="h6">
-            <FormattedMessage id="CONFIRM_BILLING_LABEL" />
-          </Typography>
-          <Divider />
-          <dl>
-            {this.renderField("billing", "cardNumber")}
-            {this.renderField("billing", "cardDate")}
-            {this.renderField("billing", "firstName")}
-            {this.renderField("billing", "middleName")}
-            {this.renderField("billing", "lastName")}
-            {this.renderField("billing", "address")}
-            {this.renderField("billing", "city")}
-            {this.renderField("billing", "state")}
-            {this.renderField("billing", "code")}
-            {this.renderField("billing", "country")}
-            {this.renderField("billing", "phone")}
-            {this.renderField("billing", "email")}
-          </dl>
-        </div>
+  return (
+    <div className={classes.root}>
+      <div className={classes.paneLeft}>
+        <Typography variant="h6">
+          <FormattedMessage id="CONFIRM_SHIPPING_LABEL" />
+        </Typography>
+        <Divider />
+        <dl>
+          {renderField("shipping", "firstName")}
+          {renderField("shipping", "middleName")}
+          {renderField("shipping", "lastName")}
+          {renderField("shipping", "address")}
+          {renderField("shipping", "city")}
+          {renderField("shipping", "state")}
+          {renderField("shipping", "code")}
+          {renderField("shipping", "country")}
+          {renderField("shipping", "phone")}
+          {renderField("shipping", "email")}
+        </dl>
       </div>
-    );
-  }
+      <div className={classes.paneRight}>
+        <Typography variant="h6">
+          <FormattedMessage id="CONFIRM_BILLING_LABEL" />
+        </Typography>
+        <Divider />
+        <dl>
+          {renderField("billing", "cardNumber")}
+          {renderField("billing", "cardDate")}
+          {renderField("billing", "firstName")}
+          {renderField("billing", "middleName")}
+          {renderField("billing", "lastName")}
+          {renderField("billing", "address")}
+          {renderField("billing", "city")}
+          {renderField("billing", "state")}
+          {renderField("billing", "code")}
+          {renderField("billing", "country")}
+          {renderField("billing", "phone")}
+          {renderField("billing", "email")}
+        </dl>
+      </div>
+    </div>
+  );
 }
+
+ConfirmForm.propTypes = {
+  shippingValues: PropTypes.object.isRequired,
+  shippingErrors: PropTypes.object.isRequired,
+  billingValues: PropTypes.object.isRequired,
+  billingErrors: PropTypes.object.isRequired
+};
+
+ConfirmForm.formName = "confirmForm";
 
 export default ConfirmForm;

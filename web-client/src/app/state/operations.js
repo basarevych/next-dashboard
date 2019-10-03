@@ -17,8 +17,6 @@ export const setStatusCode = actions.setStatusCode;
 export const setConnected = actions.setConnected;
 export const setLocale = actions.setLocale;
 export const setTheme = actions.setTheme;
-export const addActiveSubscription = actions.addActiveSubscription;
-export const removeActiveSubscription = actions.removeActiveSubscription;
 export const showAuthModal = actions.showAuthModal;
 export const hideAuthModal = actions.hideAuthModal;
 
@@ -51,11 +49,11 @@ export const create = ({
 // called in App.componentDidMount() client-side
 export const start = () => {
   return async (dispatch, getState, di) => {
-    di.singletons(); // instantiate
+    di.singletons(); // instantiates singletons
 
-    // Refresh tokens client side
+    // Start with refreshing tokens client side
     // This will fire IDENTITY_CHANGED event which will
-    // activate app and subscriptions websockets
+    // activate app's and subscriptions' websockets
     di.get("fetcher")
       .refreshTokens()
       .catch(console.error);
@@ -67,30 +65,6 @@ export const start = () => {
 export const stop = () => {
   return async dispatch => {
     return dispatch(actions.stop());
-  };
-};
-
-export const setUser = user => {
-  return async (dispatch, getState) => {
-    const oldUser = selectors.getUserJS(getState());
-    if (_.isMatch(user, oldUser)) return;
-    await dispatch(actions.setUser(user));
-
-    if (process.browser && oldUser.userId !== user.userId) {
-      const statusCode = selectors.getStatusCode(getState());
-      const page = constants.pages[Router.asPath];
-      const isAllowed = page && page.isAllowed;
-      if (statusCode === 200 && _.isFunction(isAllowed) && !isAllowed(user)) {
-        await dispatch(
-          setStatusCode({ code: user.isAuthenticated ? 403 : 401 })
-        );
-      } else if (
-        _.includes([403, 401], statusCode) &&
-        (!_.isFunction(isAllowed) || isAllowed(user))
-      ) {
-        await dispatch(setStatusCode({ code: 200 }));
-      }
-    }
   };
 };
 
@@ -192,8 +166,8 @@ export const linkProvider = ({ provider }) => async (
   getState,
   di
 ) => {
-  const refreshToken = await di.get("fetcher").getRefreshToken();
   let oneTimeToken;
+  const refreshToken = await di.get("fetcher").getRefreshToken();
   if (refreshToken) {
     const data = await GetTokenMutation(di, {
       type: "oneTime",
@@ -237,7 +211,7 @@ export const finishLinkingProvider = ({ token, redirect }) => async (
         _.get(data, "data.getToken.token", null),
         _.get(data, "data.getToken.refreshToken", null)
       );
-    Router.push(redirect || "/");
+    window.location.href = redirect || "/";
     return true;
   }
   return false;
@@ -265,6 +239,24 @@ export const deleteProfile = () => async (dispatch, getState, di) => {
     return true;
   }
   return false;
+};
+
+export const addActiveSubscription = ({ name }) => {
+  return dispatch => {
+    window.dispatchEvent(
+      new CustomEvent(constants.events.SUBSCRIBED, { detail: { name } })
+    );
+    dispatch(actions.addActiveSubscription({ name }));
+  };
+};
+
+export const removeActiveSubscription = ({ name }) => {
+  return dispatch => {
+    window.dispatchEvent(
+      new CustomEvent(constants.events.UNSUBSCRIBED, { detail: { name } })
+    );
+    dispatch(actions.removeActiveSubscription({ name }));
+  };
 };
 
 export const sendToast = ({ position, title, content }) => {

@@ -1,5 +1,6 @@
 "use strict";
 
+require("full-icu");
 require("regenerator-runtime/runtime");
 if (!global._) global._ = require("lodash");
 

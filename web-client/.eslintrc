@@ -12,7 +12,7 @@
     "jest": true
   },
 
-  "plugins": ["lodash", "react"],
+  "plugins": ["lodash", "react", "react-hooks"],
 
   "globals": {
     "_": true
@@ -39,6 +39,7 @@
       "error",
       { "varsIgnorePattern": "[iI]gnored", "argsIgnorePattern": "^next$" }
     ],
-    "lodash/prefer-constant": "off"
+    "lodash/prefer-constant": "off",
+    "react-hooks/rules-of-hooks": "error"
   }
 }

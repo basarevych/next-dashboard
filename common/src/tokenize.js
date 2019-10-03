@@ -1,5 +1,11 @@
 "use strict";
 
+/**
+ * Split a string into an array of tokens
+ * @param {string} str - The source string
+ * @param {string} esc - Escape character
+ * @param {string} sep - Token separator
+ */
 module.exports = function tokenize(str, esc, sep) {
   const result = [];
   let tmp = "";

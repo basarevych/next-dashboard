@@ -1,21 +1,31 @@
-import React from "react";
+import React, {
+  useState,
+  useEffect,
+  useLayoutEffect,
+  useCallback,
+  useMemo
+} from "react";
 import PropTypes from "prop-types";
+import { useSelector } from "react-redux";
 import { FormattedMessage } from "react-intl";
-import { AutoSizer } from "react-virtualized";
 import StaticMap, { NavigationControl } from "react-map-gl";
 import { PhongMaterial } from "@luma.gl/core";
 import DeckGL, {
   AmbientLight,
   PointLight,
   LightingEffect,
-  LinearInterpolator,
   HexagonLayer,
   GeoJsonLayer
 } from "deck.gl";
+import { makeStyles } from "@material-ui/styles";
 import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
 import Link from "@material-ui/core/Link";
 import states from "../../../data/gz_2010_us_040_00_500k.json";
+import { appSelectors } from "../../app/state";
+import useAnimation from "../../app/lib/useAnimation.js";
+
+const useIsomorphicLayoutEffect = process.browser ? useLayoutEffect : useEffect;
 
 const ambientLight = new AmbientLight({
   color: [255, 255, 255],
@@ -34,11 +44,13 @@ const pointLight2 = new PointLight({
   position: [-98.5556199, 39.8097343, 20000]
 });
 
-const lightingEffect = new LightingEffect({
-  ambientLight,
-  pointLight1,
-  pointLight2
-});
+const lightingEffects = [
+  new LightingEffect({
+    ambientLight,
+    pointLight1,
+    pointLight2
+  })
+];
 
 const material = new PhongMaterial({
   ambient: 0.64,
@@ -65,11 +77,7 @@ const colorRangeLight = [
   [225, 245, 254]
 ];
 
-const elevationScale = { min: 1, max: 50 };
-
-const bearingInterpolator = new LinearInterpolator(["bearing"]);
-
-export const styles = theme => ({
+const useStyles = makeStyles(theme => ({
   root: {
     position: "relative",
     "& canvas": {
@@ -90,6 +98,11 @@ export const styles = theme => ({
     textShadow:
       theme.name === "dark" ? "2px 2px 3px #000000" : "2px 2px 3px #ffffff"
   },
+  map: {
+    width: "100%",
+    height: "100%",
+    minHeight: 500
+  },
   controls: {
     position: "absolute",
     zIndex: 100,
@@ -109,216 +122,191 @@ export const styles = theme => ({
     background: "#333333",
     padding: "5px"
   }
-});
+}));
 
-class SalesMap extends React.Component {
-  static propTypes = {
-    classes: PropTypes.object.isRequired,
-    data: PropTypes.array.isRequired,
-    theme: PropTypes.string.isRequired,
-    mapboxToken: PropTypes.string.isRequired,
-    onSelect: PropTypes.func.isRequired
-  };
+const initialViewState = {
+  latitude: 39.8097343,
+  longitude: -98.5556199,
+  zoom: 3,
+  bearing: 0,
+  pitch: 0
+};
 
-  constructor(props) {
-    super(props);
+function SalesMap(props) {
+  const classes = useStyles(props);
 
-    this.state = {
-      viewState: {
-        latitude: 39.8097343,
-        longitude: -98.5556199,
-        zoom: 3,
-        bearing: 0,
-        pitch: 65
-      },
-      tooltip: null,
-      elevationScale: elevationScale.min,
-      data: null
-    };
+  const [data, setData] = useState([]);
+  const [viewState, setViewState] = useState(initialViewState);
+  const [finalViewState, setFinalViewState] = useState(initialViewState);
+  const [tooltip, setTooltip] = useState(null);
+  const [elevationScale, setElevationScale] = useState(1);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [isPitched, setIsPitched] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
 
-    this.isHovered = false;
-    this.isDestroyed = false;
-    this.intervalTimer = null;
+  const [pitchDuration, setPitchDuration] = useState(0);
+  const pitchAnimation = useAnimation(pitchDuration);
 
-    this.animateHeight = this.animateHeight.bind(this);
-    this.cancelHeightAnimation = this.cancelHeightAnimation.bind(this);
+  const [bearingDuration, setBearingDuration] = useState(0);
+  const bearingAnimation = useAnimation(bearingDuration);
 
-    this.rotateCamera = this.rotateCamera.bind(this);
-    this.cancelCameraRotation = this.cancelCameraRotation.bind(this);
+  const theme = useSelector(state => appSelectors.getTheme(state));
+  const mapboxToken = useSelector(state => appSelectors.getMapboxToken(state));
 
-    this.handleMouseOver = this.handleMouseOver.bind(this);
-    this.handleMouseOut = this.handleMouseOut.bind(this);
-    this.handleHeightTick = this.handleHeightTick.bind(this);
-    this.handleHover = this.handleHover.bind(this);
-    this.handleClick = this.handleClick.bind(this);
-    this.updateViewState = this.updateViewState.bind(this);
-    this.updateViewportNoPitch = this.updateViewportNoPitch.bind(this);
-  }
-
-  componentDidMount() {
-    const data = _.reduce(
-      this.props.data,
-      (acc, cur) => {
-        let population = Math.floor(cur.population / 1000);
-        let point = { lat: cur.lat, lng: cur.lng };
-        for (let i = 0; i < population; i++) acc.push(point);
-        return acc;
-      },
-      []
-    );
-
-    this.setState({ data }, () => {
-      setTimeout(() => {
-        this.animateHeight();
-        this.rotateCamera();
-      }, 1500);
-    });
-  }
-
-  componentWillUnmount() {
-    this.isDestroyed = true;
-
-    this.cancelHeightAnimation();
-    this.cancelCameraRotation();
-  }
-
-  handleMouseOver() {
-    this.isHovered = true;
-    this.cancelCameraRotation();
-  }
-
-  handleMouseOut() {
-    this.isHovered = false;
-    this.rotateCamera();
-  }
-
-  handleHover({ object, x, y }) {
-    const tooltip = object ? { text: object.properties.NAME, x, y } : null;
-    this.setState({ tooltip });
-  }
-
-  handleClick({ object }) {
-    const state = object && object.properties.NAME;
-    if (state) this.props.onSelect(state);
-  }
-
-  animateHeight() {
-    this.cancelHeightAnimation();
-    this.intervalTimer = setInterval(this.handleHeightTick, 20);
-  }
-
-  cancelHeightAnimation() {
-    if (this.intervalTimer) {
-      clearInterval(this.intervalTimer);
-      this.intervalTimer = null;
-    }
-  }
-
-  handleHeightTick() {
-    if (this.isDestroyed) return;
-    if (this.state.elevationScale < elevationScale.max) {
-      this.setState({ elevationScale: this.state.elevationScale + 2 });
-    } else {
-      this.setState({ elevationScale: elevationScale.max });
-      this.cancelHeightAnimation();
-    }
-  }
-
-  rotateCamera() {
-    if (this.isDestroyed || this.isHovered) return;
-    const bearing = this.state.viewState.bearing - 120;
-    if (isFinite(bearing)) {
-      this.updateViewState({
-        viewState: {
-          bearing,
-          transitionDuration: 30000,
-          bearingInterpolator,
-          onTransitionEnd: this.rotateCamera
-        }
+  const updateViewState = useCallback(
+    ({ viewState: newViewState }) => {
+      const { latitude, longitude, zoom, bearing, pitch } = newViewState;
+      setViewState({
+        latitude: _.isUndefined(latitude) ? viewState.latitude : latitude,
+        longitude: _.isUndefined(longitude) ? viewState.longitude : longitude,
+        zoom: _.isUndefined(zoom) ? viewState.zoom : zoom,
+        bearing: _.isUndefined(bearing) ? viewState.bearing : bearing,
+        pitch: _.isUndefined(pitch) ? viewState.pitch : pitch
       });
-    } else {
-      this.updateViewState(
-        {
-          viewState: {
-            bearing: 0
-          }
-        },
-        this.rotateCamera
-      );
-    }
-  }
-
-  cancelCameraRotation() {
-    if (this.isDestroyed || !this.isHovered) return;
-    const bearing = this.state.viewState.bearing - 0.1;
-    this.updateViewState({
-      viewState: {
-        bearing
-      }
-    });
-  }
-
-  updateViewState({ viewState }, cb) {
-    const { latitude, longitude, zoom, bearing, pitch } = this.state.viewState;
-    this.setState({
-      viewState: {
-        latitude,
-        longitude,
-        zoom,
-        bearing,
-        pitch,
-        ...viewState
-      },
-      cb
-    });
-  }
+    },
+    [viewState]
+  );
 
   // "Look North" button also tries to reset the pitch, so we prevent this here
-  updateViewportNoPitch(viewport) {
-    viewport.pitch = this.state.viewState.pitch;
-    this.updateViewState({ viewState: viewport });
-  }
+  const updateViewportNoPitch = useCallback(
+    viewport => {
+      viewport.pitch = viewState.pitch;
+      updateViewState({ viewState: viewport });
+    },
+    [viewState, updateViewState]
+  );
 
-  renderTitle() {
-    return (
-      <div className={this.props.classes.title}>
-        <Typography variant="h4" color="inherit">
-          <FormattedMessage id="DASHBOARD_US_SALES_LABEL" />
-        </Typography>
-      </div>
-    );
-  }
+  const handleMouseOver = useCallback(() => {
+    setIsHovered(true);
+  }, [setIsHovered]);
 
-  renderTooltip() {
-    let tooltip = this.state.tooltip;
-    if (!tooltip) return null;
-    return (
-      <div
-        className={this.props.classes.tooltip}
-        style={{ left: tooltip.x + 10, top: tooltip.y + 10 }}
-      >
-        <div className={this.props.classes.tooltipText}>{tooltip.text}</div>
-      </div>
-    );
-  }
+  const handleMouseOut = useCallback(() => {
+    setIsHovered(false);
+  }, [setIsHovered]);
 
-  renderLayers() {
-    return [
-      new HexagonLayer({
-        id: "heatmap-layer",
-        data: this.state.data,
-        pickable: false,
-        extruded: true,
-        opacity: 1,
-        coverage: 0.75,
-        radius: 30000,
-        colorRange:
-          this.props.theme === "dark" ? colorRangeDark : colorRangeLight,
-        elevationRange: [0, 20000],
-        material,
-        elevationScale: this.state.elevationScale,
-        getPosition: d => [d.lng, d.lat]
-      }),
+  const handleHover = useCallback(
+    ({ object, x, y }) => {
+      const tooltip = object ? { text: object.properties.NAME, x, y } : null;
+      setTooltip(tooltip);
+    },
+    [setTooltip]
+  );
+
+  const handleClick = useCallback(
+    ({ object }) => {
+      const state = object && object.properties.NAME;
+      if (state) props.onSelect(state);
+    },
+    [props.onSelect]
+  );
+
+  useEffect(
+    // parse the data
+    () => {
+      setData(
+        _.reduce(
+          props.data || [],
+          (acc, cur) => {
+            let population = Math.floor(cur.population / 1000);
+            let point = { lat: cur.lat, lng: cur.lng };
+            for (let i = 0; i < population; i++) acc.push(point);
+            return acc;
+          },
+          []
+        )
+      );
+    },
+    [props.data]
+  );
+
+  useEffect(
+    // activate animations after a delay
+    () => {
+      let isDestroyed = false;
+
+      setTimeout(() => {
+        if (isDestroyed) return;
+        setIsLoaded(true);
+      }, 2000);
+
+      return () => {
+        isDestroyed = true;
+      };
+    },
+    []
+  );
+
+  useEffect(
+    // animate raising the hexagon bars
+    () => {
+      if (!isLoaded) return;
+
+      let elevationTimer = null;
+      if (elevationScale < 50) {
+        let newElevationScale = elevationScale + 2;
+        if (newElevationScale > 50) newElevationScale = 50;
+        elevationTimer = setTimeout(() => {
+          elevationTimer = null;
+          setElevationScale(newElevationScale);
+        });
+      }
+
+      return () => {
+        if (elevationTimer) {
+          clearTimeout(elevationTimer);
+          elevationTimer = null;
+        }
+      };
+    },
+    [isLoaded, elevationScale, setElevationScale]
+  );
+
+  useEffect(
+    // pitch the map
+    () => {
+      if (!isLoaded || isPitched) return;
+
+      if (pitchDuration === 0) {
+        setPitchDuration(2000);
+      } else if (pitchAnimation === 1) {
+        setViewState(state => ({ ...state, pitch: 60 }));
+        setIsPitched(true);
+        setPitchDuration(0);
+      }
+    },
+    [isLoaded, isPitched, pitchDuration, pitchAnimation]
+  );
+
+  useEffect(
+    // and rotate the map when not hovered
+    () => {
+      if (!isLoaded || !isPitched) return;
+
+      if (bearingDuration === 0 && !isHovered) {
+        setBearingDuration(25000);
+      } else if (
+        bearingAnimation === 1 ||
+        (bearingDuration !== 0 && isHovered)
+      ) {
+        setViewState(state => ({
+          ...state,
+          bearing: state.bearing - 100 * bearingAnimation
+        }));
+        setBearingDuration(0);
+      }
+    },
+    [isLoaded, isPitched, isHovered, bearingDuration, bearingAnimation]
+  );
+
+  useIsomorphicLayoutEffect(() => {
+    const state = { ...viewState };
+    state.pitch += pitchAnimation * 60;
+    state.bearing -= bearingAnimation * 100;
+    setFinalViewState(state);
+  }, [viewState, pitchAnimation, bearingAnimation]);
+
+  const layers = useMemo(() => {
+    const layers = [
       new GeoJsonLayer({
         id: "geojson-layer",
         data: states,
@@ -331,80 +319,91 @@ class SalesMap extends React.Component {
         autoHighlight: true,
         highlightColor: [160, 160, 180, 100],
         getFillColor: [160, 160, 180, 25],
-        getLineColor:
-          this.props.theme === "dark" ? [255, 255, 255, 100] : [0, 0, 0, 25],
-        onHover: this.handleHover,
-        onClick: this.handleClick
+        getLineColor: theme === "dark" ? [255, 255, 255, 100] : [0, 0, 0, 25],
+        onHover: handleHover,
+        onClick: handleClick
       })
     ];
-  }
+    if (data.length) {
+      layers.unshift(
+        new HexagonLayer({
+          id: "heatmap-layer",
+          data,
+          pickable: false,
+          extruded: true,
+          opacity: 1,
+          coverage: 0.75,
+          radius: 30000,
+          colorRange: theme === "dark" ? colorRangeDark : colorRangeLight,
+          elevationRange: [0, 20000],
+          material,
+          elevationScale,
+          getPosition: d => [d.lng, d.lat]
+        })
+      );
+    }
+    return layers;
+  }, [states, data, elevationScale, theme, handleHover, handleClick]);
 
-  renderMap(width, height) {
-    if (!this.state.data) return <div style={{ width, height }} />;
-
-    const { mapboxToken, theme } = this.props;
-    const mapStyle = `mapbox://styles/mapbox/${theme}-v9`;
-
-    return (
-      <div style={{ width, height }}>
-        <DeckGL
-          controller
-          width="100%"
-          height="100%"
-          viewState={this.state.viewState}
-          layers={this.renderLayers()}
-          effects={[lightingEffect]}
-          getCursor={() => "crosshair"}
-          onViewStateChange={this.updateViewState}
-        >
-          <StaticMap
-            reuseMaps
-            preventStyleDiffing
-            mapboxApiAccessToken={mapboxToken}
-            mapStyle={mapStyle}
-          >
-            <div className={this.props.classes.controls}>
-              <NavigationControl
-                onViewportChange={this.updateViewportNoPitch}
-              />
-            </div>
-          </StaticMap>
-        </DeckGL>
-      </div>
-    );
-  }
-
-  render() {
-    return (
-      <div
-        className={this.props.classes.root}
-        onMouseOverCapture={this.handleMouseOver}
-        onMouseOutCapture={this.handleMouseOut}
-      >
-        <Paper>
-          {this.renderTitle()}
-          <div>
-            <AutoSizer disableHeight>
-              {({ width }) => !!width && this.renderMap(width, 0.7 * width)}
-            </AutoSizer>
-          </div>
-        </Paper>
-        <div className={this.props.classes.links}>
-          <Link
-            color="primary"
-            target="_blank"
-            href="https://simplemaps.com/data/us-cities"
-          >
-            https://simplemaps.com/data/us-cities
-          </Link>
-          <Link color="primary" target="_blank" href="https://www.census.gov">
-            https://www.census.gov
-          </Link>
+  return (
+    <div
+      className={classes.root}
+      onMouseOverCapture={handleMouseOver}
+      onMouseOutCapture={handleMouseOut}
+    >
+      <Paper>
+        <div className={classes.title}>
+          <Typography variant="h4" color="inherit">
+            <FormattedMessage id="DASHBOARD_US_SALES_LABEL" />
+          </Typography>
         </div>
-        {this.renderTooltip()}
+        <div className={classes.map}>
+          <DeckGL
+            controller
+            viewState={finalViewState}
+            layers={layers}
+            effects={lightingEffects}
+            getCursor={_.constant("crosshair")}
+            onViewStateChange={updateViewState}
+          >
+            <StaticMap
+              mapboxApiAccessToken={mapboxToken}
+              mapStyle={`mapbox://styles/mapbox/${theme}-v9`}
+            >
+              <div className={classes.controls}>
+                <NavigationControl onViewportChange={updateViewportNoPitch} />
+              </div>
+            </StaticMap>
+          </DeckGL>
+        </div>
+      </Paper>
+      <div className={classes.links}>
+        <Link
+          color="primary"
+          target="_blank"
+          href="https://simplemaps.com/data/us-cities"
+        >
+          https://simplemaps.com/data/us-cities
+        </Link>
+        <Link color="primary" target="_blank" href="https://www.census.gov">
+          https://www.census.gov
+        </Link>
       </div>
-    );
-  }
+      {!!tooltip && (
+        <div
+          className={classes.tooltip}
+          style={{ left: tooltip.x + 10, top: tooltip.y + 10 }}
+        >
+          <div className={classes.tooltipText}>{tooltip.text}</div>
+        </div>
+      )}
+    </div>
+  );
 }
+
+SalesMap.propTypes = {
+  data: PropTypes.array,
+  onSelect: PropTypes.func.isRequired
+};
 
 export default SalesMap;

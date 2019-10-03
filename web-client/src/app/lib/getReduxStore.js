@@ -3,11 +3,13 @@ import { combineReducers } from "redux-immutable";
 import { composeWithDevTools } from "redux-devtools-extension";
 import thunk from "redux-thunk";
 import app from "../state";
+import dashboard from "../../dashboard/state";
 import employees from "../../employees/state";
 import users from "../../users/state";
 
 let rootReducer = combineReducers({
   app,
+  dashboard,
   employees,
   users
 });

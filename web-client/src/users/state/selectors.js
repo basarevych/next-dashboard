@@ -1,11 +1,26 @@
 import { createSelector } from "reselect";
 
+export const getTablePageSize = state =>
+  state.getIn(["users", "tablePageSize"]);
+
+export const getTablePageNumber = state =>
+  state.getIn(["users", "tablePageNumber"]);
+
+export const getTableParams = createSelector(
+  state => state.getIn(["users", "tableTimestamp"]),
+  state => state.getIn(["users", "tableParams"]),
+  (timestamp, params) => params.toJS()
+);
+
 export const getSelected = createSelector(
   state => state.getIn(["users", "selected"]),
   selected => selected.toJS()
 );
 
-export const isEditModalOpen = state =>
+export const getIsSelected = (state, props) =>
+  _.includes(getSelected(state), props.id);
+
+export const getIsEditModalOpen = state =>
   state.getIn(["users", "isEditModalOpen"]);
 
 export const getEditModalUserId = state =>

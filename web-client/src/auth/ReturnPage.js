@@ -1,24 +1,35 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
-import Return from "./ReturnContainer";
+import { useDispatch } from "react-redux";
+import { appOperations } from "../app/state";
 
-class ReturnPage extends React.Component {
-  static propTypes = {
-    token: PropTypes.string,
-    redirect: PropTypes.string
-  };
+function ReturnPage(props) {
+  const dispatch = useDispatch();
 
-  static async getInitialProps({ query: requestQuery }) {
-    return {
-      token: requestQuery.token,
-      redirect: requestQuery.redirect
-    };
-  }
+  useEffect(() => {
+    if (props.token) {
+      dispatch(
+        appOperations.finishLinkingProvider({
+          token: props.token,
+          redirect: props.redirect
+        })
+      );
+    }
+  }, []);
 
-  render() {
-    const { token, redirect } = this.props;
-    return <Return token={token} redirect={redirect} />;
-  }
+  return <div />;
 }
+
+ReturnPage.propTypes = {
+  token: PropTypes.string,
+  redirect: PropTypes.string
+};
+
+ReturnPage.getInitialProps = ({ query: requestQuery }) => {
+  return {
+    token: requestQuery.token,
+    redirect: requestQuery.redirect
+  };
+};
 
 export default ReturnPage;

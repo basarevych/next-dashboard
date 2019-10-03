@@ -1,107 +1,115 @@
-import React from "react";
+import React, { useCallback } from "react";
 import PropTypes from "prop-types";
+import { makeStyles } from "@material-ui/styles";
 import FormControl from "@material-ui/core/FormControl";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import Radio from "@material-ui/core/Radio";
-import FieldMessages from "./FieldMessagesContainer";
+import FieldMessages from "./FieldMessages";
 
-export const styles = () => ({
+const useStyles = makeStyles(() => ({
   formHelper: {
     margin: 0
   },
   label: {
     marginLeft: 0
   }
-});
+}));
 
-class MyRadio extends React.PureComponent {
-  static propTypes = {
-    classes: PropTypes.object.isRequired,
-    field: PropTypes.object.isRequired,
-    form: PropTypes.object.isRequired,
-    name: PropTypes.string.isRequired,
-    value: PropTypes.string.isRequired,
-    label: PropTypes.string.isRequired,
-    messages: PropTypes.arrayOf(PropTypes.string),
-    autoFocus: PropTypes.bool,
-    className: PropTypes.string,
-    variant: PropTypes.string,
-    color: PropTypes.string,
-    disabled: PropTypes.bool,
-    onChange: PropTypes.func.isRequired,
-    onBlur: PropTypes.func.isRequired,
-    handleSubmit: PropTypes.func.isRequired
-  };
+function MyRadio(props) {
+  const classes = useStyles(props);
 
-  constructor(props) {
-    super(props);
+  const handleChange = useCallback(
+    evt => {
+      if (props.onChange) props.onChange(evt);
+      return props.field.onChange(evt);
+    },
+    [props.onChange, props.field.onChange]
+  );
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleBlur = this.handleBlur.bind(this);
-  }
+  const handleBlur = useCallback(
+    evt => {
+      if (props.onBlur) props.onBlur(evt);
+      return props.field.onBlur(evt);
+    },
+    [props.onBlur, props.field.onBlur]
+  );
 
-  handleChange(evt) {
-    this.props.onChange(evt);
-    return this.props.field.onChange(evt);
-  }
+  const {
+    className,
+    variant,
+    label,
+    name,
+    value,
+    field,
+    form,
+    disabled,
+    color,
+    forwardedRef,
+    handleSubmit,
+    messages,
+    ...restProps
+  } = props;
 
-  handleBlur(evt) {
-    this.props.onBlur(evt);
-    return this.props.field.onBlur(evt);
-  }
+  const errors = !!form.touched[name] && form.errors[name];
 
-  render() {
-    let errors =
-      !!this.props.form.touched[this.props.name] &&
-      this.props.form.errors[this.props.name];
-
-    return (
-      <FormControl
-        className={this.props.className}
-        variant={this.props.variant || "standard"}
-        fullWidth
-        error={!!errors}
-      >
-        <FormControlLabel
-          classes={{ root: this.props.classes.label }}
-          label={this.props.label}
-          control={
-            <Radio
-              name={this.props.field.name}
-              value={this.props.value}
-              autoFocus={this.props.autoFocus}
-              checked={this.props.field.value === this.props.value}
-              disabled={this.props.form.isSubmitting || this.props.disabled}
-              color={this.props.color || "primary"}
-              onChange={this.handleChange}
-              onBlur={this.handleBlur}
-              inputProps={{
-                onKeyDown: evt => {
-                  if (evt.keyCode === 13) {
-                    evt.preventDefault();
-                    evt.stopPropagation();
-                    this.props.handleSubmit();
-                  }
+  return (
+    <FormControl
+      className={className}
+      variant={variant || "standard"}
+      fullWidth
+      error={!!errors}
+    >
+      <FormControlLabel
+        classes={{ root: classes.label }}
+        label={label}
+        control={
+          <Radio
+            {...restProps}
+            name={name}
+            value={value}
+            checked={field.value === value}
+            disabled={form.isSubmitting || disabled}
+            color={color || "primary"}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            inputRef={forwardedRef}
+            inputProps={{
+              onKeyDown: evt => {
+                if (evt.keyCode === 13) {
+                  evt.preventDefault();
+                  evt.stopPropagation();
+                  handleSubmit();
                 }
-              }}
-            />
-          }
-        />
-        {!!this.props.messages && (
-          <FormHelperText
-            component="div"
-            classes={{ root: this.props.classes.formHelper }}
-          >
-            <FieldMessages
-              messages={this.props.messages || null}
-              errors={null}
-            />
-          </FormHelperText>
-        )}
-      </FormControl>
-    );
-  }
+              }
+            }}
+          />
+        }
+      />
+      {!!messages && (
+        <FormHelperText component="div" classes={{ root: classes.formHelper }}>
+          <FieldMessages messages={messages || null} errors={null} />
+        </FormHelperText>
+      )}
+    </FormControl>
+  );
 }
+
+MyRadio.propTypes = {
+  handleSubmit: PropTypes.func.isRequired,
+  forwardedRef: PropTypes.object,
+  field: PropTypes.object.isRequired,
+  form: PropTypes.object.isRequired,
+  name: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
+  messages: PropTypes.arrayOf(PropTypes.string),
+  className: PropTypes.string,
+  variant: PropTypes.string,
+  color: PropTypes.string,
+  disabled: PropTypes.bool,
+  onChange: PropTypes.func,
+  onBlur: PropTypes.func
+};
 
 export default MyRadio;

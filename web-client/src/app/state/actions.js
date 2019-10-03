@@ -1,7 +1,7 @@
 import moment from "../../../common/src/moment";
 import * as types from "./types";
 
-export const create = data => _.assign({ type: types.CREATE }, data);
+export const create = data => ({ type: types.CREATE, ...data });
 
 export const start = () => ({ type: types.START });
 
@@ -11,8 +11,6 @@ export const setStatusCode = ({ code }) => ({
   type: types.SET_STATUS_CODE,
   code
 });
-
-export const setUser = data => _.assign({ type: types.SET_USER }, data);
 
 export const setLocale = ({ locale }) => {
   moment.locale(locale);

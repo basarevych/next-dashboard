@@ -1,1 +1,1 @@
-export { default } from "../src/app/error/ErrorPage.js";
+export { default } from "../src/app/errors/ErrorPage.js";

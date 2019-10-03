@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useMemo } from "react";
 import PropTypes from "prop-types";
+import { useIntl } from "react-intl";
+import { makeStyles } from "@material-ui/styles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
@@ -7,7 +9,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import InfoIcon from "@material-ui/icons/InfoOutlined";
 import ErrorIcon from "@material-ui/icons/ErrorOutlined";
 
-export const styles = theme => ({
+const useStyles = makeStyles(theme => ({
   list: {
     padding: 0
   },
@@ -22,50 +24,57 @@ export const styles = theme => ({
   error: {
     color: theme.palette.text.secondary
   }
-});
+}));
 
-class ErrorMessage extends React.PureComponent {
-  static propTypes = {
-    intl: PropTypes.object.isRequired,
-    classes: PropTypes.object.isRequired,
-    messages: PropTypes.array,
-    errors: PropTypes.array
-  };
+function FieldMessages(props) {
+  const classes = useStyles(props);
+  const intl = useIntl();
 
-  render() {
-    let list = [];
-    if (this.props.messages) {
-      list = list.concat(
-        _.map(this.props.messages, item => ({ message: item }))
+  const list = useMemo(() => {
+    let result = [];
+    if (props.messages) {
+      result = result.concat(
+        _.isArray(props.messages)
+          ? _.map(props.messages, item => ({ message: item }))
+          : [{ messages: props.messages }]
       );
     }
-    if (this.props.errors)
-      list = list.concat(_.map(this.props.errors, item => ({ error: item })));
-    return (
-      <List classes={{ root: this.props.classes.list }}>
-        {_.map(list, (item, index) => (
-          <ListItem
-            key={`message-${index}`}
-            classes={{ root: this.props.classes.listItem }}
-          >
-            <ListItemIcon>
-              {item.message ? (
-                <InfoIcon className={this.props.classes.info} />
-              ) : (
-                <ErrorIcon className={this.props.classes.info} />
-              )}
-            </ListItemIcon>
-            <ListItemText
-              classes={{ primary: this.props.classes.info }}
-              primary={this.props.intl.formatMessage({
-                id: item.message ? item.message : item.error
-              })}
-            />
-          </ListItem>
-        ))}
-      </List>
-    );
-  }
+    if (props.errors) {
+      result = result.concat(
+        _.isArray(props.errors)
+          ? _.map(props.errors, item => ({ error: item }))
+          : [{ error: props.errors }]
+      );
+    }
+    return result;
+  }, [props.messages, props.errors]);
+
+  return (
+    <List classes={{ root: classes.list }}>
+      {_.map(list, (item, index) => (
+        <ListItem key={`message-${index}`} classes={{ root: classes.listItem }}>
+          <ListItemIcon>
+            {item.message ? (
+              <InfoIcon className={classes.info} />
+            ) : (
+              <ErrorIcon className={classes.info} />
+            )}
+          </ListItemIcon>
+          <ListItemText
+            classes={{ primary: classes.info }}
+            primary={intl.formatMessage({
+              id: item.message ? item.message : item.error
+            })}
+          />
+        </ListItem>
+      ))}
+    </List>
+  );
 }
 
-export default ErrorMessage;
+FieldMessages.propTypes = {
+  messages: PropTypes.oneOfType([PropTypes.array, PropTypes.string]),
+  errors: PropTypes.oneOfType([PropTypes.array, PropTypes.string])
+};
+
+export default FieldMessages;

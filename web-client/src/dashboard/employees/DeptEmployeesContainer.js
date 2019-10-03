@@ -1,29 +1,8 @@
-import { connect } from "react-redux";
 import { graphql, createRefetchContainer } from "react-relay";
-import { injectIntl } from "react-intl";
-import { withStyles } from "@material-ui/styles";
-import { appSelectors } from "../../app/state";
-import DeptEmployeesComponent, {
-  defaultDept,
-  pageSize,
-  sortBy,
-  sortDir,
-  styles
-} from "./DeptEmployees";
-
-const mapStateToProps = state => {
-  return {
-    isSubscribed: appSelectors.hasActiveSubscription(
-      state,
-      "DeptEmployeesSubscription"
-    )
-  };
-};
+import DeptEmployeesComponent from "./DeptEmployees";
 
 const DeptEmployees = createRefetchContainer(
-  withStyles(styles)(
-    injectIntl(connect(mapStateToProps)(DeptEmployeesComponent))
-  ),
+  DeptEmployeesComponent,
   {
     viewer: graphql`
       fragment DeptEmployeesContainer_viewer on Viewer
@@ -49,7 +28,7 @@ const DeptEmployees = createRefetchContainer(
             cursor
             node {
               id
-              ...EmployeeRowContainer_node
+              ...EmployeesRowContainer_node
             }
           }
           pageInfo {
@@ -87,5 +66,4 @@ const DeptEmployees = createRefetchContainer(
   `
 );
 
-export { defaultDept, pageSize, sortBy, sortDir };
 export default DeptEmployees;

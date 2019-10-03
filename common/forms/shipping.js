@@ -1,60 +1,69 @@
-module.exports = {
-  firstName: {
-    label: "SHIPPING_FIRST_NAME_LABEL",
-    normalize: "compact:spaces",
-    transform: "trim",
-    validate: "required"
-  },
-  middleName: {
-    label: "SHIPPING_MIDDLE_NAME_LABEL",
-    normalize: "compact:spaces",
-    transform: "trim"
-  },
-  lastName: {
-    label: "SHIPPING_LAST_NAME_LABEL",
-    normalize: "compact:spaces",
-    transform: "trim",
-    validate: "required"
-  },
-  address: {
-    label: "SHIPPING_ADDRESS_LABEL",
-    normalize: "rows:2|compact:spaces",
-    transform: "trim",
-    validate: "required"
-  },
-  city: {
-    label: "SHIPPING_CITY_LABEL",
-    normalize: "compact:spaces",
-    transform: "trim",
-    validate: "required"
-  },
-  state: {
-    label: "SHIPPING_STATE_LABEL",
-    normalize: "compact:spaces",
-    transform: "trim"
-  },
-  code: {
-    label: "SHIPPING_CODE_LABEL",
-    normalize: "compact:spaces",
-    transform: "trim",
-    validate: "required"
-  },
-  country: {
-    label: "SHIPPING_COUNTRY_LABEL",
-    normalize: "compact:spaces",
-    transform: "trim",
-    validate: "required"
-  },
-  phone: {
-    label: "SHIPPING_PHONE_LABEL",
-    normalize: "phone",
-    transform: "trim",
-    validate: "required|phone"
-  },
-  email: {
-    label: "SHIPPING_EMAIL_LABEL",
-    normalize: "remove:spaces",
-    transform: "trim",
-    validate: "required|email"
-  }
-};
+const yup = require("yup");
+const transformString = require("./lib/transformString");
+const transformAddress = require("./lib/transformAddress");
+const matchCountryPhone = require("./lib/matchCountryPhone");
+const { allCountries } = require("../src/countries");
+
+const countries = _.map(allCountries, "iso2");
+
+module.exports = yup.object().shape({
+  firstName: yup
+    .string()
+    .meta({ label: "SHIPPING_FIRST_NAME_LABEL" })
+    .transform(transformString)
+    .required("ERROR_FIELD_REQUIRED"),
+
+  middleName: yup
+    .string()
+    .meta({ label: "SHIPPING_MIDDLE_NAME_LABEL" })
+    .transform(transformString),
+
+  lastName: yup
+    .string()
+    .meta({ label: "SHIPPING_LAST_NAME_LABEL" })
+    .transform(transformString)
+    .required("ERROR_FIELD_REQUIRED"),
+
+  address: yup
+    .string()
+    .meta({ label: "SHIPPING_ADDRESS_LABEL" })
+    .transform(transformAddress)
+    .required("ERROR_FIELD_REQUIRED"),
+
+  city: yup
+    .string()
+    .meta({ label: "SHIPPING_CITY_LABEL" })
+    .transform(transformString)
+    .required("ERROR_FIELD_REQUIRED"),
+
+  state: yup
+    .string()
+    .meta({ label: "SHIPPING_STATE_LABEL" })
+    .transform(transformString),
+
+  code: yup
+    .string()
+    .meta({ label: "SHIPPING_CODE_LABEL" })
+    .transform(transformString)
+    .required("ERROR_FIELD_REQUIRED"),
+
+  country: yup
+    .string()
+    .meta({ label: "SHIPPING_COUNTRY_LABEL" })
+    .required("ERROR_FIELD_REQUIRED")
+    .oneOf(countries, "ERROR_INVALID_PATTERN"),
+
+  phone: yup
+    .string()
+    .meta({ label: "SHIPPING_PHONE_LABEL" })
+    .transform(transformString)
+    .required("ERROR_FIELD_REQUIRED")
+    .when("country", matchCountryPhone),
+
+  email: yup
+    .string()
+    .meta({ label: "SHIPPING_EMAIL_LABEL" })
+    .transform(transformString)
+    .required("ERROR_FIELD_REQUIRED")
+    .email("ERROR_INVALID_EMAIL")
+});

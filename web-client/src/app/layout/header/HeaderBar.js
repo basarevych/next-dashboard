@@ -1,7 +1,15 @@
-import React from "react";
+import React, {
+  useRef,
+  useReducer,
+  useState,
+  useEffect,
+  useCallback
+} from "react";
 import PropTypes from "prop-types";
 import Router from "next/router";
-import { FormattedMessage } from "react-intl";
+import { useSelector, useDispatch } from "react-redux";
+import { useIntl, FormattedMessage } from "react-intl";
+import { makeStyles, useTheme } from "@material-ui/styles";
 import { fade } from "@material-ui/core/styles/colorManipulator";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import Tooltip from "@material-ui/core/Tooltip";
@@ -20,12 +28,14 @@ import ThemeIcon from "@material-ui/icons/ColorLens";
 import LogoutIcon from "@material-ui/icons/PowerSettingsNew";
 import Flag from "react-flags";
 import l10n from "../../../../common/locales";
-import Inbox from "./InboxContainer";
-import Locales from "./LocalesContainer";
-import Themes from "./ThemesContainer";
-import Shadow from "./ShadowContainer";
+import Inbox from "./Inbox";
+import Locales from "./Locales";
+import Themes from "./Themes";
+import Shadow from "./Shadow";
+import { appSelectors, appOperations } from "../../state";
+import constants from "../../../../common/constants";
 
-export const styles = theme => ({
+const useStyles = makeStyles(theme => ({
   barContainer: {
     transition: "all 0.25s ease-in-out"
   },
@@ -84,309 +94,251 @@ export const styles = theme => ({
   tooltip: {
     fontSize: ["1em", "!important"]
   }
-});
+}));
 
-class HeaderBar extends React.Component {
-  static propTypes = {
-    intl: PropTypes.object.isRequired,
-    theme: PropTypes.object.isRequired,
-    classes: PropTypes.object.isRequired,
-    locale: PropTypes.string.isRequired,
-    isAuthenticated: PropTypes.bool.isRequired,
-    isVisible: PropTypes.bool.isRequired,
-    withShadow: PropTypes.bool.isRequired,
-    onSidebarToggle: PropTypes.func.isRequired,
-    onSignOut: PropTypes.func.isRequired,
-    onClose: PropTypes.func.isRequired
-  };
+function HeaderBar(props) {
+  const intl = useIntl();
+  const theme = useTheme();
+  const classes = useStyles();
+  const dispatch = useDispatch();
 
-  constructor(props) {
-    super(props);
+  const [, forceUpdate] = useReducer(x => x + 1, 0);
 
-    this.state = {
-      barHeight: 0,
-      barWidth: 0,
-      anchorInbox: null,
-      anchorLocales: null,
-      anchorThemes: null
+  const barRef = useRef(null);
+
+  const [barHeight, setBarHeight] = useState(0);
+  const [barWidth, setBarWidth] = useState(0);
+  const [anchorInbox, setAnchorInbox] = useState(null);
+  const [anchorLocales, setAnchorLocales] = useState(null);
+  const [anchorThemes, setAnchorThemes] = useState(null);
+
+  const locale = useSelector(state => appSelectors.getLocale(state));
+
+  useEffect(() => {
+    const onResize = () => forceUpdate();
+    window.addEventListener("resize", onResize);
+    window.addEventListener("orientationchange", onResize);
+    return () => {
+      window.removeEventListener("resize", onResize);
+      window.removeEventListener("orientationchange", onResize);
     };
+  }, []);
 
-    this.isDestroyed = false;
+  const newHeight = _.get(barRef, "current.offsetHeight");
+  const newWidth = _.get(barRef, "current.offsetWidth");
+  useEffect(() => {
+    if (newHeight && newHeight !== barHeight) setBarHeight(newHeight);
+    if (newWidth && newWidth !== barWidth) setBarWidth(newWidth);
+  }, [newHeight, newWidth]);
 
-    this.bar = React.createRef();
+  const handleInboxOpen = useCallback(
+    evt => {
+      setAnchorInbox(evt.currentTarget);
+    },
+    [setAnchorInbox]
+  );
 
-    this.onResize = this.onResize.bind(this);
-    this.handleInboxOpen = this.handleInboxOpen.bind(this);
-    this.handleLocalesOpen = this.handleLocalesOpen.bind(this);
-    this.handleThemesOpen = this.handleThemesOpen.bind(this);
-    this.handleMenuClose = this.handleMenuClose.bind(this);
-    this.handleProfile = this.handleProfile.bind(this);
-    this.handleSignOut = this.handleSignOut.bind(this);
-  }
+  const handleLocalesOpen = useCallback(
+    evt => {
+      setAnchorLocales(evt.currentTarget);
+    },
+    [setAnchorLocales]
+  );
 
-  componentDidMount() {
-    if (this.bar.current) {
-      this.setState({
-        barHeight: this.bar.current.offsetHeight,
-        barWidth: this.bar.current.offsetWidth
-      });
-    }
-    window.addEventListener("resize", this.onResize);
-    window.addEventListener("orientationchange", this.onResize);
-  }
+  const handleThemesOpen = useCallback(
+    evt => {
+      setAnchorThemes(evt.currentTarget);
+    },
+    [setAnchorThemes]
+  );
 
-  componentDidUpdate() {
-    if (
-      this.bar.current &&
-      (this.state.barHeight !== this.bar.current.offsetHeight ||
-        this.state.barWidth !== this.bar.current.offsetWidth)
-    ) {
-      setTimeout(() => {
-        if (!this.isDestroyed && this.bar.current) {
-          this.setState({
-            barHeight: this.bar.current.offsetHeight,
-            barWidth: this.bar.current.offsetWidth
-          });
-        }
-      });
-    }
-  }
+  const handleMenuClose = useCallback(() => {
+    setAnchorInbox(null);
+    setAnchorLocales(null);
+    setAnchorThemes(null);
+    props.onClose();
+  }, [setAnchorInbox, setAnchorLocales, setAnchorThemes, props.onClose]);
 
-  componentWillUnmount() {
-    this.isDestroyed = true;
-    window.removeEventListener("resize", this.onResize);
-    window.removeEventListener("orientationchange", this.onResize);
-  }
+  const handleProfile = useCallback(() => {
+    Router.push(constants.pages["/auth/profile"].page, "/auth/profile");
+    handleMenuClose();
+  }, [handleMenuClose]);
 
-  onResize() {
-    this.forceUpdate();
-  }
+  const handleSignOut = useCallback(() => {
+    dispatch(appOperations.signOut());
+    handleMenuClose();
+  }, [dispatch, handleMenuClose]);
 
-  handleInboxOpen(event) {
-    this.setState({ anchorInbox: event.currentTarget });
-  }
+  const isVisible =
+    props.isVisible || !!anchorInbox || !!anchorLocales || !!anchorThemes;
 
-  handleLocalesOpen(event) {
-    this.setState({ anchorLocales: event.currentTarget });
-  }
-
-  handleThemesOpen(event) {
-    this.setState({ anchorThemes: event.currentTarget });
-  }
-
-  handleMenuClose() {
-    this.setState({
-      anchorInbox: null,
-      anchorLocales: null,
-      anchorThemes: null
-    });
-    this.props.onClose();
-  }
-
-  handleProfile() {
-    Router.push("/auth/profile");
-    this.handleMenuClose();
-  }
-
-  handleSignOut() {
-    this.props.onSignOut();
-    this.handleMenuClose();
-  }
-
-  render() {
-    const isVisible =
-      this.props.isVisible ||
-      this.state.anchorInbox ||
-      this.state.anchorLocales ||
-      this.state.anchorThemes;
-
-    return (
-      <ClickAwayListener onClickAway={this.handleMenuClose}>
-        <div
-          className={this.props.classes.barContainer}
-          style={{
-            transform: `translate3d(0, ${
-              isVisible
-                ? "0"
-                : `-${
-                    this.state.barHeight
-                      ? this.state.barHeight - 2 + "px"
-                      : "100%"
-                  }`
-            }, 0)`
-          }}
-        >
-          <div ref={this.bar}>
-            <AppBar
-              className={this.props.classes.bar}
-              elevation={0}
-              position="static"
-              color="primary"
-            >
-              <Toolbar>
-                <Hidden xsDown>
-                  <Button
-                    color="inherit"
-                    className={this.props.classes.barItem}
-                    onClick={this.handleInboxOpen}
+  return (
+    <ClickAwayListener onClickAway={handleMenuClose}>
+      <div
+        className={classes.barContainer}
+        style={{
+          transform: `translate3d(0, ${
+            isVisible ? "0" : `-${barHeight ? barHeight - 2 + "px" : "100%"}`
+          }, 0)`
+        }}
+      >
+        <div ref={barRef}>
+          <AppBar
+            className={classes.bar}
+            elevation={0}
+            position="static"
+            color="primary"
+          >
+            <Toolbar>
+              <Hidden xsDown>
+                <Button
+                  color="inherit"
+                  className={classes.barItem}
+                  onClick={handleInboxOpen}
+                >
+                  <Badge badgeContent={4} color="secondary">
+                    <MailIcon />
+                  </Badge>
+                  &nbsp;&nbsp;
+                  <FormattedMessage id="HEADER_INBOX_LABEL" />
+                </Button>
+                {!props.isAuthenticated && (
+                  <Tooltip
+                    title={intl.formatMessage({ id: "HEADER_PROFILE_TOOLTIP" })}
+                    classes={{ tooltip: classes.tooltip }}
                   >
-                    <Badge badgeContent={4} color="secondary">
-                      <MailIcon />
-                    </Badge>
-                    &nbsp;&nbsp;
-                    <FormattedMessage id="HEADER_INBOX_LABEL" />
-                  </Button>
-                  {!this.props.isAuthenticated && (
-                    <Tooltip
-                      title={this.props.intl.formatMessage({
-                        id: "HEADER_PROFILE_TOOLTIP"
-                      })}
-                      classes={{ tooltip: this.props.classes.tooltip }}
-                    >
-                      <Button
-                        color="inherit"
-                        className={this.props.classes.barItem}
-                      >
-                        <ProfileIcon />
-                        &nbsp;&nbsp;
-                        <FormattedMessage id="HEADER_PROFILE_LABEL" />
-                      </Button>
-                    </Tooltip>
-                  )}
-                  {this.props.isAuthenticated && (
-                    <Button
-                      color="inherit"
-                      className={this.props.classes.barItem}
-                      onClick={this.handleProfile}
-                    >
+                    <Button color="inherit" className={classes.barItem}>
                       <ProfileIcon />
                       &nbsp;&nbsp;
                       <FormattedMessage id="HEADER_PROFILE_LABEL" />
                     </Button>
-                  )}
+                  </Tooltip>
+                )}
+                {props.isAuthenticated && (
                   <Button
                     color="inherit"
-                    className={this.props.classes.barItem}
-                    onClick={this.handleLocalesOpen}
+                    className={classes.barItem}
+                    onClick={handleProfile}
                   >
-                    <Flag
-                      name={l10n.flags[this.props.locale]}
-                      format="png"
-                      pngSize={24}
-                      basePath={"/static/img/flags"}
-                    />
+                    <ProfileIcon />
                     &nbsp;&nbsp;
-                    {_.upperCase(this.props.locale)}
+                    <FormattedMessage id="HEADER_PROFILE_LABEL" />
                   </Button>
-                  <Button
-                    color="inherit"
-                    className={this.props.classes.barItem}
-                    onClick={this.handleThemesOpen}
-                  >
-                    <ThemeIcon />
-                    &nbsp;&nbsp;
-                    <FormattedMessage
-                      id={
-                        "THEME_" + _.upperCase(this.props.theme.name) + "_MENU"
-                      }
-                    />
-                  </Button>
-                  <div className={this.props.classes.grow} />
-                  <div className={this.props.classes.search}>
-                    <div className={this.props.classes.searchIcon}>
-                      <SearchIcon />
-                    </div>
-                    <InputBase
-                      placeholder="Search…"
-                      classes={{
-                        root: this.props.classes.inputRoot,
-                        input: this.props.classes.inputInput
-                      }}
-                    />
+                )}
+                <Button
+                  color="inherit"
+                  className={classes.barItem}
+                  onClick={handleLocalesOpen}
+                >
+                  <Flag
+                    name={l10n.flags[locale]}
+                    format="png"
+                    pngSize={24}
+                    basePath={"/static/img/flags"}
+                  />
+                  &nbsp;&nbsp;
+                  {_.upperCase(locale)}
+                </Button>
+                <Button
+                  color="inherit"
+                  className={classes.barItem}
+                  onClick={handleThemesOpen}
+                >
+                  <ThemeIcon />
+                  &nbsp;&nbsp;
+                  <FormattedMessage
+                    id={"THEME_" + _.upperCase(theme.name) + "_MENU"}
+                  />
+                </Button>
+                <div className={classes.grow} />
+                <div className={classes.search}>
+                  <div className={classes.searchIcon}>
+                    <SearchIcon />
                   </div>
-                  <div className={this.props.classes.grow} />
-                  {this.props.isAuthenticated && (
-                    <IconButton color="inherit" onClick={this.handleSignOut}>
-                      <LogoutIcon />
-                    </IconButton>
-                  )}
-                </Hidden>
-                <Hidden smUp>
-                  <IconButton
-                    color="inherit"
-                    onClick={this.props.onSidebarToggle}
+                  <InputBase
+                    placeholder="Search…"
+                    classes={{
+                      root: classes.inputRoot,
+                      input: classes.inputInput
+                    }}
+                  />
+                </div>
+                <div className={classes.grow} />
+                {props.isAuthenticated && (
+                  <IconButton color="inherit" onClick={handleSignOut}>
+                    <LogoutIcon />
+                  </IconButton>
+                )}
+              </Hidden>
+              <Hidden smUp>
+                <IconButton color="inherit" onClick={props.onSidebarToggle}>
+                  <MenuIcon />
+                </IconButton>
+                <IconButton color="inherit" onClick={handleInboxOpen}>
+                  <Badge badgeContent={4} color="secondary">
+                    <MailIcon />
+                  </Badge>
+                </IconButton>
+                {!props.isAuthenticated && (
+                  <Tooltip
+                    title={intl.formatMessage({ id: "HEADER_PROFILE_TOOLTIP" })}
+                    classes={{ tooltip: classes.tooltip }}
                   >
-                    <MenuIcon />
-                  </IconButton>
-                  <IconButton color="inherit" onClick={this.handleInboxOpen}>
-                    <Badge badgeContent={4} color="secondary">
-                      <MailIcon />
-                    </Badge>
-                  </IconButton>
-                  {!this.props.isAuthenticated && (
-                    <Tooltip
-                      title={this.props.intl.formatMessage({
-                        id: "HEADER_PROFILE_TOOLTIP"
-                      })}
-                      classes={{ tooltip: this.props.classes.tooltip }}
-                    >
-                      <IconButton color="inherit">
-                        <ProfileIcon />
-                      </IconButton>
-                    </Tooltip>
-                  )}
-                  {this.props.isAuthenticated && (
-                    <IconButton color="inherit" onClick={this.handleProfile}>
+                    <IconButton color="inherit">
                       <ProfileIcon />
                     </IconButton>
-                  )}
-                  <IconButton color="inherit" onClick={this.handleLocalesOpen}>
-                    <Flag
-                      name={l10n.flags[this.props.locale]}
-                      format="png"
-                      pngSize={24}
-                      basePath={"/static/img/flags"}
-                    />
+                  </Tooltip>
+                )}
+                {props.isAuthenticated && (
+                  <IconButton color="inherit" onClick={handleProfile}>
+                    <ProfileIcon />
                   </IconButton>
-                  <IconButton color="inherit" onClick={this.handleThemesOpen}>
-                    <ThemeIcon />
+                )}
+                <IconButton color="inherit" onClick={handleLocalesOpen}>
+                  <Flag
+                    name={l10n.flags[locale]}
+                    format="png"
+                    pngSize={24}
+                    basePath={"/static/img/flags"}
+                  />
+                </IconButton>
+                <IconButton color="inherit" onClick={handleThemesOpen}>
+                  <ThemeIcon />
+                </IconButton>
+                <div className={classes.grow} />
+                {props.isAuthenticated && (
+                  <IconButton color="inherit" onClick={handleSignOut}>
+                    <LogoutIcon />
                   </IconButton>
-                  <div className={this.props.classes.grow} />
-                  {this.props.isAuthenticated && (
-                    <IconButton color="inherit" onClick={this.handleSignOut}>
-                      <LogoutIcon />
-                    </IconButton>
-                  )}
-                </Hidden>
-              </Toolbar>
-              <Inbox
-                anchor={this.state.anchorInbox}
-                onClose={this.handleMenuClose}
-              />
-              <Locales
-                anchor={this.state.anchorLocales}
-                onClose={this.handleMenuClose}
-              />
-              <Themes
-                anchor={this.state.anchorThemes}
-                onClose={this.handleMenuClose}
-              />
-            </AppBar>
-          </div>
-          {this.props.withShadow && (
-            <React.Fragment>
-              <Hidden mdDown initialWidth="lg">
-                <Shadow isDesktop={true} width={this.state.barWidth} />
+                )}
               </Hidden>
-              <Hidden lgUp initialWidth="lg">
-                <Shadow isDesktop={false} width={this.state.barWidth} />
-              </Hidden>
-            </React.Fragment>
-          )}
+            </Toolbar>
+            <Inbox anchor={anchorInbox} onClose={handleMenuClose} />
+            <Locales anchor={anchorLocales} onClose={handleMenuClose} />
+            <Themes anchor={anchorThemes} onClose={handleMenuClose} />
+          </AppBar>
         </div>
-      </ClickAwayListener>
-    );
-  }
+        {props.withShadow && (
+          <React.Fragment>
+            <Hidden mdDown initialWidth="lg">
+              <Shadow isDesktop={true} width={barWidth} />
+            </Hidden>
+            <Hidden lgUp initialWidth="lg">
+              <Shadow isDesktop={false} width={barWidth} />
+            </Hidden>
+          </React.Fragment>
+        )}
+      </div>
+    </ClickAwayListener>
+  );
 }
+
+HeaderBar.propTypes = {
+  isAuthenticated: PropTypes.bool.isRequired,
+  isVisible: PropTypes.bool.isRequired,
+  withShadow: PropTypes.bool.isRequired,
+  onSidebarToggle: PropTypes.func.isRequired,
+  onClose: PropTypes.func.isRequired
+};
 
 export default HeaderBar;

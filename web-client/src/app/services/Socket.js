@@ -3,7 +3,16 @@ import { appSelectors, appOperations } from "../state";
 import constants from "../../../common/constants";
 import pkg from "../../../package.json";
 
+/**
+ * WebSocket facade
+ */
 class Socket {
+  /**
+   * Constructor
+   * @param {*} getState
+   * @param {*} dispatch
+   * @param {*} fetcher
+   */
   constructor(getState, dispatch, fetcher) {
     this.getState = getState;
     this.dispatch = dispatch;
@@ -17,18 +26,33 @@ class Socket {
     }
   }
 
+  /**
+   * DI name
+   */
   static get $provides() {
     return "socket";
   }
 
+  /**
+   * DI dependencies
+   */
   static get $requires() {
     return ["getState", "dispatch", "fetcher"];
   }
 
+  /**
+   * DI lifecycle
+   */
   static get $lifecycle() {
     return "singleton";
   }
 
+  /**
+   * Send a message
+   * @param {string*} message
+   * @param {Object} data
+   * @param {function} [cb]
+   */
   emit(message, data, cb) {
     if (!process.browser && !this.socket) return;
 
@@ -49,6 +73,9 @@ class Socket {
     );
   }
 
+  /**
+   * Connect to the server
+   */
   connect() {
     if (!process.browser || this.socket) return;
 
@@ -61,6 +88,9 @@ class Socket {
     this.socket.on("disconnect", this.onDisconnect.bind(this));
   }
 
+  /**
+   * Disconnect from the server
+   */
   disconnect() {
     if (!process.browser || !this.socket) return;
 
@@ -68,11 +98,18 @@ class Socket {
     this.socket = null;
   }
 
+  /**
+   * Reconnect to the server
+   */
   reconnect() {
     this.disconnect();
     this.connect();
   }
 
+  /**
+   * HELLO received
+   * @param {Object} msg
+   */
   async onHello(msg) {
     try {
       if (process.env.NODE_ENV === "development")
@@ -93,13 +130,15 @@ class Socket {
     }
   }
 
+  /**
+   * AUTH received
+   * @param {Object} msg
+   */
   async onAuth(msg) {
     try {
       if (process.env.NODE_ENV === "development")
         console.log(
-          `[WS] <-- ${constants.messages.AUTH} (isValid: ${
-            msg.isValid
-          }, isAuthenticated: ${msg.isAuthenticated})`
+          `[WS] <-- ${constants.messages.AUTH} (isValid: ${msg.isValid}, isAuthenticated: ${msg.isAuthenticated})`
         );
 
       if ((await this.fetcher.getRefreshToken()) && !msg.isValid)
@@ -109,6 +148,10 @@ class Socket {
     }
   }
 
+  /**
+   * TOAST received
+   * @param {Object} msg
+   */
   async onToast(msg) {
     try {
       if (process.env.NODE_ENV === "development")
@@ -121,6 +164,9 @@ class Socket {
     }
   }
 
+  /**
+   * The socket was disconnected
+   */
   async onDisconnect() {
     try {
       if (process.env.NODE_ENV === "development")

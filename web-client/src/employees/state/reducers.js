@@ -1,14 +1,64 @@
-import { Set } from "immutable";
+import { Set, Map } from "immutable";
 import { combineReducers } from "redux-immutable";
 import * as types from "./types";
 
 /* State Shape
 Map({
+  tablePageSize: Number,
+  tablePageNuber: Number,
+  tableParams: Map(), // query variables
+  tableTimestamp: Number,
   selected: Set([String]), // IDs
-  editModalEmployeeId: String, // null when creating a new employee
   isEditModalOpen: false,
+  editModalEmployeeId: String, // null when creating a new employee
 })
 */
+
+const defaultPageSize = 10;
+const tablePageSizeReducer = (state = defaultPageSize, action) => {
+  switch (action.type) {
+    case types.SET_TABLE_PAGE_SIZE:
+      if (!_.isUndefined(action.pageSize)) return action.pageSize;
+      break;
+  }
+  return state;
+};
+
+const tablePageNumberReducer = (state = 0, action) => {
+  switch (action.type) {
+    case types.SET_TABLE_PAGE_NUMBER:
+      if (!_.isUndefined(action.pageNumber)) return action.pageNumber;
+      break;
+  }
+  return state;
+};
+
+const defaultTableParams = {
+  first: defaultPageSize,
+  sortBy: "uid",
+  sortDir: "asc"
+};
+
+const tableParamsReducer = (state = Map(defaultTableParams), action) => {
+  switch (action.type) {
+    case types.SET_TABLE_PARAMS:
+      if (!_.isUndefined(action.params)) return Map(action.params);
+      break;
+    case types.RESET_TABLE_PARAMS:
+      return Map(defaultTableParams);
+  }
+  return state;
+};
+
+const tableTimestampReducer = (state = 0, action) => {
+  switch (action.type) {
+    case types.SET_TABLE_PARAMS:
+    case types.RESET_TABLE_PARAMS:
+    case types.TOUCH_TABLE_PARAMS:
+      return Date.now();
+  }
+  return state;
+};
 
 const selectedReducer = (state = Set([]), action) => {
   switch (action.type) {
@@ -39,14 +89,6 @@ const selectedReducer = (state = Set([]), action) => {
   return state;
 };
 
-const editModalEmployeeIdReducer = (state = null, action) => {
-  switch (action.type) {
-    case types.SHOW_EDIT_MODAL:
-      return action.employeeId || null;
-  }
-  return state;
-};
-
 const isEditModalOpenReducer = (state = false, action) => {
   switch (action.type) {
     case types.SHOW_EDIT_MODAL:
@@ -57,7 +99,19 @@ const isEditModalOpenReducer = (state = false, action) => {
   return state;
 };
 
+const editModalEmployeeIdReducer = (state = null, action) => {
+  switch (action.type) {
+    case types.SHOW_EDIT_MODAL:
+      return action.employeeId || null;
+  }
+  return state;
+};
+
 const reducer = combineReducers({
+  tablePageSize: tablePageSizeReducer,
+  tablePageNumber: tablePageNumberReducer,
+  tableParams: tableParamsReducer,
+  tableTimestamp: tableTimestampReducer,
   selected: selectedReducer,
   editModalEmployeeId: editModalEmployeeIdReducer,
   isEditModalOpen: isEditModalOpenReducer

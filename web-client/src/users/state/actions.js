@@ -1,12 +1,40 @@
 import * as types from "./types";
 
+export const setTablePageSize = ({ pageSize }) => ({
+  type: types.SET_TABLE_PAGE_SIZE,
+  pageSize
+});
+
+export const setTablePageNumber = ({ pageNumber }) => ({
+  type: types.SET_TABLE_PAGE_NUMBER,
+  pageNumber
+});
+
+export const setTableParams = ({ params }) => ({
+  type: types.SET_TABLE_PARAMS,
+  params
+});
+
+export const resetTableParams = () => ({
+  type: types.RESET_TABLE_PARAMS
+});
+
+export const touchTableParams = () => ({
+  type: types.TOUCH_TABLE_PARAMS
+});
+
 export const setSelected = ({ userId, isSelected }) => ({
   type: types.SET_SELECTED,
   userId,
   isSelected
 });
 
-export const selectAll = ({ userIds }) => ({ type: types.SELECT_ALL, userIds });
+export const selectAll = ({ userIds }) => {
+  return {
+    type: types.SELECT_ALL,
+    userIds
+  };
+};
 
 export const deselectAll = ({ exceptUserIds } = {}) => ({
   type: types.DESELECT_ALL,
@@ -18,4 +46,6 @@ export const showEditModal = ({ userId } = {}) => ({
   userId
 });
 
-export const hideEditModal = () => ({ type: types.HIDE_EDIT_MODAL });
+export const hideEditModal = () => ({
+  type: types.HIDE_EDIT_MODAL
+});

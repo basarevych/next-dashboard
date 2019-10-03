@@ -1,52 +1,8 @@
-import { connect } from "react-redux";
 import { graphql, createRefetchContainer } from "react-relay";
-import { injectIntl } from "react-intl";
-import { withStyles } from "@material-ui/styles";
-import { appOperations, appSelectors } from "../app/state";
-import { employeesSelectors, employeesOperations } from "./state";
-import EmployeesComponent, {
-  pageSize,
-  sortBy,
-  sortDir,
-  styles
-} from "./Employees";
-
-const mapStateToProps = state => {
-  return {
-    isSubscribed: appSelectors.hasActiveSubscription(
-      state,
-      "EmployeesSubscription"
-    ),
-    isEditModalOpen: employeesSelectors.isEditModalOpen(state),
-    selected: employeesSelectors.getSelected(state)
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    getToken: () => dispatch(appOperations.getToken()),
-    onCreate: () => dispatch(employeesOperations.showEditModal()),
-    onEdit: () => dispatch(employeesOperations.editFirstSelected()),
-    onDelete: employeeId =>
-      dispatch(employeesOperations.remove({ id: employeeId })),
-    onSetSelected: (employeeId, isSelected) =>
-      dispatch(employeesOperations.setSelected({ employeeId, isSelected })),
-    onSelectAll: employeeIds =>
-      dispatch(employeesOperations.selectAll({ employeeIds })),
-    onDeselectAll: exceptEmployeeIds =>
-      dispatch(employeesOperations.deselectAll({ exceptEmployeeIds }))
-  };
-};
+import EmployeesComponent from "./Employees";
 
 const Employees = createRefetchContainer(
-  withStyles(styles)(
-    injectIntl(
-      connect(
-        mapStateToProps,
-        mapDispatchToProps
-      )(EmployeesComponent)
-    )
-  ),
+  EmployeesComponent,
   {
     viewer: graphql`
       fragment EmployeesContainer_viewer on Viewer
@@ -70,7 +26,7 @@ const Employees = createRefetchContainer(
             cursor
             node {
               id
-              ...EmployeeRowContainer_node
+              ...EmployeesRowContainer_node
             }
           }
           pageInfo {
@@ -106,5 +62,4 @@ const Employees = createRefetchContainer(
   `
 );
 
-export { pageSize, sortBy, sortDir };
 export default Employees;

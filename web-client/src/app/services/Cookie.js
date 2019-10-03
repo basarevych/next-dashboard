@@ -1,12 +1,25 @@
+/**
+ * Cookie API facade
+ */
 class Cookie {
+  /**
+   * DI name
+   */
   static get $provides() {
     return "cookie";
   }
 
+  /**
+   * DI lifecycle
+   */
   static get $lifecycle() {
     return "singleton";
   }
 
+  /**
+   * Get a cookie
+   * @param {string} name
+   */
   get(name) {
     if (!process.browser) return;
 
@@ -16,6 +29,12 @@ class Cookie {
     return v ? decodeURIComponent(v[2]) : null;
   }
 
+  /**
+   * Set a cookie
+   * @param {string} name
+   * @param {*} value
+   * @param {number} [days]
+   */
   set(name, value, days = 365) {
     if (!process.browser) return;
 
@@ -29,6 +48,10 @@ class Cookie {
       d.toGMTString();
   }
 
+  /**
+   * Delete a cookie
+   * @param {string} name
+   */
   delete(name) {
     if (!process.browser) return;
 

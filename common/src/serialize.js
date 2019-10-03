@@ -6,17 +6,17 @@ const { byteEncode } = require("base64util");
 const { serialize } = require("json-immutable");
 
 /**
- * Sserialize Immutable state into BASE64 string
+ * Compress and serialize state into BASE64 string
+ * @param {object} state - The state
+ * @param {string} type - Either "redux" or "relay"
+ * @return {string} BASE64 string
  */
 module.exports = function(state, type) {
   if (!state) return "";
 
   let obj;
-  if (type === "redux") {
-    obj = serialize(state);
-  } else {
-    obj = state;
-  }
+  if (type === "redux") obj = serialize(state);
+  else obj = state;
 
   let str = JSON.stringify(obj, (key, value) =>
     _.isString(value) ? utf8.encode(value) : value

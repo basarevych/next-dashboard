@@ -1,6 +1,7 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React, { useContext, useCallback } from "react";
+import { useDispatch } from "react-redux";
 import { FormattedMessage } from "react-intl";
+import { makeStyles } from "@material-ui/styles";
 import { lighten } from "@material-ui/core/styles/colorManipulator";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -12,14 +13,16 @@ import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import Hidden from "@material-ui/core/Hidden";
 import AnonymousIcon from "@material-ui/icons/VisibilityOff";
-import { Form, Field } from "../forms";
+import { Form, Field, Status } from "../forms";
 import constants from "../../../common/constants";
 import facebookIcon from "../../../static/img/facebook.svg";
 import googleIcon from "../../../static/img/google.svg";
 import twitterIcon from "../../../static/img/twitter.svg";
-import fields from "../../../common/forms/auth";
+import schema from "../../../common/forms/auth";
+import { appOperations } from "../state";
+import { UserContext } from "../providers/User";
 
-export const styles = theme => ({
+const useStyles = makeStyles(theme => ({
   error: theme.main.error,
   actions: {
     paddingLeft: "1rem",
@@ -73,206 +76,173 @@ export const styles = theme => ({
       background: ["#1881d3", "!important"]
     }
   }
-});
+}));
 
-class AppAuthModal extends React.Component {
-  static propTypes = {
-    intl: PropTypes.object.isRequired,
-    classes: PropTypes.object.isRequired,
-    user: PropTypes.object.isRequired,
-    onLink: PropTypes.func.isRequired,
-    onSignIn: PropTypes.func.isRequired,
-    onSignUp: PropTypes.func.isRequired,
-    onClose: PropTypes.func.isRequired
-  };
+function AppAuthModal(props) {
+  const classes = useStyles(props);
+  const dispatch = useDispatch();
 
-  constructor(props) {
-    super(props);
+  const user = useContext(UserContext);
 
-    this.submit = this.submit.bind(this);
-  }
+  const handleProvider = useCallback(
+    provider => dispatch(appOperations.linkProvider({ provider })),
+    [dispatch]
+  );
 
-  async submit(
-    { isNewUser, email, password },
-    { setSubmitting, setErrors, setStatus }
-  ) {
-    let result = isNewUser
-      ? await this.props.onSignUp(email, password)
-      : await this.props.onSignIn(email, password);
-    if (result === true) {
-      setSubmitting(false);
-      this.props.onClose();
-    } else {
-      let { _status, ...errors } = result;
-      setSubmitting(false);
-      setErrors(errors);
-      setStatus(_status);
-    }
-  }
+  const handleClose = useCallback(
+    () => dispatch(appOperations.hideAuthModal()),
+    [dispatch]
+  );
 
-  isEnabledProvider(provider) {
-    for (let item of this.props.user.providers)
-      if (_.toLower(provider) === _.toLower(item.name)) return true;
-    return false;
-  }
+  const submit = useCallback(
+    async (
+      { isNewUser, email, password },
+      { setSubmitting, setErrors, setStatus }
+    ) => {
+      let result = isNewUser
+        ? await dispatch(appOperations.signUp({ email, password }))
+        : await dispatch(appOperations.signIn({ email, password }));
+      if (result === true) {
+        setSubmitting(false);
+        dispatch(appOperations.hideAuthModal());
+      } else {
+        let { _status, ...errors } = result;
+        setSubmitting(false);
+        setErrors(errors);
+        setStatus(_status);
+      }
+    },
+    [dispatch]
+  );
 
-  renderButton(provider, submitting) {
-    provider = _.toLower(provider);
+  const renderForm = useCallback(
+    ({ isSubmitting, status, handleSubmit }) => {
+      const renderButton = provider => {
+        const name = _.toLower(provider);
 
-    return (
-      <Button
-        variant="contained"
-        color="default"
-        classes={{ contained: this.props.classes[provider] }}
-        disabled={submitting || !this.isEnabledProvider(provider)}
-        onClick={() => this.props.onLink(provider)}
-      >
-        <Hidden xsDown>
-          <FormattedMessage id="APP_AUTH_SERVICE_BUTTON" />
-        </Hidden>
-        {provider === "facebook" && (
-          <span
-            dangerouslySetInnerHTML={{ __html: facebookIcon }}
-            className={this.props.classes.serviceLogo}
-          />
-        )}
-        {provider === "google" && (
-          <span
-            dangerouslySetInnerHTML={{ __html: googleIcon }}
-            className={this.props.classes.serviceLogo}
-          />
-        )}
-        {provider === "twitter" && (
-          <span
-            dangerouslySetInnerHTML={{ __html: twitterIcon }}
-            className={this.props.classes.serviceLogo}
-          />
-        )}
-        {_.upperFirst(provider)}
-      </Button>
-    );
-  }
+        let isProviderEnabled = false;
+        for (let item of user.providers) {
+          if (_.toLower(name) === _.toLower(item.name)) {
+            isProviderEnabled = true;
+            break;
+          }
+        }
 
-  render() {
-    return (
-      <Form
-        fields={fields}
-        initialValues={{ isNewUser: false }}
-        onSubmit={this.submit}
-        render={({ isSubmitting, status, handleSubmit }) => (
-          <Dialog maxWidth="sm" open onClose={this.props.onClose}>
-            <DialogTitle>
-              <FormattedMessage id="APP_AUTH_TITLE" />
-            </DialogTitle>
-            <DialogContent>
-              <Grid container spacing={1} justify="space-evenly">
-                <Grid
-                  container
-                  spacing={1}
-                  direction="column"
-                  justify="center"
-                  item
-                  xs={12}
-                  sm={6}
-                >
-                  <Grid item>
-                    <Button
-                      variant="contained"
-                      color="secondary"
-                      className={this.props.classes.anonymousButton}
-                      disabled={isSubmitting}
-                      onClick={this.props.onClose}
-                    >
-                      <AnonymousIcon />
-                      &nbsp;&nbsp;
-                      <FormattedMessage id="APP_AUTH_ANONYMOUS_BUTTON" />
-                    </Button>
-                  </Grid>
-                  <Grid item>
-                    {this.renderButton(
-                      constants.oauthProviders.FACEBOOK,
-                      isSubmitting
-                    )}
-                  </Grid>
-                  <Grid item>
-                    {this.renderButton(
-                      constants.oauthProviders.GOOGLE,
-                      isSubmitting
-                    )}
-                  </Grid>
-                  <Grid item>
-                    {this.renderButton(
-                      constants.oauthProviders.TWITTER,
-                      isSubmitting
-                    )}
-                  </Grid>
+        return (
+          <Button
+            variant="contained"
+            color="default"
+            classes={{ contained: classes[name] }}
+            disabled={isSubmitting || !isProviderEnabled}
+            onClick={() => handleProvider(name)}
+          >
+            <Hidden xsDown>
+              <FormattedMessage id="APP_AUTH_SERVICE_BUTTON" />
+            </Hidden>
+            {name === "facebook" && (
+              <span
+                dangerouslySetInnerHTML={{ __html: facebookIcon }}
+                className={classes.serviceLogo}
+              />
+            )}
+            {name === "google" && (
+              <span
+                dangerouslySetInnerHTML={{ __html: googleIcon }}
+                className={classes.serviceLogo}
+              />
+            )}
+            {name === "twitter" && (
+              <span
+                dangerouslySetInnerHTML={{ __html: twitterIcon }}
+                className={classes.serviceLogo}
+              />
+            )}
+            {_.upperFirst(name)}
+          </Button>
+        );
+      };
+
+      return (
+        <Dialog maxWidth="sm" open onClose={handleClose}>
+          <DialogTitle>
+            <FormattedMessage id="APP_AUTH_TITLE" />
+          </DialogTitle>
+          <DialogContent>
+            <Grid container spacing={1}>
+              <Grid
+                container
+                spacing={1}
+                alignContent="center"
+                item
+                xs={12}
+                sm={6}
+              >
+                <Grid item xs={12}>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    className={classes.anonymousButton}
+                    disabled={isSubmitting}
+                    onClick={handleClose}
+                  >
+                    <AnonymousIcon />
+                    &nbsp;&nbsp;
+                    <FormattedMessage id="APP_AUTH_ANONYMOUS_BUTTON" />
+                  </Button>
                 </Grid>
-                <Grid item xs={12} sm={6}>
-                  <Paper className={this.props.classes.credentialsPaper}>
-                    <Grid container spacing={1} direction="column">
-                      <Grid item>
-                        <Typography
-                          variant="h5"
-                          className={this.props.classes.credentialsLabel}
-                        >
-                          <FormattedMessage id="APP_AUTH_CREDENTIALS_LABEL" />
-                        </Typography>
-                      </Grid>
-                      {!!status && (
-                        <Grid item>
-                          {_.map(
-                            _.isArray(status) ? status : [status],
-                            (error, index) => (
-                              <div
-                                key={`error-${index}`}
-                                className={this.props.classes.error}
-                              >
-                                {_.isArray(error) ? (
-                                  <FormattedMessage
-                                    id={error[0]}
-                                    values={error[1]}
-                                  />
-                                ) : (
-                                  <FormattedMessage id={error} />
-                                )}
-                              </div>
-                            )
-                          )}
-                        </Grid>
-                      )}
-                      <Grid item>
-                        <Field
-                          name="isNewUser"
-                          type="checkbox"
-                          color="default"
-                        />
-                      </Grid>
-                      <Grid item>
-                        <Field name="email" type="text" />
-                      </Grid>
-                      <Grid item>
-                        <Field name="password" type="password" />
-                      </Grid>
-                    </Grid>
-                  </Paper>
+                <Grid item xs={12}>
+                  {renderButton(constants.oauthProviders.FACEBOOK)}
+                </Grid>
+                <Grid item xs={12}>
+                  {renderButton(constants.oauthProviders.GOOGLE)}
+                </Grid>
+                <Grid item xs={12}>
+                  {renderButton(constants.oauthProviders.TWITTER)}
                 </Grid>
               </Grid>
-            </DialogContent>
-            <DialogActions classes={{ root: this.props.classes.actions }}>
-              <Button
-                variant="contained"
-                color="secondary"
-                disabled={isSubmitting}
-                onClick={handleSubmit}
-              >
-                <FormattedMessage id="APP_AUTH_SUBMIT" />
-              </Button>
-            </DialogActions>
-          </Dialog>
-        )}
-      />
-    );
-  }
+              <Grid item xs={12} sm={6}>
+                <Paper className={classes.credentialsPaper}>
+                  <Grid container spacing={1} direction="column">
+                    <Grid item>
+                      <Typography
+                        variant="h5"
+                        className={classes.credentialsLabel}
+                      >
+                        <FormattedMessage id="APP_AUTH_CREDENTIALS_LABEL" />
+                      </Typography>
+                    </Grid>
+                    <Status error={status} classes={classes} />
+                    <Grid item>
+                      <Field name="isNewUser" type="checkbox" color="default" />
+                    </Grid>
+                    <Grid item>
+                      <Field name="email" type="text" />
+                    </Grid>
+                    <Grid item>
+                      <Field name="password" type="password" />
+                    </Grid>
+                  </Grid>
+                </Paper>
+              </Grid>
+            </Grid>
+          </DialogContent>
+          <DialogActions classes={{ root: classes.actions }}>
+            <Button
+              variant="contained"
+              color="secondary"
+              disabled={isSubmitting}
+              onClick={handleSubmit}
+            >
+              <FormattedMessage id="APP_AUTH_SUBMIT" />
+            </Button>
+          </DialogActions>
+        </Dialog>
+      );
+    },
+    [classes, facebookIcon, googleIcon, twitterIcon, handleClose]
+  );
+
+  return <Form schema={schema} onSubmit={submit} render={renderForm} />;
 }
 
 export default AppAuthModal;

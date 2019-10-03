@@ -1,86 +1,70 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { FormattedMessage } from "react-intl";
+import { makeStyles } from "@material-ui/styles";
 import Typography from "@material-ui/core/Typography";
 import ExpansionPanel from "@material-ui/core/ExpansionPanel";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
-export const styles = theme => ({
+const useStyles = makeStyles(theme => ({
   icon: {
     color: theme.palette.text.secondary
   },
   details: {
     paddingTop: 0
   }
-});
+}));
 
-class BillingInfo extends React.PureComponent {
-  static propTypes = {
-    classes: PropTypes.object.isRequired,
-    className: PropTypes.string
-  };
+function BillingInfo(props) {
+  const classes = useStyles(props);
 
-  constructor(props) {
-    super(props);
+  const [active, setActive] = useState(0);
 
-    this.state = {
-      active: 0
-    };
-  }
-
-  handleSwitch(active) {
-    if (this.state.active !== active) this.setState({ active });
-  }
-
-  render() {
-    return (
-      <div className={this.props.className}>
-        <ExpansionPanel
-          expanded={this.state.active === 0}
-          onChange={() => this.handleSwitch(0)}
+  return (
+    <div className={props.className}>
+      <ExpansionPanel expanded={active === 0} onChange={() => setActive(0)}>
+        <ExpansionPanelSummary
+          expandIcon={<ExpandMoreIcon className={classes.icon} />}
         >
-          <ExpansionPanelSummary
-            expandIcon={<ExpandMoreIcon className={this.props.classes.icon} />}
-          >
-            <Typography variant="subtitle1">
-              <FormattedMessage id="BILLING_Q1" />
-            </Typography>
-          </ExpansionPanelSummary>
-          <ExpansionPanelDetails className={this.props.classes.details}>
-            <Typography variant="body2">
-              Nam iaculis pellentesque purus, et rhoncus nisi consequat nec. In
-              aliquet fringilla odio quis commodo. Donec auctor id ante at
-              efficitur. Quisque sit amet nisl sit amet lorem congue tempus.
-              Aenean finibus, urna in malesuada viverra, elit ipsum aliquet
-              erat, eget commodo ante diam sit amet purus.
-            </Typography>
-          </ExpansionPanelDetails>
-        </ExpansionPanel>
-        <ExpansionPanel
-          expanded={this.state.active === 1}
-          onChange={() => this.handleSwitch(1)}
+          <Typography variant="subtitle1">
+            <FormattedMessage id="BILLING_Q1" />
+          </Typography>
+        </ExpansionPanelSummary>
+        <ExpansionPanelDetails className={classes.details}>
+          <Typography variant="body2">
+            Nam iaculis pellentesque purus, et rhoncus nisi consequat nec. In
+            aliquet fringilla odio quis commodo. Donec auctor id ante at
+            efficitur. Quisque sit amet nisl sit amet lorem congue tempus.
+            Aenean finibus, urna in malesuada viverra, elit ipsum aliquet erat,
+            eget commodo ante diam sit amet purus.
+          </Typography>
+        </ExpansionPanelDetails>
+      </ExpansionPanel>
+      <ExpansionPanel expanded={active === 1} onChange={() => setActive(1)}>
+        <ExpansionPanelSummary
+          expandIcon={<ExpandMoreIcon className={classes.icon} />}
         >
-          <ExpansionPanelSummary
-            expandIcon={<ExpandMoreIcon className={this.props.classes.icon} />}
-          >
-            <Typography variant="subtitle1">
-              <FormattedMessage id="BILLING_Q2" />
-            </Typography>
-          </ExpansionPanelSummary>
-          <ExpansionPanelDetails className={this.props.classes.details}>
-            <Typography variant="body2">
-              Praesent erat nunc, cursus vitae justo ut, tristique fermentum
-              nisi. In quis nulla at massa vestibulum aliquam. Suspendisse risus
-              magna, hendrerit sed metus eget, facilisis porttitor felis.
-              Praesent ac velit nec lectus iaculis accumsan.
-            </Typography>
-          </ExpansionPanelDetails>
-        </ExpansionPanel>
-      </div>
-    );
-  }
+          <Typography variant="subtitle1">
+            <FormattedMessage id="BILLING_Q2" />
+          </Typography>
+        </ExpansionPanelSummary>
+        <ExpansionPanelDetails className={classes.details}>
+          <Typography variant="body2">
+            Praesent erat nunc, cursus vitae justo ut, tristique fermentum nisi.
+            In quis nulla at massa vestibulum aliquam. Suspendisse risus magna,
+            hendrerit sed metus eget, facilisis porttitor felis. Praesent ac
+            velit nec lectus iaculis accumsan.
+          </Typography>
+        </ExpansionPanelDetails>
+      </ExpansionPanel>
+    </div>
+  );
 }
+
+BillingInfo.propTypes = {
+  className: PropTypes.string
+};
 
 export default BillingInfo;
