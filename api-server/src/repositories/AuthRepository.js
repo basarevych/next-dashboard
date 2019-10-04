@@ -43,8 +43,13 @@ class AuthRepository {
     debug("signIn");
 
     let user = await this.user.model.findOne({ email });
-    if (!user || !(await this.auth.checkPassword(password, user.password)))
+    if (
+      !user ||
+      !password ||
+      !(await this.auth.checkPassword(password, user.password))
+    ) {
       return { success: false };
+    }
 
     let client;
     let { user: curUser, client: curClient } = context.token || {};
