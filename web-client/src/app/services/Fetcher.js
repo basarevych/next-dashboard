@@ -1,4 +1,5 @@
 import fetch from "isomorphic-unfetch";
+import { Observable } from "relay-runtime";
 import { SubscriptionClient } from "subscriptions-transport-ws";
 import constants from "../../../common/constants";
 import { appSelectors, appOperations } from "../state";
@@ -19,20 +20,6 @@ class Fetcher {
     this.getState = getState;
     this.dispatch = dispatch;
     this.storage = storage;
-
-    if (process.browser) {
-      const handleIdentityChanged = () => {
-        this.isStarted = true;
-        window.removeEventListener(
-          constants.events.IDENTITY_CHANGED,
-          handleIdentityChanged
-        );
-      };
-      window.addEventListener(
-        constants.events.IDENTITY_CHANGED,
-        handleIdentityChanged
-      );
-    }
   }
 
   /**
@@ -273,133 +260,87 @@ class Fetcher {
         else return result;
       } catch (error) {
         console.error(error.message);
-        if (!process.browser) return { errors: [{ message: error.message }] };
-        else await new Promise(resolve => setTimeout(resolve, 1000));
+        if (process.browser || _.get(this, "req.aborted") === false) {
+          await new Promise(resolve => setTimeout(resolve, 1000));
+        } else {
+          return { errors: [{ message: error.message }] };
+        }
       }
     }
   }
 
   /**
    * Relay subscriptiton
-   * @param {Object} config
+   * @param {Object} operation
    * @param {Object} variables
    * @param {Object} cacheConfig
-   * @param {Object} observer
    */
-  subscribe(config, variables, cacheConfig, observer) {
-    if (!process.browser) return { dispose: _.noop };
+  subscribe(operation, variables /*, cacheConfig */) {
+    this.subConnect();
 
-    let isDestroyed = false;
-    let isReconnecting = false;
-    let client, observable;
-    let connect, disconnect, reconnect, dispose, authUpdated;
+    const { text: query, name: operationName } = operation;
+    return Observable.from(
+      this.subClient.request({
+        operationName,
+        query,
+        variables
+      })
+    );
+  }
 
-    const handleConnected = async () => {
-      if (process.env.NODE_ENV === "development")
-        console.log(`[Subscription] ${config.name} connected`);
-      await this.dispatch(
-        appOperations.addActiveSubscription({ name: config.name })
-      );
+  subConnect() {
+    if (this.subClient) return;
 
-      if (isDestroyed) return disconnect();
-
-      observable = client
-        .request({
-          query: config.text,
-          variables
-        })
-        .subscribe({
-          next: observer.onNext,
-          complete: observer.onCompleted,
-          error: observer.onError
-        });
-    };
-
-    const handleDisconnected = async () => {
-      observable = null;
-      if (process.env.NODE_ENV === "development")
-        console.log(`[Subscription] ${config.name} disconnected`);
-      await this.dispatch(
-        appOperations.removeActiveSubscription({ name: config.name })
-      );
-      if (!isDestroyed) reconnect(true);
-    };
-
-    connect = async () => {
-      if (isDestroyed) return;
-
-      client = new SubscriptionClient(
-        appSelectors.getWsServer(this.getState()) + constants.graphqlBase,
-        {
-          reconnect: false,
-          connectionParams: { token: await this.getAccessToken() }
-        }
-      );
-      client.maxConnectTimeGenerator.duration = () =>
-        client.maxConnectTimeGenerator.max;
-      client.onConnected(handleConnected);
-      client.onDisconnected(handleDisconnected);
-      client.onError(async error => {
-        if (process.env.NODE_ENV === "development")
-          console.error(
-            `[Subscription] ${config.name} error`,
-            error.message || "Network error"
-          );
-        handleDisconnected();
-      });
-    };
-
-    disconnect = async () => {
-      if (client) {
-        client.close();
-        client = null;
+    this.subClient = new SubscriptionClient(
+      appSelectors.getWsServer(this.getState()) + constants.graphqlBase,
+      {
+        reconnect: true,
+        reconnectionAttempts: Number.MAX_SAFE_INTEGER,
+        connectionParams: async () => ({ token: await this.getAccessToken() })
       }
-    };
+    );
+    this.subClient.maxConnectTimeGenerator.duration = () =>
+      this.subClient.maxConnectTimeGenerator.max;
+    this.subClient.onConnected(this.onSubConnected.bind(this));
+    this.subClient.onReconnected(this.onSubReconnected.bind(this));
+    this.subClient.onDisconnected(this.onSubDisconnected.bind(this));
+    this.subClient.onError(this.onSubError.bind(this));
+  }
 
-    reconnect = async doRefreshTokens => {
-      if (isDestroyed || isReconnecting) return;
-      isReconnecting = true;
-      await disconnect();
-      if (doRefreshTokens && (await this.getRefreshToken()))
-        await this.refreshTokens();
-      setTimeout(async () => {
-        isReconnecting = false;
-        if (!isDestroyed) await connect();
-      }, 1000);
-    };
+  subDisconnect() {
+    if (this.subClient) {
+      this.subClient.unsubscribeAll();
+      this.subClient.close();
+      this.subClient = null;
+    }
+  }
 
-    authUpdated = async () => {
-      reconnect(false);
-    };
+  async onSubConnected() {
+    if (process.env.NODE_ENV === "development")
+      console.log("[Subscription] connected");
 
-    dispose = async () => {
-      if (isDestroyed) return;
-      isDestroyed = true;
-      window.removeEventListener(
-        constants.events.IDENTITY_CHANGED,
-        authUpdated
-      );
+    this.dispatch(appOperations.setSubscribed({ isSubscribed: true }));
+  }
 
-      if (observable) {
-        // graceful shutdown
-        observable.unsubscribe();
-        observable = null;
-      }
+  async onSubReconnected() {
+    if (process.env.NODE_ENV === "development")
+      console.log("[Subscription] reconnected");
 
-      await disconnect();
+    this.dispatch(appOperations.setSubscribed({ isSubscribed: true }));
+  }
 
-      if (process.env.NODE_ENV === "development")
-        console.log(`[Subscription] ${config.name} disposed`);
-    };
+  async onSubDisconnected() {
+    if (process.env.NODE_ENV === "development")
+      console.log("[Subscription] disconnected");
 
-    // postpone subscription to the first IDENTITY_CHNAGED event
-    // which will fire authUpdated() above, otherwise connect immediately
-    window.addEventListener(constants.events.IDENTITY_CHANGED, authUpdated);
-    if (this.isStarted) connect().catch(console.error);
+    this.dispatch(appOperations.setSubscribed({ isSubscribed: false }));
+  }
 
-    return {
-      dispose
-    };
+  onSubError(error) {
+    if (process.env.NODE_ENV === "development")
+      console.error("[Subscription] error", error);
+
+    this.dispatch(appOperations.setSubscribed({ isSubscribed: false }));
   }
 }
 

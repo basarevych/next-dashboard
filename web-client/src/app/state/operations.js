@@ -15,6 +15,7 @@ import GetTokenMutation from "../mutations/GetToken";
 
 export const setStatusCode = actions.setStatusCode;
 export const setConnected = actions.setConnected;
+export const setSubscribed = actions.setSubscribed;
 export const setLocale = actions.setLocale;
 export const setTheme = actions.setTheme;
 export const showAuthModal = actions.showAuthModal;
@@ -51,9 +52,9 @@ export const start = () => {
   return async (dispatch, getState, di) => {
     di.singletons(); // instantiates singletons
 
-    // Start with refreshing tokens client side
-    // This will fire IDENTITY_CHANGED event which will
-    // activate app's and subscriptions' websockets
+    // first thing to do on the client is to refresh the tokens,
+    // this will fire a IDENTITY_CHANGED event, which will start
+    // application's and subscriptions' WebSockets
     di.get("fetcher")
       .refreshTokens()
       .catch(console.error);
@@ -239,24 +240,6 @@ export const deleteProfile = () => async (dispatch, getState, di) => {
     return true;
   }
   return false;
-};
-
-export const addActiveSubscription = ({ name }) => {
-  return dispatch => {
-    window.dispatchEvent(
-      new CustomEvent(constants.events.SUBSCRIBED, { detail: { name } })
-    );
-    dispatch(actions.addActiveSubscription({ name }));
-  };
-};
-
-export const removeActiveSubscription = ({ name }) => {
-  return dispatch => {
-    window.dispatchEvent(
-      new CustomEvent(constants.events.UNSUBSCRIBED, { detail: { name } })
-    );
-    dispatch(actions.removeActiveSubscription({ name }));
-  };
 };
 
 export const sendToast = ({ position, title, content }) => {

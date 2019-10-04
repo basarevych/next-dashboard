@@ -1,1 +1,2 @@
-export { default } from "../src/users/UsersPage";
+import UsersPage from "../src/users/UsersPage";
+export default UsersPage;

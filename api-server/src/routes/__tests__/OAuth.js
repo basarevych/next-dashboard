@@ -8,7 +8,8 @@ const AuthRoute = require("../OAuth");
 
 jest.mock("ioredis", () => {
   const Redis = require("ioredis-mock");
-  if (_.isObject(Redis)) {
+  // eslint-disable-next-line lodash/prefer-lodash-typecheck
+  if (typeof Redis === "object") {
     // the first mock is an ioredis shim because ioredis-mock depends on it
     // https://github.com/stipsan/ioredis-mock/blob/master/src/index.js#L101-L111
     return {

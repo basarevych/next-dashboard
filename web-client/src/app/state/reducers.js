@@ -1,4 +1,3 @@
-import { Set } from "immutable";
 import { combineReducers } from "redux-immutable";
 import * as types from "./types";
 import l10n from "../../../common/locales";
@@ -17,7 +16,7 @@ Map({
   isStarted: Boolean,
   isStopped: Boolean,
   isConnected: Boolean, // WebSocket
-  activeSubscriptions: [String], // names
+  isSubscribed: Boolean, // GraphQL subscriptions
   isAuthModalOpen: false,
 })
 */
@@ -134,24 +133,21 @@ const isConnectedReducer = (state = false, action) => {
   return state;
 };
 
+const isSubscribedReducer = (state = false, action) => {
+  switch (action.type) {
+    case types.SET_SUBSCRIBED:
+      if (!_.isUndefined(action.isSubscribed)) return action.isSubscribed;
+      break;
+  }
+  return state;
+};
+
 const isAuthModalOpenReducer = (state = false, action) => {
   switch (action.type) {
     case types.SHOW_AUTH_MODAL:
       return true;
     case types.HIDE_AUTH_MODAL:
       return false;
-  }
-  return state;
-};
-
-const activeSubscriptionsReducer = (state = Set(), action) => {
-  switch (action.type) {
-    case types.ADD_ACTIVE_SUBSCRIPTION:
-      if (!_.isUndefined(action.name)) return state.add(action.name);
-      break;
-    case types.REMOVE_ACTIVE_SUBSCRIPTION:
-      if (!_.isUndefined(action.name)) return state.delete(action.name);
-      break;
   }
   return state;
 };
@@ -169,7 +165,7 @@ const reducer = combineReducers({
   isStarted: isStartedReducer,
   isStopped: isStoppedReducer,
   isConnected: isConnectedReducer,
-  activeSubscriptions: activeSubscriptionsReducer,
+  isSubscribed: isSubscribedReducer,
   isAuthModalOpen: isAuthModalOpenReducer
 });
 

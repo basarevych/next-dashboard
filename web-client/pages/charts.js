@@ -1,1 +1,2 @@
-export { default } from "../src/charts/ChartsPage";
+import ChartsPage from "../src/charts/ChartsPage";
+export default ChartsPage;

@@ -1,1 +1,2 @@
-export { default } from "../../src/auth/VerifyEmailPage";
+import VerifyEmailPage from "../../src/auth/VerifyEmailPage";
+export default VerifyEmailPage;

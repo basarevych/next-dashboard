@@ -1,1 +1,2 @@
-export { default } from "../src/icons/IconsPage";
+import IconsPage from "../src/icons/IconsPage";
+export default IconsPage;

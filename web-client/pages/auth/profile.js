@@ -1,1 +1,2 @@
-export { default } from "../../src/auth/ProfilePage";
+import ProfilePage from "../../src/auth/ProfilePage";
+export default ProfilePage;

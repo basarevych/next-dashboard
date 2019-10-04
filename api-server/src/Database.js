@@ -8,6 +8,7 @@ class Database {
     this.fake = fake;
 
     this.mongoose = mongoose;
+    this.mongoose.set("useUnifiedTopology", true);
     this.mongoose.Promise = global.Promise;
     this.ObjectId = mongoose.Types.ObjectId;
   }

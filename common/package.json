@@ -1,6 +1,6 @@
 {
   "name": "next-dashboard-common",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "private": true,
   "dependencies": {
     "base64util": "~2.0.0",
@@ -10,7 +10,7 @@
     "moment": "~2.24.0",
     "moment-timezone": "~0.5.26",
     "pako": "~1.0.10",
-    "react-intl": "~3.2.1",
+    "react-intl": "~3.3.2",
     "utf8": "~3.0.0",
     "validator": "~11.1.0",
     "yup": "~0.27.0"

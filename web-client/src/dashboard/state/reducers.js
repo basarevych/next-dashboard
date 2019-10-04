@@ -56,6 +56,9 @@ const tablePageNumberReducer = (state = 0, action) => {
 const defaultTableParams = {
   dept: defaultDept,
   first: defaultPageSize,
+  after: null,
+  last: null,
+  before: null,
   sortBy: "uid",
   sortDir: "asc"
 };

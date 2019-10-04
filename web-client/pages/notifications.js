@@ -1,1 +1,2 @@
-export { default } from "../src/notifications/NotificationsPage";
+import NotificationsPage from "../src/notifications/NotificationsPage";
+export default NotificationsPage;

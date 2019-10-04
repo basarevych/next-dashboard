@@ -130,12 +130,6 @@ module.exports = {
     // service worker wants to update
     UPDATE_READY: "UPDATE_READY",
 
-    // GraphQL Subscription is active
-    SUBSCRIBED: "SUBSCRIBED",
-
-    // GraphQL Subscription is ended
-    UNSUBSCRIBED: "UNSUBSCRIBED",
-
     // notification popup
     TOAST: "TOAST"
   }

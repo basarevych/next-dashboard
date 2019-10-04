@@ -1,1 +1,2 @@
-export { default } from "../../src/auth/AuthErrorPage";
+import AuthErrorPage from "../../src/auth/AuthErrorPage";
+export default AuthErrorPage;

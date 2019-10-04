@@ -1,1 +1,2 @@
-export { default } from "../src/maps/MapsPage";
+import MapsPage from "../src/maps/MapsPage";
+export default MapsPage;

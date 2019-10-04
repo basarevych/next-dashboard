@@ -1,4 +1,3 @@
-const yup = require("yup");
 const BaseModel = require("./BaseModel");
 const constants = require("../../common/constants");
 const validationSchema = require("../../common/forms/createUser");

@@ -45,7 +45,8 @@ const useStyles = makeStyles(theme => ({
   },
   linkWrapper: {
     fontSize: "1rem",
-    marginTop: "1rem"
+    marginTop: "1rem",
+    textAlign: "left"
   },
   link: {
     color: theme.palette.text.primary,

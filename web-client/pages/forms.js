@@ -1,1 +1,2 @@
-export { default } from "../src/forms/FormsPage";
+import FormsPage from "../src/forms/FormsPage";
+export default FormsPage;

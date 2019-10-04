@@ -1,1 +1,2 @@
-export { default } from "../../src/auth/ReturnPage";
+import ReturnPage from "../../src/auth/ReturnPage";
+export default ReturnPage;

@@ -1,1 +1,2 @@
-export { default } from "../src/typography/TypographyPage";
+import TypographyPage from "../src/typography/TypographyPage";
+export default TypographyPage;

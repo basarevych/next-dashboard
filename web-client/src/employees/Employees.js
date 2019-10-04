@@ -1,6 +1,6 @@
 import React, {
-  useContext,
   useState,
+  useContext,
   useCallback,
   useLayoutEffect,
   useEffect
@@ -90,6 +90,9 @@ function Employees(props) {
   const dispatch = useDispatch();
   const { environment } = useContext(RelayContext);
 
+  const [subTrigger, setSubTrigger] = useState(0);
+  const isSubscribed = useSelector(state => appSelectors.isSubscribed(state));
+
   const employees = _.get(props, "viewer.employees.edges", []);
   const totalCount = _.get(props, "viewer.employees.totalCount", 0);
   const startCursor = _.get(
@@ -112,9 +115,6 @@ function Employees(props) {
   const selected = useSelector(state => employeesSelectors.getSelected(state));
   const isEditModalOpen = useSelector(state =>
     employeesSelectors.getIsEditModalOpen(state)
-  );
-  const isSubscribed = useSelector(state =>
-    appSelectors.hasActiveSubscription(state, "EmployeesSubscription")
   );
 
   const setPageSize = useCallback(
@@ -235,30 +235,67 @@ function Employees(props) {
 
   useEffect(
     // subscribe and refresh the page on any subscription event
+    // changing subTrigger state variable will force resubscribing
     () => {
+      let isDetroyed = false;
+
       const request = requestSubscription(environment, {
         subscription,
-        onNext: refresh
+        onNext: refresh,
+        onCompleted: () =>
+          setTimeout(() => {
+            if (!isDetroyed) setSubTrigger(n => n + 1);
+          }, 1000),
+        onError: () =>
+          setTimeout(() => {
+            if (!isDetroyed) setSubTrigger(n => n + 1);
+          }, 1000)
       });
-      return () => request.dispose();
+
+      const handleIdentityChange = () => {
+        if (!isDetroyed) setSubTrigger(n => n + 1);
+      };
+
+      // reconnect after logging in
+      window.addEventListener(
+        constants.events.IDENTITY_CHANGED,
+        handleIdentityChange
+      );
+
+      return () => {
+        isDetroyed = true;
+        request.dispose();
+        window.removeEventListener(
+          constants.events.IDENTITY_CHANGED,
+          handleIdentityChange
+        );
+      };
     },
-    []
+    [subTrigger, setSubTrigger, refresh]
   );
 
   useEffect(
-    // refresh immediately after (re)subscribing
+    // refresh on resubscribing
     () => {
-      const handleSubscribed = evt => {
-        if (_.get(evt, "detail.name") === "EmployeesSubscription") refresh();
+      if (!isSubscribed) return;
+
+      let isDestroyed = false;
+
+      let timer = setTimeout(() => {
+        timer = null;
+        if (!isDestroyed) refresh();
+      }, 1000);
+
+      return () => {
+        isDestroyed = true;
+
+        if (timer) {
+          clearTimeout(timer);
+          timer = null;
+        }
       };
-      window.addEventListener(constants.events.SUBSCRIBED, handleSubscribed);
-      return () =>
-        window.removeEventListener(
-          constants.events.SUBSCRIBED,
-          handleSubscribed
-        );
     },
-    []
+    [isSubscribed, refresh]
   );
 
   useIsomorphicLayoutEffect(

@@ -1,1 +1,2 @@
-export { default } from "../src/employees/TablesPage";
+import TablesPage from "../src/employees/TablesPage";
+export default TablesPage;
