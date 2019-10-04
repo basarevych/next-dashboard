@@ -10,15 +10,17 @@ https://dashboard.daemon-notes.com
 
 ## Highlights
 
-- React/Redux with Immutable, Thunk, Reselect, etc.
+- React with Hooks, Redux, Immutable, Thunk, Reselect, etc.
 
 - GraphQL with subscriptions using React Relay Modern (not Apollo)
 
-- Next.js with Webpack and Babel doing cached Server Side Rendering (SSR) on an Express.js backend with Redis and MongoDB via Mongoose
+- Next.js with Webpack and Babel doing cached Server-Side Rendering (SSR) on an Express.js backend with Redis and MongoDB via Mongoose
 
 - Material UI with custom dark and light themes
 
-- Formik, Mapbox GL, Victory Chart, React Intl, React Virtualized, etc.
+- Formik for forms with Yup for validation, including the server-side validation: Yup is integrated into Mongoose Model validation and uses the same schema files just like the front-end.
+
+- Additionally: MapboxGL and DeckGL, Victory Chart, React Intl, React Virtualized, etc.
 
 - Email/password or Twitter/Google/Facebook authorization using Passport.js
 
@@ -40,7 +42,7 @@ This project is comprised of 4 servers:
 
 - Optionally, one or more Front Servers: **[web-client/ssr-server](web-client/ssr-server)**
 
-  These are doing (cached) SSR for the user. Public domain name of the site is pointing to this server.
+  These are doing (cached) SSR for the user. The public domain name of the site is pointing to this server.
 
   Only access to Redis is required.
 
