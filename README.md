@@ -20,9 +20,11 @@ https://dashboard.daemon-notes.com
 
 - Formik for forms with Yup for validation, including the server-side validation: Yup is integrated into Mongoose Model validation and uses the same schema files just like the front-end.
 
-- Additionally: MapboxGL and DeckGL, Victory Chart, React Intl, React Virtualized, etc.
+- Internationalization using React Intl (Format.js) which supports [ICU message syntax](https://formatjs.io/guides/message-syntax/)
 
 - Email/password or Twitter/Google/Facebook authorization using Passport.js
+
+- Additionally: MapboxGL and DeckGL, Victory Chart, React Virtualized, etc.
 
 - Caching service worker from Google Workbox
 
