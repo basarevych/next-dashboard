@@ -35,6 +35,17 @@ class Early {
     // Log request
     if (process.env.NODE_ENV !== "test") express.use(logger("short"));
 
+    // Default favicon
+    express.use(
+      "/favicon.ico",
+      Express.static(
+        path.join(__dirname, "..", "..", "static", "icon", "favicon.ico"),
+        {
+          maxAge: this.maxAge
+        }
+      )
+    );
+
     // Service Worker (Google Workbox)
     express.use(
       "/sw.js",
@@ -73,15 +84,6 @@ class Early {
         maxAge: this.maxAge,
         fallthrough: false
       })
-    );
-    express.use(
-      "/favicon.ico",
-      Express.static(
-        path.join(__dirname, "..", "..", "static", "img", "favicon.ico"),
-        {
-          maxAge: this.maxAge
-        }
-      )
     );
 
     // Default headers for non-static

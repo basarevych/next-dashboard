@@ -98,6 +98,10 @@ module.exports = {
       menu: "MENU_USERS",
       title: "TITLE_USERS",
       isAllowed: user => _.includes(user.roles || [], roles.ADMIN)
+    },
+    "/pwa": {
+      page: "/pwa",
+      title: "TITLE_DASHBOARD"
     }
   },
 

@@ -10,7 +10,7 @@ import AvgTimeStat from "./stat/AvgTimeStatContainer";
 import SalesMap from "./sales/SalesMap";
 import StateSales from "./sales/StateSalesContainer";
 import DeptEmployees from "./employees/DeptEmployeesContainer";
-import { appOperations } from "../app/state";
+import { appOperations, appSelectors } from "../app/state";
 import { dashboardSelectors, dashboardOperations } from "./state";
 
 const useStyles = makeStyles(theme => ({
@@ -27,6 +27,8 @@ function Dashboard(props) {
 
   const [usCities, setUsCities] = useState(null);
 
+  const isStarted = useSelector(state => appSelectors.isStarted(state));
+
   const state = useSelector(state => dashboardSelectors.getState(state));
   const setState = state => dispatch(dashboardOperations.setState({ state }));
 
@@ -38,19 +40,32 @@ function Dashboard(props) {
   );
 
   useEffect(() => {
+    if (!isStarted) return;
+
     let isDestroyed = false;
-    setTimeout(async () => {
+    let iddle = requestIdleCallback(async () => {
+      iddle = null;
       if (isDestroyed) return;
       const response = await dispatch(appOperations.fetchCities());
+      if (isDestroyed) return;
       if (response.status === 200) {
-        const usCities = await response.json();
-        if (!isDestroyed) setUsCities(usCities);
+        iddle = requestIdleCallback(async () => {
+          iddle = null;
+          if (isDestroyed) return;
+          const usCities = await response.json();
+          if (!isDestroyed) setUsCities(usCities);
+        });
       }
-    }, 1000);
+    });
+
     return () => {
       isDestroyed = true;
+      if (iddle) {
+        cancelIdleCallback(iddle);
+        iddle = null;
+      }
     };
-  }, []);
+  }, [isStarted]);
 
   return (
     <div className={classes.layout}>

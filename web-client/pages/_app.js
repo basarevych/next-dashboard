@@ -1,6 +1,5 @@
 import React from "react";
 import App from "next/app";
-import Router from "next/router";
 import { Provider as ReduxProvider } from "react-redux";
 import serialize from "../common/src/serialize";
 import deserialize from "../common/src/deserialize";
@@ -17,6 +16,7 @@ import UserProvider, {
   query as userProviderQuery
 } from "../src/app/providers/UserProvider";
 import Layout from "../src/app/layout/Layout";
+import startServiceWorker from "../src/app/lib/startServiceWorker";
 
 class MyApp extends App {
   static async getInitialProps({ Component, ctx }) {
@@ -113,6 +113,11 @@ class MyApp extends App {
       this.di,
       deserialize(props.relayState, "relay")
     );
+
+    if (process.browser) {
+      // Start the app
+      this.reduxStore.dispatch(appOperations.start()).catch(console.error);
+    }
   }
 
   componentDidMount() {
@@ -122,13 +127,23 @@ class MyApp extends App {
       jssStyles.parentNode.removeChild(jssStyles);
     }
 
-    // Start the app
-    this.reduxStore.dispatch(appOperations.start()).catch(console.error);
+    // Wait a bit and install the service worker
+    this.iddle = requestIdleCallback(() => {
+      this.iddle = null;
+      startServiceWorker();
+    });
+  }
+
+  componentWillUnmount() {
+    if (this.iddle) {
+      cancelIdleCallback(this.iddle);
+      this.iddle = null;
+    }
   }
 
   render() {
     const { Component, pageProps } = this.props;
-    if (process.browser) pageProps.key = Router.route;
+    if (process.browser) pageProps.key = this.props.router.route;
 
     return (
       <ReduxProvider store={this.reduxStore}>
@@ -138,9 +153,14 @@ class MyApp extends App {
               <DateProvider>
                 <ToastProvider>
                   <UserProvider>
-                    <Layout>
+                    {this.props.router.route === "/pwa" && (
                       <Component {...pageProps} />
-                    </Layout>
+                    )}
+                    {this.props.router.route !== "/pwa" && (
+                      <Layout>
+                        <Component {...pageProps} />
+                      </Layout>
+                    )}
                   </UserProvider>
                 </ToastProvider>
               </DateProvider>

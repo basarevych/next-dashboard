@@ -5,6 +5,7 @@ const path = require("path");
 const ProvidePlugin = require("webpack").ProvidePlugin;
 const ContextReplacementPlugin = require("webpack").ContextReplacementPlugin;
 const EnvironmentPlugin = require("webpack").EnvironmentPlugin;
+const pwaManifest = require("@pwa/manifest");
 const { GenerateSW } = require("workbox-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 const RelayCompilerWebpackPlugin = require("relay-compiler-webpack-plugin");
@@ -13,7 +14,37 @@ const withBundleAnalyzer = require("@zeit/next-bundle-analyzer");
 const withPlugins = require("next-compose-plugins");
 const constants = require("./common/constants");
 const l10n = require("./common/locales");
+const theme = require("./styles/themes/dark");
 const pkg = require("./package.json");
+
+const manifest = {
+  short_name: "dashboard",
+  name: "Next™ React™ Dashboard",
+  description: "A complete React/Redux/Relay/Next.js dashboard template",
+  dir: "ltr",
+  lang: "en",
+  icons: [
+    /*
+      https://realfavicongenerator.net
+      Under "Favicon Generator Options" choose path: /static/icon
+      Extract the favicon package to /static/icon
+    */
+    {
+      src: "/static/icon/android-chrome-192x192.png",
+      sizes: "192x192",
+      type: "image/png"
+    },
+    {
+      src: "/static/icon/android-chrome-512x512.png",
+      sizes: "512x512",
+      type: "image/png"
+    }
+  ],
+  start_url: "/pwa",
+  display: "standalone",
+  theme_color: theme.palette.primary.main,
+  background_color: theme.palette.background.default
+};
 
 const plugins = [
   [
@@ -84,8 +115,10 @@ module.exports = withPlugins(plugins, {
       new EnvironmentPlugin({
         // pass NODE_ENV var to the code
         NODE_ENV: "production",
-        // truthy when exporting to static site
-        STATIC_SITE: false
+        // define this var when exporting to static site
+        STATIC_SITE: false,
+        // define this var when service worker should be disabled
+        DISABLE_SW: false
       })
     );
 
@@ -138,27 +171,30 @@ module.exports = withPlugins(plugins, {
           exclude: [/\.next\//],
           runtimeCaching: [
             {
-              urlPattern: new RegExp(`^https?://[^/]+${constants.apiBase}.*`),
-              handler: "NetworkOnly"
+              urlPattern: /^https?:\/\/[^/]+(${constants.apiBase}|${constants.socketsBase}|${constants.graphqlBase}).*/,
+              handler: "NetworkFirst",
+              options: {
+                cacheName: "api",
+                cacheableResponse: {
+                  statuses: [0, 200]
+                }
+              }
             },
             {
-              urlPattern: new RegExp(
-                `^https?://[^/]+${constants.socketsBase}.*`
-              ),
-              handler: "NetworkOnly"
-            },
-            {
-              urlPattern: new RegExp(
-                `^https?://[^/]+${constants.graphqlBase}.*`
-              ),
-              handler: "NetworkOnly"
-            },
-            {
-              urlPattern: new RegExp("^https?://.*"),
-              handler: "NetworkFirst"
+              urlPattern: /^https?:\/\/.*/,
+              handler: "NetworkFirst",
+              options: {
+                cacheName: "site"
+              }
             }
           ]
         })
+      );
+
+      // Manifest
+      pwaManifest.writeSync(
+        path.resolve(__dirname, "static"),
+        pwaManifest.sync(manifest)
       );
     }
 

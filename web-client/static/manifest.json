@@ -1,0 +1,24 @@
+{
+	"name": "Next™ React™ Dashboard",
+	"short_name": "dashboard",
+	"icons": [
+		{
+			"src": "/static/icon/android-chrome-192x192.png",
+			"sizes": "192x192",
+			"type": "image/png"
+		},
+		{
+			"src": "/static/icon/android-chrome-512x512.png",
+			"sizes": "512x512",
+			"type": "image/png"
+		}
+	],
+	"start_url": "/pwa",
+	"display": "standalone",
+	"orientation": "natural",
+	"background_color": "#3b3f4d",
+	"theme_color": "#80838f",
+	"description": "A complete React/Redux/Relay/Next.js dashboard template",
+	"dir": "ltr",
+	"lang": "en"
+}

@@ -26,6 +26,23 @@ if (!global.requestAnimationFrame) {
   );
 }
 
+// requestIdleCallback polyfill
+if (!global.requestIdleCallback) {
+  promises.push(
+    new Promise((resolve, reject) => {
+      require.ensure(
+        [],
+        require => {
+          require("requestidlecallback");
+          resolve();
+        },
+        error => reject(error),
+        "polyfills"
+      );
+    })
+  );
+}
+
 // Intl polyfill
 if (global.Intl) {
   if (!process.browser) {
@@ -174,66 +191,6 @@ if (process.browser) {
       });
       return false;
     };
-  }
-
-  // service worker
-  if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => {
-      let promise;
-
-      if (process.env.NODE_ENV !== "production") {
-        promise = navigator.serviceWorker.getRegistrations().then(regs => {
-          if (!regs.length) return;
-
-          return Promise.all(_.invokeMap(regs, "unregister")).then(() => {
-            console.log("[SW]", "Unregistered");
-            window.location.reload(true);
-          });
-        });
-      } else {
-        promise = navigator.serviceWorker.register("sw.js").then(reg => {
-          reg.onupdatefound = () => {
-            let installingWorker = reg.installing;
-
-            installingWorker.onstatechange = () => {
-              switch (installingWorker.state) {
-                case "installed":
-                  if (navigator.serviceWorker.controller) {
-                    if (process.env.NODE_ENV === "development") {
-                      console.log(
-                        "[SW]",
-                        "New or updated content is available"
-                      );
-                    }
-                    window.__updateReady = true;
-                    window.dispatchEvent(
-                      new CustomEvent(constants.events.UPDATE_READY)
-                    );
-                  } else {
-                    if (process.env.NODE_ENV === "development")
-                      console.log("[SW]", "Content is now available offline");
-                  }
-                  break;
-
-                case "redundant":
-                  if (process.env.NODE_ENV === "development") {
-                    console.log(
-                      "[SW]",
-                      "The installing service worker became redundant."
-                    );
-                  }
-                  break;
-              }
-            };
-          };
-        });
-      }
-
-      promise.catch(error => {
-        if (process.env.NODE_ENV === "development")
-          console.error("[SW]", error);
-      });
-    });
   }
 }
 

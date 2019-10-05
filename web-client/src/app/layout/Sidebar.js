@@ -29,10 +29,14 @@ const useStyles = makeStyles(theme => ({
     height: "100%",
     display: "flex",
     flexDirection: "column",
-    justifyContent: "stretch"
+    justifyContent: "stretch",
+    alignItems: props => (props.pwa ? "center" : "stretch")
   },
   grow: {
     flex: 1
+  },
+  linkWrapper: {
+    paddingTop: props => (props.pwa ? 20 : undefined)
   },
   link: {
     display: "block",
@@ -45,9 +49,10 @@ const useStyles = makeStyles(theme => ({
     }
   },
   list: {
-    padding: 0
+    width: props => (props.pwa ? 200 : undefined)
   },
   avatar: {
+    paddingBottom: props => (props.pwa ? 30 : undefined),
     margin: "2rem 0 1rem 0",
     display: "flex",
     flexDirection: "column",
@@ -223,7 +228,7 @@ function Sidebar(props) {
 
       <div className={classes.grow} />
 
-      <div>
+      <div className={classes.linkWrapper}>
         <Link className={classes.link} onClick={handleRedirectClick}>
           <FormattedMessage id="SIDEBAR_GITHUB_LINK" />
         </Link>
@@ -239,6 +244,7 @@ function Sidebar(props) {
 }
 
 Sidebar.propTypes = {
+  pwa: PropTypes.bool,
   onMenuClick: PropTypes.func.isRequired
 };
 

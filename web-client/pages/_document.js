@@ -1,26 +1,52 @@
 import React from "react";
 import Document, { Head, Main, NextScript } from "next/document";
 import { ServerStyleSheets } from "@material-ui/styles";
-import flush from "styled-jsx/server";
 import themes from "../styles/themes";
 
 class MyDocument extends Document {
   render() {
     const theme = _.get(this.props, "__NEXT_DATA__.query.theme");
+    const color = themes ? themes.defs[theme].palette.primary.main : "#ffffff";
     return (
       <html lang="en" dir="ltr">
         <Head>
           <meta charSet="utf-8" />
-          {/* Use minimum-scale=1 to enable GPU rasterization */}
           <meta
             name="viewport"
             content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no"
           />
-          {/* PWA primary color */}
-          <meta
-            name="theme-color"
-            content={theme && themes.defs[theme].palette.primary.main}
+
+          <link
+            rel="apple-touch-icon"
+            sizes="180x180"
+            href="/static/icon/apple-touch-icon.png"
           />
+          <link
+            rel="icon"
+            type="image/png"
+            sizes="32x32"
+            href="/static/icon/favicon-32x32.png"
+          />
+          <link
+            rel="icon"
+            type="image/png"
+            sizes="16x16"
+            href="/static/icon/favicon-16x16.png"
+          />
+          <link
+            rel="mask-icon"
+            href="/static/icon/safari-pinned-tab.svg"
+            color={color}
+          />
+          <link rel="shortcut icon" href="/static/icon/favicon.ico" />
+          <meta name="msapplication-TileColor" content={color} />
+          <meta
+            name="msapplication-config"
+            content="/static/icon/browserconfig.xml"
+          />
+          <meta name="theme-color" content={color} />
+          <link rel="manifest" href="/static/manifest.json" />
+
           <link
             rel="stylesheet"
             href="https://fonts.googleapis.com/css?family=Roboto:300,400,500"
@@ -71,12 +97,12 @@ MyDocument.getInitialProps = async ctx => {
   return {
     ...initialProps,
     // Styles fragment is rendered after the app and page rendering finish.
-    styles: (
-      <React.Fragment>
+    styles: [
+      <React.Fragment key="styles">
+        {initialProps.styles}
         {sheets.getStyleElement()}
-        {flush() || null}
       </React.Fragment>
-    )
+    ]
   };
 };
 
