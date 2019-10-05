@@ -1,3 +1,4 @@
+import Router from "next/router";
 import constants from "../../../common/constants";
 
 export default function initServiceWorker() {
@@ -33,7 +34,8 @@ export default function initServiceWorker() {
         };
 
         // Prefetch PWA start page
-        window.caches.open("site").then(myCache => myCache.addAll(["/pwa"]));
+        if (Router.route !== "/pwa")
+          window.caches.open("site").then(myCache => myCache.addAll(["/pwa"]));
       });
   }
 
