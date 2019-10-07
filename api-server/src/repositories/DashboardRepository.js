@@ -10,6 +10,10 @@ class DashboardRepository {
     this.di = di;
     this.dashboard = dashboard;
     this.fake = fake;
+
+    this.usStatesById = {};
+    this.usStatesByName = {};
+    this.usCities = {};
   }
 
   static get $provides() {
@@ -26,7 +30,7 @@ class DashboardRepository {
 
   async init() {
     if (this.promise) return this.promise;
-    this.promise = Promise.resolve().then(async () => {
+    this.promise = (async () => {
       this.generateProfits();
       this.generateSales();
       this.generateClients();
@@ -34,7 +38,7 @@ class DashboardRepository {
 
       this.countries = {};
       for (let country of allCountries) {
-        const id = _.toUpper(country.iso2);
+        const id = country.iso2.toUpperCase();
         this.countries[id] = new this.dashboard.CountryModel({
           id,
           name: country.name,
@@ -61,12 +65,9 @@ class DashboardRepository {
         )
       );
 
-      this.usStatesById = {};
-      this.usStatesByName = {};
-      this.usCities = {};
       for (let line of data) {
         const id = line.id.toString();
-        const stateId = _.toUpper(line.state_id);
+        const stateId = line.state_id.toUpperCase();
         const stateName = line.state_name;
         const lat = Number(line.lat);
         const lng = Number(line.lng);
@@ -91,11 +92,11 @@ class DashboardRepository {
         this.usStatesByName[stateName].push(model);
       }
 
-      for (let state of _.keys(this.usStatesById))
+      for (let state of Object.keys(this.usStatesById))
         this.usStatesById[state].sort((a, b) => b.population - a.population);
-      for (let state of _.keys(this.usStatesByName))
+      for (let state of Object.keys(this.usStatesByName))
         this.usStatesByName[state].sort((a, b) => b.population - a.population);
-    });
+    })();
     return this.promise;
   }
 
@@ -190,7 +191,7 @@ class DashboardRepository {
     if (!this.isValid(context)) throw this.di.get("error.unauthorized");
     if (!this.isAllowed(context)) throw this.di.get("error.forbidden");
 
-    const country = this.countries[_.toUpper(id)];
+    const country = this.countries[id.toUpperCase()];
     if (!country) throw this.di.get("error.notFound");
     return country;
   }
@@ -201,7 +202,7 @@ class DashboardRepository {
     if (!this.isValid(context)) throw this.di.get("error.unauthorized");
     if (!this.isAllowed(context)) throw this.di.get("error.forbidden");
 
-    return _.map(_.keys(this.countries), id => this.countries[id]);
+    return Object.keys(this.countries).map(id => this.countries[id]);
   }
 
   async getUSCity(context, { id }) {
@@ -232,11 +233,9 @@ class DashboardRepository {
     if (!cities) throw this.di.get("error.notFound");
 
     let result = cities.slice(0, limit);
-    result.otherPopulation = _.reduce(
-      cities.slice(limit),
-      (acc, cur) => acc + cur.population,
-      0
-    );
+    result.otherPopulation = cities
+      .slice(limit)
+      .reduce((acc, cur) => acc + cur.population, 0);
     return result;
   }
 
@@ -246,7 +245,7 @@ class DashboardRepository {
     if (!this.isValid(context)) throw this.di.get("error.unauthorized");
     if (!this.isAllowed(context)) throw this.di.get("error.forbidden");
 
-    const profit = _.find(this.profits, ["id", id]);
+    const profit = this.profits.find(item => item.id == id);
     if (!profit) throw this.di.get("error.notFound");
     return profit;
   }
@@ -266,7 +265,7 @@ class DashboardRepository {
     if (!this.isValid(context)) throw this.di.get("error.unauthorized");
     if (!this.isAllowed(context)) throw this.di.get("error.forbidden");
 
-    const sales = _.find(this.sales, ["id", id]);
+    const sales = this.sales.find(item => item.id === id);
     if (!sales) throw this.di.get("error.notFound");
     return sales;
   }
@@ -286,7 +285,7 @@ class DashboardRepository {
     if (!this.isValid(context)) throw this.di.get("error.unauthorized");
     if (!this.isAllowed(context)) throw this.di.get("error.forbidden");
 
-    const clients = _.find(this.clients, ["id", id]);
+    const clients = this.clients.find(item => item.id === id);
     if (!clients) throw this.di.get("error.notFound");
     return clients;
   }
@@ -306,7 +305,7 @@ class DashboardRepository {
     if (!this.isValid(context)) throw this.di.get("error.unauthorized");
     if (!this.isAllowed(context)) throw this.di.get("error.forbidden");
 
-    const avgTime = _.find(this.avgTimes, ["id", id]);
+    const avgTime = this.avgTimes.find(item => item.id === id);
     if (!avgTime) throw this.di.get("error.notFound");
     return avgTime;
   }

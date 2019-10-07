@@ -32,7 +32,7 @@ class UsersRepository {
       type === "access" &&
       !!user &&
       !!client &&
-      _.includes(user.roles, accessLevel)
+      user.roles.includes(accessLevel)
     );
   }
 
@@ -112,8 +112,8 @@ class UsersRepository {
       roles
     });
 
-    await user.validateField("password", password); // before it is encrypted
     await user.validate();
+    await user.validateField("password", password); // before it is encrypted
     await user.save();
     await this.publish("userCreated", user);
     return user;
@@ -130,13 +130,11 @@ class UsersRepository {
 
     user.email = email;
     user.name = name;
-    if (password) {
-      await user.validateField("password", password); // before it is encrypted
-      user.password = await this.auth.encryptPassword(password);
-    }
+    if (password) user.password = await this.auth.encryptPassword(password);
     user.roles = roles;
 
     await user.validate();
+    if (password) await user.validateField("password", password); // before it is encrypted
     await user.save();
     await this.publish("userUpdated", user);
     return user;

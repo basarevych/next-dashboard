@@ -16,7 +16,7 @@ class Helpers {
         // Set locale
         let locale = null;
         if (l10n.locales.length) {
-          if (req.cookies && _.includes(l10n.locales, req.cookies.locale))
+          if (req.cookies && l10n.locales.includes(req.cookies.locale))
             locale = req.cookies.locale;
           if (!locale && req.acceptsLanguages)
             locale = req.acceptsLanguages(l10n.locales);
@@ -26,7 +26,7 @@ class Helpers {
 
         // Set theme
         let theme = null;
-        if (req.cookies && _.includes(themes.names, req.cookies.theme))
+        if (req.cookies && themes.names.includes(req.cookies.theme))
           theme = req.cookies.theme;
         if (!theme && themes.defaultTheme) theme = themes.defaultTheme;
         if (!theme && themes.names.length) theme = themes.names[0];
@@ -68,7 +68,7 @@ class Helpers {
             );
             if (response.status === 200) {
               const result = await response.json();
-              user = _.get(result, "data.viewer.me", null);
+              user = ((result.data || {}).viewer || {}).me || null;
             }
           }
 

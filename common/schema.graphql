@@ -518,6 +518,11 @@ type VerifyEmailPayload {
 }
 
 type Viewer {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
   me: Status
   country(id: ID): Country
   countries(after: String, first: Int, before: String, last: Int): CountryConnection

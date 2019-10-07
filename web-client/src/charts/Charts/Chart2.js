@@ -12,17 +12,17 @@ import { useTheme } from "@material-ui/styles";
 import Paper from "@material-ui/core/Paper";
 import theme from "./theme";
 
+const data = [
+  { x: 0, y: 0 },
+  { x: 1, y: 2 },
+  { x: 2, y: 1 },
+  { x: 3, y: 4 },
+  { x: 4, y: 3 },
+  { x: 5, y: 5 }
+];
+
 function Chart2(props) {
   const materialTheme = useTheme();
-
-  const data = [
-    { x: 0, y: 0 },
-    { x: 1, y: 2 },
-    { x: 2, y: 1 },
-    { x: 3, y: 4 },
-    { x: 4, y: 3 },
-    { x: 5, y: 5 }
-  ];
 
   const renderChart = useCallback(
     ({ width }) => {

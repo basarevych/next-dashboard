@@ -14,5 +14,5 @@ export const edit = ({ id, checked }) => async (dispatch, getState, di) => {
     id,
     checked
   });
-  return _.get(data, "data.editEmployee.employee.id", false);
+  return (((data.data || {}).editEmployee || {}).employee || {}).id || false;
 };

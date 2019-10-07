@@ -60,7 +60,7 @@ class Fetcher {
   async getAccessToken() {
     return (
       (this.isSsr
-        ? _.get(this.req, "session.accessToken")
+        ? (this.req.session || {}).accessToken
         : this.storage.get("accessToken")) || null
     );
   }
@@ -71,7 +71,7 @@ class Fetcher {
   async getRefreshToken() {
     return (
       (this.isSsr
-        ? _.get(this.req, "session.refreshToken")
+        ? (this.req.session || {}).refreshToken
         : this.storage.get("refreshToken")) || null
     );
   }
@@ -152,10 +152,11 @@ class Fetcher {
 
         let data = await response.json();
 
-        let result = _.get(data, "data.getToken.success", null);
+        let result = ((data.data || {}).getToken || {}).success || null;
         if (result === true) {
-          let accessToken = _.get(data, "data.getToken.token", null);
-          let refreshToken = _.get(data, "data.getToken.refreshToken", null);
+          let accessToken = ((data.data || {}).getToken || {}).token || null;
+          let refreshToken =
+            ((data.data || {}).getToken || {}).refreshToken || null;
           if (!accessToken || !refreshToken) return done(null, null);
           return done(accessToken, refreshToken);
         } else if (result === false) {
@@ -260,7 +261,7 @@ class Fetcher {
         else return result;
       } catch (error) {
         console.error(error.message);
-        if (process.browser || _.get(this, "req.aborted") === false) {
+        if (process.browser || (this.req || {}).aborted === false) {
           await new Promise(resolve => setTimeout(resolve, 1000));
         } else {
           return { errors: [{ message: error.message }] };

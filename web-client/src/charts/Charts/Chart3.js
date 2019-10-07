@@ -13,41 +13,33 @@ import { useTheme } from "@material-ui/styles";
 import Paper from "@material-ui/core/Paper";
 import theme from "./theme";
 
+const characterData = [
+  { strength: 1, intelligence: 250, luck: 1, stealth: 40, charisma: 50 },
+  { strength: 2, intelligence: 300, luck: 2, stealth: 80, charisma: 90 },
+  { strength: 5, intelligence: 225, luck: 3, stealth: 60, charisma: 120 }
+];
+
 function Chart3(props) {
   const materialTheme = useTheme();
 
-  const characterData = [
-    { strength: 1, intelligence: 250, luck: 1, stealth: 40, charisma: 50 },
-    { strength: 2, intelligence: 300, luck: 2, stealth: 80, charisma: 90 },
-    { strength: 5, intelligence: 225, luck: 3, stealth: 60, charisma: 120 }
-  ];
-
   const maxima = useMemo(() => {
-    const groupedData = _.reduce(
-      _.keys(characterData[0]),
-      (acc, cur) => {
-        acc[cur] = _.map(characterData, d => d[cur]);
-        return acc;
-      },
-      {}
-    );
-    return _.reduce(
-      _.keys(groupedData),
-      (acc, cur) => {
-        acc[cur] = Math.max(...groupedData[cur]);
-        return acc;
-      },
-      {}
-    );
+    const groupedData = Object.keys(characterData[0]).reduce((acc, cur) => {
+      acc[cur] = characterData.map(d => d[cur]);
+      return acc;
+    }, {});
+    return Object.keys(groupedData).reduce((acc, cur) => {
+      acc[cur] = Math.max(...groupedData[cur]);
+      return acc;
+    }, {});
   }, [characterData]);
 
   const data = useMemo(() => {
     const makeDataArray = d =>
-      _.map(_.keys(d), key => ({
+      Object.keys(d).map(key => ({
         x: key,
         y: d[key] / maxima[key]
       }));
-    return _.map(characterData, datum => makeDataArray(datum));
+    return characterData.map(datum => makeDataArray(datum));
   }, [characterData, maxima]);
 
   const renderChart = useCallback(
@@ -70,11 +62,11 @@ function Chart3(props) {
               colorScale={["gold", "orange", "tomato"]}
               style={{ data: { fillOpacity: 0.2, strokeWidth: 2 } }}
             >
-              {_.map(data, (item, i) => (
+              {data.map((item, i) => (
                 <VictoryArea key={i} data={item} />
               ))}
             </VictoryGroup>
-            {_.map(_.keys(maxima), (key, i) => (
+            {Object.keys(maxima).map((key, i) => (
               <VictoryPolarAxis
                 key={i}
                 dependentAxis
@@ -86,10 +78,7 @@ function Chart3(props) {
                 tickValues={[0.25, 0.5, 0.75]}
               />
             ))}
-            <VictoryPolarAxis
-              labelPlacement="parallel"
-              tickFormat={_.constant("")}
-            />
+            <VictoryPolarAxis labelPlacement="parallel" tickFormat={() => ""} />
           </VictoryChart>
         </svg>
       );

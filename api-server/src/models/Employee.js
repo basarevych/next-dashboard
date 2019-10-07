@@ -3,11 +3,11 @@ const validationSchema = require("../../common/forms/employee");
 const constants = require("../../common/constants");
 
 class Employee extends BaseModel {
-  constructor(db) {
-    super();
+  constructor(di, db) {
+    super(di);
 
     this.validationSchema = validationSchema;
-    this.depts = _.values(constants.depts);
+    this.depts = Object.values(constants.depts);
     this.sortBy = [
       "uid",
       "checked",
@@ -97,7 +97,7 @@ class Employee extends BaseModel {
       const values = self.cast(
         this.toObject({ getters: true, virtuals: true })
       );
-      for (let field of _.keys(values)) this[field] = values[field];
+      for (let field of Object.keys(values)) this[field] = values[field];
 
       this.whenUpdated = Date.now();
     });
@@ -112,7 +112,7 @@ class Employee extends BaseModel {
   }
 
   static get $requires() {
-    return ["db"];
+    return ["di", "db"];
   }
 
   static get $lifecycle() {

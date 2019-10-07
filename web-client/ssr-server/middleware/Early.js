@@ -19,7 +19,7 @@ class Early {
       cors({
         credentials: true,
         origin: (origin, callback) => {
-          let match = !origin || _.includes(this.app.config.appOrigins, origin);
+          let match = !origin || this.app.config.appOrigins.includes(origin);
           if (match) return callback(null, true);
           console.log(`CORS! ${origin}`);
           let error = new Error("Not allowed by CORS");

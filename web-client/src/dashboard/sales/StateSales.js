@@ -89,19 +89,16 @@ function StateSales(props) {
     }
   }, [props.selected, setSelected]);
 
-  const edges = _.get(props, "viewer.stateCities.edges", []);
+  const edges = ((props.viewer || {}).stateCities || {}).edges || [];
 
   const data = useMemo(() => {
-    const cities = _.map(edges, edge => ({
-      x: _.get(edge, "node.name"),
-      y: _.get(edge, "node.population")
+    const cities = edges.map(edge => ({
+      x: edge.node.name,
+      y: edge.node.population
     }));
     if (!cities.length) return null;
-    const otherPopulation = _.get(
-      props.viewer,
-      "stateCities.otherPopulation",
-      0
-    );
+    const otherPopulation =
+      ((props.viewer || {}).stateCities || {}).otherPopulation || 0;
     if (otherPopulation) {
       cities.push({
         x: intl.formatMessage({ id: "DASHBOARD_OTHER_LABEL" }),
@@ -113,7 +110,7 @@ function StateSales(props) {
 
   const legends = useMemo(
     () =>
-      _.map(data, (item, i) => {
+      data.map((item, i) => {
         const [r, g, b] = getColor(i, data.length);
         return {
           name: `${i + 1}: ${item.x}`,
@@ -142,7 +139,7 @@ function StateSales(props) {
 
   const gradients = useMemo(
     () =>
-      _.map(_.range(0, data.length), i => {
+      [...Array(data.length).keys()].map(i => {
         const [r1, g1, b1] = getColorStart(i, data.length);
         const [r2, g2, b2] = getColorEnd(i, data.length);
         return (
@@ -205,7 +202,7 @@ function StateSales(props) {
           height={radius + height / 2}
           standalone={false}
           containerComponent={<VictoryContainer responsive={false} />}
-          theme={_.merge({}, VictoryTheme.material, {
+          theme={Object.assign({}, VictoryTheme.material, {
             axis: {
               style: {
                 axis: { display: "none" },

@@ -124,8 +124,8 @@ function HeaderBar(props) {
     };
   }, []);
 
-  const newHeight = _.get(barRef, "current.offsetHeight");
-  const newWidth = _.get(barRef, "current.offsetWidth");
+  const newHeight = (barRef.current || {}).offsetHeight;
+  const newWidth = (barRef.current || {}).offsetWidth;
   useEffect(() => {
     if (newHeight && newHeight !== barHeight) setBarHeight(newHeight);
     if (newWidth && newWidth !== barWidth) setBarWidth(newWidth);
@@ -237,7 +237,7 @@ function HeaderBar(props) {
                     basePath={"/static/img/flags"}
                   />
                   &nbsp;&nbsp;
-                  {_.upperCase(locale)}
+                  {locale.toUpperCase()}
                 </Button>
                 <Button
                   color="inherit"
@@ -247,7 +247,7 @@ function HeaderBar(props) {
                   <ThemeIcon />
                   &nbsp;&nbsp;
                   <FormattedMessage
-                    id={"THEME_" + _.upperCase(theme.name) + "_MENU"}
+                    id={"THEME_" + theme.name.toUpperCase() + "_MENU"}
                   />
                 </Button>
                 <div className={classes.grow} />

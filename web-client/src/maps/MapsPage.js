@@ -67,11 +67,13 @@ function MapsPage(props) {
         ...restOfState
       } = newViewState;
       setViewState({
-        latitude: _.isUndefined(latitude) ? viewState.latitude : latitude,
-        longitude: _.isUndefined(longitude) ? viewState.longitude : longitude,
-        zoom: _.isUndefined(zoom) ? viewState.zoom : zoom,
-        bearing: _.isUndefined(bearing) ? viewState.bearing : bearing,
-        pitch: _.isUndefined(pitch) ? viewState.pitch : pitch,
+        latitude:
+          typeof latitude === "undefined" ? viewState.latitude : latitude,
+        longitude:
+          typeof longitude === "undefined" ? viewState.longitude : longitude,
+        zoom: typeof zoom === "undefined" ? viewState.zoom : zoom,
+        bearing: typeof bearing === "undefined" ? viewState.bearing : bearing,
+        pitch: typeof pitch === "undefined" ? viewState.pitch : pitch,
         ...restOfState
       });
     },
@@ -150,6 +152,8 @@ function MapsPage(props) {
     return null;
   }, [viewMode, theme]);
 
+  const crosshair = useCallback(() => "crosshair", []);
+
   return (
     <div className={classes.layout}>
       <DeckGL
@@ -157,7 +161,7 @@ function MapsPage(props) {
         width="100%"
         height="100%"
         viewState={viewState}
-        getCursor={_.constant("crosshair")}
+        getCursor={crosshair}
         onViewStateChange={updateViewState}
       >
         <StaticMap mapboxApiAccessToken={mapboxToken} mapStyle={mapStyle}>

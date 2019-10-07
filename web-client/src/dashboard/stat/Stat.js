@@ -56,12 +56,12 @@ function Stat(props) {
   const theme = useTheme();
   const intl = useIntl();
 
-  const edges = _.get(props, "data.edges", []);
+  const edges = (props.data || {}).edges || [];
 
   const data = useMemo(() => {
-    return _.map(edges, edge => {
-      const date = new Date(_.get(edge, "node.date"));
-      const value = _.get(edge, "node.value");
+    return edges.map(edge => {
+      const date = new Date(edge.node.date);
+      const value = edge.node.value;
       return {
         date,
         value,
@@ -78,7 +78,7 @@ function Stat(props) {
   const delta = useMemo(() => {
     if (data.length < 2) return null;
 
-    const items = _.slice(data, -2);
+    const items = data.slice(-2);
     const change = (100 * (items[1].value - items[0].value)) / items[0].value;
     const symbol = change > 0 ? "▲" : change < 0 ? "▼" : "";
     const className =
@@ -96,12 +96,11 @@ function Stat(props) {
 
   const stat = useMemo(() => {
     if (!data.length) return null;
-
     return (
       <div className={classes.stat}>
         <Typography variant="h3" color="inherit">
           <FormattedNumber
-            value={_.last(data).value}
+            value={data.slice(-1)[0].value}
             maximumFractionDigits={props.precision}
           />
         </Typography>

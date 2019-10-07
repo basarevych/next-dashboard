@@ -19,7 +19,7 @@ module.exports = function(state, type) {
   else obj = state;
 
   let str = JSON.stringify(obj, (key, value) =>
-    _.isString(value) ? utf8.encode(value) : value
+    typeof value === "string" ? utf8.encode(value) : value
   );
   let output = byteEncode(pako.deflate(str, { to: "string" }));
 

@@ -1,6 +1,6 @@
 {
   "name": "next-dashboard-common",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "private": true,
   "dependencies": {
     "base64util": "~2.0.0",
@@ -10,9 +10,22 @@
     "moment": "~2.24.0",
     "moment-timezone": "~0.5.26",
     "pako": "~1.0.10",
-    "react-intl": "~3.3.2",
     "utf8": "~3.0.0",
     "validator": "~11.1.0",
     "yup": "~0.27.0"
+  },
+  "devDependencies": {
+    "@babel/core": "~7.6.2",
+    "babel-eslint": "~10.0.3",
+    "babel-jest": "~24.9.0",
+    "eslint": "~6.5.1",
+    "jest": "~24.9.0"
+  },
+  "engines": {
+    "node": ">=10.0"
+  },
+  "scripts": {
+    "lint": "eslint . --max-warnings=0",
+    "test": "jest . --no-cache --verbose"
   }
 }

@@ -3,6 +3,7 @@ const concat = require("concat-stream");
 const fetch = require("isomorphic-unfetch");
 const Jimp = require("jimp");
 const Router = require("express").Router;
+const shuffle = require("../../common/src/shuffle");
 
 class AvatarsRoute {
   constructor(di, config, cache, user) {
@@ -27,29 +28,29 @@ class AvatarsRoute {
   async init() {
     if (this.promise) return this.promise;
 
-    this.promise = Promise.resolve().then(async () => {
+    this.promise = (async () => {
       try {
         let response = await fetch("https://tinyfac.es/api/users");
         if (response.status !== 200)
           throw new Error(`Service response: ${response.status}`);
 
         let data = await response.json();
-        if (!_.isArray(data) || !data.length)
+        if (!Array.isArray(data) || !data.length)
           throw new Error("Failed to fetch avatars list");
 
-        this.randomList = _.shuffle(data);
+        this.randomList = shuffle(data);
         this.randomSelected = [];
 
         const getRandomAvatar = male => {
           for (let i = 0; i < this.randomList.length; i++) {
             if (
-              !_.isUndefined(male) &&
+              !(typeof male === "undefined") &&
               this.randomList[i].gender !== (male ? "male" : "female")
             ) {
               continue;
             }
 
-            if (_.includes(this.randomSelected, i)) continue;
+            if (this.randomSelected.includes(i)) continue;
 
             for (let j = 0; j < this.randomList[i].avatars.length; j++) {
               if (
@@ -76,7 +77,7 @@ class AvatarsRoute {
 
       this.router = Router();
       this.router.get("/avatars/:id", this.getAvatar.bind(this));
-    });
+    })();
 
     return this.promise;
   }

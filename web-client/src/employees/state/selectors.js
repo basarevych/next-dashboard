@@ -18,7 +18,7 @@ export const getSelected = createSelector(
 );
 
 export const getIsSelected = (state, props) =>
-  _.includes(getSelected(state), props.id);
+  getSelected(state).includes(props.id);
 
 export const getIsEditModalOpen = state =>
   state.getIn(["employees", "isEditModalOpen"]);

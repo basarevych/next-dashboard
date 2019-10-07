@@ -74,7 +74,7 @@ function EmployeesRow(props) {
         component="th"
         scope="row"
       >
-        {_.padStart(props.node.uid, 6, "0")}
+        {props.node.uid.toString().padStart(6, "0")}
       </TableCell>
       <TableCell
         padding="checkbox"

@@ -75,12 +75,12 @@ export const signIn = ({ email, password }) => async (
   di
 ) => {
   let data = await SignInMutation(di, { email, password });
-  if (_.get(data, "data.signIn.success", false)) {
+  if (((data.data || {}).signIn || {}).success) {
     await di
       .get("fetcher")
       .setTokens(
-        _.get(data, "data.signIn.accessToken", null),
-        _.get(data, "data.signIn.refreshToken", null)
+        ((data.data || {}).signIn || {}).accessToken || null,
+        ((data.data || {}).signIn || {}).refreshToken || null
       );
     return true;
   }
@@ -94,12 +94,12 @@ export const signUp = ({ email, password }) => async (
 ) => {
   let locale = selectors.getLocale(getState());
   let data = await SignUpMutation(di, { email, password, locale });
-  if (_.get(data, "data.signUp.success", false)) {
+  if (((data.data || {}).signUp || {}).success) {
     await di
       .get("fetcher")
       .setTokens(
-        _.get(data, "data.signUp.accessToken", null),
-        _.get(data, "data.signUp.refreshToken", null)
+        ((data.data || {}).signUp || {}).accessToken || null,
+        ((data.data || {}).signUp || {}).refreshToken || null
       );
     return true;
   }
@@ -108,7 +108,7 @@ export const signUp = ({ email, password }) => async (
 
 export const signOut = () => async (dispatch, getState, di) => {
   let data = await SignOutMutation(di);
-  if (_.get(data, "data.signOut.success", false)) {
+  if (((data.data || {}).signOut || {}).success) {
     await dispatch(stop());
     await di.get("fetcher").setTokens(null, null);
     window.location.href = "/";
@@ -124,7 +124,7 @@ export const requestEmailVerification = () => async (
 ) => {
   let locale = selectors.getLocale(getState());
   let data = await RequestEmailVerificationMutation(di, { locale });
-  return !!_.get(data, "data.requestEmailVerification.success", false);
+  return !!((data.data || {}).requestEmailVerification || {}).success;
 };
 
 export const finishEmailVerification = ({ token }) => async (
@@ -133,12 +133,12 @@ export const finishEmailVerification = ({ token }) => async (
   di
 ) => {
   let data = await VerifyEmailMutation(di, { token });
-  if (_.get(data, "data.verifyEmail.success", false)) {
+  if (((data.data || {}).verifyEmail || {}).success) {
     await di
       .get("fetcher")
       .setTokens(
-        _.get(data, "data.verifyEmail.accessToken", null),
-        _.get(data, "data.verifyEmail.refreshToken", null)
+        ((data.data || {}).verifyEmail || {}).accessToken || null,
+        ((data.data || {}).verifyEmail || {}).refreshToken || null
       );
     return true;
   }
@@ -155,7 +155,7 @@ export const updateProfile = ({ email, name, password }) => async (
     name,
     password
   });
-  if (_.get(data, "data.updateProfile.success", false)) {
+  if (((data.data || {}).updateProfile || {}).success) {
     window.dispatchEvent(new CustomEvent(constants.events.PROFILE_CHANGED));
     return true;
   }
@@ -174,24 +174,20 @@ export const linkProvider = ({ provider }) => async (
       type: "oneTime",
       token: refreshToken
     });
-    let result = _.get(data, "data.getToken.success", null);
+    let result = ((data.data || {}).getToken || {}).success || null;
     if (result === true)
-      oneTimeToken = _.get(data, "data.getToken.token", null);
+      oneTimeToken = ((data.data || {}).getToken || {}).token || null;
   }
 
   let redirect = window.location.href;
-  if (
-    _.startsWith(Router.asPath, "/auth") &&
-    Router.asPath !== "/auth/profile"
-  ) {
+  if (Router.asPath.startsWith("/auth") && Router.asPath !== "/auth/profile")
     redirect = selectors.getAppServer(getState());
-  }
 
   window.location.href =
     selectors.getApiServer(getState()) +
     constants.apiBase +
     "/oauth/" +
-    _.lowerCase(provider) +
+    provider.toLowerCase() +
     "?redirect=" +
     encodeURIComponent(redirect) +
     (oneTimeToken ? "&token=" + encodeURIComponent(oneTimeToken) : "");
@@ -205,12 +201,12 @@ export const finishLinkingProvider = ({ token, redirect }) => async (
   di
 ) => {
   let data = await GetTokenMutation(di, { type: "access", token });
-  if (_.get(data, "data.getToken.success", false)) {
+  if (((data.data || {}).getToken || {}).success) {
     await di
       .get("fetcher")
       .setTokens(
-        _.get(data, "data.getToken.token", null),
-        _.get(data, "data.getToken.refreshToken", null)
+        ((data.data || {}).getToken || {}).token || null,
+        ((data.data || {}).getToken || {}).refreshToken || null
       );
     window.location.href = redirect || "/";
     return true;
@@ -224,7 +220,7 @@ export const unlinkProvider = ({ provider }) => async (
   di
 ) => {
   let data = await UnlinkProviderMutation(di, { provider });
-  if (_.get(data, "data.unlinkProvider.success", false)) {
+  if (((data.data || {}).unlinkProvider || {}).success) {
     window.dispatchEvent(new CustomEvent(constants.events.PROFILE_CHANGED));
     return true;
   }
@@ -233,7 +229,7 @@ export const unlinkProvider = ({ provider }) => async (
 
 export const deleteProfile = () => async (dispatch, getState, di) => {
   let data = await DeleteProfileMutation(di);
-  if (_.get(data, "data.deleteProfile.success", false)) {
+  if (((data.data || {}).deleteProfile || {}).success) {
     await dispatch(stop());
     await di.get("fetcher").setTokens(null, null);
     window.location.href = "/";

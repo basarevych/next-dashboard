@@ -30,7 +30,7 @@ const useStyles = makeStyles(theme => ({
     html: {
       fontSize: `${theme.typography.fontSize}px`
     },
-    body: _.merge(
+    body: Object.assign(
       {
         fontFamily: theme.typography.fontFamily,
         background: theme.palette.background.default,
@@ -138,7 +138,7 @@ const useStyles = makeStyles(theme => ({
     justifyContent: "center",
     alignItems: "center"
   },
-  sidebar: _.merge(
+  sidebar: Object.assign(
     {
       background: theme.sidebar.background,
       border: "none",

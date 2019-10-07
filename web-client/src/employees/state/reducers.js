@@ -18,7 +18,7 @@ const defaultPageSize = 10;
 const tablePageSizeReducer = (state = defaultPageSize, action) => {
   switch (action.type) {
     case types.SET_TABLE_PAGE_SIZE:
-      if (!_.isUndefined(action.pageSize)) return action.pageSize;
+      if (typeof action.pageSize !== "undefined") return action.pageSize;
       break;
   }
   return state;
@@ -27,7 +27,7 @@ const tablePageSizeReducer = (state = defaultPageSize, action) => {
 const tablePageNumberReducer = (state = 0, action) => {
   switch (action.type) {
     case types.SET_TABLE_PAGE_NUMBER:
-      if (!_.isUndefined(action.pageNumber)) return action.pageNumber;
+      if (typeof action.pageNumber !== "undefined") return action.pageNumber;
       break;
   }
   return state;
@@ -35,6 +35,9 @@ const tablePageNumberReducer = (state = 0, action) => {
 
 const defaultTableParams = {
   first: defaultPageSize,
+  after: null,
+  last: null,
+  before: null,
   sortBy: "uid",
   sortDir: "asc"
 };
@@ -42,7 +45,7 @@ const defaultTableParams = {
 const tableParamsReducer = (state = Map(defaultTableParams), action) => {
   switch (action.type) {
     case types.SET_TABLE_PARAMS:
-      if (!_.isUndefined(action.params)) return Map(action.params);
+      if (typeof action.params !== "undefined") return Map(action.params);
       break;
     case types.RESET_TABLE_PARAMS:
       return Map(defaultTableParams);
@@ -64,25 +67,25 @@ const selectedReducer = (state = Set([]), action) => {
   switch (action.type) {
     case types.SET_SELECTED:
       if (
-        !_.isUndefined(action.employeeId) &&
-        !_.isUndefined(action.isSelected)
+        typeof action.employeeId !== "undefined" &&
+        typeof action.isSelected !== "undefined"
       ) {
-        // eslint-disable-next-line lodash/prefer-lodash-method
         if (state.includes(action.employeeId))
           return state.delete(action.employeeId);
         else return state.add(action.employeeId);
       }
       break;
     case types.SELECT_ALL:
-      if (!_.isUndefined(action.employeeIds)) return Set(action.employeeIds);
+      if (typeof action.employeeIds !== "undefined")
+        return Set(action.employeeIds);
       break;
     case types.DESELECT_ALL:
-      if (_.isUndefined(action.exceptEmployeeIds)) {
+      if (typeof action.exceptEmployeeIds !== "undefined") {
         return Set([]);
       } else {
         return state.withMutations(set => {
           for (let item of set.values())
-            if (!_.includes(action.exceptEmployeeIds, item)) set.delete(item);
+            if (!action.exceptEmployeeIds.includes(item)) set.delete(item);
         });
       }
   }

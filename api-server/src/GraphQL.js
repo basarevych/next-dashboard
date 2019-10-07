@@ -32,51 +32,40 @@ class GraphQL {
   async init() {
     if (this.promise) return this.promise;
 
-    this.promise = Promise.resolve().then(async () => {
+    this.promise = (async () => {
       this.modules = this.di.get(/^graphql\..+$/); // names starting with "graphql."
+      const instances = Array.from(this.modules.values());
 
       // Relay node definitions
       this.nodeDefinitions = nodeDefinitions(
         (globalId, context) => {
-          const result = _.find(
-            Array.from(this.modules.values()),
+          const result = instances.find(
             item => !!item.idFetcher(globalId, context)
           );
           return result || null;
         },
         obj => {
-          const result = _.find(
-            Array.from(this.modules.values()),
-            item => !!item.typeResolver(obj)
-          );
+          const result = instances.find(item => !!item.typeResolver(obj));
           return result || null;
         }
       );
 
       // Initialize modules
-      await Promise.all(
-        _.invokeMap(Array.from(this.modules.values()), "init", {
-          root: this
-        })
-      );
+      await Promise.all(instances.map(item => item.init({ root: this })));
 
       // Query definition
       this.Viewer = new GraphQLObjectType({
         name: "Viewer",
-        fields: _.reduce(
-          Array.from(this.modules.values()).concat({
-            node: this.nodeDefinitions.nodeField
-          }),
-          (acc, cur) => _.merge(acc, cur.query),
-          {}
-        )
+        fields: instances.reduce((acc, cur) => Object.assign(acc, cur.query), {
+          node: this.nodeDefinitions.nodeField
+        })
       });
       this.Query = new GraphQLObjectType({
         name: "Query",
         fields: {
           viewer: {
             type: this.Viewer,
-            resolve: _.constant({})
+            resolve: () => ({})
           },
           node: this.nodeDefinitions.nodeField
         }
@@ -85,9 +74,8 @@ class GraphQL {
       // Mutation definition
       this.Mutation = new GraphQLObjectType({
         name: "Mutation",
-        fields: _.reduce(
-          Array.from(this.modules.values()),
-          (acc, cur) => _.merge(acc, cur.mutation),
+        fields: instances.reduce(
+          (acc, cur) => Object.assign(acc, cur.mutation),
           {}
         )
       });
@@ -95,9 +83,8 @@ class GraphQL {
       // Subscription definition
       this.Subscription = new GraphQLObjectType({
         name: "Subscription",
-        fields: _.reduce(
-          Array.from(this.modules.values()),
-          (acc, cur) => _.merge(acc, cur.subscription),
+        fields: instances.reduce(
+          (acc, cur) => Object.assign(acc, cur.subscription),
           {}
         )
       });
@@ -139,7 +126,7 @@ class GraphQL {
           }
         );
       }
-    });
+    })();
     return this.promise;
   }
 }

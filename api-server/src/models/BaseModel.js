@@ -1,14 +1,16 @@
 const yup = require("yup");
 
 class BaseModel {
-  constructor() {
+  constructor(di) {
+    if (!di) throw new Error("BaseModel requires di instance");
+    this.di = di;
     this.validationSchema = null;
   }
 
   getFieldValidator(field) {
     const self = this;
     return {
-      validator: async function(/* value */) {
+      validator: async function(value) {
         if (!self.validationSchema) return true;
 
         try {
@@ -20,7 +22,11 @@ class BaseModel {
         try {
           await self.validationSchema.validateAt(
             field,
-            this.toObject({ getters: true, virtuals: true })
+            Object.assign(
+              {},
+              this.toObject({ getters: true, virtuals: true }),
+              { [field]: value }
+            )
           );
         } catch (error) {
           throw error.errors.length === 1 ? error.errors[0] : error.errors;
@@ -38,8 +44,8 @@ class BaseModel {
       try {
         await validator.bind(this)(value);
       } catch (error) {
-        throw this.di.get("error.validation", {
-          errors: { password: { message: error } }
+        throw self.di.get("error.validation", {
+          errors: { [field]: { message: error } }
         });
       }
     };
@@ -49,7 +55,7 @@ class BaseModel {
     if (!this.validationSchema) return {};
     const castValues = this.validationSchema.cast(values);
     const result = {};
-    for (let field of _.keys(castValues)) {
+    for (let field of Object.keys(castValues)) {
       try {
         yup.reach(this.validationSchema, field);
         result[field] = castValues[field];

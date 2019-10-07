@@ -22,14 +22,14 @@ function EmployeesHeader(props) {
   const classes = useStyles(props);
   const dispatch = useDispatch();
 
-  const employeeIds = useMemo(() => _.map(props.employees, "node.id"), [
+  const employeeIds = useMemo(() => props.employees.map(item => item.node.id), [
     props.employees
   ]);
   const hasRecords = useMemo(() => props.employees.length > 0, [
     props.employees
   ]);
   const isAllSelected = useMemo(
-    () => !_.difference(employeeIds, props.selected).length,
+    () => !employeeIds.filter(item => !props.selected.includes(item)).length,
     [employeeIds, props.selected]
   );
   const isAllDeselected = useMemo(() => !props.selected.length, [

@@ -39,7 +39,7 @@ class GraphQL {
         }
         if (!original.details && original.stack) {
           // generic exception, extract stack trace as the details field
-          original.details = _.split(error.originalError.stack, "\n");
+          original.details = error.originalError.stack.split("\n");
         }
 
         let message = original.message || error.message || "An error occurred";

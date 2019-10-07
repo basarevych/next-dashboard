@@ -3,8 +3,8 @@ const transformString = require("./lib/transformString");
 const { allCountries } = require("../src/countries");
 const constants = require("../constants");
 
-const countries = _.map(allCountries, "iso2");
-const depts = _.keys(constants.depts);
+const countries = allCountries.map(item => item.iso2);
+const depts = Object.keys(constants.depts);
 
 module.exports = yup.object().shape({
   uid: yup

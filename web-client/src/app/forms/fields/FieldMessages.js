@@ -34,15 +34,15 @@ function FieldMessages(props) {
     let result = [];
     if (props.messages) {
       result = result.concat(
-        _.isArray(props.messages)
-          ? _.map(props.messages, item => ({ message: item }))
+        Array.isArray(props.messages)
+          ? props.messages.map(item => ({ message: item }))
           : [{ messages: props.messages }]
       );
     }
     if (props.errors) {
       result = result.concat(
-        _.isArray(props.errors)
-          ? _.map(props.errors, item => ({ error: item }))
+        Array.isArray(props.errors)
+          ? props.errors.map(item => ({ error: item }))
           : [{ error: props.errors }]
       );
     }
@@ -51,7 +51,7 @@ function FieldMessages(props) {
 
   return (
     <List classes={{ root: classes.list }}>
-      {_.map(list, (item, index) => (
+      {list.map((item, index) => (
         <ListItem key={`message-${index}`} classes={{ root: classes.listItem }}>
           <ListItemIcon>
             {item.message ? (

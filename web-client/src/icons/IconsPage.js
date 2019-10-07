@@ -11,7 +11,7 @@ import * as source from "@material-ui/icons";
 import styledScroll from "../../styles/styledScroll";
 
 const icons = {};
-_.forEach(_.keys(source), name => {
+Object.keys(source).forEach(name => {
   const icon = source[name];
   if (!icon || icon.muiName !== "SvgIcon") return;
 
@@ -49,14 +49,10 @@ _.forEach(_.keys(source), name => {
   icons[name].Main = icon;
 });
 
-const fullList = _.reduce(
-  _.keys(icons),
-  (acc, cur) => {
-    acc.push({ name: _.replace(cur, /([A-Z])/g, " $1"), ...icons[cur] });
-    return acc;
-  },
-  []
-);
+const fullList = Object.keys(icons).reduce((acc, cur) => {
+  acc.push({ name: cur.replace(/([A-Z])/g, " $1"), ...icons[cur] });
+  return acc;
+}, []);
 
 const useStyles = makeStyles(theme => ({
   layout: {
@@ -128,8 +124,8 @@ function IconsPage() {
       const filter = evt.target.value;
       setFilter(filter);
       setList(
-        _.filter(fullList, item =>
-          _.includes(_.toLower(item.name), _.toLower(filter))
+        fullList.filter(item =>
+          item.name.toLowerCase().includes(filter.toLowerCase())
         )
       );
     },

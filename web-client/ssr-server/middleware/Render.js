@@ -17,7 +17,7 @@ class Render {
 
     const user = req.session.user || {};
     const userId = user.userId || null;
-    if (_.isFunction(isAllowed) && !isAllowed(user))
+    if (typeof isAllowed === "function" && !isAllowed(user))
       res.status(user.isAuthenticated ? 403 : 401);
 
     try {

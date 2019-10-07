@@ -5,8 +5,10 @@ import themes from "../styles/themes";
 
 class MyDocument extends Document {
   render() {
-    const theme = _.get(this.props, "__NEXT_DATA__.query.theme");
-    const color = themes ? themes.defs[theme].palette.primary.main : "#ffffff";
+    const theme = ((this.props.__NEXT_DATA__ || {}).query || {}).theme;
+    const color = themes
+      ? ((((themes.defs || {})[theme] || {}).palette || {}).primary || {}).main
+      : "#ffffff";
     return (
       <html lang="en" dir="ltr">
         <Head>

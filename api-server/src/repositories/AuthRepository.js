@@ -87,8 +87,8 @@ class AuthRepository {
     });
     user.clients.push(client.toObject());
 
-    await user.validateField("password", password); // before it is encrypted
     await user.validate();
+    await user.validateField("password", password); // before it is encrypted
     await user.save();
     await this.auth.sendVerificationEmail(context, user, locale);
     await this.usersRepo.publish("userCreated", user);
@@ -124,10 +124,10 @@ class AuthRepository {
     let decoded = (await this.auth.useToken(token)) || {};
 
     if (
-      !_.includes(["refresh", "oneTime"], decoded.type) ||
+      !["refresh", "oneTime"].includes(decoded.type) ||
       !decoded.user ||
       !decoded.client ||
-      !_.includes(["access", "oneTime"], type)
+      !["access", "oneTime"].includes(type)
     ) {
       return { success: false };
     }
@@ -208,7 +208,7 @@ class AuthRepository {
 
     let { user } = context.token || {};
     for (let item of user.providers) {
-      if (_.lowerCase(item.name) === _.lowerCase(provider)) {
+      if (item.name.toLowerCase() === provider.toLowerCase()) {
         item.remove();
         await user.validate();
         await user.save();
@@ -233,12 +233,10 @@ class AuthRepository {
       user.email = email;
       user.isEmailVerified = false;
     }
-    if (password) {
-      await user.validateField("password", password); // before it is encrypted
-      user.password = await this.auth.encryptPassword(password);
-    }
+    if (password) user.password = await this.auth.encryptPassword(password);
 
     await user.validate();
+    if (password) await user.validateField("password", password); // before it is encrypted
     await user.save();
     await this.usersRepo.publish("userUpdated", user);
     return { success: true };

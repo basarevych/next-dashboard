@@ -53,14 +53,10 @@ class Auth {
         roles: {
           type: new GraphQLNonNull(new GraphQLList(this.root.UserRole)),
           resolve: source =>
-            _.reduce(
-              source.roles,
-              (acc, cur) => {
-                acc.push(_.indexOf(this.userModel.roles, cur));
-                return acc;
-              },
-              []
-            )
+            source.roles.reduce((acc, cur) => {
+              acc.push(this.userModel.roles.indexOf(cur));
+              return acc;
+            }, [])
         },
         providers: {
           type: new GraphQLNonNull(new GraphQLList(this.root.ProviderStatus))

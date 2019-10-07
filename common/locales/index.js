@@ -17,8 +17,11 @@
  */
 function parse(source) {
   const messages = {};
-  for (let key of _.keys(source))
-    messages[key] = _.isArray(source[key]) ? source[key].join("") : source[key];
+  for (let key of Object.keys(source)) {
+    messages[key] = Array.isArray(source[key])
+      ? source[key].join("")
+      : source[key];
+  }
   return messages;
 }
 

@@ -34,7 +34,7 @@ function EmployeesTable(props) {
         />
       </TableHead>
       <TableBody>
-        {_.map(props.employees, edge => (
+        {props.employees.map(edge => (
           <EmployeesRow
             key={edge.cursor}
             node={edge.node}

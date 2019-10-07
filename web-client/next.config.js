@@ -1,6 +1,5 @@
 "use strict";
 
-if (!global._) global._ = require("lodash");
 const path = require("path");
 const ProvidePlugin = require("webpack").ProvidePlugin;
 const ContextReplacementPlugin = require("webpack").ContextReplacementPlugin;
@@ -50,11 +49,8 @@ const plugins = [
   [
     withBundleAnalyzer,
     {
-      analyzeServer: _.includes(["server", "both"], process.env.BUNDLE_ANALYZE),
-      analyzeBrowser: _.includes(
-        ["browser", "both"],
-        process.env.BUNDLE_ANALYZE
-      ),
+      analyzeServer: ["server", "both"].includes(process.env.BUNDLE_ANALYZE),
+      analyzeBrowser: ["browser", "both"].includes(process.env.BUNDLE_ANALYZE),
       bundleAnalyzerConfig: {
         server: {
           analyzerMode: "static",
@@ -106,27 +102,12 @@ module.exports = withPlugins(plugins, {
     */
 
     config.plugins.push(
-      new ProvidePlugin({
-        _: "lodash" // lodash is defined as global variable
-      })
-    );
-
-    config.plugins.push(
       new EnvironmentPlugin({
         // pass NODE_ENV var to the code
         NODE_ENV: "production",
         // define this var when exporting to static site
-        STATIC_SITE: false,
-        // define this var when service worker should be disabled
-        DISABLE_SW: false
+        STATIC_SITE: false
       })
-    );
-
-    // make sure there is only one instance of lodash
-    config.resolve.alias["lodash"] = path.resolve(
-      __dirname,
-      "node_modules",
-      "lodash"
     );
 
     // make sure there is only one instance of graphql
@@ -203,9 +184,9 @@ module.exports = withPlugins(plugins, {
       const entries = await originalEntry();
 
       if (entries["main.js"]) {
-        // inject polyfills and init code before the app
+        // inject polyfills before the app
         entries["main.js"].unshift(
-          path.resolve(__dirname, "src", "app", "lib", "initApp.js")
+          path.resolve(__dirname, "src", "app", "lib", "polyfills.js")
         );
       }
 
@@ -219,8 +200,7 @@ module.exports = withPlugins(plugins, {
   exportPathMap: async () => {
     const App = require("./ssr-server/App");
     const app = new App();
-    return _.reduce(
-      _.keys(constants.pages),
+    return Object.keys(constants.pages).reduce(
       (acc, cur) =>
         acc.then(async map => {
           map[cur] = await app.analyzeRequest({ path: cur });

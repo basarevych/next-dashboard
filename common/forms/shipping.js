@@ -4,7 +4,7 @@ const transformAddress = require("./lib/transformAddress");
 const matchCountryPhone = require("./lib/matchCountryPhone");
 const { allCountries } = require("../src/countries");
 
-const countries = _.map(allCountries, "iso2");
+const countries = allCountries.map(item => item.iso2);
 
 module.exports = yup.object().shape({
   firstName: yup

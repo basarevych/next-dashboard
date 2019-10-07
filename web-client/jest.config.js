@@ -6,8 +6,6 @@
 
 "use strict";
 
-const _ = require("lodash");
-
 module.exports = {
   testEnvironment: "node",
   setupFiles: ["<rootDir>/jest.setup.js"],
@@ -22,8 +20,5 @@ module.exports = {
     ".*\\.less$": "<rootDir>/package.json",
     ".*\\.scss$": "<rootDir>/package.json",
     ".*\\.css$": "<rootDir>/package.json"
-  },
-  globals: {
-    _
   }
 };

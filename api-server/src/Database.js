@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const constants = require("../../common/constants");
+const shuffle = require("../common/src/shuffle");
 
 class Database {
   constructor(config, di, fake) {
@@ -66,7 +67,7 @@ class Database {
         if (this.config.rootLogin && this.config.rootPassword) {
           let user = await this.UserModel.findOne({
             email: this.config.rootLogin
-          }); // eslint-disable-line lodash/prefer-lodash-method
+          });
           let msg;
           if (user) {
             user.email = this.config.rootLogin;
@@ -91,17 +92,16 @@ class Database {
           console.log(msg);
         }
 
-        // eslint-disable-next-line lodash/prefer-lodash-method
         let count = await this.EmployeeModel.countDocuments();
         if (!count) {
           let employees = [];
           let usedNames = [];
-          for (let i = 0; i < 100 * _.keys(constants.depts).length; i++) {
+          for (let i = 0; i < 100 * Object.keys(constants.depts).length; i++) {
             employees.push(
               new this.EmployeeModel(this.fake.createRandomEmployee(usedNames))
             );
           }
-          _.shuffle(employees);
+          shuffle(employees);
           for (let employee of employees) await employee.save();
           console.log("> Employees created");
         }

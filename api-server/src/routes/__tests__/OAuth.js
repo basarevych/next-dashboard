@@ -8,7 +8,6 @@ const AuthRoute = require("../OAuth");
 
 jest.mock("ioredis", () => {
   const Redis = require("ioredis-mock");
-  // eslint-disable-next-line lodash/prefer-lodash-typecheck
   if (typeof Redis === "object") {
     // the first mock is an ioredis shim because ioredis-mock depends on it
     // https://github.com/stipsan/ioredis-mock/blob/master/src/index.js#L101-L111
@@ -59,8 +58,8 @@ describe("Auth route", () => {
   });
 
   let tests = [];
-  for (let provider of _.values(constants.oauthProviders)) {
-    const name = _.toLower(provider);
+  for (let provider of Object.values(constants.oauthProviders)) {
+    const name = provider.toLowerCase();
     test(`responds for ${provider} auth provider`, () => {
       let promise = request(app)
         .get(`/oauth/${name}`)
@@ -83,8 +82,8 @@ describe("Auth route", () => {
     let calls = [];
     for (let item of route.authenticate.mock.calls) calls.push(item[0]);
 
-    for (let provider of _.values(constants.oauthProviders)) {
-      expect(_.filter(calls, item => item === _.toLower(provider)).length).toBe(
+    for (let provider of Object.values(constants.oauthProviders)) {
+      expect(calls.filter(item => item === provider.toLowerCase()).length).toBe(
         2
       );
     }

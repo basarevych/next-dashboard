@@ -97,7 +97,7 @@ module.exports = {
       icon: "users",
       menu: "MENU_USERS",
       title: "TITLE_USERS",
-      isAllowed: user => _.includes(user.roles || [], roles.ADMIN)
+      isAllowed: user => (user.roles || []).includes(roles.ADMIN)
     },
     "/pwa": {
       page: "/pwa",

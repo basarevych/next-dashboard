@@ -14,14 +14,14 @@ class Fake {
   createRandomEmployee(usedNames) {
     let name;
     do name = this.getName();
-    while (_.includes(usedNames, name));
+    while (usedNames.includes(name));
     usedNames.push(name);
 
-    let depts = _.keys(constants.depts);
+    let depts = Object.keys(constants.depts);
     let dept = depts[this.getInt(0, depts.length - 1)];
 
     let code = this.getCountry();
-    let country = allCountries[iso2Lookup[_.toLower(code)]].name;
+    let country = allCountries[iso2Lookup[code.toLowerCase()]].name;
 
     return {
       uid: usedNames.length,
@@ -67,9 +67,9 @@ class Fake {
   }
 
   getCountry() {
-    return _.toUpper(
-      allCountries[this.getInt(0, allCountries.length - 1)].iso2
-    );
+    return allCountries[
+      this.getInt(0, allCountries.length - 1)
+    ].iso2.toUpperCase();
   }
 
   getSalary() {

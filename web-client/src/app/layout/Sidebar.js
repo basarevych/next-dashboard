@@ -156,6 +156,7 @@ function Sidebar(props) {
     return (
       <div className={classes.avatar}>
         <img
+          alt="Avatar"
           src={
             isAuthenticated && userId
               ? apiServer +
@@ -189,7 +190,7 @@ function Sidebar(props) {
   const renderItem = path => {
     const { page, icon, menu, isAllowed } = constants.pages[path] || {};
     if (!page || !icon || !menu) return null;
-    if (_.isFunction(isAllowed) && !isAllowed(user)) return null;
+    if (typeof isAllowed === "function" && !isAllowed(user)) return null;
 
     return (
       <MenuItem
@@ -223,7 +224,7 @@ function Sidebar(props) {
   return (
     <div className={classes.root}>
       <MenuList classes={{ root: classes.list }} subheader={header}>
-        {_.map(_.keys(constants.pages), path => renderItem(path))}
+        {Object.keys(constants.pages).map(path => renderItem(path))}
       </MenuList>
 
       <div className={classes.grow} />

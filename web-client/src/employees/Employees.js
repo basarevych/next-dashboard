@@ -93,14 +93,12 @@ function Employees(props) {
   const [subTrigger, setSubTrigger] = useState(0);
   const isSubscribed = useSelector(state => appSelectors.isSubscribed(state));
 
-  const employees = _.get(props, "viewer.employees.edges", []);
-  const totalCount = _.get(props, "viewer.employees.totalCount", 0);
-  const startCursor = _.get(
-    props,
-    "viewer.employees.pageInfo.startCursor",
-    null
-  );
-  const endCursor = _.get(props, "viewer.employees.pageInfo.endCursor", null);
+  const employees = ((props.viewer || {}).employees || {}).edges || [];
+  const totalCount = ((props.viewer || {}).employees || {}).totalCount || 0;
+  const startCursor =
+    (((props.viewer || {}).employees || {}).pageInfo || {}).startCursor || null;
+  const endCursor =
+    (((props.viewer || {}).employees || {}).pageInfo || {}).endCursor || null;
 
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [pageWasRefreshed, setPageWasRefreshed] = useState(false);
@@ -159,7 +157,7 @@ function Employees(props) {
   const remove = useCallback(() => {
     setIsConfirmOpen(false);
     return Promise.all(
-      _.map(selected, employeeId =>
+      selected.map(employeeId =>
         dispatch(employeesOperations.remove({ id: employeeId }))
       )
     );
@@ -174,7 +172,10 @@ function Employees(props) {
       setParams({
         sortBy,
         sortDir,
-        first: pageSize
+        first: pageSize,
+        after: null,
+        last: null,
+        before: null
       });
     },
     [params.sortBy, params.sortDir, pageSize, setPageNumber, setParams]
@@ -188,7 +189,10 @@ function Employees(props) {
       setParams({
         sortBy: params.sortBy,
         sortDir: params.sortDir,
-        first: newPageSize
+        first: newPageSize,
+        after: null,
+        last: null,
+        before: null
       });
     },
     [params.sortBy, params.sortDir, setPageSize, setPageNumber, setParams]
@@ -205,7 +209,11 @@ function Employees(props) {
 
       const newParams = {
         sortBy: params.sortBy,
-        sortDir: params.sortDir
+        sortDir: params.sortDir,
+        first: null,
+        after: null,
+        last: null,
+        before: null
       };
 
       if (newPageNumber === 0) {
@@ -312,9 +320,14 @@ function Employees(props) {
   useIsomorphicLayoutEffect(
     // automatically refetch when variables change
     () => {
-      props.relay.refetch(params, null, () => setPageWasRefreshed(true), {
-        force: true
-      });
+      props.relay.refetch(
+        params,
+        null,
+        () => setTimeout(() => setPageWasRefreshed(true)),
+        {
+          force: true
+        }
+      );
     },
     [params]
   );
@@ -326,7 +339,7 @@ function Employees(props) {
         setPageWasRefreshed(false);
         dispatch(
           employeesOperations.deselectAll({
-            exceptEmployeeIds: _.map(employees, "node.id")
+            exceptEmployeeIds: employees.map(item => item.node.id)
           })
         );
       }

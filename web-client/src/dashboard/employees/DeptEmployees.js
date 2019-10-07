@@ -83,7 +83,7 @@ const subscription = graphql`
   }
 `;
 
-const depts = _.values(constants.depts);
+const depts = Object.values(constants.depts);
 
 function DeptEmployees(props) {
   const intl = useIntl();
@@ -94,14 +94,12 @@ function DeptEmployees(props) {
   const [subTrigger, setSubTrigger] = useState(0);
   const isSubscribed = useSelector(state => appSelectors.isSubscribed(state));
 
-  const employees = _.get(props, "viewer.employees.edges", []);
-  const totalCount = _.get(props, "viewer.employees.totalCount", 0);
-  const startCursor = _.get(
-    props,
-    "viewer.employees.pageInfo.startCursor",
-    null
-  );
-  const endCursor = _.get(props, "viewer.employees.pageInfo.endCursor", null);
+  const employees = ((props.viewer || {}).employees || {}).edges || [];
+  const totalCount = ((props.viewer || {}).employees || {}).totalCount || 0;
+  const startCursor =
+    (((props.viewer || {}).employees || {}).pageInfo || {}).startCursor || null;
+  const endCursor =
+    (((props.viewer || {}).employees || {}).pageInfo || {}).endCursor || null;
 
   const dept = useSelector(state => dashboardSelectors.getDept(state));
   const pageSize = useSelector(state =>
@@ -332,7 +330,7 @@ function DeptEmployees(props) {
             value={depts.indexOf(dept)}
             onChange={changeDept}
           >
-            {_.map(depts, dept => (
+            {depts.map(dept => (
               <Tab
                 key={`tab-${dept}`}
                 label={intl.formatMessage({ id: `DEPT_${dept}` })}

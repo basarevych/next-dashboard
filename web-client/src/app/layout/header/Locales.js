@@ -45,7 +45,7 @@ function Locales(props) {
       open={!!props.anchor}
       onClose={props.onClose}
     >
-      {_.map(l10n.locales, locale => (
+      {l10n.locales.map(locale => (
         <MenuItem
           key={`locale-${locale}`}
           onClick={() => handleLocaleSwitch(locale)}

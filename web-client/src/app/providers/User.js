@@ -24,7 +24,7 @@ function UserProvider(props) {
   const router = useRouter();
 
   const statusCode = useSelector(state => appSelectors.getStatusCode(state));
-  const user = _.get(props, "viewer.me") || {};
+  const user = (props.viewer || {}).me || {};
   const context = useMemo(() => parseUser(user), [user]);
 
   useEffect(() => {
@@ -44,15 +44,19 @@ function UserProvider(props) {
   useEffect(() => {
     const page = constants.pages[router.asPath];
     const isAllowed = page && page.isAllowed;
-    if (statusCode === 200 && _.isFunction(isAllowed) && !isAllowed(context)) {
+    if (
+      statusCode === 200 &&
+      typeof isAllowed === "function" &&
+      !isAllowed(context)
+    ) {
       dispatch(
         appOperations.setStatusCode({
           code: context.isAuthenticated ? 403 : 401
         })
       );
     } else if (
-      _.includes([403, 401], statusCode) &&
-      (!_.isFunction(isAllowed) || isAllowed(context))
+      [403, 401].includes(statusCode) &&
+      (typeof isAllowed !== "function" || isAllowed(context))
     ) {
       dispatch(appOperations.setStatusCode({ code: 200 }));
     }

@@ -1,3 +1,5 @@
+import "../src/app/lib/init";
+
 import React from "react";
 import App from "next/app";
 import { Provider as ReduxProvider } from "react-redux";

@@ -2,7 +2,6 @@
 
 require("full-icu");
 require("regenerator-runtime/runtime");
-if (!global._) global._ = require("lodash");
 
 const Injectt = require("injectt");
 const path = require("path");
@@ -46,7 +45,7 @@ class App {
   constructor() {
     if (apiOrigins) {
       try {
-        if (_.isString(apiOrigins)) apiOrigins = JSON.parse(apiOrigins);
+        if (typeof apiOrigins === "string") apiOrigins = JSON.parse(apiOrigins);
       } catch (error) {
         console.error("Could not parse API_ORIGINS: ", error.message);
         process.exit(1);
@@ -111,7 +110,7 @@ class App {
       console.error("Please define JWT_SECRET");
       process.exit(1);
     }
-    if (!_.isArray(this.config.apiOrigins)) {
+    if (!Array.isArray(this.config.apiOrigins)) {
       console.error(
         "API_ORIGINS env variable should be a JSON string of array of strings"
       );
@@ -122,30 +121,27 @@ class App {
     this.server = mainServer;
 
     // Retrieve all the singletons, instantiating them, and run their .init()
-    await _.reduce(
-      Array.from(this.di.singletons().values()),
+    await Array.from(this.di.singletons().values()).reduce(
       (acc, cur) => acc.then(() => cur.init()),
       Promise.resolve()
     );
 
     // Express/Socket.io middleware
-    this.middleware = _.reduce(
-      [
-        // Order matters
-        "early",
-        "parse",
-        "routes",
-        "graphql",
-        "late",
-        "error"
-      ],
+    this.middleware = [
+      // Order matters
+      "early",
+      "parse",
+      "routes",
+      "graphql",
+      "late",
+      "error"
+    ].reduce(
       (acc, cur) => acc.set(cur, this.di.get(`middleware.${cur}`)),
       new Map()
     );
 
     // Install
-    await _.reduce(
-      Array.from(this.middleware.values()),
+    await Array.from(this.middleware.values()).reduce(
       (acc, cur) =>
         acc.then(() =>
           cur.init({ express: this.express, io: this.di.get("ws").io })

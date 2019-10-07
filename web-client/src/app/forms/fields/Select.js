@@ -83,13 +83,13 @@ function MySelect(props) {
         }
       >
         {!props.native &&
-          _.map(props.options, (item, index) => (
+          props.options.map((item, index) => (
             <MenuItem key={`item-${index}`} value={item.value}>
               {item.label}
             </MenuItem>
           ))}
         {!!props.native &&
-          _.map(props.options, (item, index) => (
+          props.options.map((item, index) => (
             <option key={`item-${index}`} value={item.value}>
               {item.label}
             </option>

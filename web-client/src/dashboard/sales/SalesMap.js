@@ -157,11 +157,13 @@ function SalesMap(props) {
     ({ viewState: newViewState }) => {
       const { latitude, longitude, zoom, bearing, pitch } = newViewState;
       setViewState({
-        latitude: _.isUndefined(latitude) ? viewState.latitude : latitude,
-        longitude: _.isUndefined(longitude) ? viewState.longitude : longitude,
-        zoom: _.isUndefined(zoom) ? viewState.zoom : zoom,
-        bearing: _.isUndefined(bearing) ? viewState.bearing : bearing,
-        pitch: _.isUndefined(pitch) ? viewState.pitch : pitch
+        latitude:
+          typeof latitude === "undefined" ? viewState.latitude : latitude,
+        longitude:
+          typeof longitude === "undefined" ? viewState.longitude : longitude,
+        zoom: typeof zoom === "undefined" ? viewState.zoom : zoom,
+        bearing: typeof bearing === "undefined" ? viewState.bearing : bearing,
+        pitch: typeof pitch === "undefined" ? viewState.pitch : pitch
       });
     },
     [viewState]
@@ -204,16 +206,12 @@ function SalesMap(props) {
     // parse the data
     () => {
       setData(
-        _.reduce(
-          props.data || [],
-          (acc, cur) => {
-            let population = Math.floor(cur.population / 1000);
-            let point = { lat: cur.lat, lng: cur.lng };
-            for (let i = 0; i < population; i++) acc.push(point);
-            return acc;
-          },
-          []
-        )
+        (props.data || []).reduce((acc, cur) => {
+          let population = Math.floor(cur.population / 1000);
+          let point = { lat: cur.lat, lng: cur.lng };
+          for (let i = 0; i < population; i++) acc.push(point);
+          return acc;
+        }, [])
       );
     },
     [props.data]
@@ -345,6 +343,8 @@ function SalesMap(props) {
     return layers;
   }, [states, data, elevationScale, theme, handleHover, handleClick]);
 
+  const crosshair = useCallback(() => "crosshair", []);
+
   return (
     <div
       className={classes.root}
@@ -363,7 +363,7 @@ function SalesMap(props) {
             viewState={finalViewState}
             layers={layers}
             effects={lightingEffects}
-            getCursor={_.constant("crosshair")}
+            getCursor={crosshair}
             onViewStateChange={updateViewState}
           >
             <StaticMap

@@ -143,7 +143,7 @@ function EditEmployeeModal() {
             </Grid>
             <Grid item xs={12} container spacing={1}>
               <Grid item xs={6}>
-                {_.map(_.values(constants.depts), (item, index) => {
+                {Object.values(constants.depts).map((item, index) => {
                   if (index % 2 !== 0) return null;
                   return (
                     <Field
@@ -159,7 +159,7 @@ function EditEmployeeModal() {
                 })}
               </Grid>
               <Grid item xs={6}>
-                {_.map(_.values(constants.depts), (item, index) => {
+                {Object.values(constants.depts).map((item, index) => {
                   if (index % 2 === 0) return null;
                   return (
                     <Field
@@ -228,10 +228,10 @@ function EditEmployeeModal() {
     if (error) return <ErrorMessage error={error} />;
 
     if (renderProps && renderProps.viewer) {
-      const employee = _.get(renderProps, "viewer.employee");
+      const employee = (renderProps.viewer || {}).employee;
       return getForm({
         ...employee,
-        country: _.toLower(fromGlobalId(employee.country.id).id)
+        country: fromGlobalId(employee.country.id).id.toLowerCase()
       });
     }
 

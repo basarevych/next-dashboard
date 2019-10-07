@@ -14,7 +14,7 @@ function handleCountryChange(evt, formik) {
   if (value) {
     let info = allCountries[iso2Lookup[value]];
     let prefix = "+" + info.dialCode;
-    if (info && !_.startsWith(formik.values.phone, prefix))
+    if (info && !(formik.values.phone || "").startsWith(prefix))
       formik.setFieldValue("phone", prefix);
   }
 }
@@ -74,7 +74,7 @@ export function renderAddressBlock(values, isDisabled = false) {
           <Field
             name="phone"
             type="text"
-            format={info ? _.replace(info.format, /\./g, "#") : undefined}
+            format={info ? info.format.replace(/\./g, "#") : undefined}
             mask="_"
             disabled={isDisabled}
           />

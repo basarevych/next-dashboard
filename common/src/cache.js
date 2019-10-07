@@ -57,7 +57,7 @@ class Cache {
   _pageToKey(page) {
     const hash = crypto.createHash("md5");
     hash.update(page);
-    return _.toUpper(hash.digest("hex"));
+    return hash.digest("hex").toUpperCase();
   }
 
   /**
@@ -70,12 +70,12 @@ class Cache {
     // the object to an array of [prop, value] pairs sorted by "prop"
 
     let tmp = [];
-    let params = _.keys(query).sort();
+    let params = Object.keys(query).sort();
     for (let item of params) tmp.push([item, query[item]]);
 
     const hash = crypto.createHash("md5");
     hash.update(JSON.stringify(tmp));
-    return _.toUpper(hash.digest("hex"));
+    return hash.digest("hex").toUpperCase();
   }
 
   /**
@@ -84,7 +84,7 @@ class Cache {
    * @return {string} The unique key
    */
   _userIdToKey(userId) {
-    return userId ? _.toUpper(userId) : "anonymous";
+    return userId ? userId.toUpperCase() : "anonymous";
   }
 
   /**

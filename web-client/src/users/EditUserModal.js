@@ -158,10 +158,10 @@ function EditUserModal() {
     if (error) return <ErrorMessage error={error} />;
 
     if (renderProps && renderProps.viewer) {
-      const user = _.get(renderProps, "viewer.user");
+      const user = (renderProps.viewer || {}).user;
       return getForm(editSchema, {
         ...user,
-        isAdmin: _.includes(user.roles, constants.roles.ADMIN)
+        isAdmin: user.roles.includes(constants.roles.ADMIN)
       });
     }
 

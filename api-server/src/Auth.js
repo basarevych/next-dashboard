@@ -51,7 +51,7 @@ class Auth {
     if (!this.config.googleAuthId || !this.config.googleAuthSecret) return null;
 
     return {
-      providerName: _.toLower(constants.oauthProviders.GOOGLE),
+      providerName: constants.oauthProviders.GOOGLE.toLowerCase(),
       providerOptions: {
         scope: ["profile", "email"]
       },
@@ -68,7 +68,7 @@ class Auth {
       return null;
 
     return {
-      providerName: _.toLower(constants.oauthProviders.FACEBOOK),
+      providerName: constants.oauthProviders.FACEBOOK.toLowerCase(),
       providerOptions: {
         scope: ["email", "public_profile"]
       },
@@ -85,7 +85,7 @@ class Auth {
       return null;
 
     return {
-      providerName: _.toLower(constants.oauthProviders.TWITTER),
+      providerName: constants.oauthProviders.TWITTER.toLowerCase(),
       providerOptions: {
         scope: []
       },
@@ -100,11 +100,11 @@ class Auth {
   }
 
   get providers() {
-    return _.compact([
+    return [
       this.googleProvider,
       this.facebookProvider,
       this.twitterProvider
-    ]);
+    ].filter(item => !!item);
   }
 
   async init() {
@@ -157,7 +157,7 @@ class Auth {
       this.passport.use(
         // inspired by next-auth
         new provider.Strategy(
-          _.assign(
+          Object.assign(
             {
               profileFields: ["id", "displayName", "email", "photos"]
             },
@@ -390,7 +390,7 @@ class Auth {
       payload.secret = this.createTokenSecret();
       await this.cache.createOneTimeToken(payload.secret);
     }
-    let data = _.assign(
+    let data = Object.assign(
       {
         type,
         userId: user.id,
@@ -421,7 +421,7 @@ class Auth {
         delete decoded.secret;
       }
 
-      return _.assign(decoded, { user, client });
+      return Object.assign(decoded, { user, client });
     } catch (err) {
       return false;
     }
@@ -431,7 +431,7 @@ class Auth {
     const { type, user, client } = context.token || {};
 
     const isAuthenticated =
-      _.includes(["access", "oneTime"], type) && !!user && !!client;
+      ["access", "oneTime"].includes(type) && !!user && !!client;
 
     const providers = [];
     for (let item of this.providers) {

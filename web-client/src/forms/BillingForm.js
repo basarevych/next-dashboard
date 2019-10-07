@@ -8,7 +8,7 @@ import { Form, Field } from "../app/forms";
 import shippingSchema from "../../common/forms/shipping";
 import billingSchema from "../../common/forms/billing";
 
-const shippingFields = _.keys(shippingSchema.fields);
+const shippingFields = Object.keys(shippingSchema.fields);
 
 const initialValues = { isSameAddress: true };
 
@@ -56,15 +56,15 @@ function BillingForm(props) {
           break;
       }
 
-      let name = _.trim(
+      let name = (
         ((values.isSameAddress
           ? props.shippingValues.firstName
           : values.firstName) || "") +
-          " " +
-          ((values.isSameAddress
-            ? props.shippingValues.lastName
-            : values.lastName) || "")
-      );
+        " " +
+        ((values.isSameAddress
+          ? props.shippingValues.lastName
+          : values.lastName) || "")
+      ).trim();
 
       return (
         <Grid container spacing={2}>
@@ -102,8 +102,8 @@ function BillingForm(props) {
               <Cards
                 number={values.cardNumber || ""}
                 name={name}
-                expiry={_.replace(values.cardDate || "", /[^0-9]+/, "")}
-                cvc={_.replace(values.cardSecret || "", /[^0-9]+/, "")}
+                expiry={(values.cardDate || "").replace(/[^0-9]+/, "")}
+                cvc={(values.cardSecret || "").replace(/[^0-9]+/, "")}
                 focused={focused}
               />
             </div>

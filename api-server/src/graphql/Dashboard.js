@@ -88,7 +88,7 @@ class Dashboard {
           resolve: (source, args, context) =>
             this.employeesRepo.getEmployeeConnection(
               context,
-              _.assign({}, args, {
+              Object.assign({}, args, {
                 country: source.id,
                 dept: args.dept && this.employeeModel.depts[args.dept]
               })
@@ -228,7 +228,7 @@ class Dashboard {
         resolve: (source, args, context) =>
           this.dashboardRepo.getCountry(
             context,
-            _.assign({}, args, { id: args.id && fromGlobalId(args.id).id })
+            Object.assign({}, args, { id: args.id && fromGlobalId(args.id).id })
           )
       },
       countries: {
@@ -248,7 +248,7 @@ class Dashboard {
         resolve: (source, args, context) =>
           this.dashboardRepo.getUSCity(
             context,
-            _.assign({}, args, { id: args.id && fromGlobalId(args.id).id })
+            Object.assign({}, args, { id: args.id && fromGlobalId(args.id).id })
           )
       },
       usCities: {

@@ -61,7 +61,7 @@ function ConfirmForm(props) {
     if (
       form === "shipping" ||
       (billingValues.isSameAddress &&
-        !_.includes(["cardNumber", "cardDate", "cardSecret"], field))
+        !["cardNumber", "cardDate", "cardSecret"].includes(field))
     ) {
       if (props.shippingErrors[field]) return null;
       value = shippingValues[field];
@@ -85,16 +85,16 @@ function ConfirmForm(props) {
         break;
       case "address":
         label = "CONFIRM_ADDRESS_LABEL";
-        value = _.map(_.split(value, /\n/), (line, index) => (
-          <div key={index}>{line}</div>
-        ));
+        value = value
+          .split(/\n/)
+          .map((line, index) => <div key={index}>{line}</div>);
         break;
       case "city":
         label = "CONFIRM_CITY_LABEL";
         break;
       case "state":
         label = "CONFIRM_STATE_LABEL";
-        value = _.replace(value, /[\r\n]+/g, " ");
+        value = value.replace(/[\r\n]+/g, " ");
         break;
       case "code":
         label = "CONFIRM_CODE_LABEL";
@@ -111,7 +111,7 @@ function ConfirmForm(props) {
         break;
       case "cardNumber":
         label = "CONFIRM_CARD_NUMBER_LABEL";
-        value = _.repeat("**** ", 3) + value.slice(-4);
+        value = "**** ".repeat(3) + value.slice(-4);
         break;
       case "cardDate":
         label = "CONFIRM_CARD_DATE_LABEL";

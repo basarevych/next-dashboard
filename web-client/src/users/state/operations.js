@@ -33,9 +33,9 @@ export const create = ({ email, name, password, isAdmin }) => async (
     email,
     name,
     password,
-    roles: _.compact([isAdmin && constants.roles.ADMIN])
+    roles: [isAdmin && constants.roles.ADMIN].filter(item => !!item)
   });
-  if (_.get(data, "data.createUser.user.id", null)) {
+  if ((((data.data || {}).createUser || {}).user || {}).id) {
     await dispatch(actions.hideEditModal());
     return true;
   }
@@ -53,9 +53,9 @@ export const edit = ({ id, email, name, password, isAdmin }) => async (
     email,
     name,
     password,
-    roles: _.compact([isAdmin && constants.roles.ADMIN])
+    roles: [isAdmin && constants.roles.ADMIN].filter(item => !!item)
   });
-  if (_.get(data, "data.editUser.user.id", null)) {
+  if ((((data.data || {}).editUser || {}).user || {}).id) {
     await dispatch(actions.hideEditModal());
     return true;
   }
@@ -65,5 +65,5 @@ export const edit = ({ id, email, name, password, isAdmin }) => async (
 
 export const remove = ({ id }) => async (dispatch, getState, di) => {
   let data = await DeleteUserMutation(di, { id });
-  return !!_.get(data, "data.deleteUser.user.id", null);
+  return !!(((data.data || {}).deleteUser || {}).user || {}).id;
 };

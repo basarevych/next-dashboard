@@ -26,7 +26,7 @@ class Parse {
   }
 
   async extractToken(req, res, next) {
-    let auth = _.split(req.headers.authorization || "", " ");
+    let auth = (req.headers.authorization || "").split(" ");
     let token = auth.length === 2 && auth[0] === "Bearer" && auth[1];
 
     // req.token is:
@@ -37,7 +37,7 @@ class Parse {
     if (token) {
       /* eslint-disable require-atomic-updates */
       req.token = await this.auth.useToken(token);
-      if (req.token && !_.includes(["access", "oneTime"], req.token.type))
+      if (req.token && !["access", "oneTime"].includes(req.token.type))
         req.token = false;
       /* eslint-enable require-atomic-updates */
     }

@@ -9,7 +9,7 @@ export default function initServiceWorker() {
     promise = navigator.serviceWorker.getRegistrations().then(regs => {
       if (!regs.length) return;
 
-      return Promise.all(_.invokeMap(regs, "unregister")).then(() => {
+      return Promise.all(regs.map(item => item.unregister())).then(() => {
         console.log("[SW]", "Unregistered");
         window.location.reload(true);
       });

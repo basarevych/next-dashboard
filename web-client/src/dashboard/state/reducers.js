@@ -18,17 +18,17 @@ export const defaultState = "New York";
 const stateReducer = (state = defaultState, action) => {
   switch (action.type) {
     case types.SET_STATE:
-      if (!_.isUndefined(action.state)) return action.state;
+      if (typeof action.state !== "undefined") return action.state;
       break;
   }
   return state;
 };
 
-export const defaultDept = _.values(constants.depts)[0];
+export const defaultDept = Object.values(constants.depts)[0];
 const deptReducer = (state = defaultDept, action) => {
   switch (action.type) {
     case types.SET_DEPT:
-      if (!_.isUndefined(action.dept)) return action.dept;
+      if (typeof action.dept !== "undefined") return action.dept;
       break;
   }
   return state;
@@ -38,7 +38,7 @@ const defaultPageSize = 5;
 const tablePageSizeReducer = (state = defaultPageSize, action) => {
   switch (action.type) {
     case types.SET_TABLE_PAGE_SIZE:
-      if (!_.isUndefined(action.pageSize)) return action.pageSize;
+      if (typeof action.pageSize !== "undefined") return action.pageSize;
       break;
   }
   return state;
@@ -47,7 +47,7 @@ const tablePageSizeReducer = (state = defaultPageSize, action) => {
 const tablePageNumberReducer = (state = 0, action) => {
   switch (action.type) {
     case types.SET_TABLE_PAGE_NUMBER:
-      if (!_.isUndefined(action.pageNumber)) return action.pageNumber;
+      if (typeof action.pageNumber !== "undefined") return action.pageNumber;
       break;
   }
   return state;
@@ -66,7 +66,7 @@ const defaultTableParams = {
 const tableParamsReducer = (state = Map(defaultTableParams), action) => {
   switch (action.type) {
     case types.SET_TABLE_PARAMS:
-      if (!_.isUndefined(action.params)) return Map(action.params);
+      if (typeof action.params !== "undefined") return Map(action.params);
       break;
     case types.RESET_TABLE_PARAMS:
       return Map(defaultTableParams);

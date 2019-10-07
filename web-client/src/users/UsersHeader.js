@@ -23,10 +23,12 @@ function UsersHeader(props) {
   const classes = useStyles(props);
   const dispatch = useDispatch();
 
-  const userIds = useMemo(() => _.map(props.users, "node.id"), [props.users]);
+  const userIds = useMemo(() => props.users.map(item => item.node.id), [
+    props.users
+  ]);
   const hasRecords = useMemo(() => props.users.length > 0, [props.users]);
   const isAllSelected = useMemo(
-    () => !_.difference(userIds, props.selected).length,
+    () => !userIds.filter(item => !props.selected.includes(item)).length,
     [userIds, props.selected]
   );
   const isAllDeselected = useMemo(() => !props.selected.length, [

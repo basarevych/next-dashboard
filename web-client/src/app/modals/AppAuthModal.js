@@ -118,11 +118,11 @@ function AppAuthModal(props) {
   const renderForm = useCallback(
     ({ isSubmitting, status, handleSubmit }) => {
       const renderButton = provider => {
-        const name = _.toLower(provider);
+        const name = provider.toLowerCase();
 
         let isProviderEnabled = false;
         for (let item of user.providers) {
-          if (_.toLower(name) === _.toLower(item.name)) {
+          if (name.toLowerCase() === item.name.toLowerCase()) {
             isProviderEnabled = true;
             break;
           }
@@ -157,7 +157,7 @@ function AppAuthModal(props) {
                 className={classes.serviceLogo}
               />
             )}
-            {_.upperFirst(name)}
+            {name.charAt(0).toUpperCase() + name.slice(1)}
           </Button>
         );
       };

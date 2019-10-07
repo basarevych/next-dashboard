@@ -69,10 +69,12 @@ function Users(props) {
   const [subTrigger, setSubTrigger] = useState(0);
   const isSubscribed = useSelector(state => appSelectors.isSubscribed(state));
 
-  const users = _.get(props, "viewer.users.edges", []);
-  const totalCount = _.get(props, "viewer.users.totalCount", 0);
-  const startCursor = _.get(props, "viewer.users.pageInfo.startCursor", null);
-  const endCursor = _.get(props, "viewer.users.pageInfo.endCursor", null);
+  const users = ((props.viewer || {}).users || {}).edges || [];
+  const totalCount = ((props.viewer || {}).users || {}).totalCount || 0;
+  const startCursor =
+    (((props.viewer || {}).users || {}).pageInfo || {}).startCursor || null;
+  const endCursor =
+    (((props.viewer || {}).users || {}).pageInfo || {}).endCursor || null;
 
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [pageWasRefreshed, setPageWasRefreshed] = useState(false);
@@ -127,9 +129,7 @@ function Users(props) {
   const remove = useCallback(() => {
     setIsConfirmOpen(false);
     return Promise.all(
-      _.map(selected, userId =>
-        dispatch(usersOperations.remove({ id: userId }))
-      )
+      selected.map(userId => dispatch(usersOperations.remove({ id: userId })))
     );
   }, [selected, dispatch]);
 
@@ -142,7 +142,10 @@ function Users(props) {
       setParams({
         sortBy,
         sortDir,
-        first: pageSize
+        first: pageSize,
+        after: null,
+        last: null,
+        before: null
       });
     },
     [params.sortBy, params.sortDir, pageSize, setPageNumber, setParams]
@@ -156,7 +159,10 @@ function Users(props) {
       setParams({
         sortBy: params.sortBy,
         sortDir: params.sortDir,
-        first: newPageSize
+        first: newPageSize,
+        after: null,
+        last: null,
+        before: null
       });
     },
     [params.sortBy, params.sortDir, setPageSize, setPageNumber, setParams]
@@ -173,7 +179,11 @@ function Users(props) {
 
       const newParams = {
         sortBy: params.sortBy,
-        sortDir: params.sortDir
+        sortDir: params.sortDir,
+        first: null,
+        after: null,
+        last: null,
+        before: null
       };
 
       if (newPageNumber === 0) {
@@ -280,9 +290,14 @@ function Users(props) {
   useIsomorphicLayoutEffect(
     // automatically refetch when variables change
     () => {
-      props.relay.refetch(params, null, () => setPageWasRefreshed(true), {
-        force: true
-      });
+      props.relay.refetch(
+        params,
+        null,
+        null, //() => setTimeout(() => setPageWasRefreshed(true)),
+        {
+          force: true
+        }
+      );
     },
     [params]
   );
@@ -294,7 +309,7 @@ function Users(props) {
         setPageWasRefreshed(false);
         dispatch(
           usersOperations.deselectAll({
-            exceptUserIds: _.map(users, "node.id")
+            exceptUserIds: users.map(item => item.node.id)
           })
         );
       }

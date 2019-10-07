@@ -81,26 +81,26 @@ function Dashboard(props) {
           <Grid item xs={12} sm={6} lg={12}>
             <ProfitStat
               label="DASHBOARD_PROFIT_LABEL"
-              data={_.get(props, "viewer.profitValues")}
+              data={(props.viewer || {}).profitValues}
             />
           </Grid>
           <Grid item xs={12} sm={6} lg={12}>
             <SalesStat
               label="DASHBOARD_SALES_LABEL"
-              data={_.get(props, "viewer.salesValues")}
+              data={(props.viewer || {}).salesValues}
             />
           </Grid>
           <Grid item xs={12} sm={6} lg={12}>
             <ClientsStat
               label="DASHBOARD_CLIENTS_LABEL"
-              data={_.get(props, "viewer.clientsValues")}
+              data={(props.viewer || {}).clientsValues}
             />
           </Grid>
           <Grid item xs={12} sm={6} lg={12}>
             <AvgTimeStat
               label="DASHBOARD_AVG_TIME_LABEL"
               precision={2}
-              data={_.get(props, "viewer.avgTimeValues")}
+              data={(props.viewer || {}).avgTimeValues}
             />
           </Grid>
         </Grid>

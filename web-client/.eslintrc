@@ -1,9 +1,5 @@
 {
-  "extends": [
-    "eslint:recommended",
-    "plugin:lodash/canonical",
-    "plugin:react/recommended"
-  ],
+  "extends": ["eslint:recommended", "plugin:react/recommended"],
 
   "env": {
     "es6": true,
@@ -12,11 +8,7 @@
     "jest": true
   },
 
-  "plugins": ["lodash", "react", "react-hooks"],
-
-  "globals": {
-    "_": true
-  },
+  "plugins": ["react", "react-hooks"],
 
   "parser": "babel-eslint",
 

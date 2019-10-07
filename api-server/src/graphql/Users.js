@@ -50,14 +50,12 @@ class Users {
 
     this.root.UserRole = new GraphQLEnumType({
       name: "UserRole",
-      values: _.reduce(
-        _.map(this.userModel.roles, (role, index) => ({ role, index })),
-        (acc, cur) => {
+      values: this.userModel.roles
+        .map((role, index) => ({ role, index }))
+        .reduce((acc, cur) => {
           acc[cur.role] = { value: cur.index };
           return acc;
-        },
-        {}
-      )
+        }, {})
     });
 
     this.root.User = new GraphQLObjectType({
@@ -72,14 +70,10 @@ class Users {
         roles: {
           type: new GraphQLNonNull(new GraphQLList(this.root.UserRole)),
           resolve: source =>
-            _.reduce(
-              source.roles,
-              (acc, cur) => {
-                acc.push(_.indexOf(this.userModel.roles, cur));
-                return acc;
-              },
-              []
-            )
+            source.roles.reduce((acc, cur) => {
+              acc.push(this.userModel.roles.indexOf(cur));
+              return acc;
+            }, [])
         }
       }),
       interfaces: [nodeInterface]
@@ -102,26 +96,22 @@ class Users {
 
     this.root.UserSortBy = new GraphQLEnumType({
       name: "UserSortBy",
-      values: _.reduce(
-        _.map(this.userModel.sortBy, (item, index) => ({ item, index })),
-        (acc, cur) => {
+      values: this.userModel.sortBy
+        .map((item, index) => ({ item, index }))
+        .reduce((acc, cur) => {
           acc[cur.item] = { value: cur.index };
           return acc;
-        },
-        {}
-      )
+        }, {})
     });
 
     this.root.UserSortDir = new GraphQLEnumType({
       name: "UserSortDir",
-      values: _.reduce(
-        _.map(this.userModel.sortDir, (item, index) => ({ item, index })),
-        (acc, cur) => {
+      values: this.userModel.sortDir
+        .map((item, index) => ({ item, index }))
+        .reduce((acc, cur) => {
           acc[cur.item] = { value: cur.index };
           return acc;
-        },
-        {}
-      )
+        }, {})
     });
 
     this.query = {
@@ -133,7 +123,7 @@ class Users {
         resolve: (source, args, context) =>
           this.usersRepo.getUser(
             context,
-            _.assign({}, args, { id: args.id && fromGlobalId(args.id).id })
+            Object.assign({}, args, { id: args.id && fromGlobalId(args.id).id })
           )
       },
       users: {
@@ -146,7 +136,7 @@ class Users {
         resolve: (source, args, context) =>
           this.usersRepo.getUserConnection(
             context,
-            _.assign({}, args, {
+            Object.assign({}, args, {
               sortBy: args.sortBy && this.userModel.sortBy[args.sortBy],
               sortDir: args.sortDir && this.userModel.sortDir[args.sortDir]
             })
@@ -168,17 +158,13 @@ class Users {
       mutateAndGetPayload: async (args, context) => {
         const user = await this.usersRepo.createUser(
           context,
-          _.assign({}, args, {
+          Object.assign({}, args, {
             roles:
               args.roles &&
-              _.reduce(
-                args.roles,
-                (acc, cur) => {
-                  acc.push(this.userModel.roles[cur]);
-                  return acc;
-                },
-                []
-              )
+              args.roles.reduce((acc, cur) => {
+                acc.push(this.userModel.roles[cur]);
+                return acc;
+              }, [])
           })
         );
         return { user };
@@ -200,18 +186,14 @@ class Users {
       mutateAndGetPayload: async (args, context) => {
         const user = await this.usersRepo.editUser(
           context,
-          _.assign({}, args, {
+          Object.assign({}, args, {
             id: args.id && fromGlobalId(args.id).id,
             roles:
               args.roles &&
-              _.reduce(
-                args.roles,
-                (acc, cur) => {
-                  acc.push(this.userModel.roles[cur]);
-                  return acc;
-                },
-                []
-              )
+              args.roles.reduce((acc, cur) => {
+                acc.push(this.userModel.roles[cur]);
+                return acc;
+              }, [])
           })
         );
         return { user };
@@ -229,7 +211,7 @@ class Users {
       mutateAndGetPayload: async (args, context) => {
         const user = await this.usersRepo.deleteUser(
           context,
-          _.assign({}, args, { id: args.id && fromGlobalId(args.id).id })
+          Object.assign({}, args, { id: args.id && fromGlobalId(args.id).id })
         );
         return { user };
       }

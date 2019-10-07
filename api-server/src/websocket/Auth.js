@@ -101,13 +101,15 @@ class Auth {
 
     if (!this.socket) return;
 
-    this.socket.leave(`user:${oldUser ? _.toUpper(oldUser.id) : "anonymous"}`);
     this.socket.leave(
-      `client:${oldClient ? _.toUpper(oldClient.id) : "unknown"}`
+      `user:${oldUser ? oldUser.id.toUpperCase() : "anonymous"}`
+    );
+    this.socket.leave(
+      `client:${oldClient ? oldClient.id.toUpperCase() : "unknown"}`
     );
 
-    this.socket.join(`user:${user ? _.toUpper(user.id) : "anonymous"}`);
-    this.socket.join(`client:${client ? _.toUpper(client.id) : "unknown"}`);
+    this.socket.join(`user:${user ? user.id.toUpperCase() : "anonymous"}`);
+    this.socket.join(`client:${client ? client.id.toUpperCase() : "unknown"}`);
 
     return this.sendAuthMessage();
   }

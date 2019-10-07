@@ -41,7 +41,7 @@ export const create = ({
     country,
     salary
   });
-  if (_.get(data, "data.createEmployee.employee.id", null)) {
+  if ((((data.data || {}).createEmployee || {}).employee || {}).id) {
     await dispatch(actions.hideEditModal());
     return true;
   }
@@ -69,7 +69,7 @@ export const edit = ({
     country,
     salary
   });
-  if (_.get(data, "data.editEmployee.employee.id", null)) {
+  if ((((data.data || {}).editEmployee || {}).employee || {}).id) {
     await dispatch(actions.hideEditModal());
     return true;
   }
@@ -79,5 +79,5 @@ export const edit = ({
 
 export const remove = ({ id }) => async (dispatch, getState, di) => {
   let data = await DeleteEmployeeMutation(di, { id });
-  return !!_.get(data, "data.deleteEmployee.employee.id", null);
+  return !!(((data.data || {}).deleteEmployee || {}).employee || {}).id;
 };

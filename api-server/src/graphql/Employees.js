@@ -56,14 +56,12 @@ class Employees {
 
     this.root.EmployeeDept = new GraphQLEnumType({
       name: "EmployeeDept",
-      values: _.reduce(
-        _.map(this.employeeModel.depts, (dept, index) => ({ dept, index })),
-        (acc, cur) => {
+      values: this.employeeModel.depts
+        .map((dept, index) => ({ dept, index }))
+        .reduce((acc, cur) => {
           acc[cur.dept] = { value: cur.index };
           return acc;
-        },
-        {}
-      )
+        }, {})
     });
 
     this.root.Employee = new GraphQLObjectType({
@@ -77,7 +75,7 @@ class Employees {
         name: { type: new GraphQLNonNull(GraphQLString) },
         dept: {
           type: new GraphQLNonNull(this.root.EmployeeDept),
-          resolve: source => _.indexOf(this.employeeModel.depts, source.dept)
+          resolve: source => this.employeeModel.depts.indexOf(source.dept)
         },
         title: { type: new GraphQLNonNull(GraphQLString) },
         country: {
@@ -85,7 +83,7 @@ class Employees {
           resolve: (source, args, context) =>
             this.dashboardRepo.getCountry(
               context,
-              _.assign({}, args, {
+              Object.assign({}, args, {
                 id: source.country.id
               })
             )
@@ -112,26 +110,22 @@ class Employees {
 
     this.root.EmployeeSortBy = new GraphQLEnumType({
       name: "EmployeeSortBy",
-      values: _.reduce(
-        _.map(this.employeeModel.sortBy, (item, index) => ({ item, index })),
-        (acc, cur) => {
+      values: this.employeeModel.sortBy
+        .map((item, index) => ({ item, index }))
+        .reduce((acc, cur) => {
           acc[cur.item] = { value: cur.index };
           return acc;
-        },
-        {}
-      )
+        }, {})
     });
 
     this.root.EmployeeSortDir = new GraphQLEnumType({
       name: "EmployeeSortDir",
-      values: _.reduce(
-        _.map(this.employeeModel.sortDir, (item, index) => ({ item, index })),
-        (acc, cur) => {
+      values: this.employeeModel.sortDir
+        .map((item, index) => ({ item, index }))
+        .reduce((acc, cur) => {
           acc[cur.item] = { value: cur.index };
           return acc;
-        },
-        {}
-      )
+        }, {})
     });
 
     this.query = {
@@ -143,7 +137,7 @@ class Employees {
         resolve: (source, args, context) =>
           this.employeesRepo.getEmployee(
             context,
-            _.assign({}, args, { id: args.id && fromGlobalId(args.id).id })
+            Object.assign({}, args, { id: args.id && fromGlobalId(args.id).id })
           )
       },
       employees: {
@@ -157,14 +151,15 @@ class Employees {
         resolve: (source, args, context) =>
           this.employeesRepo.getEmployeeConnection(
             context,
-            _.assign({}, args, {
+            Object.assign({}, args, {
               dept:
-                _.isNumber(args.dept) && this.employeeModel.depts[args.dept],
+                typeof args.dept === "number" &&
+                this.employeeModel.depts[args.dept],
               sortBy:
-                _.isNumber(args.sortBy) &&
+                typeof args.sortBy === "number" &&
                 this.employeeModel.sortBy[args.sortBy],
               sortDir:
-                _.isNumber(args.sortDir) &&
+                typeof args.sortDir === "number" &&
                 this.employeeModel.sortDir[args.sortDir]
             })
           )
@@ -188,8 +183,10 @@ class Employees {
       mutateAndGetPayload: async (args, context) => {
         const employee = await this.employeesRepo.createEmployee(
           context,
-          _.assign({}, args, {
-            dept: _.isNumber(args.dept) && this.employeeModel.depts[args.dept]
+          Object.assign({}, args, {
+            dept:
+              typeof args.dept === "number" &&
+              this.employeeModel.depts[args.dept]
           })
         );
         return { employee };
@@ -214,9 +211,11 @@ class Employees {
       mutateAndGetPayload: async (args, context) => {
         const employee = await this.employeesRepo.editEmployee(
           context,
-          _.assign({}, args, {
+          Object.assign({}, args, {
             id: args.id && fromGlobalId(args.id).id,
-            dept: _.isNumber(args.dept) && this.employeeModel.depts[args.dept]
+            dept:
+              typeof args.dept === "number" &&
+              this.employeeModel.depts[args.dept]
           })
         );
         return { employee };
@@ -234,7 +233,7 @@ class Employees {
       mutateAndGetPayload: async (args, context) => {
         const employee = await this.employeesRepo.deleteEmployee(
           context,
-          _.assign({}, args, { id: args.id && fromGlobalId(args.id).id })
+          Object.assign({}, args, { id: args.id && fromGlobalId(args.id).id })
         );
         return { employee };
       }

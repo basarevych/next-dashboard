@@ -40,7 +40,7 @@ class App {
   constructor() {
     if (appOrigins) {
       try {
-        if (_.isString(appOrigins)) appOrigins = JSON.parse(appOrigins);
+        if (typeof appOrigins === "string") appOrigins = JSON.parse(appOrigins);
       } catch (error) {
         console.error("Could not parse APP_ORIGINS: ", error.message);
         process.exit(1);
@@ -92,7 +92,7 @@ class App {
       console.error("Please define env variable MAPBOX_TOKEN");
       process.exit(1);
     }
-    if (!_.isArray(this.config.appOrigins)) {
+    if (!Array.isArray(this.config.appOrigins)) {
       throw new Error(
         "APP_ORIGINS env variable should be a JSON string of an array of strings"
       );
@@ -118,25 +118,21 @@ class App {
     console.log("online");
 
     // Middleware, order matters
-    this.middleware = _.reduce(
-      [
-        "Early",
-        "Parse",
-        "Session",
-        "Helpers",
-        "Routes",
-        "Render",
-        "Late",
-        "Error"
-      ],
-      async (acc, cur) => {
-        const Middleware = require(`./middleware/${cur}`);
-        const instance = new Middleware(this);
-        await instance.accept({ express: this.express });
-        return (await acc).set(cur, instance);
-      },
-      Promise.resolve(new Map())
-    );
+    this.middleware = [
+      "Early",
+      "Parse",
+      "Session",
+      "Helpers",
+      "Routes",
+      "Render",
+      "Late",
+      "Error"
+    ].reduce(async (acc, cur) => {
+      const Middleware = require(`./middleware/${cur}`);
+      const instance = new Middleware(this);
+      await instance.accept({ express: this.express });
+      return (await acc).set(cur, instance);
+    }, Promise.resolve(new Map()));
   }
 
   /**
@@ -145,8 +141,8 @@ class App {
   async analyzeRequest({ path, query, locale, theme } = {}) {
     this.checkConfig();
 
-    return _.assign({}, constants.pages[path] || {}, {
-      query: _.assign({}, query || {}, {
+    return Object.assign({}, constants.pages[path] || {}, {
+      query: Object.assign({}, query || {}, {
         appServer: this.config.appOrigins[0],
         apiServer: this.config.appApiServer,
         ssrApiServer: this.config.appSsrApiServer,

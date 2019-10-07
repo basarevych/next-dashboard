@@ -46,7 +46,7 @@ function Themes(props) {
       open={!!props.anchor}
       onClose={props.onClose}
     >
-      {_.map(themes.names, theme => (
+      {themes.names.map(theme => (
         <MenuItem
           key={`theme-${theme}`}
           onClick={() => handleThemeSwitch(theme)}
@@ -55,7 +55,7 @@ function Themes(props) {
             <ThemeIcon />
           </ListItemIcon>
           <ListItemText>
-            <FormattedMessage id={"THEME_" + _.upperCase(theme) + "_LABEL"} />
+            <FormattedMessage id={"THEME_" + theme.toUpperCase() + "_LABEL"} />
           </ListItemText>
         </MenuItem>
       ))}

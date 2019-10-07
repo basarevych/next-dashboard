@@ -37,8 +37,8 @@ import billingSchema from "../../common/forms/billing";
 
 const useIsomorphicLayoutEffect = process.browser ? useLayoutEffect : useEffect;
 
-const shippingFields = _.keys(shippingSchema.fields);
-const billingFields = _.keys(billingSchema.fields);
+const shippingFields = Object.keys(shippingSchema.fields);
+const billingFields = Object.keys(billingSchema.fields);
 
 const useStyles = makeStyles(theme => ({
   message: {
@@ -186,18 +186,14 @@ function FormsPage(props) {
 
   useIsomorphicLayoutEffect(() => {
     const bag = shippingForm.current && shippingForm.current.getFormikBag();
-    const values = bag ? bag.values : {};
-    const errors = bag ? bag.errors : {};
-    if (!_.isEqual(values, shippingValues)) setShippingValues(values);
-    if (!_.isEqual(errors, shippingErrors)) setShippingErrors(errors);
+    setShippingValues(bag ? bag.values : {});
+    setShippingErrors(bag ? bag.errors : {});
   }, [trigger]);
 
   useIsomorphicLayoutEffect(() => {
     const bag = billingForm.current && billingForm.current.getFormikBag();
-    const values = bag ? bag.values : {};
-    const errors = bag ? bag.errors : {};
-    if (!_.isEqual(values, billingValues)) setBillingValues(values);
-    if (!_.isEqual(errors, billingErrors)) setBillingErrors(errors);
+    setBillingValues(bag ? bag.values : {});
+    setBillingErrors(bag ? bag.errors : {});
   }, [trigger]);
 
   const handleMessageOpen = useCallback(() => {
@@ -216,11 +212,15 @@ function FormsPage(props) {
     switch (step) {
       case 0:
         return (
-          currentStep != 0 && shippingTouched && _.keys(shippingErrors).length
+          currentStep != 0 &&
+          shippingTouched &&
+          Object.keys(shippingErrors).length
         );
       case 1:
         return (
-          currentStep != 1 && billingTouched && _.keys(billingErrors).length
+          currentStep != 1 &&
+          billingTouched &&
+          Object.keys(billingErrors).length
         );
     }
     return false;
@@ -230,11 +230,15 @@ function FormsPage(props) {
     switch (step) {
       case 0:
         return (
-          currentStep != 0 && shippingTouched && !_.keys(shippingErrors).length
+          currentStep != 0 &&
+          shippingTouched &&
+          !Object.keys(shippingErrors).length
         );
       case 1:
         return (
-          currentStep != 1 && billingTouched && !_.keys(billingErrors).length
+          currentStep != 1 &&
+          billingTouched &&
+          !Object.keys(billingErrors).length
         );
     }
     return false;
@@ -261,14 +265,10 @@ function FormsPage(props) {
       if (!shippingForm.current) return;
 
       shippingForm.current.setTouched(
-        _.reduce(
-          shippingFields,
-          (acc, cur) => {
-            acc[cur] = true;
-            return acc;
-          },
-          {}
-        )
+        shippingFields.reduce((acc, cur) => {
+          acc[cur] = true;
+          return acc;
+        }, {})
       );
 
       await shippingForm.current.validateForm();
@@ -279,14 +279,10 @@ function FormsPage(props) {
       if (!billingForm.current) return;
 
       billingForm.current.setTouched(
-        _.reduce(
-          billingFields,
-          (acc, cur) => {
-            acc[cur] = true;
-            return acc;
-          },
-          {}
-        )
+        billingFields.reduce((acc, cur) => {
+          acc[cur] = true;
+          return acc;
+        }, {})
       );
 
       await billingForm.current.validateForm();

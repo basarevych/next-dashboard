@@ -24,7 +24,7 @@ Map({
 const createdReducer = (state = 0, action) => {
   switch (action.type) {
     case types.CREATE:
-      if (!_.isUndefined(action.created)) return action.created;
+      if (typeof action.created !== "undefined") return action.created;
       break;
   }
   return state;
@@ -33,11 +33,11 @@ const createdReducer = (state = 0, action) => {
 const statusCodeReducer = (state = 200, action) => {
   switch (action.type) {
     case types.CREATE:
-      if (_.isFinite(action.statusCode) && action.statusCode >= 200)
+      if (isFinite(action.statusCode) && action.statusCode >= 200)
         return action.statusCode;
       break;
     case types.SET_STATUS_CODE:
-      if (_.isFinite(action.code) && action.code >= 200) return action.code;
+      if (isFinite(action.code) && action.code >= 200) return action.code;
       break;
   }
   return state;
@@ -46,7 +46,7 @@ const statusCodeReducer = (state = 200, action) => {
 const appServerReducer = (state = "", action) => {
   switch (action.type) {
     case types.CREATE:
-      if (!_.isUndefined(action.appServer)) return action.appServer;
+      if (typeof action.appServer !== "undefined") return action.appServer;
       break;
   }
   return state;
@@ -55,7 +55,7 @@ const appServerReducer = (state = "", action) => {
 const apiServerReducer = (state = "", action) => {
   switch (action.type) {
     case types.CREATE:
-      if (!_.isUndefined(action.apiServer)) return action.apiServer;
+      if (typeof action.apiServer !== "undefined") return action.apiServer;
       break;
   }
   return state;
@@ -64,7 +64,8 @@ const apiServerReducer = (state = "", action) => {
 const ssrApiServerReducer = (state = "", action) => {
   switch (action.type) {
     case types.CREATE:
-      if (!_.isUndefined(action.ssrApiServer)) return action.ssrApiServer;
+      if (typeof action.ssrApiServer !== "undefined")
+        return action.ssrApiServer;
       break;
   }
   return state;
@@ -73,7 +74,7 @@ const ssrApiServerReducer = (state = "", action) => {
 const wsServerReducer = (state = "", action) => {
   switch (action.type) {
     case types.CREATE:
-      if (!_.isUndefined(action.wsServer)) return action.wsServer;
+      if (typeof action.wsServer !== "undefined") return action.wsServer;
       break;
   }
   return state;
@@ -82,7 +83,7 @@ const wsServerReducer = (state = "", action) => {
 const mapboxTokenReducer = (state = "", action) => {
   switch (action.type) {
     case types.CREATE:
-      if (!_.isUndefined(action.mapboxToken)) return action.mapboxToken;
+      if (typeof action.mapboxToken !== "undefined") return action.mapboxToken;
       break;
   }
   return state;
@@ -92,7 +93,7 @@ const localeReducer = (state = l10n.defaultLocale, action) => {
   switch (action.type) {
     case types.CREATE:
     case types.SET_LOCALE:
-      if (!_.isUndefined(action.locale)) return action.locale;
+      if (typeof action.locale !== "undefined") return action.locale;
       break;
   }
   return state;
@@ -102,7 +103,7 @@ const themeReducer = (state = themes.defaultTheme, action) => {
   switch (action.type) {
     case types.CREATE:
     case types.SET_THEME:
-      if (!_.isUndefined(action.theme)) return action.theme;
+      if (typeof action.theme !== "undefined") return action.theme;
       break;
   }
   return state;
@@ -127,7 +128,7 @@ const isStoppedReducer = (state = false, action) => {
 const isConnectedReducer = (state = false, action) => {
   switch (action.type) {
     case types.SET_CONNECTED:
-      if (!_.isUndefined(action.isConnected)) return action.isConnected;
+      if (typeof action.isConnected !== "undefined") return action.isConnected;
       break;
   }
   return state;
@@ -136,7 +137,8 @@ const isConnectedReducer = (state = false, action) => {
 const isSubscribedReducer = (state = false, action) => {
   switch (action.type) {
     case types.SET_SUBSCRIBED:
-      if (!_.isUndefined(action.isSubscribed)) return action.isSubscribed;
+      if (typeof action.isSubscribed !== "undefined")
+        return action.isSubscribed;
       break;
   }
   return state;

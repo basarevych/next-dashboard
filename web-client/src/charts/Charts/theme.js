@@ -1,8 +1,9 @@
 import { VictoryTheme } from "victory";
 import { fade } from "@material-ui/core/styles/colorManipulator";
+import deepmerge from "deepmerge";
 
 export default ({ theme, withAxis, withGrid, withArea } = {}) =>
-  _.merge({}, VictoryTheme.material, {
+  deepmerge(VictoryTheme.material, {
     axis: {
       style: {
         axis: withAxis

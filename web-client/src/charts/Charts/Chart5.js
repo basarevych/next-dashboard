@@ -17,15 +17,13 @@ function Chart5(props) {
 
   const data = useMemo(
     () =>
-      _.times(7, () => {
-        return [
-          { x: 1, y: _.random(1, 5) },
-          { x: 2, y: _.random(1, 10) },
-          { x: 3, y: _.random(2, 10) },
-          { x: 4, y: _.random(2, 10) },
-          { x: 5, y: _.random(2, 15) }
-        ];
-      }),
+      [...Array(7).keys()].map(() => [
+        { x: 1, y: 1 + 4 * Math.random() },
+        { x: 2, y: 1 + 9 * Math.random() },
+        { x: 3, y: 2 + 8 * Math.random() },
+        { x: 4, y: 2 + 8 * Math.random() },
+        { x: 5, y: 2 + 13 * Math.random() }
+      ]),
     []
   );
 
@@ -49,7 +47,7 @@ function Chart5(props) {
             })}
           >
             <VictoryStack colorScale={"blue"}>
-              {_.map(data, (item, i) => (
+              {data.map((item, i) => (
                 <VictoryArea key={i} data={item} interpolation={"basis"} />
               ))}
             </VictoryStack>

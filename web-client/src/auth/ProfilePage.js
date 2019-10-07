@@ -159,8 +159,8 @@ function ProfilePage(props) {
 
   const renderForm = useCallback(
     ({ isSubmitting, status, handleSubmit }) => {
-      const services = _.map(user.providers, provider => {
-        const name = _.toLower(provider.name);
+      const services = user.providers.map(provider => {
+        const name = provider.name.toLowerCase();
         const isLinked = provider.isLinked;
 
         return (
@@ -195,7 +195,7 @@ function ProfilePage(props) {
                 className={classes.serviceLogo}
               />
             )}
-            {_.upperFirst(name)}
+            {name.charAt(0).toUpperCase() + name.slice(1)}
           </Button>
         );
       });

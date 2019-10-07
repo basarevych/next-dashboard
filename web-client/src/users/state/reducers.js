@@ -18,7 +18,7 @@ const defaultPageSize = 10;
 const tablePageSizeReducer = (state = defaultPageSize, action) => {
   switch (action.type) {
     case types.SET_TABLE_PAGE_SIZE:
-      if (!_.isUndefined(action.pageSize)) return action.pageSize;
+      if (typeof action.pageSize !== "undefined") return action.pageSize;
       break;
   }
   return state;
@@ -27,7 +27,7 @@ const tablePageSizeReducer = (state = defaultPageSize, action) => {
 const tablePageNumberReducer = (state = 0, action) => {
   switch (action.type) {
     case types.SET_TABLE_PAGE_NUMBER:
-      if (!_.isUndefined(action.pageNumber)) return action.pageNumber;
+      if (typeof action.pageNumber !== "undefined") return action.pageNumber;
       break;
   }
   return state;
@@ -42,7 +42,7 @@ const defaultTableParams = {
 const tableParamsReducer = (state = Map(defaultTableParams), action) => {
   switch (action.type) {
     case types.SET_TABLE_PARAMS:
-      if (!_.isUndefined(action.params)) return Map(action.params);
+      if (typeof action.params !== "undefined") return Map(action.params);
       break;
     case types.RESET_TABLE_PARAMS:
       return Map(defaultTableParams);
@@ -63,22 +63,24 @@ const tableTimestampReducer = (state = 0, action) => {
 const selectedReducer = (state = Set([]), action) => {
   switch (action.type) {
     case types.SET_SELECTED:
-      if (!_.isUndefined(action.userId) && !_.isUndefined(action.isSelected)) {
-        // eslint-disable-next-line lodash/prefer-lodash-method
+      if (
+        typeof action.userId !== "undefined" &&
+        typeof action.isSelected !== "undefined"
+      ) {
         if (state.includes(action.userId)) return state.delete(action.userId);
         else return state.add(action.userId);
       }
       break;
     case types.SELECT_ALL:
-      if (!_.isUndefined(action.userIds)) return Set(action.userIds);
+      if (typeof action.userIds !== "undefined") return Set(action.userIds);
       break;
     case types.DESELECT_ALL:
-      if (_.isUndefined(action.exceptUserIds)) {
+      if (typeof action.exceptUserIds !== "undefined") {
         return Set([]);
       } else {
         return state.withMutations(set => {
           for (let item of set.values())
-            if (!_.includes(action.exceptUserIds, item)) set.delete(item);
+            if (!action.exceptUserIds.includes(item)) set.delete(item);
         });
       }
   }

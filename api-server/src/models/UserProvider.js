@@ -1,8 +1,8 @@
 const BaseModel = require("./BaseModel");
 
 class UserProvider extends BaseModel {
-  constructor(db) {
-    super();
+  constructor(di, db) {
+    super(di);
 
     this.db = db;
 
@@ -66,7 +66,7 @@ class UserProvider extends BaseModel {
   }
 
   static get $requires() {
-    return ["db"];
+    return ["di", "db"];
   }
 
   static get $lifecycle() {

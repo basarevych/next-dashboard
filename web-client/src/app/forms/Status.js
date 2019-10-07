@@ -11,11 +11,10 @@ function Status(props) {
     <Grow in>
       <Grid item xs={12}>
         {!!props.error &&
-          _.map(
-            _.isArray(props.error) ? props.error : [props.error],
+          (Array.isArray(props.error) ? props.error : [props.error]).map(
             (item, index) => (
               <div key={`error-${index}`} className={props.classes.error}>
-                {_.isArray(item) ? (
+                {Array.isArray(item) ? (
                   <FormattedMessage id={item[0]} values={item[1]} />
                 ) : (
                   <FormattedMessage id={item} />
@@ -24,11 +23,10 @@ function Status(props) {
             )
           )}
         {!!props.message &&
-          _.map(
-            _.isArray(props.message) ? props.message : [props.message],
+          (Array.isArray(props.message) ? props.message : [props.message]).map(
             (item, index) => (
               <div key={`error-${index}`} className={props.classes.info}>
-                {_.isArray(item) ? (
+                {Array.isArray(item) ? (
                   <FormattedMessage id={item[0]} values={item[1]} />
                 ) : (
                   <FormattedMessage id={item} />

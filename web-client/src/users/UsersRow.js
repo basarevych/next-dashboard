@@ -24,7 +24,7 @@ function UsersRow(props) {
   const classes = useStyles(props);
   const dispatch = useDispatch();
 
-  const roles = useMemo(() => _.clone(props.node.roles).sort(), [
+  const roles = useMemo(() => props.node.roles.slice().sort(), [
     props.node.roles
   ]);
 
@@ -65,9 +65,9 @@ function UsersRow(props) {
         {props.node.name}
       </TableCell>
       <TableCell className={classNames(isSelected && "selected")}>
-        {_.map(roles, item =>
-          intl.formatMessage({ id: `EDIT_USER_${item}_LABEL` })
-        ).join(", ")}
+        {roles
+          .map(item => intl.formatMessage({ id: `EDIT_USER_${item}_LABEL` }))
+          .join(", ")}
       </TableCell>
     </TableRow>
   );

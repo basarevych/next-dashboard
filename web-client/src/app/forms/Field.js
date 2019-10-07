@@ -44,7 +44,7 @@ function FormField(props) {
     if (fieldSchema) {
       const descr = fieldSchema.describe();
       if (descr) {
-        const key = _.get(descr, "meta.label");
+        const key = descr.meta.label;
         if (key) label = intl.formatMessage({ id: key });
       }
     }

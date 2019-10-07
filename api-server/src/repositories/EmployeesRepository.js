@@ -149,12 +149,12 @@ class EmployeesRepository {
     let employee = await this.employee.model.findById(id);
     if (!employee) throw this.di.get("error.notFound");
 
-    if (_.isNumber(uid)) employee.uid = uid;
-    if (_.isBoolean(checked)) employee.checked = checked;
-    if (_.isString(name)) employee.name = name;
-    if (_.isString(dept)) employee.dept = dept;
-    if (_.isString(title)) employee.title = title;
-    if (_.isString(country)) {
+    if (isFinite(uid)) employee.uid = uid;
+    if (typeof checked === "boolean") employee.checked = checked;
+    if (typeof name === "string") employee.name = name;
+    if (typeof dept === "string") employee.dept = dept;
+    if (typeof title === "string") employee.title = title;
+    if (typeof country === "string") {
       let countryModel = await this.dashboardRepo.getCountry(context, {
         id: country
       });
@@ -164,7 +164,7 @@ class EmployeesRepository {
         name: countryModel.name
       };
     }
-    if (_.isFinite(salary)) employee.salary = salary;
+    if (isFinite(salary)) employee.salary = salary;
 
     await employee.validate();
     await employee.save();

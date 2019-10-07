@@ -17,13 +17,11 @@ function Chart1(props) {
 
   const data = useMemo(
     () =>
-      _.times(5, () => {
-        return [
-          { x: 1, y: Math.random() },
-          { x: 2, y: Math.random() },
-          { x: 3, y: Math.random() }
-        ];
-      }),
+      [...Array(5).keys()].map(() => [
+        { x: 1, y: Math.random() },
+        { x: 2, y: Math.random() },
+        { x: 3, y: Math.random() }
+      ]),
     []
   );
 
@@ -44,17 +42,17 @@ function Chart1(props) {
           >
             <VictoryGroup offset={20} style={{ data: { width: 15 } }}>
               <VictoryStack colorScale={"red"}>
-                {_.map(data, (item, index) => (
+                {data.map((item, index) => (
                   <VictoryBar key={index} data={item} />
                 ))}
               </VictoryStack>
               <VictoryStack colorScale={"green"}>
-                {_.map(data, (item, index) => (
+                {data.map((item, index) => (
                   <VictoryBar key={index} data={item} />
                 ))}
               </VictoryStack>
               <VictoryStack colorScale={"blue"}>
-                {_.map(data, (item, index) => (
+                {data.map((item, index) => (
                   <VictoryBar key={index} data={item} />
                 ))}
               </VictoryStack>

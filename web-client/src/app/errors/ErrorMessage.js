@@ -71,7 +71,7 @@ function ErrorMessage(props) {
 
   const text = useMemo(() => {
     if (props.error) return props.error.message;
-    return _.isString(code)
+    return typeof code === "string"
       ? "An Error Occurred"
       : HttpStatus.getStatusText(code);
   }, [props.error, code]);

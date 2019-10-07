@@ -30,7 +30,7 @@ function UsersTable(props) {
         />
       </TableHead>
       <TableBody>
-        {_.map(props.users, edge => (
+        {props.users.map(edge => (
           <UsersRow
             key={edge.cursor}
             node={edge.node}

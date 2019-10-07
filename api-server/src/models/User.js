@@ -3,11 +3,11 @@ const constants = require("../../common/constants");
 const validationSchema = require("../../common/forms/createUser");
 
 class User extends BaseModel {
-  constructor(db, client, provider) {
-    super();
+  constructor(di, db, client, provider) {
+    super(di);
 
     this.validationSchema = validationSchema;
-    this.roles = _.values(constants.roles);
+    this.roles = Object.values(constants.roles);
     this.sortBy = ["email", "name"];
     this.sortDir = ["asc", "desc"];
 
@@ -90,11 +90,11 @@ class User extends BaseModel {
       const values = self.cast(
         this.toObject({ getters: true, virtuals: true })
       );
-      for (let field of _.keys(values)) this[field] = values[field];
+      for (let field of Object.keys(values)) this[field] = values[field];
 
       this.whenUpdated = Date.now();
 
-      if (!_.includes(this.roles, constants.roles.AUTHENTICATED))
+      if (!this.roles.includes(constants.roles.AUTHENTICATED))
         this.roles.push(constants.roles.AUTHENTICATED);
     });
 
@@ -108,7 +108,7 @@ class User extends BaseModel {
   }
 
   static get $requires() {
-    return ["db", "model.user.client", "model.user.provider"];
+    return ["di", "db", "model.user.client", "model.user.provider"];
   }
 
   static get $lifecycle() {

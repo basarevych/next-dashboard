@@ -4,6 +4,6 @@ module.exports = api => {
   api.cache(false);
   return {
     presets: ["next/babel"],
-    plugins: ["@babel/transform-strict-mode", "relay", "lodash"]
+    plugins: ["@babel/transform-strict-mode", "relay"]
   };
 };

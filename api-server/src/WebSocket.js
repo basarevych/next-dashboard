@@ -59,11 +59,11 @@ class WebSocket {
       const handlers = this.di.get(/^ws\..+$/); // names starting with "ws."
 
       // Initialize
-      await Promise.all(_.invokeMap(Array.from(handlers.values()), "init"));
+      await Promise.all(Array.from(handlers.values(), item => item.init()));
 
       // Subscribe
       await Promise.all(
-        _.invokeMap(Array.from(handlers.values()), "subscribe", { socket })
+        Array.from(handlers.values(), item => item.subscribe({ socket }))
       );
 
       socket.on("disconnect", async () => {
@@ -76,7 +76,7 @@ class WebSocket {
 
         // Unsubscribe
         await Promise.all(
-          _.invokeMap(Array.from(handlers.values()), "unsubscribe", { socket })
+          Array.from(handlers.values(), item => item.unsubscribe({ socket }))
         );
       });
 

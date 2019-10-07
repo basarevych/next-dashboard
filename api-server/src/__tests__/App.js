@@ -23,19 +23,17 @@ describe("Application initialization", () => {
     const App = require("../App");
     app = new App();
 
-    app.express.use = jest.fn(_.noop);
+    app.express.use = jest.fn(() => {});
 
-    for (let item of Array.from(app.di.singletons().values()))
+    for (let item of app.di.singletons().values())
       item.init = jest.fn(async () => {});
 
     return app.init({ mainServer: new EventEmitter() });
   });
 
-  test("Singletons and middleware initialized", () => {
+  test("Singletons initialized", () => {
     const singletons = app.di.singletons().values();
     expect(Array.from(singletons).length).toBeGreaterThan(0);
-    for (let item of Array.from(singletons))
-      expect(item.init).toHaveBeenCalled();
-    expect(app.express.use).toHaveBeenCalled();
+    for (let item of singletons) expect(item.init).toHaveBeenCalled();
   });
 });

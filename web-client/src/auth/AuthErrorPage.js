@@ -52,7 +52,7 @@ function AuthErrorPage(props) {
         <p>
           <FormattedMessage id={msg} />
         </p>
-        {_.map(hints, (hint, index) => (
+        {hints.map((hint, index) => (
           <div key={`hint-${index}`} className={classes.hint}>
             <Typography variant="h5">
               <FormattedMessage id={hint.title} />
