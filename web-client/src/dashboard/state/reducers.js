@@ -6,7 +6,6 @@ import constants from "../../../common/constants";
 /* State Shape
 Map({
   state: String,
-  dept: String,
   tablePageSize: Number,
   tablePageNuber: Number,
   tableParams: Map(), // query variables
@@ -19,16 +18,6 @@ const stateReducer = (state = defaultState, action) => {
   switch (action.type) {
     case types.SET_STATE:
       if (typeof action.state !== "undefined") return action.state;
-      break;
-  }
-  return state;
-};
-
-export const defaultDept = Object.values(constants.depts)[0];
-const deptReducer = (state = defaultDept, action) => {
-  switch (action.type) {
-    case types.SET_DEPT:
-      if (typeof action.dept !== "undefined") return action.dept;
       break;
   }
   return state;
@@ -54,7 +43,7 @@ const tablePageNumberReducer = (state = 0, action) => {
 };
 
 const defaultTableParams = {
-  dept: defaultDept,
+  dept: Object.values(constants.depts)[0],
   first: defaultPageSize,
   after: null,
   last: null,
@@ -68,29 +57,15 @@ const tableParamsReducer = (state = Map(defaultTableParams), action) => {
     case types.SET_TABLE_PARAMS:
       if (typeof action.params !== "undefined") return Map(action.params);
       break;
-    case types.RESET_TABLE_PARAMS:
-      return Map(defaultTableParams);
-  }
-  return state;
-};
-
-const tableTimestampReducer = (state = 0, action) => {
-  switch (action.type) {
-    case types.SET_TABLE_PARAMS:
-    case types.RESET_TABLE_PARAMS:
-    case types.TOUCH_TABLE_PARAMS:
-      return Date.now();
   }
   return state;
 };
 
 const reducer = combineReducers({
   state: stateReducer,
-  dept: deptReducer,
   tablePageSize: tablePageSizeReducer,
   tablePageNumber: tablePageNumberReducer,
-  tableParams: tableParamsReducer,
-  tableTimestamp: tableTimestampReducer
+  tableParams: tableParamsReducer
 });
 
 export default reducer;

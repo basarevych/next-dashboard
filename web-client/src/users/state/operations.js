@@ -9,8 +9,6 @@ import constants from "../../../common/constants";
 export const setTablePageSize = actions.setTablePageSize;
 export const setTablePageNumber = actions.setTablePageNumber;
 export const setTableParams = actions.setTableParams;
-export const resetTableParams = actions.resetTableParams;
-export const touchTableParams = actions.touchTableParams;
 export const setSelected = actions.setSelected;
 export const selectAll = actions.selectAll;
 export const deselectAll = actions.deselectAll;

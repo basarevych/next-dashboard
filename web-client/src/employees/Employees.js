@@ -93,15 +93,29 @@ function Employees(props) {
   const [subTrigger, setSubTrigger] = useState(0);
   const isSubscribed = useSelector(state => appSelectors.isSubscribed(state));
 
-  const employees = ((props.viewer || {}).employees || {}).edges || [];
-  const totalCount = ((props.viewer || {}).employees || {}).totalCount || 0;
-  const startCursor =
-    (((props.viewer || {}).employees || {}).pageInfo || {}).startCursor || null;
-  const endCursor =
-    (((props.viewer || {}).employees || {}).pageInfo || {}).endCursor || null;
+  const [employees, setEmployees] = useState([]);
+  const [totalCount, setTotalCount] = useState(0);
+  const [startCursor, setStartCursor] = useState(null);
+  const [endCursor, setEndCursor] = useState(null);
+
+  useEffect(() => {
+    const newEmployees = ((props.viewer || {}).employees || {}).edges;
+    if (typeof newEmployees !== "undefined") setEmployees(newEmployees);
+
+    const newTotalCount = ((props.viewer || {}).employees || {}).totalCount;
+    if (typeof newTotalCount !== "undefined") setTotalCount(newTotalCount);
+
+    const newStartCursor = (
+      ((props.viewer || {}).employees || {}).pageInfo || {}
+    ).startCursor;
+    if (typeof newStartCursor !== "undefined") setStartCursor(newStartCursor);
+
+    const endCursor = (((props.viewer || {}).employees || {}).pageInfo || {})
+      .endCursor;
+    if (typeof endCursor !== "undefined") setEndCursor(endCursor);
+  }, [props.viewer]);
 
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
-  const [pageWasRefreshed, setPageWasRefreshed] = useState(false);
 
   const pageSize = useSelector(state =>
     employeesSelectors.getTablePageSize(state)
@@ -131,10 +145,9 @@ function Employees(props) {
     [dispatch]
   );
 
-  const refresh = useCallback(
-    () => dispatch(employeesOperations.touchTableParams()),
-    [dispatch]
-  );
+  const refresh = useCallback(() => {
+    if (props.retry) props.retry();
+  }, [props.retry]);
 
   const create = useCallback(
     () => dispatch(employeesOperations.showEditModal()),
@@ -311,40 +324,29 @@ function Employees(props) {
     () => {
       if (totalCount && pageNumber * pageSize >= totalCount) {
         setPageNumber(0);
-        dispatch(employeesOperations.resetTableParams());
+        setParams({
+          sortBy: params.sortBy,
+          sortDir: params.sortDir,
+          first: pageSize,
+          after: null,
+          last: null,
+          before: null
+        });
       }
     },
     [pageNumber, pageSize, totalCount, setPageNumber, dispatch]
   );
 
   useIsomorphicLayoutEffect(
-    // automatically refetch when variables change
-    () => {
-      props.relay.refetch(
-        params,
-        null,
-        () => setTimeout(() => setPageWasRefreshed(true)),
-        {
-          force: true
-        }
-      );
-    },
-    [params]
-  );
-
-  useIsomorphicLayoutEffect(
     // deselect rows that are not on the current page
     () => {
-      if (pageWasRefreshed) {
-        setPageWasRefreshed(false);
-        dispatch(
-          employeesOperations.deselectAll({
-            exceptEmployeeIds: employees.map(item => item.node.id)
-          })
-        );
-      }
+      dispatch(
+        employeesOperations.deselectAll({
+          exceptEmployeeIds: employees.map(item => item.node.id)
+        })
+      );
     },
-    [pageWasRefreshed]
+    [employees]
   );
 
   return (
@@ -446,8 +448,8 @@ function Employees(props) {
 }
 
 Employees.propTypes = {
-  relay: PropTypes.object.isRequired,
-  viewer: PropTypes.object.isRequired
+  viewer: PropTypes.object,
+  retry: PropTypes.func
 };
 
 export default Employees;

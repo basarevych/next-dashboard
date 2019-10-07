@@ -7,9 +7,8 @@ export const getTablePageNumber = state =>
   state.getIn(["users", "tablePageNumber"]);
 
 export const getTableParams = createSelector(
-  state => state.getIn(["users", "tableTimestamp"]),
   state => state.getIn(["users", "tableParams"]),
-  (timestamp, params) => params.toJS()
+  params => params.toJS()
 );
 
 export const getSelected = createSelector(

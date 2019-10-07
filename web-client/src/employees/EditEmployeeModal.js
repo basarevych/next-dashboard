@@ -229,10 +229,12 @@ function EditEmployeeModal() {
 
     if (renderProps && renderProps.viewer) {
       const employee = (renderProps.viewer || {}).employee;
-      return getForm({
-        ...employee,
-        country: fromGlobalId(employee.country.id).id.toLowerCase()
-      });
+      if (employee) {
+        return getForm({
+          ...employee,
+          country: fromGlobalId(employee.country.id).id.toLowerCase()
+        });
+      }
     }
 
     return null;

@@ -15,14 +15,6 @@ export const setTableParams = ({ params }) => ({
   params
 });
 
-export const resetTableParams = () => ({
-  type: types.RESET_TABLE_PARAMS
-});
-
-export const touchTableParams = () => ({
-  type: types.TOUCH_TABLE_PARAMS
-});
-
 export const setSelected = ({ userId, isSelected }) => ({
   type: types.SET_SELECTED,
   userId,

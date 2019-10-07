@@ -7,7 +7,6 @@ Map({
   tablePageSize: Number,
   tablePageNuber: Number,
   tableParams: Map(), // query variables
-  tableTimestamp: Number,
   selected: Set([String]), // IDs
   isEditModalOpen: false,
   editModalEmployeeId: String, // null when creating a new employee
@@ -47,18 +46,6 @@ const tableParamsReducer = (state = Map(defaultTableParams), action) => {
     case types.SET_TABLE_PARAMS:
       if (typeof action.params !== "undefined") return Map(action.params);
       break;
-    case types.RESET_TABLE_PARAMS:
-      return Map(defaultTableParams);
-  }
-  return state;
-};
-
-const tableTimestampReducer = (state = 0, action) => {
-  switch (action.type) {
-    case types.SET_TABLE_PARAMS:
-    case types.RESET_TABLE_PARAMS:
-    case types.TOUCH_TABLE_PARAMS:
-      return Date.now();
   }
   return state;
 };
@@ -114,7 +101,6 @@ const reducer = combineReducers({
   tablePageSize: tablePageSizeReducer,
   tablePageNumber: tablePageNumberReducer,
   tableParams: tableParamsReducer,
-  tableTimestamp: tableTimestampReducer,
   selected: selectedReducer,
   editModalEmployeeId: editModalEmployeeIdReducer,
   isEditModalOpen: isEditModalOpenReducer

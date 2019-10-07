@@ -159,10 +159,12 @@ function EditUserModal() {
 
     if (renderProps && renderProps.viewer) {
       const user = (renderProps.viewer || {}).user;
-      return getForm(editSchema, {
-        ...user,
-        isAdmin: user.roles.includes(constants.roles.ADMIN)
-      });
+      if (user) {
+        return getForm(editSchema, {
+          ...user,
+          isAdmin: user.roles.includes(constants.roles.ADMIN)
+        });
+      }
     }
 
     return null;

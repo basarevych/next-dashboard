@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useMemo, useCallback } from "react";
+import React, { useMemo, useCallback, useEffect, useState } from "react";
 import PropTypes from "prop-types";
+import { useSelector } from "react-redux";
 import { AutoSizer } from "react-virtualized";
 import { useIntl } from "react-intl";
 import { VictoryTheme } from "victory";
@@ -17,45 +18,8 @@ import {
   getColorStart,
   getColorEnd
 } from "../../../common/src/colors";
-
-function StateLegendLabel(props) {
-  const intl = useIntl();
-
-  const { index, x, y, offsetX, offsetY, text, chart, theme } = props;
-  if (!chart || !text) return null;
-
-  return (
-    <g>
-      <text
-        x={x}
-        y={y + offsetY}
-        alignmentBaseline="middle"
-        fill={theme.palette.text.primary}
-      >
-        {text}
-      </text>
-      <text
-        x={x + offsetX}
-        y={y + offsetY}
-        alignmentBaseline="middle"
-        fill={theme.palette.text.primary}
-      >
-        {intl.formatNumber(chart[index].y)}
-      </text>
-    </g>
-  );
-}
-
-StateLegendLabel.propTypes = {
-  index: PropTypes.number,
-  x: PropTypes.number,
-  y: PropTypes.number,
-  offsetX: PropTypes.number,
-  offsetY: PropTypes.number,
-  text: PropTypes.string,
-  chart: PropTypes.array,
-  theme: PropTypes.object
-};
+import StateLegendLabel from "./StateLendendLabel";
+import { dashboardSelectors } from "../state";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -78,25 +42,21 @@ function StateSales(props) {
   const theme = useTheme();
   const intl = useIntl();
 
-  const [selected, setSelected] = useState(props.selected);
+  const state = useSelector(state => dashboardSelectors.getState(state));
+
+  const [edges, setEdges] = useState([]);
 
   useEffect(() => {
-    if (selected !== props.selected) {
-      props.relay.refetch({ stateName: props.selected }, null, null, {
-        force: true
-      });
-      setSelected(props.selected);
-    }
-  }, [props.selected, setSelected]);
-
-  const edges = ((props.viewer || {}).stateCities || {}).edges || [];
+    const newEdges = ((props.viewer || {}).stateCities || {}).edges;
+    if (typeof newEdges !== "undefined") setEdges(newEdges);
+  }, [props.viewer]);
 
   const data = useMemo(() => {
     const cities = edges.map(edge => ({
       x: edge.node.name,
       y: edge.node.population
     }));
-    if (!cities.length) return null;
+    if (!cities.length) return [];
     const otherPopulation =
       ((props.viewer || {}).stateCities || {}).otherPopulation || 0;
     if (otherPopulation) {
@@ -163,11 +123,11 @@ function StateSales(props) {
     () => (
       <React.Fragment>
         <Typography variant="h4" color="inherit">
-          {selected}
+          {state}
         </Typography>
       </React.Fragment>
     ),
-    [selected]
+    [state]
   );
 
   const renderChart = useCallback(({ width, height }) => {
@@ -278,9 +238,8 @@ function StateSales(props) {
 }
 
 StateSales.propTypes = {
-  relay: PropTypes.object.isRequired,
-  selected: PropTypes.string.isRequired,
-  viewer: PropTypes.object.isRequired
+  viewer: PropTypes.object,
+  retry: PropTypes.func
 };
 
 export default StateSales;

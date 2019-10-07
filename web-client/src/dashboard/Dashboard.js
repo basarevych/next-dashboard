@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
 import { makeStyles } from "@material-ui/styles";
@@ -8,10 +8,9 @@ import SalesStat from "./stat/SalesStatContainer";
 import ClientsStat from "./stat/ClientsStatContainer";
 import AvgTimeStat from "./stat/AvgTimeStatContainer";
 import SalesMap from "./sales/SalesMap";
-import StateSales from "./sales/StateSalesContainer";
-import DeptEmployees from "./employees/DeptEmployeesContainer";
+import StateSalesQuery from "./sales/StateSalesQuery";
+import DeptEmployeesQuery from "./employees/DeptEmployeesQuery";
 import { appOperations, appSelectors } from "../app/state";
-import { dashboardSelectors, dashboardOperations } from "./state";
 
 const useStyles = makeStyles(theme => ({
   layout: {
@@ -28,16 +27,6 @@ function Dashboard(props) {
   const [usCities, setUsCities] = useState(null);
 
   const isStarted = useSelector(state => appSelectors.isStarted(state));
-
-  const state = useSelector(state => dashboardSelectors.getState(state));
-  const setState = state => dispatch(dashboardOperations.setState({ state }));
-
-  const handleStateSelected = useCallback(
-    newState => {
-      if (state !== newState) setState(newState);
-    },
-    [state, setState]
-  );
 
   useEffect(() => {
     if (!isStarted) return;
@@ -106,13 +95,13 @@ function Dashboard(props) {
         </Grid>
         <Grid container spacing={2} alignItems="stretch" item xs={12} lg={10}>
           <Grid item xs={12} md={8}>
-            <SalesMap data={usCities} onSelect={handleStateSelected} />
+            <SalesMap data={usCities} />
           </Grid>
           <Grid item xs={12} md={4}>
-            <StateSales viewer={props.viewer} selected={state} />
+            <StateSalesQuery />
           </Grid>
           <Grid item xs={12}>
-            <DeptEmployees viewer={props.viewer} />
+            <DeptEmployeesQuery />
           </Grid>
         </Grid>
       </Grid>
@@ -121,7 +110,8 @@ function Dashboard(props) {
 }
 
 Dashboard.propTypes = {
-  viewer: PropTypes.object.isRequired
+  viewer: PropTypes.object,
+  retry: PropTypes.func
 };
 
 export default Dashboard;

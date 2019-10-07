@@ -94,14 +94,28 @@ function DeptEmployees(props) {
   const [subTrigger, setSubTrigger] = useState(0);
   const isSubscribed = useSelector(state => appSelectors.isSubscribed(state));
 
-  const employees = ((props.viewer || {}).employees || {}).edges || [];
-  const totalCount = ((props.viewer || {}).employees || {}).totalCount || 0;
-  const startCursor =
-    (((props.viewer || {}).employees || {}).pageInfo || {}).startCursor || null;
-  const endCursor =
-    (((props.viewer || {}).employees || {}).pageInfo || {}).endCursor || null;
+  const [employees, setEmployees] = useState([]);
+  const [totalCount, setTotalCount] = useState(0);
+  const [startCursor, setStartCursor] = useState(null);
+  const [endCursor, setEndCursor] = useState(null);
 
-  const dept = useSelector(state => dashboardSelectors.getDept(state));
+  useEffect(() => {
+    const newEmployees = ((props.viewer || {}).employees || {}).edges;
+    if (typeof newEmployees !== "undefined") setEmployees(newEmployees);
+
+    const newTotalCount = ((props.viewer || {}).employees || {}).totalCount;
+    if (typeof newTotalCount !== "undefined") setTotalCount(newTotalCount);
+
+    const newStartCursor = (
+      ((props.viewer || {}).employees || {}).pageInfo || {}
+    ).startCursor;
+    if (typeof newStartCursor !== "undefined") setStartCursor(newStartCursor);
+
+    const endCursor = (((props.viewer || {}).employees || {}).pageInfo || {})
+      .endCursor;
+    if (typeof endCursor !== "undefined") setEndCursor(endCursor);
+  }, [props.viewer]);
+
   const pageSize = useSelector(state =>
     dashboardSelectors.getTablePageSize(state)
   );
@@ -109,32 +123,27 @@ function DeptEmployees(props) {
     dashboardSelectors.getTablePageNumber(state)
   );
   const params = useSelector(state => dashboardSelectors.getTableParams(state));
-
-  const setDept = useCallback(
-    dept => dispatch(dashboardOperations.setDept({ dept })),
-    [dispatch]
-  );
+  const dept = useSelector(state => dashboardSelectors.getDept(state));
 
   const setPageSize = useCallback(
     pageSize => dispatch(dashboardOperations.setTablePageSize({ pageSize })),
-    [dispatch]
+    []
   );
 
   const setPageNumber = useCallback(
     pageNumber =>
       dispatch(dashboardOperations.setTablePageNumber({ pageNumber })),
-    [dispatch]
+    []
   );
 
   const setParams = useCallback(
     params => dispatch(dashboardOperations.setTableParams({ params })),
-    [dispatch]
+    []
   );
 
-  const refresh = useCallback(
-    () => dispatch(dashboardOperations.touchTableParams()),
-    [dispatch]
-  );
+  const refresh = useCallback(() => {
+    if (props.retry) props.retry();
+  }, [props.retry]);
 
   const changeSort = useCallback(
     sortBy => {
@@ -152,7 +161,7 @@ function DeptEmployees(props) {
         before: null
       });
     },
-    [params.sortBy, params.sortDir, dept, pageSize, setPageNumber, setParams]
+    [params.sortBy, params.sortDir, dept, pageSize]
   );
 
   const changeRowsPerPage = useCallback(
@@ -170,7 +179,7 @@ function DeptEmployees(props) {
         before: null
       });
     },
-    [params.sortBy, params.sortDir, dept, setPageSize, setPageNumber, setParams]
+    [params.sortBy, params.sortDir, dept]
   );
 
   const changePage = useCallback(
@@ -206,22 +215,19 @@ function DeptEmployees(props) {
       setParams(newParams);
     },
     [
+      dept,
       totalCount,
       pageSize,
       params.sortBy,
       params.sortDir,
-      dept,
       startCursor,
-      endCursor,
-      setPageNumber,
-      setParams
+      endCursor
     ]
   );
 
   const changeDept = useCallback(
     (evt, index) => {
       const newDept = depts[index];
-      setDept(newDept);
       setPageNumber(0);
       setParams({
         dept: newDept,
@@ -233,7 +239,7 @@ function DeptEmployees(props) {
         before: null
       });
     },
-    [params.sortBy, params.sortDir, pageSize, setDept, setPageNumber, setParams]
+    [params.sortBy, params.sortDir, pageSize]
   );
 
   useEffect(
@@ -274,7 +280,7 @@ function DeptEmployees(props) {
         );
       };
     },
-    [subTrigger, setSubTrigger, refresh]
+    [subTrigger]
   );
 
   useEffect(
@@ -298,7 +304,7 @@ function DeptEmployees(props) {
         }
       };
     },
-    [isSubscribed, refresh]
+    [isSubscribed]
   );
 
   useIsomorphicLayoutEffect(
@@ -306,18 +312,18 @@ function DeptEmployees(props) {
     () => {
       if (totalCount && pageNumber * pageSize >= totalCount) {
         setPageNumber(0);
-        dispatch(dashboardOperations.resetTableParams());
+        setParams({
+          dept,
+          sortBy: params.sortBy,
+          sortDir: params.sortDir,
+          first: pageSize,
+          after: null,
+          last: null,
+          before: null
+        });
       }
     },
-    [pageNumber, pageSize, totalCount, setPageNumber, dispatch]
-  );
-
-  useIsomorphicLayoutEffect(
-    // automatically refetch when variables change
-    () => {
-      props.relay.refetch(params, null, null, { force: true });
-    },
-    [params]
+    [pageNumber, pageSize, totalCount, dept, params]
   );
 
   const renderTable = useCallback(
@@ -371,16 +377,13 @@ function DeptEmployees(props) {
     [
       classes,
       isSubscribed,
+      dept,
       employees,
       totalCount,
       pageSize,
       pageNumber,
       params.sortBy,
-      params.sortDir,
-      changeDept,
-      changeSort,
-      changePage,
-      changeRowsPerPage
+      params.sortDir
     ]
   );
 
@@ -388,8 +391,8 @@ function DeptEmployees(props) {
 }
 
 DeptEmployees.propTypes = {
-  relay: PropTypes.object.isRequired,
-  viewer: PropTypes.object.isRequired
+  viewer: PropTypes.object,
+  retry: PropTypes.func
 };
 
 export default DeptEmployees;

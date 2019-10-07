@@ -6,7 +6,7 @@ import React, {
   useMemo
 } from "react";
 import PropTypes from "prop-types";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { FormattedMessage } from "react-intl";
 import StaticMap, { NavigationControl } from "react-map-gl";
 import { PhongMaterial } from "@luma.gl/core";
@@ -23,6 +23,7 @@ import Paper from "@material-ui/core/Paper";
 import Link from "@material-ui/core/Link";
 import states from "../../../data/gz_2010_us_040_00_500k.json";
 import { appSelectors } from "../../app/state";
+import { dashboardOperations } from "../state";
 import useAnimation from "../../app/lib/useAnimation.js";
 
 const useIsomorphicLayoutEffect = process.browser ? useLayoutEffect : useEffect;
@@ -134,6 +135,7 @@ const initialViewState = {
 
 function SalesMap(props) {
   const classes = useStyles(props);
+  const dispatch = useDispatch();
 
   const [data, setData] = useState([]);
   const [viewState, setViewState] = useState(initialViewState);
@@ -175,32 +177,26 @@ function SalesMap(props) {
       viewport.pitch = viewState.pitch;
       updateViewState({ viewState: viewport });
     },
-    [viewState, updateViewState]
+    [viewState]
   );
 
   const handleMouseOver = useCallback(() => {
     setIsHovered(true);
-  }, [setIsHovered]);
+  }, []);
 
   const handleMouseOut = useCallback(() => {
     setIsHovered(false);
-  }, [setIsHovered]);
+  }, []);
 
-  const handleHover = useCallback(
-    ({ object, x, y }) => {
-      const tooltip = object ? { text: object.properties.NAME, x, y } : null;
-      setTooltip(tooltip);
-    },
-    [setTooltip]
-  );
+  const handleHover = useCallback(({ object, x, y }) => {
+    const tooltip = object ? { text: object.properties.NAME, x, y } : null;
+    setTooltip(tooltip);
+  }, []);
 
-  const handleClick = useCallback(
-    ({ object }) => {
-      const state = object && object.properties.NAME;
-      if (state) props.onSelect(state);
-    },
-    [props.onSelect]
-  );
+  const handleClick = useCallback(({ object }) => {
+    const state = object && object.properties.NAME;
+    if (state) dispatch(dashboardOperations.setState({ state }));
+  }, []);
 
   useEffect(
     // parse the data
@@ -402,8 +398,7 @@ function SalesMap(props) {
 }
 
 SalesMap.propTypes = {
-  data: PropTypes.array,
-  onSelect: PropTypes.func.isRequired
+  data: PropTypes.array
 };
 
 export default SalesMap;

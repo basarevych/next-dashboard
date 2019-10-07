@@ -69,15 +69,28 @@ function Users(props) {
   const [subTrigger, setSubTrigger] = useState(0);
   const isSubscribed = useSelector(state => appSelectors.isSubscribed(state));
 
-  const users = ((props.viewer || {}).users || {}).edges || [];
-  const totalCount = ((props.viewer || {}).users || {}).totalCount || 0;
-  const startCursor =
-    (((props.viewer || {}).users || {}).pageInfo || {}).startCursor || null;
-  const endCursor =
-    (((props.viewer || {}).users || {}).pageInfo || {}).endCursor || null;
+  const [users, setUsers] = useState([]);
+  const [totalCount, setTotalCount] = useState(0);
+  const [startCursor, setStartCursor] = useState(null);
+  const [endCursor, setEndCursor] = useState(null);
+
+  useEffect(() => {
+    const newUsers = ((props.viewer || {}).users || {}).edges;
+    if (typeof newUsers !== "undefined") setUsers(newUsers);
+
+    const newTotalCount = ((props.viewer || {}).users || {}).totalCount;
+    if (typeof newTotalCount !== "undefined") setTotalCount(newTotalCount);
+
+    const newStartCursor = (((props.viewer || {}).users || {}).pageInfo || {})
+      .startCursor;
+    if (typeof newStartCursor !== "undefined") setStartCursor(newStartCursor);
+
+    const endCursor = (((props.viewer || {}).users || {}).pageInfo || {})
+      .endCursor;
+    if (typeof endCursor !== "undefined") setEndCursor(endCursor);
+  }, [props.viewer]);
 
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
-  const [pageWasRefreshed, setPageWasRefreshed] = useState(false);
 
   const pageSize = useSelector(state => usersSelectors.getTablePageSize(state));
   const pageNumber = useSelector(state =>
@@ -104,10 +117,9 @@ function Users(props) {
     [dispatch]
   );
 
-  const refresh = useCallback(
-    () => dispatch(usersOperations.touchTableParams()),
-    [dispatch]
-  );
+  const refresh = useCallback(() => {
+    if (props.retry) props.retry();
+  }, [props.retry]);
 
   const create = useCallback(() => dispatch(usersOperations.showEditModal()), [
     dispatch
@@ -281,40 +293,29 @@ function Users(props) {
     () => {
       if (totalCount && pageNumber * pageSize >= totalCount) {
         setPageNumber(0);
-        dispatch(usersOperations.resetTableParams());
+        setParams({
+          sortBy: params.sortBy,
+          sortDir: params.sortDir,
+          first: pageSize,
+          after: null,
+          last: null,
+          before: null
+        });
       }
     },
     [pageNumber, pageSize, totalCount, setPageNumber, dispatch]
   );
 
   useIsomorphicLayoutEffect(
-    // automatically refetch when variables change
-    () => {
-      props.relay.refetch(
-        params,
-        null,
-        null, //() => setTimeout(() => setPageWasRefreshed(true)),
-        {
-          force: true
-        }
-      );
-    },
-    [params]
-  );
-
-  useIsomorphicLayoutEffect(
     // deselect rows that are not on the current page
     () => {
-      if (pageWasRefreshed) {
-        setPageWasRefreshed(false);
-        dispatch(
-          usersOperations.deselectAll({
-            exceptUserIds: users.map(item => item.node.id)
-          })
-        );
-      }
+      dispatch(
+        usersOperations.deselectAll({
+          exceptUserIds: users.map(item => item.node.id)
+        })
+      );
     },
-    [pageWasRefreshed]
+    [users]
   );
 
   return (
@@ -405,8 +406,8 @@ function Users(props) {
 }
 
 Users.propTypes = {
-  relay: PropTypes.object.isRequired,
-  viewer: PropTypes.object.isRequired
+  viewer: PropTypes.object,
+  retry: PropTypes.func
 };
 
 export default Users;
