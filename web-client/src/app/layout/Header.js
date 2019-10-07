@@ -33,15 +33,15 @@ function Header(props) {
 
   const handleWrapperMouseEnter = useCallback(() => {
     setIsVisible(true);
-  }, [setIsVisible]);
+  }, []);
 
   const handleWrapperMouseLeave = useCallback(() => {
     setIsVisible(false);
-  }, [setIsVisible]);
+  }, []);
 
   const handleClose = useCallback(() => {
     setIsVisible(false);
-  }, [setIsVisible]);
+  }, []);
 
   return (
     <>

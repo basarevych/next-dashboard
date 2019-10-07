@@ -7,7 +7,7 @@ import styles from "../../../styles/themes";
 import { appSelectors } from "../state";
 
 function StylesProvider(props) {
-  const theme = useSelector(state => appSelectors.getTheme(state));
+  const theme = useSelector(appSelectors.getTheme);
 
   return (
     <ThemeProvider key={theme} theme={styles.themes[theme]}>

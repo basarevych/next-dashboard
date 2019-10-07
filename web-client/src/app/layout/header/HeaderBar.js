@@ -112,7 +112,7 @@ function HeaderBar(props) {
   const [anchorLocales, setAnchorLocales] = useState(null);
   const [anchorThemes, setAnchorThemes] = useState(null);
 
-  const locale = useSelector(state => appSelectors.getLocale(state));
+  const locale = useSelector(appSelectors.getLocale);
 
   useEffect(() => {
     const onResize = () => forceUpdate();
@@ -131,33 +131,24 @@ function HeaderBar(props) {
     if (newWidth && newWidth !== barWidth) setBarWidth(newWidth);
   }, [newHeight, newWidth]);
 
-  const handleInboxOpen = useCallback(
-    evt => {
-      setAnchorInbox(evt.currentTarget);
-    },
-    [setAnchorInbox]
-  );
+  const handleInboxOpen = useCallback(evt => {
+    setAnchorInbox(evt.currentTarget);
+  }, []);
 
-  const handleLocalesOpen = useCallback(
-    evt => {
-      setAnchorLocales(evt.currentTarget);
-    },
-    [setAnchorLocales]
-  );
+  const handleLocalesOpen = useCallback(evt => {
+    setAnchorLocales(evt.currentTarget);
+  }, []);
 
-  const handleThemesOpen = useCallback(
-    evt => {
-      setAnchorThemes(evt.currentTarget);
-    },
-    [setAnchorThemes]
-  );
+  const handleThemesOpen = useCallback(evt => {
+    setAnchorThemes(evt.currentTarget);
+  }, []);
 
   const handleMenuClose = useCallback(() => {
     setAnchorInbox(null);
     setAnchorLocales(null);
     setAnchorThemes(null);
     props.onClose();
-  }, [setAnchorInbox, setAnchorLocales, setAnchorThemes, props.onClose]);
+  }, [props.onClose]);
 
   const handleProfile = useCallback(() => {
     Router.push(constants.pages["/auth/profile"].page, "/auth/profile");
@@ -167,7 +158,7 @@ function HeaderBar(props) {
   const handleSignOut = useCallback(() => {
     dispatch(appOperations.signOut());
     handleMenuClose();
-  }, [dispatch, handleMenuClose]);
+  }, [handleMenuClose]);
 
   const isVisible =
     props.isVisible || !!anchorInbox || !!anchorLocales || !!anchorThemes;

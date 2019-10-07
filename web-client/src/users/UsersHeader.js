@@ -38,7 +38,7 @@ function UsersHeader(props) {
   const toggleAll = useCallback(() => {
     if (isAllSelected) dispatch(usersOperations.deselectAll());
     else dispatch(usersOperations.selectAll({ userIds }));
-  }, [userIds, dispatch, isAllSelected]);
+  }, [userIds, isAllSelected]);
 
   return (
     <TableRow>

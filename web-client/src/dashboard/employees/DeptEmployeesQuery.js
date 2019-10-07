@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { useSelector } from "react-redux";
 import { graphql } from "react-relay";
 import { QueryRenderer } from "../../app/providers/RelayProvider";
@@ -32,23 +32,18 @@ export const query = graphql`
 `;
 
 function DeptEmployeesQuery() {
-  const params = useSelector(state => dashboardSelectors.getTableParams(state));
+  const params = useSelector(dashboardSelectors.getTableParams);
+
+  const renderQuery = useCallback(({ error, props: renderProps, retry }) => {
+    if (error) return <ErrorMessage error={error} />;
+
+    return (
+      <DeptEmployees viewer={renderProps && renderProps.viewer} retry={retry} />
+    );
+  }, []);
 
   return (
-    <QueryRenderer
-      query={query}
-      variables={params}
-      render={({ error, props: renderProps, retry }) => {
-        if (error) return <ErrorMessage error={error} />;
-
-        return (
-          <DeptEmployees
-            viewer={renderProps && renderProps.viewer}
-            retry={retry}
-          />
-        );
-      }}
-    />
+    <QueryRenderer query={query} variables={params} render={renderQuery} />
   );
 }
 

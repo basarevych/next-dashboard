@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useCallback } from "react";
 import { useSelector } from "react-redux";
 import { graphql } from "react-relay";
 import { QueryRenderer } from "../../app/providers/RelayProvider";
@@ -15,24 +15,19 @@ export const query = graphql`
 `;
 
 function StateSalesQuery() {
-  const state = useSelector(state => dashboardSelectors.getState(state));
+  const state = useSelector(dashboardSelectors.getState);
   const params = useMemo(() => ({ stateName: state }), [state]);
 
-  return (
-    <QueryRenderer
-      query={query}
-      variables={params}
-      render={({ error, props: renderProps, retry }) => {
-        if (error) return <ErrorMessage error={error} />;
+  const renderQuery = useCallback(({ error, props: renderProps, retry }) => {
+    if (error) return <ErrorMessage error={error} />;
 
-        return (
-          <StateSales
-            viewer={renderProps && renderProps.viewer}
-            retry={retry}
-          />
-        );
-      }}
-    />
+    return (
+      <StateSales viewer={renderProps && renderProps.viewer} retry={retry} />
+    );
+  }, []);
+
+  return (
+    <QueryRenderer query={query} variables={params} render={renderQuery} />
   );
 }
 

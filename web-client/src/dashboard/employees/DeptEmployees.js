@@ -92,7 +92,7 @@ function DeptEmployees(props) {
   const { environment } = useContext(RelayContext);
 
   const [subTrigger, setSubTrigger] = useState(0);
-  const isSubscribed = useSelector(state => appSelectors.isSubscribed(state));
+  const isSubscribed = useSelector(appSelectors.isSubscribed);
 
   const [employees, setEmployees] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
@@ -116,14 +116,10 @@ function DeptEmployees(props) {
     if (typeof endCursor !== "undefined") setEndCursor(endCursor);
   }, [props.viewer]);
 
-  const pageSize = useSelector(state =>
-    dashboardSelectors.getTablePageSize(state)
-  );
-  const pageNumber = useSelector(state =>
-    dashboardSelectors.getTablePageNumber(state)
-  );
-  const params = useSelector(state => dashboardSelectors.getTableParams(state));
-  const dept = useSelector(state => dashboardSelectors.getDept(state));
+  const pageSize = useSelector(dashboardSelectors.getTablePageSize);
+  const pageNumber = useSelector(dashboardSelectors.getTablePageNumber);
+  const params = useSelector(dashboardSelectors.getTableParams);
+  const dept = useSelector(dashboardSelectors.getDept);
 
   const setPageSize = useCallback(
     pageSize => dispatch(dashboardOperations.setTablePageSize({ pageSize })),
@@ -280,7 +276,7 @@ function DeptEmployees(props) {
         );
       };
     },
-    [subTrigger]
+    [subTrigger, refresh]
   );
 
   useEffect(
@@ -304,7 +300,7 @@ function DeptEmployees(props) {
         }
       };
     },
-    [isSubscribed]
+    [isSubscribed, refresh]
   );
 
   useIsomorphicLayoutEffect(

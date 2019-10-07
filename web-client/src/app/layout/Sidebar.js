@@ -119,11 +119,11 @@ function Sidebar(props) {
 
   const user = useContext(UserContext);
 
-  const apiServer = useSelector(state => appSelectors.getApiServer(state));
+  const apiServer = useSelector(appSelectors.getApiServer);
 
   const handleLoginClick = useCallback(
     () => dispatch(appOperations.showAuthModal()),
-    [dispatch]
+    []
   );
 
   const handleMenuClick = useCallback(
@@ -177,15 +177,7 @@ function Sidebar(props) {
         )}
       </div>
     );
-  }, [
-    classes,
-    isAuthenticated,
-    userId,
-    name,
-    email,
-    apiServer,
-    handleLoginClick
-  ]);
+  }, [classes, isAuthenticated, userId, name, email, apiServer]);
 
   const renderItem = path => {
     const { page, icon, menu, isAllowed } = constants.pages[path] || {};

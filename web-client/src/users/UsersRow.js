@@ -40,7 +40,7 @@ function UsersRow(props) {
           isSelected: !isSelected
         })
       ),
-    [isSelected, props.node.id, dispatch]
+    [isSelected, props.node.id]
   );
 
   return (

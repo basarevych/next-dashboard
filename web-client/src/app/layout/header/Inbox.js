@@ -53,7 +53,7 @@ function Inbox(props) {
   const intl = useIntl();
   const classes = useStyles(props);
 
-  const apiServer = useSelector(state => appSelectors.getApiServer(state));
+  const apiServer = useSelector(appSelectors.getApiServer);
 
   return (
     <Menu

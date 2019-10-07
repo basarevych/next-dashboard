@@ -42,7 +42,7 @@ function StateSales(props) {
   const theme = useTheme();
   const intl = useIntl();
 
-  const state = useSelector(state => dashboardSelectors.getState(state));
+  const state = useSelector(dashboardSelectors.getState);
 
   const [edges, setEdges] = useState([]);
 
@@ -130,102 +130,105 @@ function StateSales(props) {
     [state]
   );
 
-  const renderChart = useCallback(({ width, height }) => {
-    if (!data || !width || !height) return null;
+  const renderChart = useCallback(
+    ({ width, height }) => {
+      if (!data || !width || !height) return null;
 
-    let legendLineHeight = height / 2 / 10 / 2;
-    let radius = Math.min(width / 2, height / 2) - 10;
+      let legendLineHeight = height / 2 / 10 / 2;
+      let radius = Math.min(width / 2, height / 2) - 10;
 
-    return (
-      <svg width={width} height={height}>
-        <defs>
-          <filter
-            id="stateChartShadow"
-            xmlns="http://www.w3.org/2000/svg"
-            height="130%"
-            width="130%"
+      return (
+        <svg width={width} height={height}>
+          <defs>
+            <filter
+              id="stateChartShadow"
+              xmlns="http://www.w3.org/2000/svg"
+              height="130%"
+              width="130%"
+            >
+              <feGaussianBlur in="SourceAlpha" stdDeviation="2" />
+              <feOffset dx="2" dy="2" result="offsetblur" />
+              <feComponentTransfer>
+                <feFuncA type="linear" slope="0.2"></feFuncA>
+              </feComponentTransfer>
+              <feMerge>
+                <feMergeNode />
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+              </feMerge>
+            </filter>
+            {gradients}
+          </defs>
+          <VictoryChart
+            width={width}
+            height={radius + height / 2}
+            standalone={false}
+            containerComponent={<VictoryContainer responsive={false} />}
+            theme={Object.assign({}, VictoryTheme.material, {
+              axis: {
+                style: {
+                  axis: { display: "none" },
+                  axisLabel: { display: "none" },
+                  ticks: { display: "none" },
+                  tickLabels: { display: "none" },
+                  grid: { display: "none" }
+                }
+              },
+              pie: {
+                style: {
+                  data: {
+                    strokeWidth: 0,
+                    filter: "url(#stateChartShadow)"
+                  },
+                  labels: {
+                    fill: "#ffffff",
+                    textShadow: "0 0 3px #000000"
+                  }
+                }
+              },
+              legend: {
+                style: {
+                  labels: {
+                    padding: 0,
+                    fontSize: legendLineHeight
+                  }
+                }
+              }
+            })}
           >
-            <feGaussianBlur in="SourceAlpha" stdDeviation="2" />
-            <feOffset dx="2" dy="2" result="offsetblur" />
-            <feComponentTransfer>
-              <feFuncA type="linear" slope="0.2"></feFuncA>
-            </feComponentTransfer>
-            <feMerge>
-              <feMergeNode />
-              <feMergeNode in="SourceGraphic"></feMergeNode>
-            </feMerge>
-          </filter>
-          {gradients}
-        </defs>
-        <VictoryChart
-          width={width}
-          height={radius + height / 2}
-          standalone={false}
-          containerComponent={<VictoryContainer responsive={false} />}
-          theme={Object.assign({}, VictoryTheme.material, {
-            axis: {
-              style: {
-                axis: { display: "none" },
-                axisLabel: { display: "none" },
-                ticks: { display: "none" },
-                tickLabels: { display: "none" },
-                grid: { display: "none" }
+            <VictoryPie
+              data={data}
+              labels={labels}
+              colorScale={colorScale}
+              padAngle={3}
+              startAngle={90}
+              endAngle={-90}
+              radius={radius}
+              innerRadius={0.5 * radius}
+              labelRadius={0.75 * radius}
+            />
+            <VictoryLegend
+              data={legends}
+              x={(width - 2 * radius) / 2 + 15}
+              y={height / 2}
+              width={2 * radius}
+              height={height / 2}
+              colorScale={colorScale}
+              labelComponent={
+                <StateLegendLabel
+                  chart={data}
+                  theme={theme}
+                  offsetY={0.45 * legendLineHeight}
+                  offsetX={radius}
+                />
               }
-            },
-            pie: {
-              style: {
-                data: {
-                  strokeWidth: 0,
-                  filter: "url(#stateChartShadow)"
-                },
-                labels: {
-                  fill: "#ffffff",
-                  textShadow: "0 0 3px #000000"
-                }
-              }
-            },
-            legend: {
-              style: {
-                labels: {
-                  padding: 0,
-                  fontSize: legendLineHeight
-                }
-              }
-            }
-          })}
-        >
-          <VictoryPie
-            data={data}
-            labels={labels}
-            colorScale={colorScale}
-            padAngle={3}
-            startAngle={90}
-            endAngle={-90}
-            radius={radius}
-            innerRadius={0.5 * radius}
-            labelRadius={0.75 * radius}
-          />
-          <VictoryLegend
-            data={legends}
-            x={(width - 2 * radius) / 2 + 15}
-            y={height / 2}
-            width={2 * radius}
-            height={height / 2}
-            colorScale={colorScale}
-            labelComponent={
-              <StateLegendLabel
-                chart={data}
-                theme={theme}
-                offsetY={0.45 * legendLineHeight}
-                offsetX={radius}
-              />
-            }
-            rowGutter={0}
-          />
-        </VictoryChart>
-      </svg>
-    );
-  });
+              rowGutter={0}
+            />
+          </VictoryChart>
+        </svg>
+      );
+    },
+    [gradients, data, labels, colorScale, legends, theme]
+  );
 
   return (
     <Paper className={classes.root}>

@@ -184,34 +184,32 @@ function Layout(props) {
   const [isUpdateNeeded, setIsUpdateNeeded] = useState(!!global.__updateReady);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  const statusCode = useSelector(state => appSelectors.getStatusCode(state));
-  const isStopped = useSelector(state => appSelectors.isStopped(state));
+  const statusCode = useSelector(appSelectors.getStatusCode);
+  const isStopped = useSelector(appSelectors.isStopped);
   const isDisconnected = useSelector(
     state =>
       appSelectors.isStarted(state) &&
       !appSelectors.isStopped(state) &&
       !appSelectors.isConnected(state)
   );
-  const isAuthModalOpen = useSelector(state =>
-    appSelectors.isAuthModalOpen(state)
-  );
+  const isAuthModalOpen = useSelector(appSelectors.isAuthModalOpen);
 
   const handleSidebarToggle = useCallback(() => {
     setIsSidebarOpen(!isSidebarOpen);
-  }, [isSidebarOpen, setIsSidebarOpen]);
+  }, [isSidebarOpen]);
 
   const handleSidebarOpen = useCallback(() => {
     setIsSidebarOpen(true);
-  }, [setIsSidebarOpen]);
+  }, []);
 
   const handleSidebarClose = useCallback(() => {
     setIsSidebarOpen(false);
-  }, [setIsSidebarOpen]);
+  }, []);
 
   const doUpdate = useCallback(() => {
     setIsUpdateNeeded(false);
     window.location.reload(true);
-  }, [setIsUpdateNeeded]);
+  }, []);
 
   useEffect(() => {
     setIsLoaded(true);

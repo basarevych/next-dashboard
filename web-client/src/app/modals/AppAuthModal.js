@@ -86,12 +86,12 @@ function AppAuthModal(props) {
 
   const handleProvider = useCallback(
     provider => dispatch(appOperations.linkProvider({ provider })),
-    [dispatch]
+    []
   );
 
   const handleClose = useCallback(
     () => dispatch(appOperations.hideAuthModal()),
-    [dispatch]
+    []
   );
 
   const submit = useCallback(
@@ -112,7 +112,7 @@ function AppAuthModal(props) {
         setStatus(_status);
       }
     },
-    [dispatch]
+    []
   );
 
   const renderForm = useCallback(
@@ -239,7 +239,7 @@ function AppAuthModal(props) {
         </Dialog>
       );
     },
-    [classes, facebookIcon, googleIcon, twitterIcon, handleClose]
+    [classes, facebookIcon, googleIcon, twitterIcon]
   );
 
   return <Form schema={schema} onSubmit={submit} render={renderForm} />;

@@ -78,9 +78,7 @@ function ErrorMessage(props) {
 
   const reload = useCallback(() => window.location.reload(true));
 
-  const signIn = useCallback(() => dispatch(appOperations.showAuthModal()), [
-    dispatch
-  ]);
+  const signIn = useCallback(() => dispatch(appOperations.showAuthModal()), []);
 
   return (
     <div className={classes.layout}>

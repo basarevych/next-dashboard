@@ -7,7 +7,7 @@ import moment from "../../../common/src/moment";
 import { appSelectors } from "../state";
 
 function DateProvider(props) {
-  const locale = useSelector(state => appSelectors.getLocale(state));
+  const locale = useSelector(appSelectors.getLocale);
 
   return (
     <MuiPickersUtilsProvider

@@ -67,7 +67,7 @@ function Users(props) {
   const { environment } = useContext(RelayContext);
 
   const [subTrigger, setSubTrigger] = useState(0);
-  const isSubscribed = useSelector(state => appSelectors.isSubscribed(state));
+  const isSubscribed = useSelector(appSelectors.isSubscribed);
 
   const [users, setUsers] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
@@ -92,58 +92,55 @@ function Users(props) {
 
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
-  const pageSize = useSelector(state => usersSelectors.getTablePageSize(state));
-  const pageNumber = useSelector(state =>
-    usersSelectors.getTablePageNumber(state)
-  );
-  const params = useSelector(state => usersSelectors.getTableParams(state));
-  const selected = useSelector(state => usersSelectors.getSelected(state));
-  const isEditModalOpen = useSelector(state =>
-    usersSelectors.getIsEditModalOpen(state)
-  );
+  const pageSize = useSelector(usersSelectors.getTablePageSize);
+  const pageNumber = useSelector(usersSelectors.getTablePageNumber);
+  const params = useSelector(usersSelectors.getTableParams);
+  const selected = useSelector(usersSelectors.getSelected);
+  const isEditModalOpen = useSelector(usersSelectors.getIsEditModalOpen);
 
   const setPageSize = useCallback(
     pageSize => dispatch(usersOperations.setTablePageSize({ pageSize })),
-    [dispatch]
+    []
   );
 
   const setPageNumber = useCallback(
     pageNumber => dispatch(usersOperations.setTablePageNumber({ pageNumber })),
-    [dispatch]
+    []
   );
 
   const setParams = useCallback(
     params => dispatch(usersOperations.setTableParams({ params })),
-    [dispatch]
+    []
   );
 
   const refresh = useCallback(() => {
     if (props.retry) props.retry();
   }, [props.retry]);
 
-  const create = useCallback(() => dispatch(usersOperations.showEditModal()), [
-    dispatch
-  ]);
+  const create = useCallback(
+    () => dispatch(usersOperations.showEditModal()),
+    []
+  );
 
   const edit = useCallback(
     () => dispatch(usersOperations.editFirstSelected()),
-    [dispatch]
+    []
   );
 
   const askToRemove = useCallback(() => {
     setIsConfirmOpen(true);
-  }, [dispatch]);
+  }, []);
 
   const cancelRemove = useCallback(() => {
     setIsConfirmOpen(false);
-  }, [dispatch]);
+  }, []);
 
   const remove = useCallback(() => {
     setIsConfirmOpen(false);
     return Promise.all(
       selected.map(userId => dispatch(usersOperations.remove({ id: userId })))
     );
-  }, [selected, dispatch]);
+  }, [selected]);
 
   const changeSort = useCallback(
     sortBy => {
@@ -160,7 +157,7 @@ function Users(props) {
         before: null
       });
     },
-    [params.sortBy, params.sortDir, pageSize, setPageNumber, setParams]
+    [params.sortBy, params.sortDir, pageSize]
   );
 
   const changeRowsPerPage = useCallback(
@@ -177,7 +174,7 @@ function Users(props) {
         before: null
       });
     },
-    [params.sortBy, params.sortDir, setPageSize, setPageNumber, setParams]
+    [params.sortBy, params.sortDir]
   );
 
   const changePage = useCallback(
@@ -217,9 +214,7 @@ function Users(props) {
       params.sortBy,
       params.sortDir,
       startCursor,
-      endCursor,
-      setPageNumber,
-      setParams
+      endCursor
     ]
   );
 
@@ -261,7 +256,7 @@ function Users(props) {
         );
       };
     },
-    [subTrigger, setSubTrigger, refresh]
+    [subTrigger, refresh]
   );
 
   useEffect(
@@ -303,7 +298,7 @@ function Users(props) {
         });
       }
     },
-    [pageNumber, pageSize, totalCount, setPageNumber, dispatch]
+    [pageNumber, pageSize, totalCount]
   );
 
   useIsomorphicLayoutEffect(

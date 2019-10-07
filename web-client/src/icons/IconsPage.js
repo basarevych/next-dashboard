@@ -119,18 +119,15 @@ function IconsPage() {
     );
   };
 
-  const handleInput = useCallback(
-    evt => {
-      const filter = evt.target.value;
-      setFilter(filter);
-      setList(
-        fullList.filter(item =>
-          item.name.toLowerCase().includes(filter.toLowerCase())
-        )
-      );
-    },
-    [setFilter, setList]
-  );
+  const handleInput = useCallback(evt => {
+    const filter = evt.target.value;
+    setFilter(filter);
+    setList(
+      fullList.filter(item =>
+        item.name.toLowerCase().includes(filter.toLowerCase())
+      )
+    );
+  }, []);
 
   const renderList = useCallback(
     ({ width, height }) => {

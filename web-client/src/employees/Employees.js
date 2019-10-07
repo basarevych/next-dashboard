@@ -91,7 +91,7 @@ function Employees(props) {
   const { environment } = useContext(RelayContext);
 
   const [subTrigger, setSubTrigger] = useState(0);
-  const isSubscribed = useSelector(state => appSelectors.isSubscribed(state));
+  const isSubscribed = useSelector(appSelectors.isSubscribed);
 
   const [employees, setEmployees] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
@@ -117,32 +117,26 @@ function Employees(props) {
 
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
-  const pageSize = useSelector(state =>
-    employeesSelectors.getTablePageSize(state)
-  );
-  const pageNumber = useSelector(state =>
-    employeesSelectors.getTablePageNumber(state)
-  );
-  const params = useSelector(state => employeesSelectors.getTableParams(state));
-  const selected = useSelector(state => employeesSelectors.getSelected(state));
-  const isEditModalOpen = useSelector(state =>
-    employeesSelectors.getIsEditModalOpen(state)
-  );
+  const pageSize = useSelector(employeesSelectors.getTablePageSize);
+  const pageNumber = useSelector(employeesSelectors.getTablePageNumber);
+  const params = useSelector(employeesSelectors.getTableParams);
+  const selected = useSelector(employeesSelectors.getSelected);
+  const isEditModalOpen = useSelector(employeesSelectors.getIsEditModalOpen);
 
   const setPageSize = useCallback(
     pageSize => dispatch(employeesOperations.setTablePageSize({ pageSize })),
-    [dispatch]
+    []
   );
 
   const setPageNumber = useCallback(
     pageNumber =>
       dispatch(employeesOperations.setTablePageNumber({ pageNumber })),
-    [dispatch]
+    []
   );
 
   const setParams = useCallback(
     params => dispatch(employeesOperations.setTableParams({ params })),
-    [dispatch]
+    []
   );
 
   const refresh = useCallback(() => {
@@ -151,21 +145,21 @@ function Employees(props) {
 
   const create = useCallback(
     () => dispatch(employeesOperations.showEditModal()),
-    [dispatch]
+    []
   );
 
   const edit = useCallback(
     () => dispatch(employeesOperations.editFirstSelected()),
-    [dispatch]
+    []
   );
 
   const askToRemove = useCallback(() => {
     setIsConfirmOpen(true);
-  }, [dispatch]);
+  }, []);
 
   const cancelRemove = useCallback(() => {
     setIsConfirmOpen(false);
-  }, [dispatch]);
+  }, []);
 
   const remove = useCallback(() => {
     setIsConfirmOpen(false);
@@ -174,7 +168,7 @@ function Employees(props) {
         dispatch(employeesOperations.remove({ id: employeeId }))
       )
     );
-  }, [selected, dispatch]);
+  }, [selected]);
 
   const changeSort = useCallback(
     sortBy => {
@@ -191,7 +185,7 @@ function Employees(props) {
         before: null
       });
     },
-    [params.sortBy, params.sortDir, pageSize, setPageNumber, setParams]
+    [params.sortBy, params.sortDir, pageSize]
   );
 
   const changeRowsPerPage = useCallback(
@@ -208,7 +202,7 @@ function Employees(props) {
         before: null
       });
     },
-    [params.sortBy, params.sortDir, setPageSize, setPageNumber, setParams]
+    [params.sortBy, params.sortDir]
   );
 
   const changePage = useCallback(
@@ -248,9 +242,7 @@ function Employees(props) {
       params.sortBy,
       params.sortDir,
       startCursor,
-      endCursor,
-      setPageNumber,
-      setParams
+      endCursor
     ]
   );
 
@@ -292,7 +284,7 @@ function Employees(props) {
         );
       };
     },
-    [subTrigger, setSubTrigger, refresh]
+    [subTrigger, refresh]
   );
 
   useEffect(
@@ -334,7 +326,7 @@ function Employees(props) {
         });
       }
     },
-    [pageNumber, pageSize, totalCount, setPageNumber, dispatch]
+    [pageNumber, pageSize, totalCount]
   );
 
   useIsomorphicLayoutEffect(

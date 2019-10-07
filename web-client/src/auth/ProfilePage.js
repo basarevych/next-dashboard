@@ -87,14 +87,11 @@ function ProfilePage(props) {
 
   const user = useContext(UserContext);
 
-  const showMessage = useCallback(
-    message => {
-      setMessage(message);
-      setMessageTimeout(0);
-      setMessageTimeout(10000);
-    },
-    [setMessage, setMessageTimeout]
-  );
+  const showMessage = useCallback(message => {
+    setMessage(message);
+    setMessageTimeout(0);
+    setMessageTimeout(10000);
+  }, []);
 
   const save = useCallback(
     async (
@@ -120,42 +117,36 @@ function ProfilePage(props) {
         setStatus(_status);
       }
     },
-    [dispatch, showMessage]
+    []
   );
 
   const verify = useCallback(async () => {
     let success = await dispatch(appOperations.requestEmailVerification());
     showMessage(success ? "PROFILE_VERIFY_SUCCESS" : "OPERATION_FAILED");
-  }, [dispatch, showMessage]);
+  }, []);
 
-  const link = useCallback(
-    async provider => {
-      let success = await dispatch(appOperations.linkProvider({ provider }));
-      showMessage(success ? "PROFILE_LINK_SUCCESS" : "OPERATION_FAILED");
-    },
-    [dispatch, showMessage]
-  );
+  const link = useCallback(async provider => {
+    let success = await dispatch(appOperations.linkProvider({ provider }));
+    showMessage(success ? "PROFILE_LINK_SUCCESS" : "OPERATION_FAILED");
+  }, []);
 
-  const unlink = useCallback(
-    async provider => {
-      let success = await dispatch(appOperations.unlinkProvider({ provider }));
-      showMessage(success ? "PROFILE_UNLINK_SUCCESS" : "OPERATION_FAILED");
-    },
-    [dispatch, showMessage]
-  );
+  const unlink = useCallback(async provider => {
+    let success = await dispatch(appOperations.unlinkProvider({ provider }));
+    showMessage(success ? "PROFILE_UNLINK_SUCCESS" : "OPERATION_FAILED");
+  }, []);
 
   const destroy = useCallback(() => {
     setIsConfirmOpen(true);
-  }, [setIsConfirmOpen]);
+  }, []);
 
   const handleCancelDelete = useCallback(() => {
     setIsConfirmOpen(false);
-  }, [setIsConfirmOpen]);
+  }, []);
 
   const handleConfirmDelete = useCallback(async () => {
     setIsConfirmOpen(false);
     if (await dispatch(appOperations.deleteProfile())) Router.push("/");
-  }, [setIsConfirmOpen, dispatch]);
+  }, []);
 
   const renderForm = useCallback(
     ({ isSubmitting, status, handleSubmit }) => {
@@ -284,7 +275,7 @@ function ProfilePage(props) {
         </Grid>
       );
     },
-    [classes, user, isMessageShown, message, verify, link, unlink, destroy]
+    [classes, user, isMessageShown, message]
   );
 
   if (!user || !user.isAuthenticated) return null;

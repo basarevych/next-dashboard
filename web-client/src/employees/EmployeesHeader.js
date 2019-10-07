@@ -39,7 +39,7 @@ function EmployeesHeader(props) {
   const toggleAll = useCallback(() => {
     if (isAllSelected) dispatch(props.operations.deselectAll());
     else dispatch(props.operations.selectAll({ employeeIds }));
-  }, [employeeIds, dispatch, isAllSelected, props.operations]);
+  }, [employeeIds, isAllSelected, props.operations]);
 
   return (
     <TableRow>

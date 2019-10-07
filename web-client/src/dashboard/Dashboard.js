@@ -26,7 +26,7 @@ function Dashboard(props) {
 
   const [usCities, setUsCities] = useState(null);
 
-  const isStarted = useSelector(state => appSelectors.isStarted(state));
+  const isStarted = useSelector(appSelectors.isStarted);
 
   useEffect(() => {
     if (!isStarted) return;

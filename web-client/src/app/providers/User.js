@@ -23,7 +23,7 @@ function UserProvider(props) {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  const statusCode = useSelector(state => appSelectors.getStatusCode(state));
+  const statusCode = useSelector(appSelectors.getStatusCode);
   const user = (props.viewer || {}).me || {};
   const context = useMemo(() => parseUser(user), [user]);
 
@@ -60,7 +60,7 @@ function UserProvider(props) {
     ) {
       dispatch(appOperations.setStatusCode({ code: 200 }));
     }
-  }, [router.asPath, statusCode, context, dispatch]);
+  }, [router.asPath, statusCode, context]);
 
   return (
     <UserContext.Provider value={context}>

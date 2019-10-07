@@ -40,7 +40,7 @@ function VerifyEmailPage(props) {
     );
     if (success) return Router.push("/auth/profile");
     setMessage("VERIFY_FAILED_MESSAGE");
-  }, [setMessage, dispatch]);
+  }, []);
 
   return (
     <div className={classes.layout}>

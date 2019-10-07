@@ -198,11 +198,11 @@ function FormsPage(props) {
 
   const handleMessageOpen = useCallback(() => {
     setIsMessageOpen(true);
-  }, [setIsMessageOpen]);
+  }, []);
 
   const handleMessageClose = useCallback(() => {
     setIsMessageOpen(false);
-  }, [setIsMessageOpen]);
+  }, []);
 
   const getIsFirstStep = () => currentStep === 0;
 

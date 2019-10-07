@@ -152,8 +152,8 @@ function SalesMap(props) {
   const [bearingDuration, setBearingDuration] = useState(0);
   const bearingAnimation = useAnimation(bearingDuration);
 
-  const theme = useSelector(state => appSelectors.getTheme(state));
-  const mapboxToken = useSelector(state => appSelectors.getMapboxToken(state));
+  const theme = useSelector(appSelectors.getTheme);
+  const mapboxToken = useSelector(appSelectors.getMapboxToken);
 
   const updateViewState = useCallback(
     ({ viewState: newViewState }) => {
@@ -252,7 +252,7 @@ function SalesMap(props) {
         }
       };
     },
-    [isLoaded, elevationScale, setElevationScale]
+    [isLoaded, elevationScale]
   );
 
   useEffect(
@@ -337,7 +337,7 @@ function SalesMap(props) {
       );
     }
     return layers;
-  }, [states, data, elevationScale, theme, handleHover, handleClick]);
+  }, [states, data, elevationScale, theme]);
 
   const crosshair = useCallback(() => "crosshair", []);
 

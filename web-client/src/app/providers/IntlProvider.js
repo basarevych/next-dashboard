@@ -6,8 +6,8 @@ import { messages } from "../../../common/locales";
 import { appSelectors } from "../state";
 
 function IntlProvider(props) {
-  const locale = useSelector(state => appSelectors.getLocale(state));
-  const created = useSelector(state => appSelectors.getCreated(state));
+  const locale = useSelector(appSelectors.getLocale);
+  const created = useSelector(appSelectors.getCreated);
 
   return (
     <Provider

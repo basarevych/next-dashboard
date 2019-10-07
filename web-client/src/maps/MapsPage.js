@@ -50,8 +50,8 @@ const initialViewState = {
 function MapsPage(props) {
   const classes = useStyles(props);
 
-  const theme = useSelector(state => appSelectors.getTheme(state));
-  const mapboxToken = useSelector(state => appSelectors.getMapboxToken(state));
+  const theme = useSelector(appSelectors.getTheme);
+  const mapboxToken = useSelector(appSelectors.getMapboxToken);
 
   const [viewMode, setViewMode] = useState("contour");
   const [viewState, setViewState] = useState(initialViewState);
@@ -86,34 +86,31 @@ function MapsPage(props) {
       viewport.pitch = viewState.pitch;
       updateViewState({ viewState: viewport });
     },
-    [viewState, updateViewState]
+    [viewState]
   );
 
-  const updateMapMode = useCallback(
-    mode => {
-      switch (mode) {
-        case "flat":
-          updateViewState({
-            viewState: {
-              pitch: 0,
-              transitionDuration: 2000, // animate the change
-              transitionInterpolator: new FlyToInterpolator()
-            }
-          });
-          break;
-        case "perspective":
-          updateViewState({
-            viewState: {
-              pitch: 60,
-              transitionDuration: 2000, // animate the change
-              transitionInterpolator: new FlyToInterpolator()
-            }
-          });
-          break;
-      }
-    },
-    [updateViewState]
-  );
+  const updateMapMode = useCallback(mode => {
+    switch (mode) {
+      case "flat":
+        updateViewState({
+          viewState: {
+            pitch: 0,
+            transitionDuration: 2000, // animate the change
+            transitionInterpolator: new FlyToInterpolator()
+          }
+        });
+        break;
+      case "perspective":
+        updateViewState({
+          viewState: {
+            pitch: 60,
+            transitionDuration: 2000, // animate the change
+            transitionInterpolator: new FlyToInterpolator()
+          }
+        });
+        break;
+    }
+  }, []);
 
   const locateUser = useCallback(() => {
     if ("geolocation" in navigator) {
@@ -138,7 +135,7 @@ function MapsPage(props) {
     } else {
       console.error("Geolocation IS NOT available");
     }
-  }, [updateViewState]);
+  }, []);
 
   const mapStyle = useMemo(() => {
     switch (viewMode) {

@@ -83,7 +83,7 @@ function Chart3(props) {
         </svg>
       );
     },
-    [data, materialTheme]
+    [data, maxima, materialTheme]
   );
 
   return (

@@ -38,7 +38,7 @@ function EmployeesRow(props) {
           isSelected: !isSelected
         })
       ),
-    [isSelected, props.node.id, props.operations, dispatch]
+    [isSelected, props.node.id, props.operations]
   );
 
   const edit = useCallback(
@@ -49,7 +49,7 @@ function EmployeesRow(props) {
           id: props.node.id
         })
       ),
-    [props.node.id, props.operations, dispatch]
+    [props.node.id, props.operations]
   );
 
   return (

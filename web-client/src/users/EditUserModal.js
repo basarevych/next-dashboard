@@ -50,13 +50,12 @@ function EditUserModal() {
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  const currentId = useSelector(state =>
-    usersSelectors.getEditModalUserId(state)
-  );
+  const currentId = useSelector(usersSelectors.getEditModalUserId);
 
-  const close = useCallback(() => dispatch(usersOperations.hideEditModal()), [
-    dispatch
-  ]);
+  const close = useCallback(
+    () => dispatch(usersOperations.hideEditModal()),
+    []
+  );
 
   const submit = useCallback(
     async (
@@ -94,7 +93,7 @@ function EditUserModal() {
         setStatus(_status);
       }
     },
-    [currentId, dispatch]
+    [currentId]
   );
 
   const renderForm = useCallback(
@@ -142,7 +141,7 @@ function EditUserModal() {
         </DialogActions>
       </Dialog>
     ),
-    [classes, close]
+    [classes]
   );
 
   const getForm = (schema, initialValues) => (
@@ -168,7 +167,7 @@ function EditUserModal() {
     }
 
     return null;
-  });
+  }, []);
 
   if (!currentId) return getForm(createSchema);
 

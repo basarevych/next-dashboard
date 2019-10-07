@@ -59,13 +59,11 @@ function EditEmployeeModal() {
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  const currentId = useSelector(state =>
-    employeesSelectors.getEditModalEmployeeId(state)
-  );
+  const currentId = useSelector(employeesSelectors.getEditModalEmployeeId);
 
   const close = useCallback(
     () => dispatch(employeesOperations.hideEditModal()),
-    [dispatch]
+    []
   );
 
   const submit = useCallback(
@@ -110,7 +108,7 @@ function EditEmployeeModal() {
         setStatus(_status);
       }
     },
-    [currentId, dispatch]
+    [currentId]
   );
 
   const renderForm = useCallback(
@@ -212,7 +210,7 @@ function EditEmployeeModal() {
         </DialogActions>
       </Dialog>
     ),
-    [classes, close]
+    [classes]
   );
 
   const getForm = initialValues => (
@@ -238,7 +236,7 @@ function EditEmployeeModal() {
     }
 
     return null;
-  });
+  }, []);
 
   if (!currentId) return getForm();
 

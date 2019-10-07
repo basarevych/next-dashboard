@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { graphql } from "react-relay";
 import { QueryRenderer } from "../app/providers/RelayProvider";
 import ErrorMessage from "../app/errors/ErrorMessage";
@@ -24,18 +24,15 @@ export const query = graphql`
 `;
 
 function DashboardQuery() {
-  return (
-    <QueryRenderer
-      query={query}
-      render={({ error, props: renderProps, retry }) => {
-        if (error) return <ErrorMessage error={error} />;
+  const renderQuery = useCallback(({ error, props: renderProps, retry }) => {
+    if (error) return <ErrorMessage error={error} />;
 
-        return (
-          <Dashboard viewer={renderProps && renderProps.viewer} retry={retry} />
-        );
-      }}
-    />
-  );
+    return (
+      <Dashboard viewer={renderProps && renderProps.viewer} retry={retry} />
+    );
+  }, []);
+
+  return <QueryRenderer query={query} render={renderQuery} />;
 }
 
 export default DashboardQuery;

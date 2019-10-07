@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { useSelector } from "react-redux";
 import { graphql } from "react-relay";
 import { QueryRenderer } from "../app/providers/RelayProvider";
@@ -32,18 +32,14 @@ export const query = graphql`
 function UsersQuery() {
   const params = useSelector(state => usersSelectors.getTableParams(state));
 
-  return (
-    <QueryRenderer
-      query={query}
-      variables={params}
-      render={({ error, props: renderProps, retry }) => {
-        if (error) return <ErrorMessage error={error} />;
+  const renderQuery = useCallback(({ error, props: renderProps, retry }) => {
+    if (error) return <ErrorMessage error={error} />;
 
-        return (
-          <Users viewer={renderProps && renderProps.viewer} retry={retry} />
-        );
-      }}
-    />
+    return <Users viewer={renderProps && renderProps.viewer} retry={retry} />;
+  }, []);
+
+  return (
+    <QueryRenderer query={query} variables={params} render={renderQuery} />
   );
 }
 
