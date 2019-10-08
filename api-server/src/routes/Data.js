@@ -1,5 +1,6 @@
 const debug = require("debug")("app:data");
 const Router = require("express").Router;
+const usStatesJson = require("../../data/gz_2010_us_040_00_500k.json");
 
 class DataRoute {
   constructor(dashboardRepo) {
@@ -38,6 +39,10 @@ class DataRoute {
 
     try {
       switch (req.params.name) {
+        case "us-states":
+          res.set("content-type", "application/json");
+          res.send(usStatesJson);
+          return;
         case "us-cities":
           res.set("content-type", "application/json");
           res.send(this.usCitiesJson);

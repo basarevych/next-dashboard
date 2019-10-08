@@ -24,7 +24,7 @@
     "core-js": "~3.2.1",
     "cors": "~2.8.5",
     "deck.gl": "~7.3.2",
-    "deepmerge": "~4.0.0",
+    "deepmerge": "~4.1.0",
     "dotenv": "~8.1.0",
     "express": "~4.17.1",
     "express-session": "~1.16.2",
@@ -83,7 +83,6 @@
     "svg-inline-loader": "~0.8.0",
     "terser-webpack-plugin": "~2.1.2",
     "victory": "~33.1.0",
-    "webfontloader": "~1.6.28",
     "webpack": "~4.41.0",
     "workbox-webpack-plugin": "~4.3.1",
     "yup": "~0.27.0"

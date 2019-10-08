@@ -1,7 +1,6 @@
 "use strict";
 
 const path = require("path");
-const ProvidePlugin = require("webpack").ProvidePlugin;
 const ContextReplacementPlugin = require("webpack").ContextReplacementPlugin;
 const EnvironmentPlugin = require("webpack").EnvironmentPlugin;
 const pwaManifest = require("@pwa/manifest");
@@ -108,6 +107,20 @@ module.exports = withPlugins(plugins, {
         // define this var when exporting to static site
         STATIC_SITE: false
       })
+    );
+
+    // make sure there is only one instance of lodash
+    config.resolve.alias["lodash"] = path.resolve(
+      __dirname,
+      "node_modules",
+      "lodash"
+    );
+
+    // make sure there is only one instance of moment
+    config.resolve.alias["moment"] = path.resolve(
+      __dirname,
+      "node_modules",
+      "moment"
     );
 
     // make sure there is only one instance of graphql

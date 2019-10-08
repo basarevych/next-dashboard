@@ -1,5 +1,4 @@
 if (process.browser) {
-  const WebFont = require("webfontloader");
   const constants = require("../../../common/constants");
 
   // get rid of auto fill, not disabling auto complete
@@ -32,20 +31,6 @@ if (process.browser) {
       document.body.scrollLeft = scroll.left;
     }
   }
-
-  // our fonts
-  WebFont.load({
-    active: () => {
-      window.__fontsLoaded = true;
-      window.dispatchEvent(new CustomEvent(constants.events.FONTS_LOADED));
-    },
-    google: {
-      families: [
-        "Roboto:400,400i,700,700i:latin-ext,cyrillic",
-        "Roboto Mono:400,700:latin-ext,cyrillic"
-      ]
-    }
-  });
 
   // function to show a popup
   window.__popup = function(title, content, options = {}) {

@@ -21,7 +21,6 @@ import { makeStyles } from "@material-ui/styles";
 import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
 import Link from "@material-ui/core/Link";
-import states from "../../../data/gz_2010_us_040_00_500k.json";
 import { appSelectors } from "../../app/state";
 import { dashboardOperations } from "../state";
 import useAnimation from "../../app/lib/useAnimation.js";
@@ -128,7 +127,7 @@ const useStyles = makeStyles(theme => ({
 const initialViewState = {
   latitude: 39.8097343,
   longitude: -98.5556199,
-  zoom: 3,
+  zoom: 3.3,
   bearing: 0,
   pitch: 0
 };
@@ -154,6 +153,7 @@ function SalesMap(props) {
 
   const theme = useSelector(appSelectors.getTheme);
   const mapboxToken = useSelector(appSelectors.getMapboxToken);
+  const isSubscribed = useSelector(appSelectors.isSubscribed);
 
   const updateViewState = useCallback(
     ({ viewState: newViewState }) => {
@@ -193,10 +193,14 @@ function SalesMap(props) {
     setTooltip(tooltip);
   }, []);
 
-  const handleClick = useCallback(({ object }) => {
-    const state = object && object.properties.NAME;
-    if (state) dispatch(dashboardOperations.setState({ state }));
-  }, []);
+  const handleClick = useCallback(
+    ({ object }) => {
+      const state = object && object.properties.NAME;
+      if (state && isSubscribed)
+        dispatch(dashboardOperations.setState({ state }));
+    },
+    [isSubscribed]
+  );
 
   useEffect(
     // parse the data
@@ -300,26 +304,9 @@ function SalesMap(props) {
   }, [viewState, pitchAnimation, bearingAnimation]);
 
   const layers = useMemo(() => {
-    const layers = [
-      new GeoJsonLayer({
-        id: "geojson-layer",
-        data: states,
-        pickable: true,
-        stroked: true,
-        filled: true,
-        extruded: false,
-        lineWidthMinPixels: 1,
-        lineWidthMaxPixels: 1,
-        autoHighlight: true,
-        highlightColor: [160, 160, 180, 100],
-        getFillColor: [160, 160, 180, 25],
-        getLineColor: theme === "dark" ? [255, 255, 255, 100] : [0, 0, 0, 25],
-        onHover: handleHover,
-        onClick: handleClick
-      })
-    ];
+    const layers = [];
     if (data.length) {
-      layers.unshift(
+      layers.push(
         new HexagonLayer({
           id: "heatmap-layer",
           data,
@@ -336,8 +323,28 @@ function SalesMap(props) {
         })
       );
     }
+    if (props.states) {
+      layers.push(
+        new GeoJsonLayer({
+          id: "geojson-layer",
+          data: props.states,
+          pickable: true,
+          stroked: true,
+          filled: true,
+          extruded: false,
+          lineWidthMinPixels: 1,
+          lineWidthMaxPixels: 1,
+          autoHighlight: true,
+          highlightColor: [160, 160, 180, 100],
+          getFillColor: [160, 160, 180, 25],
+          getLineColor: theme === "dark" ? [255, 255, 255, 100] : [0, 0, 0, 25],
+          onHover: handleHover,
+          onClick: handleClick
+        })
+      );
+    }
     return layers;
-  }, [states, data, elevationScale, theme]);
+  }, [props.states, data, elevationScale, theme, handleClick]);
 
   const crosshair = useCallback(() => "crosshair", []);
 
@@ -398,6 +405,7 @@ function SalesMap(props) {
 }
 
 SalesMap.propTypes = {
+  states: PropTypes.object,
   data: PropTypes.array
 };
 

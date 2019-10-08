@@ -119,9 +119,6 @@ module.exports = {
 
   // client-side custom window events
   events: {
-    // web fonts loading complete
-    FONTS_LOADED: "FONTS_LOADED",
-
     // user identity might have changed,
     // websockets should reconnect to the server
     // with new access tokens

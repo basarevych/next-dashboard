@@ -50,8 +50,8 @@ class MyDocument extends Document {
           <link rel="manifest" href="/static/manifest.json" />
 
           <link
+            href="https://fonts.googleapis.com/css?family=Roboto+Mono|Roboto:400,400i,700&display=swap&subset=cyrillic,latin-ext"
             rel="stylesheet"
-            href="https://fonts.googleapis.com/css?family=Roboto:300,400,500"
           />
         </Head>
         <body>

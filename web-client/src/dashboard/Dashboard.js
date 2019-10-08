@@ -24,37 +24,74 @@ function Dashboard(props) {
   const classes = useStyles(props);
   const dispatch = useDispatch();
 
+  const [usStates, setUsStates] = useState(null);
   const [usCities, setUsCities] = useState(null);
 
   const isStarted = useSelector(appSelectors.isStarted);
 
-  useEffect(() => {
-    if (!isStarted) return;
+  useEffect(
+    // load states
+    () => {
+      if (!isStarted) return;
 
-    let isDestroyed = false;
-    let iddle = requestIdleCallback(async () => {
-      iddle = null;
-      if (isDestroyed) return;
-      const response = await dispatch(appOperations.fetchCities());
-      if (isDestroyed) return;
-      if (response.status === 200) {
-        iddle = requestIdleCallback(async () => {
-          iddle = null;
-          if (isDestroyed) return;
-          const usCities = await response.json();
-          if (!isDestroyed) setUsCities(usCities);
-        });
-      }
-    });
-
-    return () => {
-      isDestroyed = true;
-      if (iddle) {
-        cancelIdleCallback(iddle);
+      let isDestroyed = false;
+      let iddle = requestIdleCallback(async () => {
         iddle = null;
-      }
-    };
-  }, [isStarted]);
+        if (isDestroyed) return;
+        const response = await dispatch(appOperations.fetchUsStates());
+        if (isDestroyed) return;
+        if (response.status === 200) {
+          iddle = requestIdleCallback(async () => {
+            iddle = null;
+            if (isDestroyed) return;
+            const usStates = await response.json();
+            if (!isDestroyed) setUsStates(usStates);
+          });
+        }
+      });
+
+      return () => {
+        isDestroyed = true;
+        if (iddle) {
+          cancelIdleCallback(iddle);
+          iddle = null;
+        }
+      };
+    },
+    [isStarted]
+  );
+
+  useEffect(
+    // load cities
+    () => {
+      if (!isStarted) return;
+
+      let isDestroyed = false;
+      let iddle = requestIdleCallback(async () => {
+        iddle = null;
+        if (isDestroyed) return;
+        const response = await dispatch(appOperations.fetchUsCities());
+        if (isDestroyed) return;
+        if (response.status === 200) {
+          iddle = requestIdleCallback(async () => {
+            iddle = null;
+            if (isDestroyed) return;
+            const usCities = await response.json();
+            if (!isDestroyed) setUsCities(usCities);
+          });
+        }
+      });
+
+      return () => {
+        isDestroyed = true;
+        if (iddle) {
+          cancelIdleCallback(iddle);
+          iddle = null;
+        }
+      };
+    },
+    [isStarted]
+  );
 
   return (
     <div className={classes.layout}>
@@ -95,7 +132,7 @@ function Dashboard(props) {
         </Grid>
         <Grid container spacing={2} alignItems="stretch" item xs={12} lg={10}>
           <Grid item xs={12} md={8}>
-            <SalesMap data={usCities} />
+            <SalesMap states={usStates} data={usCities} />
           </Grid>
           <Grid item xs={12} md={4}>
             <StateSalesQuery />

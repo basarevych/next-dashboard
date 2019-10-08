@@ -252,7 +252,16 @@ export const setCookie = ({ name, value, days }) => {
   };
 };
 
-export const fetchCities = () => {
+export const fetchUsStates = () => {
+  return async (dispatch, getState, di) => {
+    return di.get("fetcher").fetch({
+      method: "GET",
+      resource: constants.apiBase + "/data/us-states"
+    });
+  };
+};
+
+export const fetchUsCities = () => {
   return async (dispatch, getState, di) => {
     return di.get("fetcher").fetch({
       method: "GET",

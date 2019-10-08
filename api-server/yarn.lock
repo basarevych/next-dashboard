@@ -3504,10 +3504,10 @@ invariant@^2.2.2, invariant@^2.2.4:
   dependencies:
     loose-envify "^1.0.0"
 
-ioredis-mock@~4.16.3:
-  version "4.16.3"
-  resolved "https://registry.yarnpkg.com/ioredis-mock/-/ioredis-mock-4.16.3.tgz#b415b82be1f64b7505ff9274dee637ab9352d36c"
-  integrity sha512-ZO1naR3BDwIq/pDsHFtI/FGJW6Sp+1EbYkglo9vuXHidORlenIXNF5zpIJaMWou1tudkToJ7vcf+TY/8IZIa4A==
+ioredis-mock@~4.18.0:
+  version "4.18.0"
+  resolved "https://registry.yarnpkg.com/ioredis-mock/-/ioredis-mock-4.18.0.tgz#036a2dae29230c49fa6fadd78b3bf5417abae688"
+  integrity sha512-/7JQHQl8bEaHxeBwUWIpZT2yA/NOy1+Q0fGR120umtAT3qxrCjreKb3ef7PVTV1ENQeg1TXSToZKdl7aVUevQw==
   dependencies:
     array-from "^2.1.1"
     es6-map "^0.1.5"
