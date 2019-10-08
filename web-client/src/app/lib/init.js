@@ -1,6 +1,6 @@
-if (process.browser) {
-  const constants = require("../../../common/constants");
+const constants = require("../../../common/constants");
 
+if (process.browser) {
   // get rid of auto fill, not disabling auto complete
   window.addEventListener("load", () => {
     for (let el of document.querySelectorAll(
