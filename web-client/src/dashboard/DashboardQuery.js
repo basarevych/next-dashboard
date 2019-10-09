@@ -7,14 +7,17 @@ import Dashboard from "./Dashboard";
 export const query = graphql`
   query DashboardQuery {
     viewer {
-      profitValues {
-        ...ProfitStatContainer_data
+      visitorsValues {
+        ...VisitorsStatContainer_data
       }
-      salesValues {
-        ...SalesStatContainer_data
+      loadValues {
+        ...LoadStatContainer_data
       }
-      clientsValues {
-        ...ClientsStatContainer_data
+      memoryValues {
+        ...MemoryStatContainer_data
+      }
+      operationsValues {
+        ...OperationsStatContainer_data
       }
       avgTimeValues {
         ...AvgTimeStatContainer_data

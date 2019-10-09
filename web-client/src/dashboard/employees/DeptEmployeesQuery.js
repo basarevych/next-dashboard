@@ -31,14 +31,24 @@ export const query = graphql`
   }
 `;
 
+let retryCallback;
+function doRetry() {
+  if (retryCallback) retryCallback();
+}
+
 function DeptEmployeesQuery() {
   const params = useSelector(dashboardSelectors.getTableParams);
 
   const renderQuery = useCallback(({ error, props: renderProps, retry }) => {
     if (error) return <ErrorMessage error={error} />;
 
+    retryCallback = retry;
+
     return (
-      <DeptEmployees viewer={renderProps && renderProps.viewer} retry={retry} />
+      <DeptEmployees
+        viewer={renderProps && renderProps.viewer}
+        retry={doRetry}
+      />
     );
   }, []);
 

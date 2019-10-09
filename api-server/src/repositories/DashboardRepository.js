@@ -2,18 +2,23 @@ const debug = require("debug")("app:dashboard");
 const path = require("path");
 const fs = require("fs-extra");
 const parse = require("csv-parse");
+const { withFilter } = require("graphql-subscriptions");
 const moment = require("../../common/src/moment");
 const { allCountries } = require("../../common/src/countries");
+const usStatesJson = require("../../data/gz_2010_us_040_00_500k.json");
 
 class DashboardRepository {
-  constructor(di, dashboard, fake) {
+  constructor(di, dashboard, fake, cache) {
     this.di = di;
     this.dashboard = dashboard;
     this.fake = fake;
+    this.cache = cache;
 
     this.usStatesById = {};
     this.usStatesByName = {};
     this.usCities = {};
+
+    this.usStatesJson = usStatesJson;
   }
 
   static get $provides() {
@@ -21,7 +26,7 @@ class DashboardRepository {
   }
 
   static get $requires() {
-    return ["di", "model.dashboard", "fake"];
+    return ["di", "model.dashboard", "fake", "cache"];
   }
 
   static get $lifecycle() {
@@ -31,11 +36,6 @@ class DashboardRepository {
   async init() {
     if (this.promise) return this.promise;
     this.promise = (async () => {
-      this.generateProfits();
-      this.generateSales();
-      this.generateClients();
-      this.generateAvgTimes();
-
       this.countries = {};
       for (let country of allCountries) {
         const id = country.iso2.toUpperCase();
@@ -100,87 +100,124 @@ class DashboardRepository {
     return this.promise;
   }
 
-  generateProfits() {
-    this.profits = [];
-    let day = moment();
-    for (let i = 0; i < 7; i++) {
-      day.subtract(1, "day");
-      let revenues = i
-        ? this.fake.getInt(70000, 100000)
-        : this.fake.getInt(110000, 120000);
-      let expenses = i
-        ? this.fake.getInt(10000, 50000)
-        : this.fake.getInt(10000, 11000);
-      this.profits.unshift(
-        new this.dashboard.ProfitValueModel({
-          date: day.toDate(),
-          revenues,
-          expenses,
-          profit: revenues - expenses
-        })
-      );
-    }
-  }
-
-  generateSales() {
-    this.sales = [];
-    let day = moment();
-    for (let i = 0; i < 7; i++) {
-      day.subtract(1, "day");
-      this.sales.unshift(
-        new this.dashboard.SalesValueModel({
-          date: day.toDate(),
-          sales: i ? this.fake.getInt(2000, 5000) : this.fake.getInt(5100, 6000)
-        })
-      );
-    }
-  }
-
-  generateClients() {
-    this.clients = [];
-    let day = moment();
-    for (let i = 0; i < 7; i++) {
-      day.subtract(1, "day");
-      let prevClients = i
-        ? this.clients[0].clients
-        : this.fake.getInt(7000, 10000);
-      this.clients.unshift(
-        new this.dashboard.ClientsValueModel({
-          date: day.toDate(),
-          clients: i
-            ? this.fake.getInt(prevClients - 100, prevClients - 700)
-            : prevClients
-        })
-      );
-    }
-  }
-
-  generateAvgTimes() {
-    this.avgTimes = [];
-    let day = moment();
-    for (let i = 0; i < 7; i++) {
-      day.subtract(1, "day");
-      let prevAvgTime = i
-        ? this.avgTimes[0].avgTime
-        : this.fake.getInt(30, 90) / 10;
-      this.avgTimes.unshift(
-        new this.dashboard.AvgTimeValueModel({
-          date: day.toDate(),
-          avgTime: i
-            ? this.fake.getInt(prevAvgTime * 10 + 10, prevAvgTime * 10 + 200) /
-              10
-            : prevAvgTime
-        })
-      );
-    }
-  }
-
   isValid(context) {
     return context.token !== false;
   }
 
   isAllowed(/* context */) {
     return true;
+  }
+
+  subscribe(topics) {
+    return withFilter(
+      () => this.cache.pubsub.asyncIterator(topics),
+      async (payload, args, context) =>
+        this.isValid(context) && this.isAllowed(context)
+    );
+  }
+
+  async publish(topic, values) {
+    this.cache.delPage({ page: "/", query: "*", userId: "*" });
+    this.cache.pubsub.publish(topic, { [topic]: values });
+  }
+
+  async publishStats() {
+    const date = moment().toDate();
+
+    const lastVisitors = await this.cache.getLastStat({ name: "visitors" });
+    let visitors;
+    if (lastVisitors === null) {
+      visitors = this.fake.getInt(10000, 50000);
+    } else {
+      visitors = lastVisitors.visitors + this.fake.getInt(0, 10000) - 5000;
+      if (visitors < 10000) visitors = 10000;
+      if (visitors > 50000) visitors = 50000;
+    }
+    const newVisitors = new this.dashboard.VisitorsValueModel({
+      date,
+      visitors
+    });
+    await this.cache.pushStat({ name: "visitors", model: newVisitors });
+
+    const lastLoad = await this.cache.getLastStat({ name: "load" });
+    let load;
+    if (lastLoad === null) {
+      load = this.fake.getInt(0, 100);
+    } else {
+      load = lastLoad.load + (this.fake.getInt(0, 1000) - 500) / 100;
+      if (load < 0) load = 0;
+      if (load > 100) load = 100;
+    }
+    const newLoad = new this.dashboard.LoadValueModel({
+      date,
+      load
+    });
+    await this.cache.pushStat({ name: "load", model: newLoad });
+
+    const lastMemory = await this.cache.getLastStat({ name: "memory" });
+    let memory;
+    if (lastMemory === null) {
+      memory = this.fake.getInt(0, 100);
+    } else {
+      memory = lastMemory.memory + (this.fake.getInt(0, 1000) - 500) / 100;
+      if (memory < 0) memory = 0;
+      if (memory > 100) memory = 100;
+    }
+    const newMemory = new this.dashboard.MemoryValueModel({
+      date,
+      memory
+    });
+    await this.cache.pushStat({ name: "memory", model: newMemory });
+
+    const lastOperations = await this.cache.getLastStat({ name: "operations" });
+    let operations;
+    if (lastOperations === null) {
+      operations = this.fake.getInt(10000, 50000);
+    } else {
+      operations =
+        lastOperations.operations + this.fake.getInt(0, 10000) - 5000;
+      if (operations < 10000) operations = 10000;
+      if (operations > 50000) operations = 50000;
+    }
+    const newOperations = new this.dashboard.OperationsValueModel({
+      date,
+      operations
+    });
+    await this.cache.pushStat({ name: "operations", model: newOperations });
+
+    const lastAvgTime = await this.cache.getLastStat({ name: "avgTime" });
+    let avgTime;
+    if (lastOperations === null) {
+      avgTime = this.fake.getInt(0, 10);
+    } else {
+      avgTime = lastAvgTime.avgTime + (this.fake.getInt(0, 1000) - 500) / 1000;
+      if (avgTime < 0) avgTime = 0;
+      if (avgTime > 10) avgTime = 10;
+    }
+    const newAvgTime = new this.dashboard.AvgTimeValueModel({
+      date,
+      avgTime
+    });
+    await this.cache.pushStat({ name: "avgTime", model: newAvgTime });
+
+    return this.publish("dashboardEvent", {
+      id: this.dashboard.dateToID(date),
+      visitors: {
+        node: newVisitors
+      },
+      load: {
+        node: newLoad
+      },
+      memory: {
+        node: newMemory
+      },
+      operations: {
+        node: newOperations
+      },
+      avgTime: {
+        node: newAvgTime
+      }
+    });
   }
 
   async getCountry(context, { id }) {
@@ -239,64 +276,87 @@ class DashboardRepository {
     return result;
   }
 
-  async getProfitValue(context, { id }) {
-    debug("getProfitValue");
+  async getVisitorsValue(context, { id }) {
+    debug("getVisitorsValue");
 
     if (!this.isValid(context)) throw this.di.get("error.unauthorized");
     if (!this.isAllowed(context)) throw this.di.get("error.forbidden");
 
-    const profit = this.profits.find(item => item.id == id);
-    if (!profit) throw this.di.get("error.notFound");
-    return profit;
+    const data = this.cache.getStats({ name: "visitors" });
+    const visitors = data.find(item => item.id == id);
+    if (!visitors) throw this.di.get("error.notFound");
+    return visitors;
   }
 
-  async getProfitValues(context) {
-    debug("getProfitValues");
+  async getVisitorsValues(context) {
+    debug("getVisitorsValues");
 
     if (!this.isValid(context)) throw this.di.get("error.unauthorized");
     if (!this.isAllowed(context)) throw this.di.get("error.forbidden");
-
-    return this.profits;
+    return this.cache.getStats({ name: "visitors" });
   }
 
-  async getSalesValue(context, { id }) {
-    debug("getSalesValue");
+  async getLoadValue(context, { id }) {
+    debug("getLoadValue");
 
     if (!this.isValid(context)) throw this.di.get("error.unauthorized");
     if (!this.isAllowed(context)) throw this.di.get("error.forbidden");
 
-    const sales = this.sales.find(item => item.id === id);
-    if (!sales) throw this.di.get("error.notFound");
-    return sales;
+    const data = this.cache.getStats({ name: "load" });
+    const load = data.find(item => item.id === id);
+    if (!load) throw this.di.get("error.notFound");
+    return load;
   }
 
-  async getSalesValues(context) {
-    debug("getSalesValues");
+  async getLoadValues(context) {
+    debug("getLoadValues");
 
     if (!this.isValid(context)) throw this.di.get("error.unauthorized");
     if (!this.isAllowed(context)) throw this.di.get("error.forbidden");
 
-    return this.sales;
+    return this.cache.getStats({ name: "load" });
   }
 
-  async getClientsValue(context, { id }) {
-    debug("getClientsValue");
+  async getMemoryValue(context, { id }) {
+    debug("getMemoryValue");
 
     if (!this.isValid(context)) throw this.di.get("error.unauthorized");
     if (!this.isAllowed(context)) throw this.di.get("error.forbidden");
 
-    const clients = this.clients.find(item => item.id === id);
-    if (!clients) throw this.di.get("error.notFound");
-    return clients;
+    const data = this.cache.getStats({ name: "memory" });
+    const memory = data.find(item => item.id === id);
+    if (!memory) throw this.di.get("error.notFound");
+    return memory;
   }
 
-  async getClientsValues(context) {
-    debug("getClientsValues");
+  async getMemoryValues(context) {
+    debug("getMemoryValues");
 
     if (!this.isValid(context)) throw this.di.get("error.unauthorized");
     if (!this.isAllowed(context)) throw this.di.get("error.forbidden");
 
-    return this.clients;
+    return this.cache.getStats({ name: "memory" });
+  }
+
+  async getOperationsValue(context, { id }) {
+    debug("getOperationsValue");
+
+    if (!this.isValid(context)) throw this.di.get("error.unauthorized");
+    if (!this.isAllowed(context)) throw this.di.get("error.forbidden");
+
+    const data = this.cache.getStats({ name: "operations" });
+    const operations = data.find(item => item.id === id);
+    if (!operations) throw this.di.get("error.notFound");
+    return operations;
+  }
+
+  async getOperationsValues(context) {
+    debug("getOperationsValues");
+
+    if (!this.isValid(context)) throw this.di.get("error.unauthorized");
+    if (!this.isAllowed(context)) throw this.di.get("error.forbidden");
+
+    return this.cache.getStats({ name: "operations" });
   }
 
   async getAvgTimeValue(context, { id }) {
@@ -305,7 +365,8 @@ class DashboardRepository {
     if (!this.isValid(context)) throw this.di.get("error.unauthorized");
     if (!this.isAllowed(context)) throw this.di.get("error.forbidden");
 
-    const avgTime = this.avgTimes.find(item => item.id === id);
+    const data = this.cache.getStats({ name: "avgTime" });
+    const avgTime = data.find(item => item.id === id);
     if (!avgTime) throw this.di.get("error.notFound");
     return avgTime;
   }
@@ -316,7 +377,7 @@ class DashboardRepository {
     if (!this.isValid(context)) throw this.di.get("error.unauthorized");
     if (!this.isAllowed(context)) throw this.di.get("error.forbidden");
 
-    return this.avgTimes;
+    return this.cache.getStats({ name: "avgTime" });
   }
 }
 

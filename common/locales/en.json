@@ -70,9 +70,10 @@
     "To sign in using another service, first sign in using your email address or the previous",
     " service then link accounts in your profile page."
   ],
-  "DASHBOARD_PROFIT_LABEL": "Profit",
-  "DASHBOARD_SALES_LABEL": "Sales",
-  "DASHBOARD_CLIENTS_LABEL": "Clients",
+  "DASHBOARD_VISITORS_LABEL": "Visitors",
+  "DASHBOARD_LOAD_LABEL": "Load",
+  "DASHBOARD_MEMORY_LABEL": "Memory",
+  "DASHBOARD_OPERATIONS_LABEL": "Operations",
   "DASHBOARD_AVG_TIME_LABEL": "Avg Time",
   "DASHBOARD_CLICK_MAP_LABEL": "Click to select",
   "DASHBOARD_US_SALES_LABEL": "US Sales",

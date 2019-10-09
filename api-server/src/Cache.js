@@ -6,14 +6,17 @@ const BaseClass = require("../common/src/cache");
  * Cache (Redis)
  */
 class Cache extends BaseClass {
-  constructor(config) {
+  constructor(config, dashboard) {
     const cacheRedis = new Redis(config.redisUrl, { lazyConnect: true });
     const pubRedis = new Redis(config.redisUrl, { lazyConnect: true });
     const subRedis = new Redis(config.redisUrl, { lazyConnect: true });
 
     super(cacheRedis);
 
+    this.statLength = 10;
+
     this.config = config;
+    this.dashboard = dashboard;
     this.pubRedis = pubRedis;
     this.subRedis = subRedis;
 
@@ -28,7 +31,7 @@ class Cache extends BaseClass {
   }
 
   static get $requires() {
-    return ["config"];
+    return ["config", "model.dashboard"];
   }
 
   static get $lifecycle() {
@@ -49,6 +52,66 @@ class Cache extends BaseClass {
       }
     })();
     return this.promise;
+  }
+
+  _statNameToKey(name) {
+    return name;
+  }
+
+  async getStats({ name }) {
+    if (!name) return null;
+
+    let key = this.namespace + ":stat:" + this._statNameToKey(name);
+    let data = await this.cacheRedis.lrange(key, -this.statLength, -1);
+    if (!Array.isArray(data)) return [];
+    return data
+      .map(item => {
+        switch (name) {
+          case "visitors":
+            return this.dashboard.VisitorsValueModel.fromString(item);
+          case "load":
+            return this.dashboard.LoadValueModel.fromString(item);
+          case "memory":
+            return this.dashboard.MemoryValueModel.fromString(item);
+          case "operations":
+            return this.dashboard.OperationsValueModel.fromString(item);
+          case "avgTime":
+            return this.dashboard.AvgTimeValueModel.fromString(item);
+        }
+        return null;
+      })
+      .filter(item => !!item);
+  }
+
+  async getLastStat({ name }) {
+    if (!name) return null;
+
+    let key = this.namespace + ":stat:" + this._statNameToKey(name);
+    let data = await this.cacheRedis.lrange(key, -1, -1);
+    if (!Array.isArray(data)) return [];
+    if (!data.length) return null;
+    switch (name) {
+      case "visitors":
+        return this.dashboard.VisitorsValueModel.fromString(data[0]);
+      case "load":
+        return this.dashboard.LoadValueModel.fromString(data[0]);
+      case "memory":
+        return this.dashboard.MemoryValueModel.fromString(data[0]);
+      case "operations":
+        return this.dashboard.OperationsValueModel.fromString(data[0]);
+      case "avgTime":
+        return this.dashboard.AvgTimeValueModel.fromString(data[0]);
+    }
+    return null;
+  }
+
+  async pushStat({ name, model }) {
+    if (!name || !model) return 0;
+
+    let key = this.namespace + ":stat:" + this._statNameToKey(name);
+    let result = await this.cacheRedis.rpush(key, model.toString());
+    if (result) await this.cacheRedis.ltrim(key, -this.statLength, -1);
+    return result;
   }
 }
 

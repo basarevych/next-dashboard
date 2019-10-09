@@ -92,7 +92,7 @@ module.exports = {
     mapHoverBackground: secondaryBackground,
     mapSelectedBackground: lighten(secondaryBackground, 0.15),
     lineColor: textInfo,
-    areaColor: fade(textInfo, 0.25)
+    areaColor: fade(textInfo, 0.5)
   },
   form: {
     stepperBackground: fade(primaryBackground, 0.65),

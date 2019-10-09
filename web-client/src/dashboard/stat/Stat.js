@@ -59,20 +59,29 @@ function Stat(props) {
   const edges = (props.data || {}).edges || [];
 
   const data = useMemo(() => {
-    return edges.map(edge => {
-      const date = new Date(edge.node.date);
-      const value = edge.node.value;
-      return {
-        date,
-        value,
-        tooltip:
-          intl.formatMessage({ id: props.label }) +
-          ": " +
-          intl.formatNumber(value) +
-          "\n" +
-          intl.formatDate(date)
-      };
-    });
+    return edges
+      .filter(edge => !!edge.node)
+      .map((edge, index) => {
+        const date = new Date(edge.node.date);
+        const value = edge.node.value;
+        return {
+          date,
+          index,
+          value,
+          tooltip:
+            intl.formatMessage({ id: props.label }) +
+            ": " +
+            intl.formatNumber(value) +
+            "\n" +
+            intl.formatDate(date) +
+            " " +
+            intl.formatTime(date, {
+              hour: "numeric",
+              minute: "numeric",
+              second: "numeric"
+            })
+        };
+      });
   }, [edges]);
 
   const delta = useMemo(() => {
@@ -95,14 +104,20 @@ function Stat(props) {
   }, [data]);
 
   const stat = useMemo(() => {
-    if (!data.length) return null;
     return (
       <div className={classes.stat}>
         <Typography variant="h3" color="inherit">
-          <FormattedNumber
-            value={data.slice(-1)[0].value}
-            maximumFractionDigits={props.precision}
-          />
+          {data.length ? (
+            <>
+              <FormattedNumber
+                value={data.slice(-1)[0].value}
+                maximumFractionDigits={props.precision}
+              />
+              {props.percent && "%"}
+            </>
+          ) : (
+            " "
+          )}
         </Typography>
         <Typography variant="overline" color="inherit">
           <FormattedMessage id={props.label} />
@@ -114,7 +129,8 @@ function Stat(props) {
   const colors = useMemo(
     () => ({
       grid: fade(theme.palette.text.secondary, 0.25),
-      area: theme.chart.areaColor,
+      area1: theme.chart.areaColor,
+      area2: fade(theme.chart.areaColor, 0),
       line: theme.chart.lineColor
     }),
     [theme]
@@ -132,10 +148,12 @@ function Stat(props) {
 Stat.propTypes = {
   label: PropTypes.string.isRequired,
   data: PropTypes.object,
+  percent: PropTypes.bool,
   precision: PropTypes.number
 };
 
 Stat.defaultProps = {
+  percent: false,
   precision: 0
 };
 

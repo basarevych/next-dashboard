@@ -1,17 +1,17 @@
 import { graphql, createFragmentContainer } from "react-relay";
 import StatComponent from "./Stat";
 
-const ProfitStat = createFragmentContainer(StatComponent, {
+const LoadStat = createFragmentContainer(StatComponent, {
   data: graphql`
-    fragment ProfitStatContainer_data on ProfitValueConnection {
+    fragment LoadStatContainer_data on LoadValueConnection {
       edges {
         node {
           date
-          value: profit
+          value: load
         }
       }
     }
   `
 });
 
-export default ProfitStat;
+export default LoadStat;

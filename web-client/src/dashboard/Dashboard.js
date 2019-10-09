@@ -1,16 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
+import { ConnectionHandler } from "relay-runtime";
+import { graphql, requestSubscription } from "react-relay";
 import { makeStyles } from "@material-ui/styles";
 import Grid from "@material-ui/core/Grid";
-import ProfitStat from "./stat/ProfitStatContainer";
-import SalesStat from "./stat/SalesStatContainer";
-import ClientsStat from "./stat/ClientsStatContainer";
+import { RelayContext } from "../app/providers/RelayProvider";
+import VisitorsStat from "./stat/VisitorsStatContainer";
+import LoadStat from "./stat/LoadStatContainer";
+import MemoryStat from "./stat/MemoryStatContainer";
+import OperationsStat from "./stat/OperationsStatContainer";
 import AvgTimeStat from "./stat/AvgTimeStatContainer";
 import SalesMap from "./sales/SalesMap";
 import StateSalesQuery from "./sales/StateSalesQuery";
 import DeptEmployeesQuery from "./employees/DeptEmployeesQuery";
 import { appOperations, appSelectors } from "../app/state";
+import constants from "../../common/constants";
 
 const useStyles = makeStyles(theme => ({
   layout: {
@@ -20,9 +25,49 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+const subscription = graphql`
+  subscription DashboardSubscription {
+    dashboardEvent {
+      visitors {
+        node {
+          date
+          value: visitors
+        }
+      }
+      load {
+        node {
+          date
+          value: load
+        }
+      }
+      memory {
+        node {
+          date
+          value: memory
+        }
+      }
+      operations {
+        node {
+          date
+          value: operations
+        }
+      }
+      avgTime {
+        node {
+          date
+          value: avgTime
+        }
+      }
+    }
+  }
+`;
+
 function Dashboard(props) {
   const classes = useStyles(props);
   const dispatch = useDispatch();
+  const { environment } = useContext(RelayContext);
+
+  const [subTrigger, setSubTrigger] = useState(0);
 
   const [usStates, setUsStates] = useState(null);
   const [usCities, setUsCities] = useState(null);
@@ -93,6 +138,93 @@ function Dashboard(props) {
     [isStarted]
   );
 
+  useEffect(
+    // subscribe and listen to subscription events
+    // changing subTrigger state variable will force resubscribing
+    () => {
+      let isDetroyed = false;
+
+      const request = requestSubscription(environment, {
+        subscription,
+        updater: store => {
+          const viewer = store.getRoot().getLinkedRecord("viewer");
+          if (!viewer) return;
+
+          const rootField = store.getRootField("dashboardEvent");
+          if (!rootField) return;
+
+          const newVisitors = rootField.getLinkedRecord("visitors");
+          const visitors = viewer.getLinkedRecord("visitorsValues");
+          if (visitors && newVisitors) {
+            const edges = visitors.getLinkedRecords("edges");
+            edges.shift();
+            visitors.setLinkedRecords([...edges, newVisitors], "edges");
+          }
+
+          const newLoad = rootField.getLinkedRecord("load");
+          const load = viewer.getLinkedRecord("loadValues");
+          if (load && newLoad) {
+            const edges = load.getLinkedRecords("edges");
+            edges.shift();
+            load.setLinkedRecords([...edges, newLoad], "edges");
+          }
+
+          const newMemory = rootField.getLinkedRecord("memory");
+          const memory = viewer.getLinkedRecord("memoryValues");
+          if (memory && newMemory) {
+            const edges = memory.getLinkedRecords("edges");
+            edges.shift();
+            memory.setLinkedRecords([...edges, newMemory], "edges");
+          }
+
+          const newOperations = rootField.getLinkedRecord("operations");
+          const operations = viewer.getLinkedRecord("operationsValues");
+          if (operations && newOperations) {
+            const edges = operations.getLinkedRecords("edges");
+            edges.shift();
+            operations.setLinkedRecords([...edges, newOperations], "edges");
+          }
+
+          const newAvgTime = rootField.getLinkedRecord("avgTime");
+          const avgTime = viewer.getLinkedRecord("avgTimeValues");
+          if (avgTime && newAvgTime) {
+            const edges = avgTime.getLinkedRecords("edges");
+            edges.shift();
+            avgTime.setLinkedRecords([...edges, newAvgTime], "edges");
+          }
+        },
+        onCompleted: () =>
+          setTimeout(() => {
+            if (!isDetroyed) setSubTrigger(n => n + 1);
+          }, 1000),
+        onError: () =>
+          setTimeout(() => {
+            if (!isDetroyed) setSubTrigger(n => n + 1);
+          }, 1000)
+      });
+
+      const handleIdentityChange = () => {
+        if (!isDetroyed) setSubTrigger(n => n + 1);
+      };
+
+      // reconnect after logging in
+      window.addEventListener(
+        constants.events.IDENTITY_CHANGED,
+        handleIdentityChange
+      );
+
+      return () => {
+        isDetroyed = true;
+        request.dispose();
+        window.removeEventListener(
+          constants.events.IDENTITY_CHANGED,
+          handleIdentityChange
+        );
+      };
+    },
+    [subTrigger]
+  );
+
   return (
     <div className={classes.layout}>
       <Grid container spacing={2} justify="center">
@@ -105,21 +237,31 @@ function Dashboard(props) {
           lg={2}
         >
           <Grid item xs={12} sm={6} lg={12}>
-            <ProfitStat
-              label="DASHBOARD_PROFIT_LABEL"
-              data={(props.viewer || {}).profitValues}
+            <VisitorsStat
+              label="DASHBOARD_VISITORS_LABEL"
+              data={(props.viewer || {}).visitorsValues}
             />
           </Grid>
           <Grid item xs={12} sm={6} lg={12}>
-            <SalesStat
-              label="DASHBOARD_SALES_LABEL"
-              data={(props.viewer || {}).salesValues}
+            <LoadStat
+              label="DASHBOARD_LOAD_LABEL"
+              percent
+              precision={1}
+              data={(props.viewer || {}).loadValues}
             />
           </Grid>
           <Grid item xs={12} sm={6} lg={12}>
-            <ClientsStat
-              label="DASHBOARD_CLIENTS_LABEL"
-              data={(props.viewer || {}).clientsValues}
+            <MemoryStat
+              label="DASHBOARD_MEMORY_LABEL"
+              percent
+              precision={1}
+              data={(props.viewer || {}).memoryValues}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6} lg={12}>
+            <OperationsStat
+              label="DASHBOARD_OPERATIONS_LABEL"
+              data={(props.viewer || {}).operationsValues}
             />
           </Grid>
           <Grid item xs={12} sm={6} lg={12}>

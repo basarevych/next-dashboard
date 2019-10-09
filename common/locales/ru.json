@@ -70,9 +70,10 @@
     "Чтобы войти, используя другой сервис, сначала войдите, используя email или предыдущий",
     " сервис, затем свяжите ваши аккаунты на странице профиля."
   ],
-  "DASHBOARD_PROFIT_LABEL": "Прибыль",
-  "DASHBOARD_SALES_LABEL": "Продажи",
-  "DASHBOARD_CLIENTS_LABEL": "Клиенты",
+  "DASHBOARD_VISITORS_LABEL": "Посетители",
+  "DASHBOARD_LOAD_LABEL": "Нагрузка",
+  "DASHBOARD_MEMORY_LABEL": "Память",
+  "DASHBOARD_OPERATIONS_LABEL": "Операции",
   "DASHBOARD_AVG_TIME_LABEL": "Сред. время",
   "DASHBOARD_CLICK_MAP_LABEL": "Кликните, чтобы выбрать",
   "DASHBOARD_US_SALES_LABEL": "Продажи в США",

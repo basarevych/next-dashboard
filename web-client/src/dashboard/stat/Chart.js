@@ -31,7 +31,7 @@ function Chart(props) {
   const areaStyle = useMemo(
     () => ({
       data: {
-        fill: props.colors.area,
+        fill: `url(#statChartGradient${props.className})`,
         stroke: props.colors.line,
         strokeWidth: 2
       }
@@ -84,7 +84,7 @@ function Chart(props) {
         </svg>
       );
     },
-    [props.data, axisStyle, areaStyle, scatterStyle]
+    [props.data, props.colors, axisStyle, areaStyle, scatterStyle]
   );
 
   const renderDesktopChart = useCallback(
@@ -94,11 +94,11 @@ function Chart(props) {
 
       return (
         <VictoryChart
+          animate
           width={width}
           height={height}
           padding={0}
           domainPadding={{ x: 0, y: 5 }}
-          standalone={true}
           containerComponent={
             <VictoryVoronoiContainer
               responsive={false}
@@ -106,7 +106,11 @@ function Chart(props) {
               voronoiBlacklist={["line"]}
               labels={getLabel}
               labelComponent={
-                <VictoryTooltip renderInPortal orientation="left" />
+                <VictoryTooltip
+                  standalone={false}
+                  renderInPortal
+                  orientation="left"
+                />
               }
             />
           }
@@ -116,7 +120,7 @@ function Chart(props) {
             name="line"
             data={props.data}
             interpolation="monotoneX"
-            x="date"
+            x="index"
             y="value"
             style={areaStyle}
           />
@@ -124,7 +128,7 @@ function Chart(props) {
             name="scatter"
             data={props.data}
             size={3}
-            x="date"
+            x="index"
             y="value"
             style={scatterStyle}
           />
@@ -136,6 +140,20 @@ function Chart(props) {
 
   return (
     <>
+      <svg width={0} height={0}>
+        <defs>
+          <linearGradient
+            id={`statChartGradient${props.className}`}
+            x1="0%"
+            y1="0%"
+            x2="0%"
+            y2="100%"
+          >
+            <stop offset="0%" stopColor={props.colors.area1} />
+            <stop offset="100%" stopColor={props.colors.area2} />
+          </linearGradient>
+        </defs>
+      </svg>
       <Hidden smDown initialWidth="lg">
         <div className={props.className}>
           <AutoSizer disableHeight>{renderDesktopChart}</AutoSizer>

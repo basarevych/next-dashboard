@@ -19,6 +19,7 @@ let apiSslKey = process.env.API_SSL_KEY;
 let apiSslCert = process.env.API_SSL_CERT;
 let apiSslCa = process.env.API_SSL_CA;
 let apiAppServer = process.env.API_APP_SERVER;
+let isPublisher = process.env.IS_PUBLISHER === "true" ? 1 : 0;
 let jwtSecret = process.env.JWT_SECRET;
 let redisUrl = process.env.REDIS_URL || "redis://localhost:6379";
 let mongoUrl =
@@ -63,6 +64,7 @@ class App {
       apiSslKey,
       apiSslCert,
       apiSslCa,
+      isPublisher,
       jwtSecret,
       redisUrl,
       mongoUrl,
@@ -148,6 +150,16 @@ class App {
         ),
       Promise.resolve()
     );
+
+    if (this.config.isPublisher && process.env.NODE_ENV !== "test") {
+      this.statsTimer = setInterval(async () => {
+        try {
+          await this.di.get("repository.dashboard").publishStats();
+        } catch (error) {
+          console.error(error);
+        }
+      }, 5000);
+    }
   }
 }
 

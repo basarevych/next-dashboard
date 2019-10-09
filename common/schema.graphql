@@ -23,31 +23,6 @@ type AvgTimeValueEdge {
   cursor: String!
 }
 
-type ClientsValue implements Node {
-  """The ID of an object"""
-  id: ID!
-  date: Date!
-  clients: Int!
-}
-
-"""A connection to a list of items."""
-type ClientsValueConnection {
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """A list of edges."""
-  edges: [ClientsValueEdge]
-}
-
-"""An edge in a connection."""
-type ClientsValueEdge {
-  """The item at the end of the edge"""
-  node: ClientsValue
-
-  """A cursor for use in pagination"""
-  cursor: String!
-}
-
 type Country implements Node {
   """The ID of an object"""
   id: ID!
@@ -101,6 +76,16 @@ input CreateUserInput {
 type CreateUserPayload {
   user: User
   clientMutationId: String
+}
+
+type DashboardValues implements Node {
+  """The ID of an object"""
+  id: ID!
+  visitors: VisitorsValueEdge!
+  load: LoadValueEdge!
+  memory: MemoryValueEdge!
+  operations: OperationsValueEdge!
+  avgTime: AvgTimeValueEdge!
 }
 
 scalar Date
@@ -235,6 +220,56 @@ type GetTokenPayload {
   clientMutationId: String
 }
 
+type LoadValue implements Node {
+  """The ID of an object"""
+  id: ID!
+  date: Date!
+  load: Float!
+}
+
+"""A connection to a list of items."""
+type LoadValueConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [LoadValueEdge]
+}
+
+"""An edge in a connection."""
+type LoadValueEdge {
+  """The item at the end of the edge"""
+  node: LoadValue
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+type MemoryValue implements Node {
+  """The ID of an object"""
+  id: ID!
+  date: Date!
+  memory: Float!
+}
+
+"""A connection to a list of items."""
+type MemoryValueConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [MemoryValueEdge]
+}
+
+"""An edge in a connection."""
+type MemoryValueEdge {
+  """The item at the end of the edge"""
+  node: MemoryValue
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
 type Mutation {
   signIn(input: SignInInput!): SignInPayload
   signUp(input: SignUpInput!): SignUpPayload
@@ -259,6 +294,31 @@ interface Node {
   id: ID!
 }
 
+type OperationsValue implements Node {
+  """The ID of an object"""
+  id: ID!
+  date: Date!
+  operations: Int!
+}
+
+"""A connection to a list of items."""
+type OperationsValueConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [OperationsValueEdge]
+}
+
+"""An edge in a connection."""
+type OperationsValueEdge {
+  """The item at the end of the edge"""
+  node: OperationsValue
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
 """Information about pagination in a connection."""
 type PageInfo {
   """When paginating forwards, are there more items?"""
@@ -272,33 +332,6 @@ type PageInfo {
 
   """When paginating forwards, the cursor to continue."""
   endCursor: String
-}
-
-type ProfitValue implements Node {
-  """The ID of an object"""
-  id: ID!
-  date: Date!
-  revenues: Int!
-  expenses: Int!
-  profit: Int!
-}
-
-"""A connection to a list of items."""
-type ProfitValueConnection {
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """A list of edges."""
-  edges: [ProfitValueEdge]
-}
-
-"""An edge in a connection."""
-type ProfitValueEdge {
-  """The item at the end of the edge"""
-  node: ProfitValue
-
-  """A cursor for use in pagination"""
-  cursor: String!
 }
 
 type ProviderStatus {
@@ -324,31 +357,6 @@ input RequestEmailVerificationInput {
 type RequestEmailVerificationPayload {
   success: Boolean
   clientMutationId: String
-}
-
-type SalesValue implements Node {
-  """The ID of an object"""
-  id: ID!
-  date: Date!
-  sales: Int!
-}
-
-"""A connection to a list of items."""
-type SalesValueConnection {
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """A list of edges."""
-  edges: [SalesValueEdge]
-}
-
-"""An edge in a connection."""
-type SalesValueEdge {
-  """The item at the end of the edge"""
-  node: SalesValue
-
-  """A cursor for use in pagination"""
-  cursor: String!
 }
 
 input SignInInput {
@@ -398,6 +406,7 @@ type Status {
 }
 
 type Subscription {
+  dashboardEvent: DashboardValues
   employeeCreated: Employee
   employeeUpdated: Employee
   employeeDeleted: Employee
@@ -528,12 +537,38 @@ type Viewer {
   countries(after: String, first: Int, before: String, last: Int): CountryConnection
   usCity(id: ID): USCity
   usCities(after: String, first: Int, before: String, last: Int, stateId: String, stateName: String, limit: Int): USCityConnection
-  profitValues(after: String, first: Int, before: String, last: Int): ProfitValueConnection
-  salesValues(after: String, first: Int, before: String, last: Int): SalesValueConnection
-  clientsValues(after: String, first: Int, before: String, last: Int): ClientsValueConnection
+  visitorsValues(after: String, first: Int, before: String, last: Int): VisitorsValueConnection
+  loadValues(after: String, first: Int, before: String, last: Int): LoadValueConnection
+  memoryValues(after: String, first: Int, before: String, last: Int): MemoryValueConnection
+  operationsValues(after: String, first: Int, before: String, last: Int): OperationsValueConnection
   avgTimeValues(after: String, first: Int, before: String, last: Int): AvgTimeValueConnection
   employee(id: ID): Employee
   employees(dept: EmployeeDept, sortBy: EmployeeSortBy, sortDir: EmployeeSortDir, after: String, first: Int, before: String, last: Int): EmployeeConnection
   user(id: ID): User
   users(sortBy: UserSortBy, sortDir: UserSortDir, after: String, first: Int, before: String, last: Int): UserConnection
+}
+
+type VisitorsValue implements Node {
+  """The ID of an object"""
+  id: ID!
+  date: Date!
+  visitors: Int!
+}
+
+"""A connection to a list of items."""
+type VisitorsValueConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [VisitorsValueEdge]
+}
+
+"""An edge in a connection."""
+type VisitorsValueEdge {
+  """The item at the end of the edge"""
+  node: VisitorsValue
+
+  """A cursor for use in pagination"""
+  cursor: String!
 }

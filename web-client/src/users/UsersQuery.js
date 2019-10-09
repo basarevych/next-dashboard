@@ -29,13 +29,20 @@ export const query = graphql`
   }
 `;
 
+let retryCallback;
+function doRetry() {
+  if (retryCallback) retryCallback();
+}
+
 function UsersQuery() {
   const params = useSelector(state => usersSelectors.getTableParams(state));
 
   const renderQuery = useCallback(({ error, props: renderProps, retry }) => {
     if (error) return <ErrorMessage error={error} />;
 
-    return <Users viewer={renderProps && renderProps.viewer} retry={retry} />;
+    retryCallback = retry;
+
+    return <Users viewer={renderProps && renderProps.viewer} retry={doRetry} />;
   }, []);
 
   return (
