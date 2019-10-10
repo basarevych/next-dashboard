@@ -156,7 +156,7 @@ function Dashboard(props) {
           const visitors = viewer.getLinkedRecord("visitorsValues");
           if (visitors && newVisitors) {
             const edges = visitors.getLinkedRecords("edges");
-            edges.shift();
+            while (edges.length >= 10) edges.shift();
             visitors.setLinkedRecords([...edges, newVisitors], "edges");
           }
 
@@ -164,7 +164,7 @@ function Dashboard(props) {
           const load = viewer.getLinkedRecord("loadValues");
           if (load && newLoad) {
             const edges = load.getLinkedRecords("edges");
-            edges.shift();
+            while (edges.length >= 10) edges.shift();
             load.setLinkedRecords([...edges, newLoad], "edges");
           }
 
@@ -172,7 +172,7 @@ function Dashboard(props) {
           const memory = viewer.getLinkedRecord("memoryValues");
           if (memory && newMemory) {
             const edges = memory.getLinkedRecords("edges");
-            edges.shift();
+            while (edges.length >= 10) edges.shift();
             memory.setLinkedRecords([...edges, newMemory], "edges");
           }
 
@@ -180,7 +180,7 @@ function Dashboard(props) {
           const operations = viewer.getLinkedRecord("operationsValues");
           if (operations && newOperations) {
             const edges = operations.getLinkedRecords("edges");
-            edges.shift();
+            while (edges.length >= 10) edges.shift();
             operations.setLinkedRecords([...edges, newOperations], "edges");
           }
 
@@ -188,7 +188,7 @@ function Dashboard(props) {
           const avgTime = viewer.getLinkedRecord("avgTimeValues");
           if (avgTime && newAvgTime) {
             const edges = avgTime.getLinkedRecords("edges");
-            edges.shift();
+            while (edges.length >= 10) edges.shift();
             avgTime.setLinkedRecords([...edges, newAvgTime], "edges");
           }
         },
