@@ -1,7 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
-import { ConnectionHandler } from "relay-runtime";
 import { graphql, requestSubscription } from "react-relay";
 import { makeStyles } from "@material-ui/styles";
 import Grid from "@material-ui/core/Grid";

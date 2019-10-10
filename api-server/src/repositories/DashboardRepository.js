@@ -117,7 +117,7 @@ class DashboardRepository {
   }
 
   async publish(topic, values) {
-    this.cache.delPage({ page: "/", query: "*", userId: "*" });
+    this.cache.delPage({ page: "/dashboard", query: "*", userId: "*" });
     this.cache.pubsub.publish(topic, { [topic]: values });
   }
 

@@ -1,28 +1,45 @@
-import React, { useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import PropTypes from "prop-types";
 import { AutoSizer } from "react-virtualized";
 import {
   VictoryChart,
-  VictoryContainer,
+  VictoryZoomContainer,
+  VictoryBrushContainer,
   VictoryAxis,
-  VictoryLine,
-  VictoryScatter
+  VictoryLine
 } from "victory";
 import { useTheme } from "@material-ui/styles";
 import Paper from "@material-ui/core/Paper";
 import theme from "./theme";
 
-const data = [
-  { x: 0, y: 0 },
-  { x: 1, y: 2 },
-  { x: 2, y: 1 },
-  { x: 3, y: 4 },
-  { x: 4, y: 3 },
-  { x: 5, y: 5 }
+const data1 = [
+  { a: new Date(1982, 1, 1), b: 125 },
+  { a: new Date(1987, 1, 1), b: 257 },
+  { a: new Date(1993, 1, 1), b: 345 },
+  { a: new Date(1997, 1, 1), b: 515 },
+  { a: new Date(2001, 1, 1), b: 132 },
+  { a: new Date(2005, 1, 1), b: 305 },
+  { a: new Date(2011, 1, 1), b: 270 },
+  { a: new Date(2015, 1, 1), b: 470 }
+];
+
+const data2 = [
+  { key: new Date(1982, 1, 1), b: 125 },
+  { key: new Date(1987, 1, 1), b: 257 },
+  { key: new Date(1993, 1, 1), b: 345 },
+  { key: new Date(1997, 1, 1), b: 515 },
+  { key: new Date(2001, 1, 1), b: 132 },
+  { key: new Date(2005, 1, 1), b: 305 },
+  { key: new Date(2011, 1, 1), b: 270 },
+  { key: new Date(2015, 1, 1), b: 470 }
 ];
 
 function Chart2(props) {
   const materialTheme = useTheme();
+
+  const [zoomDomain, setZoomDomain] = useState({
+    x: [new Date(1990, 1, 1), new Date(2005, 1, 1)]
+  });
 
   const renderChart = useCallback(
     ({ width }) => {
@@ -30,32 +47,68 @@ function Chart2(props) {
       const height = 0.8 * width;
 
       return (
-        <svg width={width} height={height}>
+        <>
           <VictoryChart
-            domainPadding={{ x: 50 }}
             width={width}
-            height={height}
-            standalone={false}
-            containerComponent={<VictoryContainer responsive={false} />}
-            theme={theme({ theme: materialTheme, withAxis: true })}
+            height={(height / 4) * 3}
+            scale={{ x: "time" }}
+            containerComponent={
+              <VictoryZoomContainer
+                responsive={false}
+                zoomDimension="x"
+                zoomDomain={zoomDomain}
+                onZoomDomainChange={setZoomDomain}
+              />
+            }
+            theme={theme({
+              theme: materialTheme,
+              withAxis: true,
+              withGrid: true
+            })}
           >
-            <VictoryAxis />
-            <VictoryAxis dependentAxis />
             <VictoryLine
-              interpolation="linear"
-              data={data}
-              style={{ data: { stroke: "#e45a51" } }}
-            />
-            <VictoryScatter
-              data={data}
-              size={5}
-              style={{ data: { fill: "#c43a31" } }}
+              style={{
+                data: { stroke: "tomato" }
+              }}
+              data={data1}
+              x="a"
+              y="b"
             />
           </VictoryChart>
-        </svg>
+          <VictoryChart
+            padding={{ top: 0, left: 50, right: 50, bottom: 50 }}
+            width={width}
+            height={height / 4}
+            scale={{ x: "time" }}
+            containerComponent={
+              <VictoryBrushContainer
+                responsive={false}
+                brushDimension="x"
+                brushDomain={zoomDomain}
+                onBrushDomainChange={setZoomDomain}
+              />
+            }
+            theme={theme({
+              theme: materialTheme,
+              withAxis: true,
+              withGrid: true
+            })}
+          >
+            <VictoryAxis tickFormat={x => new Date(x).getFullYear()} />
+            <VictoryLine
+              style={{
+                data: { stroke: "tomato" }
+              }}
+              data={data2}
+              x="key"
+              y="b"
+            />
+          </VictoryChart>
+        </>
+        //containerComponent={<VictoryContainer responsive={false} />}
       );
     },
-    [data, materialTheme]
+    [data1, data2, zoomDomain, materialTheme]
   );
 
   return (
