@@ -233,6 +233,7 @@ function Dashboard(props) {
           spacing={2}
           item
           alignContent="space-around"
+          justify="center"
           xs={12}
           lg={2}
         >
