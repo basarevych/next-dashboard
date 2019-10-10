@@ -45,7 +45,7 @@ class EmployeesRepository {
 
   async publish(topic, employee) {
     this.cache.delPage({ page: "/tables", query: "*", userId: "*" });
-    this.cache.delPage({ page: "/", query: "*", userId: "*" });
+    this.cache.delPage({ page: "/dashboard", query: "*", userId: "*" });
     this.cache.pubsub.publish(topic, {
       [topic]: employee.toObject({ getters: true, virtuals: true })
     });
