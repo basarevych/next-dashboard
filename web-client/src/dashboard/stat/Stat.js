@@ -89,6 +89,8 @@ function Stat(props) {
 
     const items = data.slice(-2);
     const change = (100 * (items[1].value - items[0].value)) / items[0].value;
+    if (!isFinite(change)) return null;
+
     const symbol = change > 0 ? "▲" : change < 0 ? "▼" : "";
     const className =
       change > 0 ? "increasing" : change < 0 ? "descreasing" : null;

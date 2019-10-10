@@ -130,8 +130,8 @@ class DashboardRepository {
       visitors = this.fake.getInt(10000, 50000);
     } else {
       visitors = lastVisitors.visitors + this.fake.getInt(0, 10000) - 5000;
-      if (visitors < 10000) visitors = 10000;
-      if (visitors > 50000) visitors = 50000;
+      if (visitors < 10000) visitors = 10000 + this.fake.getInt(0, 5000);
+      if (visitors > 50000) visitors = 50000 - this.fake.getInt(0, 5000);
     }
     const newVisitors = new this.dashboard.VisitorsValueModel({
       date,
@@ -145,8 +145,8 @@ class DashboardRepository {
       load = this.fake.getInt(0, 100);
     } else {
       load = lastLoad.load + (this.fake.getInt(0, 1000) - 500) / 100;
-      if (load < 0) load = 0;
-      if (load > 100) load = 100;
+      if (load < 0) load = this.fake.getInt(0, 500) / 100;
+      if (load > 100) load = 100 - this.fake.getInt(0, 500) / 100;
     }
     const newLoad = new this.dashboard.LoadValueModel({
       date,
@@ -160,8 +160,8 @@ class DashboardRepository {
       memory = this.fake.getInt(0, 100);
     } else {
       memory = lastMemory.memory + (this.fake.getInt(0, 1000) - 500) / 100;
-      if (memory < 0) memory = 0;
-      if (memory > 100) memory = 100;
+      if (memory < 0) memory = this.fake.getInt(0, 500) / 100;
+      if (memory > 100) memory = 100 - this.fake.getInt(0, 500) / 100;
     }
     const newMemory = new this.dashboard.MemoryValueModel({
       date,
@@ -176,8 +176,8 @@ class DashboardRepository {
     } else {
       operations =
         lastOperations.operations + this.fake.getInt(0, 10000) - 5000;
-      if (operations < 10000) operations = 10000;
-      if (operations > 50000) operations = 50000;
+      if (operations < 10000) operations = 10000 + this.fake.getInt(0, 5000);
+      if (operations > 50000) operations = 50000 - this.fake.getInt(0, 5000);
     }
     const newOperations = new this.dashboard.OperationsValueModel({
       date,
@@ -191,8 +191,8 @@ class DashboardRepository {
       avgTime = this.fake.getInt(0, 10);
     } else {
       avgTime = lastAvgTime.avgTime + (this.fake.getInt(0, 1000) - 500) / 1000;
-      if (avgTime < 0) avgTime = 0;
-      if (avgTime > 10) avgTime = 10;
+      if (avgTime < 0) avgTime = this.fake.getInt(0, 500) / 1000;
+      if (avgTime > 10) avgTime = 10 - this.fake.getInt(0, 500) / 1000;
     }
     const newAvgTime = new this.dashboard.AvgTimeValueModel({
       date,
