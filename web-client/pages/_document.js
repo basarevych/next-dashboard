@@ -21,33 +21,26 @@ class MyDocument extends Document {
           <link
             rel="apple-touch-icon"
             sizes="180x180"
-            href="/static/icon/apple-touch-icon.png"
+            href="/apple-touch-icon.png"
           />
           <link
             rel="icon"
             type="image/png"
             sizes="32x32"
-            href="/static/icon/favicon-32x32.png"
+            href="/favicon-32x32.png"
           />
           <link
             rel="icon"
             type="image/png"
             sizes="16x16"
-            href="/static/icon/favicon-16x16.png"
+            href="/favicon-16x16.png"
           />
-          <link
-            rel="mask-icon"
-            href="/static/icon/safari-pinned-tab.svg"
-            color={color}
-          />
-          <link rel="shortcut icon" href="/static/icon/favicon.ico" />
+          <link rel="mask-icon" href="/safari-pinned-tab.svg" color={color} />
+          <link rel="shortcut icon" href="/favicon.ico" />
           <meta name="msapplication-TileColor" content={color} />
-          <meta
-            name="msapplication-config"
-            content="/static/icon/browserconfig.xml"
-          />
+          <meta name="msapplication-config" content="/browserconfig.xml" />
           <meta name="theme-color" content={color} />
-          <link rel="manifest" href="/static/manifest.json" />
+          <link rel="manifest" href="/manifest.json" />
 
           <link
             href="https://fonts.googleapis.com/css?family=Roboto+Mono|Roboto:400,400i,700&display=swap&subset=cyrillic,latin-ext"

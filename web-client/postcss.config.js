@@ -10,12 +10,9 @@ function copyAssets({ url, relativePath }, { from }) {
   let base = match ? match[1] : name;
   let ext = match ? match[2] : "";
 
-  if (name === ".") return url;
-  if (/^\/?\/static\//.test(url)) return url;
+  if (name === "." || url[0] === "/") return url;
 
-  let absolutePath;
-  if (url[0] === "/") absolutePath = path.join(__dirname, relativePath);
-  else absolutePath = path.join(from, relativePath);
+  let absolutePath = path.join(from, relativePath);
 
   let file;
   try {
@@ -31,8 +28,8 @@ function copyAssets({ url, relativePath }, { from }) {
   let hashedName = ext
     ? `${base}.${hash.digest("hex")}.${ext}`
     : `${hash.digest("hex")}.${name}`;
-  fs.outputFileSync(path.join(__dirname, "static", "assets", hashedName), file);
-  return "/static/assets/" + hashedName;
+  fs.outputFileSync(path.join(__dirname, "public", "assets", hashedName), file);
+  return "/assets/" + hashedName;
 }
 
 module.exports = () => {

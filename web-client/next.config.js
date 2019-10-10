@@ -24,16 +24,16 @@ const manifest = {
   icons: [
     /*
       https://realfavicongenerator.net
-      Under "Favicon Generator Options" choose path: /static/icon
-      Extract the favicon package to /static/icon
+      Extract the favicon package to /public/
+      Copy "icons" key content here from "site.manifest" file
     */
     {
-      src: "/static/icon/android-chrome-192x192.png",
+      src: "/android-chrome-192x192.png",
       sizes: "192x192",
       type: "image/png"
     },
     {
-      src: "/static/icon/android-chrome-512x512.png",
+      src: "/android-chrome-512x512.png",
       sizes: "512x512",
       type: "image/png"
     }
@@ -86,19 +86,6 @@ module.exports = withPlugins(plugins, {
       test: /\.svg$/,
       loader: "svg-inline-loader"
     });
-
-    /*
-      // WebAssemmbly
-      config.module.rules.push({
-        test: /\.wasm$/,
-        type: "javascript/auto",
-        loader: "file-loader",
-        options: {
-          outputPath: `static/`,
-          publicPath: `${config.output.publicPath}/static/`
-        }
-      });
-    */
 
     config.plugins.push(
       new EnvironmentPlugin({
@@ -159,27 +146,14 @@ module.exports = withPlugins(plugins, {
           cacheId: pkg.name,
           clientsClaim: true,
           skipWaiting: true,
+          cleanupOutdatedCaches: true,
           swDest: "sw.js",
-          importsDirectory: "static",
           importWorkboxFrom: "local",
           exclude: [/\.next\//],
           runtimeCaching: [
             {
-              urlPattern: /^https?:\/\/[^/]+(${constants.apiBase}|${constants.socketsBase}|${constants.graphqlBase}).*/,
-              handler: "NetworkFirst",
-              options: {
-                cacheName: "api",
-                cacheableResponse: {
-                  statuses: [0, 200]
-                }
-              }
-            },
-            {
-              urlPattern: /^https?:\/\/.*/,
-              handler: "NetworkFirst",
-              options: {
-                cacheName: "site"
-              }
+              urlPattern: /^https?:\/\/.*$/,
+              handler: "NetworkFirst"
             }
           ]
         })
@@ -187,7 +161,7 @@ module.exports = withPlugins(plugins, {
 
       // Manifest
       pwaManifest.writeSync(
-        path.resolve(__dirname, "static"),
+        path.resolve(__dirname, "public"),
         pwaManifest.sync(manifest)
       );
     }

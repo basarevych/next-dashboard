@@ -55,7 +55,7 @@ function Locales(props) {
               name={l10n.flags[locale]}
               format="png"
               pngSize={24}
-              basePath={"/static/img/flags"}
+              basePath={"/img/flags"}
             />
           </ListItemIcon>
           <ListItemText>{l10n.names[locale]}</ListItemText>

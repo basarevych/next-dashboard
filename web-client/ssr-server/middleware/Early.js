@@ -35,54 +35,23 @@ class Early {
     // Log request
     if (process.env.NODE_ENV !== "test") express.use(logger("short"));
 
-    // Default favicon
-    express.use(
-      "/favicon.ico",
-      Express.static(
-        path.join(__dirname, "..", "..", "static", "icon", "favicon.ico"),
-        {
-          maxAge: this.maxAge
-        }
-      )
-    );
-
     // Service Worker (Google Workbox)
     express.use(
       "/sw.js",
       Express.static(path.join(__dirname, "..", "..", ".next", "sw.js"))
     );
-    express.use(
-      "/_next/build-manifest.json",
-      Express.static(
-        path.join(__dirname, "..", "..", ".next", "build-manifest.json")
-      )
-    );
-    express.use(
-      "/_next/react-loadable-manifest.json",
-      Express.static(
-        path.join(
-          __dirname,
-          "..",
-          "..",
-          ".next",
-          "react-loadable-manifest.json"
-        )
-      )
-    );
 
     // Shortcuts to static
     express.use(
-      "/_next/static",
-      Express.static(path.join(__dirname, "..", "..", ".next", "static"), {
+      "/_next",
+      Express.static(path.join(__dirname, "..", "..", ".next"), {
         maxAge: this.maxAge,
         fallthrough: false
       })
     );
     express.use(
-      "/static",
-      Express.static(path.join(__dirname, "..", "..", "static"), {
-        maxAge: this.maxAge,
-        fallthrough: false
+      Express.static(path.join(__dirname, "..", "..", "public"), {
+        maxAge: this.maxAge
       })
     );
 

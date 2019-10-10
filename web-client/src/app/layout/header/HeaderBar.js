@@ -225,7 +225,7 @@ function HeaderBar(props) {
                     name={l10n.flags[locale]}
                     format="png"
                     pngSize={24}
-                    basePath={"/static/img/flags"}
+                    basePath={"/img/flags"}
                   />
                   &nbsp;&nbsp;
                   {locale.toUpperCase()}
@@ -290,7 +290,7 @@ function HeaderBar(props) {
                     name={l10n.flags[locale]}
                     format="png"
                     pngSize={24}
-                    basePath={"/static/img/flags"}
+                    basePath={"/img/flags"}
                   />
                 </IconButton>
                 <IconButton color="inherit" onClick={handleThemesOpen}>

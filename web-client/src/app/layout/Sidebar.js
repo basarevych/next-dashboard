@@ -164,7 +164,7 @@ function Sidebar(props) {
                 "/avatars/" +
                 userId +
                 "?size=large"
-              : "/static/img/anonymous.png"
+              : "/img/anonymous.png"
           }
         />
         <Typography variant="subtitle1" color="inherit">

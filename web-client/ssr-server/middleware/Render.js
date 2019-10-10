@@ -8,7 +8,7 @@ class Render {
 
   async accept({ express }) {
     express.get("*", this.renderPage.bind(this));
-    express.get("/_next/*", this.app.next.getRequestHandler());
+    //express.get(this.app.next.getRequestHandler());
   }
 
   async renderPage(req, res, next) {

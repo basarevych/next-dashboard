@@ -259,7 +259,7 @@ function SalesMap(props) {
     [isLoaded, elevationScale]
   );
 
-  useEffect(
+  useIsomorphicLayoutEffect(
     // pitch the map
     () => {
       if (!isLoaded || isPitched) return;
@@ -275,7 +275,7 @@ function SalesMap(props) {
     [isLoaded, isPitched, pitchDuration, pitchAnimation]
   );
 
-  useEffect(
+  useIsomorphicLayoutEffect(
     // and rotate the map when not hovered
     () => {
       if (!isLoaded || !isPitched) return;

@@ -18,7 +18,7 @@ import ErrorMessage from "../errors/ErrorMessage";
 import AppAuthModal from "../modals/AppAuthModal";
 import constants from "../../../common/constants";
 import { appSelectors } from "../state";
-import logo from "../../../static/img/react-logo.svg";
+import logo from "../../../public/img/react-logo.svg";
 
 import "../../../styles";
 import styledScroll from "../../../styles/styledScroll";

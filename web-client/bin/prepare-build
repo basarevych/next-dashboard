@@ -18,7 +18,7 @@ async function prepareBuild() {
     await fs.remove(root("node_modules/.tmp"));
 
   await fs.remove(root(".next"));
-  await fs.remove(root("static/assets"));
+  await fs.remove(root("public/assets"));
 }
 
 prepareBuild().catch(error => {

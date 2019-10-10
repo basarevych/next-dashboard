@@ -22,9 +22,6 @@ async function finishExport() {
 
   // cleanup exported .next
   await fs.remove(root(".next"));
-
-  // favicon
-  await fs.copy(root("out/static/img/favicon.ico"), root("out/favicon.ico"));
 }
 
 finishExport().catch(error => {

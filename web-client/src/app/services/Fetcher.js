@@ -198,9 +198,10 @@ class Fetcher {
     }
 
     if (!/^https?:\/\//.test(resource)) {
-      console.error(
-        "Could not get absolute URL\n" +
-          "ssrApiServer: " +
+      throw new Error(
+        "Could not get absolute URL for: " +
+          resource +
+          "\nssrApiServer: " +
           appSelectors.getSsrApiServer(this.getState()) +
           "\napiServer: " +
           appSelectors.getApiServer(this.getState())
