@@ -4,5 +4,5 @@ coverage/
 .tmp/
 .next/
 out/
-static/assets/
+public/assets/
 .env
