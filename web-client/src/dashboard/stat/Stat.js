@@ -88,19 +88,22 @@ function Stat(props) {
     if (data.length < 2) return null;
 
     const items = data.slice(-2);
-    const change = (100 * (items[1].value - items[0].value)) / items[0].value;
-    if (!isFinite(change)) return null;
+    const percent =
+      items[0].value === 0
+        ? 100
+        : (100 * (items[1].value - items[0].value)) / items[0].value;
+    if (!Number.isFinite(percent)) return null;
 
-    const symbol = change > 0 ? "▲" : change < 0 ? "▼" : "";
+    const symbol = percent > 0 ? "▲" : percent < 0 ? "▼" : "";
     const className =
-      change > 0 ? "increasing" : change < 0 ? "descreasing" : null;
+      percent > 0 ? "increasing" : percent < 0 ? "descreasing" : null;
 
     return (
       <div
         className={classNames(classes.delta, className && classes[className])}
       >
         {symbol}
-        <FormattedNumber value={Math.abs(change)} maximumFractionDigits={0} />%
+        <FormattedNumber value={Math.abs(percent)} maximumFractionDigits={0} />%
       </div>
     );
   }, [data]);
@@ -115,7 +118,7 @@ function Stat(props) {
                 value={data.slice(-1)[0].value}
                 maximumFractionDigits={props.precision}
               />
-              {props.percent && "%"}
+              {!!props.percent && "%"}
             </>
           ) : (
             " "

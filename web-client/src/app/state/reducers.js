@@ -33,11 +33,12 @@ const createdReducer = (state = 0, action) => {
 const statusCodeReducer = (state = 200, action) => {
   switch (action.type) {
     case types.CREATE:
-      if (isFinite(action.statusCode) && action.statusCode >= 200)
+      if (Number.isFinite(action.statusCode) && action.statusCode >= 200)
         return action.statusCode;
       break;
     case types.SET_STATUS_CODE:
-      if (isFinite(action.code) && action.code >= 200) return action.code;
+      if (Number.isFinite(action.code) && action.code >= 200)
+        return action.code;
       break;
   }
   return state;

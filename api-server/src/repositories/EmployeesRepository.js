@@ -149,7 +149,7 @@ class EmployeesRepository {
     let employee = await this.employee.model.findById(id);
     if (!employee) throw this.di.get("error.notFound");
 
-    if (isFinite(uid)) employee.uid = uid;
+    if (Number.isFinite(uid)) employee.uid = uid;
     if (typeof checked === "boolean") employee.checked = checked;
     if (typeof name === "string") employee.name = name;
     if (typeof dept === "string") employee.dept = dept;
@@ -164,7 +164,7 @@ class EmployeesRepository {
         name: countryModel.name
       };
     }
-    if (isFinite(salary)) employee.salary = salary;
+    if (Number.isFinite(salary)) employee.salary = salary;
 
     await employee.validate();
     await employee.save();
