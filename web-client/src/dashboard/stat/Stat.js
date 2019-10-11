@@ -90,7 +90,9 @@ function Stat(props) {
     const items = data.slice(-2);
     const percent =
       items[0].value === 0
-        ? 100
+        ? items[1].value > 0
+          ? 100
+          : -100
         : (100 * (items[1].value - items[0].value)) / items[0].value;
     if (!Number.isFinite(percent)) return null;
 
