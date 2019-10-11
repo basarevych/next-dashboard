@@ -92,6 +92,8 @@ function Stat(props) {
       items[0].value === 0
         ? items[1].value > 0
           ? 100
+          : items[1].value === 0
+          ? 0
           : -100
         : (100 * (items[1].value - items[0].value)) / items[0].value;
     if (!Number.isFinite(percent)) return null;
