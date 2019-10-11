@@ -8,6 +8,7 @@ import Typography from "@material-ui/core/Typography";
 import { fade } from "@material-ui/core/styles/colorManipulator";
 import green from "@material-ui/core/colors/green";
 import red from "@material-ui/core/colors/red";
+import blue from "@material-ui/core/colors/blue";
 import Chart from "./Chart";
 
 const useStyles = makeStyles(theme => ({
@@ -45,6 +46,10 @@ const useStyles = makeStyles(theme => ({
   descreasing: {
     color: "#ffffff",
     background: fade(red[800], 0.65)
+  },
+  same: {
+    color: "#ffffff",
+    background: fade(blue[800], 0.65)
   },
   chart: {
     marginTop: "-1rem"
@@ -98,15 +103,22 @@ function Stat(props) {
         : (100 * (items[1].value - items[0].value)) / items[0].value;
     if (!Number.isFinite(percent)) return null;
 
-    const symbol = percent > 0 ? "▲" : percent < 0 ? "▼" : "";
+    const symbol =
+      Math.abs(percent) < Number.EPSILON ? "■" : percent > 0 ? "▲" : "▼";
+
     const className =
-      percent > 0 ? "increasing" : percent < 0 ? "descreasing" : null;
+      Math.abs(percent) < Number.EPSILON
+        ? "same"
+        : percent > 0
+        ? "increasing"
+        : "descreasing";
 
     return (
       <div
         className={classNames(classes.delta, className && classes[className])}
       >
         {symbol}
+        &thinsp;
         <FormattedNumber value={Math.abs(percent)} maximumFractionDigits={0} />%
       </div>
     );
