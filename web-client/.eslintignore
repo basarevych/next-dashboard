@@ -4,7 +4,7 @@ coverage/
 .tmp/
 .next/
 out/
-static/
+public/
 **/__generated__/
 **/__mocks__/
 *.config.js
