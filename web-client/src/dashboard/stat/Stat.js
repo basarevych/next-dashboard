@@ -2,6 +2,7 @@ import React, { useMemo } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import { useIntl, FormattedMessage, FormattedNumber } from "react-intl";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { makeStyles, useTheme } from "@material-ui/styles";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
@@ -23,6 +24,14 @@ const useStyles = makeStyles(theme => ({
     "& svg": {
       overflow: ["visible", "!important"]
     }
+  },
+  deltaWrapper: {
+    position: "absolute",
+    top: 0,
+    right: 0,
+    left: 0,
+    bottom: 0,
+    overflow: "hidden"
   },
   delta: {
     position: "absolute",
@@ -53,6 +62,46 @@ const useStyles = makeStyles(theme => ({
   },
   chart: {
     marginTop: "-1rem"
+  },
+  "@global": {
+    ".dash-stat-fade-enter": {
+      opacity: 0
+    },
+    ".dash-stat-fade-enter-active": {
+      opacity: 1,
+      transition: "opacity 500ms ease-in"
+    },
+    ".dash-stat-fade-enter-done": {
+      opacity: 1
+    },
+    ".dash-stat-fade-exit": {
+      display: "none"
+    },
+    ".dash-stat-fade-exit-active:": {
+      display: "none"
+    },
+    ".dash-stat-fade-exit-done": {
+      display: "none"
+    },
+    ".dash-stat-slide-enter": {
+      transform: "translate3d(0, -100%, 0)"
+    },
+    ".dash-stat-slide-enter-active": {
+      transform: "translate3d(0, 0, 0)",
+      transition: "transform 300ms"
+    },
+    ".dash-stat-slide-enter-done": {
+      transform: "translate3d(0, 0, 0)"
+    },
+    ".dash-stat-slide-exit": {
+      display: "none"
+    },
+    ".dash-stat-slide-exit-active:": {
+      display: "none"
+    },
+    ".dash-stat-slide-exit-done": {
+      display: "none"
+    }
   }
 }));
 
@@ -114,12 +163,29 @@ function Stat(props) {
         : "descreasing";
 
     return (
-      <div
-        className={classNames(classes.delta, className && classes[className])}
-      >
-        {symbol}
-        &thinsp;
-        <FormattedNumber value={Math.abs(percent)} maximumFractionDigits={0} />%
+      <div className={classes.deltaWrapper}>
+        <TransitionGroup>
+          <CSSTransition
+            key={percent}
+            timeout={500}
+            classNames="dash-stat-slide"
+          >
+            <div
+              className={classNames(
+                classes.delta,
+                className && classes[className]
+              )}
+            >
+              {symbol}
+              &thinsp;
+              <FormattedNumber
+                value={Math.abs(percent)}
+                maximumFractionDigits={0}
+              />
+              %
+            </div>
+          </CSSTransition>
+        </TransitionGroup>
       </div>
     );
   }, [data]);
@@ -128,17 +194,25 @@ function Stat(props) {
     return (
       <div className={classes.stat}>
         <Typography variant="h3" color="inherit">
-          {data.length ? (
-            <>
-              <FormattedNumber
-                value={data.slice(-1)[0].value}
-                maximumFractionDigits={props.precision}
-              />
-              {!!props.percent && "%"}
-            </>
-          ) : (
-            " "
-          )}
+          <TransitionGroup>
+            <CSSTransition
+              key={data.slice(-1)[0].value}
+              timeout={500}
+              classNames="dash-stat-fade"
+            >
+              {data.length ? (
+                <div>
+                  <FormattedNumber
+                    value={data.slice(-1)[0].value}
+                    maximumFractionDigits={props.precision}
+                  />
+                  {!!props.percent && "%"}
+                </div>
+              ) : (
+                <div />
+              )}
+            </CSSTransition>
+          </TransitionGroup>
         </Typography>
         <Typography variant="overline" color="inherit">
           <FormattedMessage id={props.label} />
