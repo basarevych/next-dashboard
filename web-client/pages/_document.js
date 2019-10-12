@@ -6,8 +6,12 @@ import themes from "../styles/themes";
 class MyDocument extends Document {
   render() {
     const theme = ((this.props.__NEXT_DATA__ || {}).query || {}).theme;
-    const color = themes
+    const primary = themes
       ? ((((themes.defs || {})[theme] || {}).palette || {}).primary || {}).main
+      : "#ffffff";
+    const secondary = themes
+      ? ((((themes.defs || {})[theme] || {}).palette || {}).secondary || {})
+          .main
       : "#ffffff";
     return (
       <html lang="en" dir="ltr">
@@ -35,11 +39,15 @@ class MyDocument extends Document {
             sizes="16x16"
             href="/favicon-16x16.png"
           />
-          <link rel="mask-icon" href="/safari-pinned-tab.svg" color={color} />
+          <link
+            rel="mask-icon"
+            href="/safari-pinned-tab.svg"
+            color={secondary}
+          />
           <link rel="shortcut icon" href="/favicon.ico" />
-          <meta name="msapplication-TileColor" content={color} />
+          <meta name="msapplication-TileColor" content={secondary} />
           <meta name="msapplication-config" content="/browserconfig.xml" />
-          <meta name="theme-color" content={color} />
+          <meta name="theme-color" content={primary} />
           <link rel="manifest" href="/manifest.json" />
 
           <link
