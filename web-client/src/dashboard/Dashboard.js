@@ -314,7 +314,7 @@ function Dashboard(props) {
           container
           spacing={2}
           item
-          alignContent="space-around"
+          alignContent="flex-start"
           justify="center"
           xs={12}
           lg={2}
