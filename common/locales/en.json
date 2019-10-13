@@ -70,6 +70,8 @@
     "To sign in using another service, first sign in using your email address or the previous",
     " service then link accounts in your profile page."
   ],
+  "DASHBOARD_ENABLE_ANIMATIONS": "Enable animations",
+  "DASHBOARD_DISABLE_ANIMATIONS": "Disable animations",
   "DASHBOARD_VISITORS_LABEL": "Visitors",
   "DASHBOARD_LOAD_LABEL": "Load",
   "DASHBOARD_MEMORY_LABEL": "Memory",

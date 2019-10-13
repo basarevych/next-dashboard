@@ -91,7 +91,9 @@ module.exports = {
     mapBackground: primaryBackground,
     mapHoverBackground: secondaryBackground,
     mapSelectedBackground: lighten(secondaryBackground, 0.15),
-    lineColor: textInfo,
+    gridColor: textDisabled,
+    lineColor: textPrimary,
+    dotColor: "#000000",
     areaColor: fade(textInfo, 0.25)
   },
   form: {

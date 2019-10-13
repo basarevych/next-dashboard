@@ -1,5 +1,7 @@
 import { createSelector } from "reselect";
 
+export const getIsAnimated = state => state.getIn(["dashboard", "isAnimated"]);
+
 export const getState = state => state.getIn(["dashboard", "state"]);
 
 export const getTablePageSize = state =>

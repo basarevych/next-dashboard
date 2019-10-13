@@ -1,6 +1,7 @@
 import * as actions from "./actions";
 import EditEmployeeMutation from "../../employees/mutations/EditEmployee";
 
+export const setIsAnimated = actions.setIsAnimated;
 export const setState = actions.setState;
 export const setTablePageSize = actions.setTablePageSize;
 export const setTablePageNumber = actions.setTablePageNumber;

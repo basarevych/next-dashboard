@@ -1,8 +1,11 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
+import { FormattedMessage } from "react-intl";
 import { graphql, requestSubscription } from "react-relay";
+import { AutoSizer } from "react-virtualized";
 import { makeStyles } from "@material-ui/styles";
+import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import { RelayContext } from "../app/providers/RelayProvider";
 import VisitorsStat from "./stat/VisitorsStatContainer";
@@ -14,6 +17,7 @@ import SalesMap from "./sales/SalesMap";
 import StateSalesQuery from "./sales/StateSalesQuery";
 import DeptEmployeesQuery from "./employees/DeptEmployeesQuery";
 import { appOperations, appSelectors } from "../app/state";
+import { dashboardOperations, dashboardSelectors } from "./state";
 import constants from "../../common/constants";
 
 const useStyles = makeStyles(theme => ({
@@ -71,7 +75,14 @@ function Dashboard(props) {
   const [usStates, setUsStates] = useState(null);
   const [usCities, setUsCities] = useState(null);
 
+  const isAnimated = useSelector(dashboardSelectors.getIsAnimated);
   const isStarted = useSelector(appSelectors.isStarted);
+
+  const toggleIsAnimatated = useCallback(
+    () =>
+      dispatch(dashboardOperations.setIsAnimated({ isAnimated: !isAnimated })),
+    [isAnimated]
+  );
 
   useEffect(
     // load states
@@ -224,6 +235,82 @@ function Dashboard(props) {
     [subTrigger]
   );
 
+  const handleAnimatedToggle = useCallback(() => {
+    setIsAnimatated(!isAnimated);
+  }, [isAnimated]);
+
+  const renderVisitors = useCallback(
+    ({ width }) => {
+      return (
+        <VisitorsStat
+          width={width}
+          id="visitors"
+          label="DASHBOARD_VISITORS_LABEL"
+          data={(props.viewer || {}).visitorsValues}
+          isAnimated={isAnimated}
+        />
+      );
+    },
+    [props.viewer, isAnimated]
+  );
+
+  const renderLoad = useCallback(
+    ({ width }) => (
+      <LoadStat
+        width={width}
+        id="load"
+        label="DASHBOARD_LOAD_LABEL"
+        data={(props.viewer || {}).loadValues}
+        percent
+        precision={1}
+        isAnimated={isAnimated}
+      />
+    ),
+    [props.viewer, isAnimated]
+  );
+
+  const renderMemory = useCallback(
+    ({ width }) => (
+      <MemoryStat
+        width={width}
+        id="memory"
+        label="DASHBOARD_MEMORY_LABEL"
+        data={(props.viewer || {}).memoryValues}
+        percent
+        precision={1}
+        isAnimated={isAnimated}
+      />
+    ),
+    [props.viewer, isAnimated]
+  );
+
+  const renderOperations = useCallback(
+    ({ width }) => (
+      <OperationsStat
+        width={width}
+        id="operations"
+        label="DASHBOARD_OPERATIONS_LABEL"
+        data={(props.viewer || {}).operationsValues}
+        isAnimated={isAnimated}
+      />
+    ),
+    [props.viewer, isAnimated]
+  );
+
+  const renderAvgTime = useCallback(
+    ({ width }) => (
+      <AvgTimeStat
+        width={width}
+        id="avgTime"
+        label="DASHBOARD_AVG_TIME_LABEL"
+        data={(props.viewer || {}).avgTimeValues}
+        precision={2}
+        isAnimated={isAnimated}
+      />
+    ),
+    [props.viewer, isAnimated]
+  );
+
   return (
     <div className={classes.layout}>
       <Grid container spacing={2} justify="center">
@@ -236,45 +323,45 @@ function Dashboard(props) {
           xs={12}
           lg={2}
         >
-          <Grid item xs={12} sm={6} lg={12}>
-            <VisitorsStat
-              label="DASHBOARD_VISITORS_LABEL"
-              data={(props.viewer || {}).visitorsValues}
-            />
+          <Grid item xs={12}>
+            <Button
+              variant="contained"
+              color="primary"
+              size="small"
+              onClick={toggleIsAnimatated}
+            >
+              <FormattedMessage
+                id={
+                  isAnimated
+                    ? "DASHBOARD_DISABLE_ANIMATIONS"
+                    : "DASHBOARD_ENABLE_ANIMATIONS"
+                }
+              />
+            </Button>
           </Grid>
           <Grid item xs={12} sm={6} lg={12}>
-            <LoadStat
-              label="DASHBOARD_LOAD_LABEL"
-              percent
-              precision={1}
-              data={(props.viewer || {}).loadValues}
-            />
+            <AutoSizer disableHeight>{renderVisitors}</AutoSizer>
           </Grid>
           <Grid item xs={12} sm={6} lg={12}>
-            <MemoryStat
-              label="DASHBOARD_MEMORY_LABEL"
-              percent
-              precision={1}
-              data={(props.viewer || {}).memoryValues}
-            />
+            <AutoSizer disableHeight>{renderLoad}</AutoSizer>
           </Grid>
           <Grid item xs={12} sm={6} lg={12}>
-            <OperationsStat
-              label="DASHBOARD_OPERATIONS_LABEL"
-              data={(props.viewer || {}).operationsValues}
-            />
+            <AutoSizer disableHeight>{renderMemory}</AutoSizer>
           </Grid>
           <Grid item xs={12} sm={6} lg={12}>
-            <AvgTimeStat
-              label="DASHBOARD_AVG_TIME_LABEL"
-              precision={2}
-              data={(props.viewer || {}).avgTimeValues}
-            />
+            <AutoSizer disableHeight>{renderOperations}</AutoSizer>
+          </Grid>
+          <Grid item xs={12} sm={6} lg={12}>
+            <AutoSizer disableHeight>{renderAvgTime}</AutoSizer>
           </Grid>
         </Grid>
         <Grid container spacing={2} alignItems="stretch" item xs={12} lg={10}>
           <Grid item xs={12} md={8}>
-            <SalesMap states={usStates} data={usCities} />
+            <SalesMap
+              states={usStates}
+              data={usCities}
+              isAnimated={isAnimated}
+            />
           </Grid>
           <Grid item xs={12} md={4}>
             <StateSalesQuery />

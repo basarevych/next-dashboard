@@ -5,6 +5,7 @@ import constants from "../../../common/constants";
 
 /* State Shape
 Map({
+  isAnimated: Boolean,
   state: String,
   tablePageSize: Number,
   tablePageNuber: Number,
@@ -12,6 +13,15 @@ Map({
   tableTimestamp: Number,
 })
 */
+
+const isAnimatedReducer = (state = true, action) => {
+  switch (action.type) {
+    case types.SET_IS_ANIMATED:
+      if (typeof action.isAnimated !== "undefined") return action.isAnimated;
+      break;
+  }
+  return state;
+};
 
 export const defaultState = "New York";
 const stateReducer = (state = defaultState, action) => {
@@ -62,6 +72,7 @@ const tableParamsReducer = (state = Map(defaultTableParams), action) => {
 };
 
 const reducer = combineReducers({
+  isAnimated: isAnimatedReducer,
   state: stateReducer,
   tablePageSize: tablePageSizeReducer,
   tablePageNumber: tablePageNumberReducer,

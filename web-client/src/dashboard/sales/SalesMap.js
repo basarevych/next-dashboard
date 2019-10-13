@@ -80,6 +80,8 @@ const colorRangeLight = [
 const useStyles = makeStyles(theme => ({
   root: {
     position: "relative",
+    height: "100%",
+    minHeight: 500,
     "& canvas": {
       borderRadius: theme.shape.borderRadius,
       top: 0,
@@ -280,11 +282,11 @@ function SalesMap(props) {
     () => {
       if (!isLoaded || !isPitched) return;
 
-      if (bearingDuration === 0 && !isHovered) {
+      if (bearingDuration === 0 && !isHovered && props.isAnimated) {
         setBearingDuration(25000);
       } else if (
         bearingAnimation === 1 ||
-        (bearingDuration !== 0 && isHovered)
+        (bearingDuration !== 0 && (isHovered || !props.isAnimated))
       ) {
         setViewState(state => ({
           ...state,
@@ -293,7 +295,14 @@ function SalesMap(props) {
         setBearingDuration(0);
       }
     },
-    [isLoaded, isPitched, isHovered, bearingDuration, bearingAnimation]
+    [
+      isLoaded,
+      isPitched,
+      isHovered,
+      bearingDuration,
+      bearingAnimation,
+      props.isAnimated
+    ]
   );
 
   useIsomorphicLayoutEffect(() => {
@@ -406,7 +415,8 @@ function SalesMap(props) {
 
 SalesMap.propTypes = {
   states: PropTypes.object,
-  data: PropTypes.array
+  data: PropTypes.array,
+  isAnimated: PropTypes.bool
 };
 
 export default SalesMap;

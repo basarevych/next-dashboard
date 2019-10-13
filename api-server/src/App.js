@@ -152,13 +152,16 @@ class App {
     );
 
     if (this.config.isPublisher && process.env.NODE_ENV !== "test") {
+      process.stdout.write("> Preseeding stats... ");
+      await this.di.get("repository.dashboard").preseedStats();
+      console.log("done");
       this.statsTimer = setInterval(async () => {
         try {
           await this.di.get("repository.dashboard").publishStats();
         } catch (error) {
           console.error(error);
         }
-      }, 5000);
+      }, 3000);
     }
   }
 }

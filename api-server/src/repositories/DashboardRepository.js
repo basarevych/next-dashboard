@@ -117,11 +117,11 @@ class DashboardRepository {
   }
 
   async publish(topic, values) {
-    this.cache.delPage({ page: "/dashboard", query: "*", userId: "*" });
-    this.cache.pubsub.publish(topic, { [topic]: values });
+    await this.cache.delPage({ page: "/dashboard", query: "*", userId: "*" });
+    return this.cache.pubsub.publish(topic, { [topic]: values });
   }
 
-  async publishStats() {
+  async getStatModels() {
     const date = moment().toDate();
 
     const lastVisitors = await this.cache.getLastStat({ name: "visitors" });
@@ -137,7 +137,6 @@ class DashboardRepository {
       date,
       visitors
     });
-    await this.cache.pushStat({ name: "visitors", model: newVisitors });
 
     const lastLoad = await this.cache.getLastStat({ name: "load" });
     let load;
@@ -152,7 +151,6 @@ class DashboardRepository {
       date,
       load
     });
-    await this.cache.pushStat({ name: "load", model: newLoad });
 
     const lastMemory = await this.cache.getLastStat({ name: "memory" });
     let memory;
@@ -167,7 +165,6 @@ class DashboardRepository {
       date,
       memory
     });
-    await this.cache.pushStat({ name: "memory", model: newMemory });
 
     const lastOperations = await this.cache.getLastStat({ name: "operations" });
     let operations;
@@ -183,24 +180,99 @@ class DashboardRepository {
       date,
       operations
     });
-    await this.cache.pushStat({ name: "operations", model: newOperations });
 
     const lastAvgTime = await this.cache.getLastStat({ name: "avgTime" });
     let avgTime;
     if (lastOperations === null) {
-      avgTime = this.fake.getInt(0, 10);
+      avgTime = this.fake.getInt(0, 30);
     } else {
       avgTime = lastAvgTime.avgTime + (this.fake.getInt(0, 1000) - 500) / 1000;
       if (avgTime < 0) avgTime = this.fake.getInt(0, 500) / 1000;
-      if (avgTime > 10) avgTime = 10 - this.fake.getInt(0, 500) / 1000;
+      if (avgTime > 30) avgTime = 30 - this.fake.getInt(0, 500) / 1000;
     }
     const newAvgTime = new this.dashboard.AvgTimeValueModel({
       date,
       avgTime
     });
+
+    return { date, newVisitors, newLoad, newMemory, newOperations, newAvgTime };
+  }
+
+  async preseedStats() {
+    let updated;
+    do {
+      updated = false;
+
+      const visitors = await this.cache.getStatsLength({
+        name: "visitors"
+      });
+      const load = await this.cache.getStatsLength({
+        name: "load"
+      });
+      const memory = await this.cache.getStatsLength({
+        name: "memory"
+      });
+      const operations = await this.cache.getStatsLength({
+        name: "operations"
+      });
+      const avgTime = await this.cache.getStatsLength({
+        name: "avgTime"
+      });
+
+      const {
+        newVisitors,
+        newLoad,
+        newMemory,
+        newOperations,
+        newAvgTime
+      } = await this.getStatModels();
+
+      if (visitors < this.cache.statLength) {
+        updated = true;
+        await this.cache.pushStat({ name: "visitors", model: newVisitors });
+      }
+
+      if (load < this.cache.statLength) {
+        updated = true;
+        await this.cache.pushStat({ name: "load", model: newLoad });
+      }
+
+      if (memory < this.cache.statLength) {
+        updated = true;
+        await this.cache.pushStat({ name: "memory", model: newMemory });
+      }
+
+      if (operations < this.cache.statLength) {
+        updated = true;
+        await this.cache.pushStat({ name: "operations", model: newOperations });
+      }
+
+      if (avgTime < this.cache.statLength) {
+        updated = true;
+        await this.cache.pushStat({ name: "avgTime", model: newAvgTime });
+      }
+
+      await new Promise(resolve => setTimeout(resolve, 500));
+    } while (updated);
+  }
+
+  async publishStats() {
+    const {
+      date,
+      newVisitors,
+      newLoad,
+      newMemory,
+      newOperations,
+      newAvgTime
+    } = await this.getStatModels();
+
+    await this.cache.pushStat({ name: "visitors", model: newVisitors });
+    await this.cache.pushStat({ name: "load", model: newLoad });
+    await this.cache.pushStat({ name: "memory", model: newMemory });
+    await this.cache.pushStat({ name: "operations", model: newOperations });
     await this.cache.pushStat({ name: "avgTime", model: newAvgTime });
 
-    return this.publish("dashboardEvent", {
+    await this.publish("dashboardEvent", {
       id: this.dashboard.dateToID(date),
       visitors: {
         node: newVisitors

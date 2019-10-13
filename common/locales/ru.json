@@ -70,6 +70,8 @@
     "Чтобы войти, используя другой сервис, сначала войдите, используя email или предыдущий",
     " сервис, затем свяжите ваши аккаунты на странице профиля."
   ],
+  "DASHBOARD_ENABLE_ANIMATIONS": "Включить анимацию",
+  "DASHBOARD_DISABLE_ANIMATIONS": "Выключить анимацию",
   "DASHBOARD_VISITORS_LABEL": "Посетители",
   "DASHBOARD_LOAD_LABEL": "Нагрузка",
   "DASHBOARD_MEMORY_LABEL": "Память",

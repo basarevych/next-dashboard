@@ -12,7 +12,11 @@ const easing = {
   inExpo: n => Math.pow(2, 10 * (n - 1))
 };
 
-export default function useAnimation(duration, easingName = "linear") {
+export default function useAnimation(
+  duration,
+  easingName = "linear",
+  skipFrames = 0
+) {
   const [elapsed, setElapsed] = useState(0);
   const [result, setResult] = useState(0);
 
@@ -20,6 +24,7 @@ export default function useAnimation(duration, easingName = "linear") {
     setElapsed(0);
     if (!duration) return;
 
+    let frameNumber = 0;
     let animationFrame = null;
     let start = Date.now();
 
@@ -27,8 +32,14 @@ export default function useAnimation(duration, easingName = "linear") {
     function onFrame() {
       animationFrame = null;
       const delta = Date.now() - start;
-      setElapsed(delta);
-      if (delta < duration) loop();
+      if (++frameNumber > skipFrames) {
+        frameNumber = 0;
+        setElapsed(delta);
+        if (delta < duration) loop();
+      } else {
+        if (delta < duration) loop();
+        else setElapsed(delta);
+      }
     }
 
     // Call onFrame() on next animation frame

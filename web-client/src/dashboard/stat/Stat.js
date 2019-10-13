@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import classNames from "classnames";
 import { useIntl, FormattedMessage, FormattedNumber } from "react-intl";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
-import { makeStyles, useTheme } from "@material-ui/styles";
+import { makeStyles } from "@material-ui/styles";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import { fade } from "@material-ui/core/styles/colorManipulator";
@@ -20,10 +20,7 @@ const useStyles = makeStyles(theme => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "stretch",
-    position: "relative",
-    "& svg": {
-      overflow: ["visible", "!important"]
-    }
+    position: "relative"
   },
   deltaWrapper: {
     position: "absolute",
@@ -31,7 +28,8 @@ const useStyles = makeStyles(theme => ({
     right: 0,
     left: 0,
     bottom: 0,
-    overflow: "hidden"
+    overflow: "hidden",
+    pointerEvents: "none"
   },
   delta: {
     position: "absolute",
@@ -59,9 +57,6 @@ const useStyles = makeStyles(theme => ({
   same: {
     color: "#ffffff",
     background: fade(blue[800], 0.65)
-  },
-  chart: {
-    marginTop: "-1rem"
   },
   "@global": {
     ".dash-stat-fade-enter": {
@@ -107,7 +102,6 @@ const useStyles = makeStyles(theme => ({
 
 function Stat(props) {
   const classes = useStyles(props);
-  const theme = useTheme();
   const intl = useIntl();
 
   const edges = (props.data || {}).edges || [];
@@ -162,94 +156,113 @@ function Stat(props) {
         ? "increasing"
         : "descreasing";
 
-    return (
-      <div className={classes.deltaWrapper}>
-        <TransitionGroup>
-          <CSSTransition
-            key={percent}
-            timeout={500}
-            classNames="dash-stat-slide"
-          >
-            <div
-              className={classNames(
-                classes.delta,
-                className && classes[className]
-              )}
-            >
-              {symbol}
-              &thinsp;
-              <FormattedNumber
-                value={Math.abs(percent)}
-                maximumFractionDigits={0}
-              />
-              %
-            </div>
-          </CSSTransition>
-        </TransitionGroup>
+    const content = (
+      <div
+        className={classNames(classes.delta, className && classes[className])}
+      >
+        {symbol}
+        &thinsp;
+        <FormattedNumber value={Math.abs(percent)} maximumFractionDigits={0} />%
       </div>
     );
-  }, [data]);
+
+    if (props.isAnimated) {
+      return (
+        <div className={classes.deltaWrapper}>
+          <TransitionGroup>
+            <CSSTransition
+              key={percent}
+              timeout={500}
+              classNames="dash-stat-slide"
+            >
+              {content}
+            </CSSTransition>
+          </TransitionGroup>
+        </div>
+      );
+    }
+
+    return <div className={classes.deltaWrapper}>{content}</div>;
+  }, [data, props.isAnimated]);
 
   const stat = useMemo(() => {
+    if (data.length < 1) return null;
+
+    const content = data.length ? (
+      <div>
+        <FormattedNumber
+          value={data.slice(-1)[0].value}
+          maximumFractionDigits={props.precision}
+        />
+        {!!props.percent && "%"}
+      </div>
+    ) : (
+      <div />
+    );
+
+    if (props.isAnimated) {
+      return (
+        <div className={classes.stat}>
+          <Typography variant="h3" color="inherit">
+            <TransitionGroup>
+              <CSSTransition
+                key={data.slice(-1)[0].value}
+                timeout={500}
+                classNames="dash-stat-fade"
+              >
+                {content}
+              </CSSTransition>
+            </TransitionGroup>
+          </Typography>
+          <Typography variant="overline" color="inherit">
+            <FormattedMessage id={props.label} />
+          </Typography>
+        </div>
+      );
+    }
+
     return (
       <div className={classes.stat}>
         <Typography variant="h3" color="inherit">
-          <TransitionGroup>
-            <CSSTransition
-              key={data.slice(-1)[0].value}
-              timeout={500}
-              classNames="dash-stat-fade"
-            >
-              {data.length ? (
-                <div>
-                  <FormattedNumber
-                    value={data.slice(-1)[0].value}
-                    maximumFractionDigits={props.precision}
-                  />
-                  {!!props.percent && "%"}
-                </div>
-              ) : (
-                <div />
-              )}
-            </CSSTransition>
-          </TransitionGroup>
+          {content}
         </Typography>
         <Typography variant="overline" color="inherit">
           <FormattedMessage id={props.label} />
         </Typography>
       </div>
     );
-  }, [data, props.precision, props.label]);
+  }, [data, props.precision, props.label, props.isAnimated]);
 
-  const colors = useMemo(
-    () => ({
-      grid: fade(theme.palette.text.secondary, 0.25),
-      area1: theme.chart.areaColor,
-      area2: fade(theme.chart.areaColor, 0),
-      line: theme.chart.lineColor
-    }),
-    [theme]
-  );
+  if (!props.width) return null;
 
   return (
-    <Paper className={classes.root}>
+    <Paper className={classes.root} style={{ width: props.width }}>
       {delta}
       {stat}
-      <Chart className={classes.chart} data={data} colors={colors} />
+      <Chart
+        id={props.id}
+        width={props.width}
+        data={data}
+        isAnimated={props.isAnimated}
+      />
     </Paper>
   );
 }
 
 Stat.propTypes = {
+  id: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
+  width: PropTypes.number.isRequired,
   data: PropTypes.object,
   percent: PropTypes.bool,
-  precision: PropTypes.number
+  precision: PropTypes.number,
+  isAnimated: PropTypes.bool
 };
 
 Stat.defaultProps = {
   percent: false,
-  precision: 0
+  precision: 0,
+  isAnimated: false
 };
 
 export default Stat;

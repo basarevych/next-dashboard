@@ -83,6 +83,13 @@ class Cache extends BaseClass {
       .filter(item => !!item);
   }
 
+  async getStatsLength({ name }) {
+    if (!name) return null;
+
+    let key = this.namespace + ":stat:" + this._statNameToKey(name);
+    return this.cacheRedis.llen(key);
+  }
+
   async getLastStat({ name }) {
     if (!name) return null;
 

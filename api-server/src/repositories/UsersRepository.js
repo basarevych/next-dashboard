@@ -45,9 +45,11 @@ class UsersRepository {
   }
 
   async publish(topic, user) {
-    this.cache.delPage({ page: "/users", query: "*", userId: "*" });
-    this.cache.delPage({ page: "*", query: "*", userId: user.id });
-    this.cache.pubsub.publish(topic, {
+    await Promise.all([
+      this.cache.delPage({ page: "/users", query: "*", userId: "*" }),
+      this.cache.delPage({ page: "*", query: "*", userId: user.id })
+    ]);
+    return this.cache.pubsub.publish(topic, {
       [topic]: user.toObject({ getters: true, virtuals: true })
     });
   }

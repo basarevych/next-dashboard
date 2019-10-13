@@ -1,5 +1,10 @@
 import * as types from "./types";
 
+export const setIsAnimated = ({ isAnimated }) => ({
+  type: types.SET_IS_ANIMATED,
+  isAnimated
+});
+
 export const setState = ({ state }) => ({
   type: types.SET_STATE,
   state
