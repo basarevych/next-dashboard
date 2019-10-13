@@ -46,7 +46,6 @@ if (process.browser) {
   };
 
   // error handlers
-  /*
   if (process.env.NODE_ENV === "production") {
     window.onerror = function(msg, url, line, col, error) {
       let extra = !col ? "" : "\ncolumn: " + col;
@@ -65,7 +64,6 @@ if (process.browser) {
       return false;
     };
   }
-  */
 
   if (process.env.NODE_ENV === "development") console.log("Init");
 }
