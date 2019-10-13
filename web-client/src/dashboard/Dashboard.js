@@ -235,10 +235,6 @@ function Dashboard(props) {
     [subTrigger]
   );
 
-  const handleAnimatedToggle = useCallback(() => {
-    setIsAnimatated(!isAnimated);
-  }, [isAnimated]);
-
   const renderVisitors = useCallback(
     ({ width }) => {
       return (
