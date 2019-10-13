@@ -76,7 +76,7 @@ function Dashboard(props) {
   const [usCities, setUsCities] = useState(null);
 
   const isAnimated = useSelector(dashboardSelectors.getIsAnimated);
-  const isStarted = useSelector(appSelectors.isStarted);
+  const isStarted = useSelector(appSelectors.getIsStarted);
 
   const toggleIsAnimatated = useCallback(
     () =>

@@ -155,7 +155,7 @@ function SalesMap(props) {
 
   const theme = useSelector(appSelectors.getTheme);
   const mapboxToken = useSelector(appSelectors.getMapboxToken);
-  const isSubscribed = useSelector(appSelectors.isSubscribed);
+  const isSubscribed = useSelector(appSelectors.getIsSubscribed);
 
   const updateViewState = useCallback(
     ({ viewState: newViewState }) => {

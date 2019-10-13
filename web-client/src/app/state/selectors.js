@@ -16,12 +16,13 @@ export const getTheme = state => state.getIn(["app", "theme"]);
 
 export const getMapboxToken = state => state.getIn(["app", "mapboxToken"]);
 
-export const isStarted = state => state.getIn(["app", "isStarted"]);
+export const getIsStarted = state => state.getIn(["app", "isStarted"]);
 
-export const isStopped = state => state.getIn(["app", "isStopped"]);
+export const getIsStopped = state => state.getIn(["app", "isStopped"]);
 
-export const isConnected = state => state.getIn(["app", "isConnected"]);
+export const getIsConnected = state => state.getIn(["app", "isConnected"]);
 
-export const isSubscribed = state => state.getIn(["app", "isSubscribed"]);
+export const getIsSubscribed = state => state.getIn(["app", "isSubscribed"]);
 
-export const isAuthModalOpen = state => state.getIn(["app", "isAuthModalOpen"]);
+export const getIsAuthModalOpen = state =>
+  state.getIn(["app", "isAuthModalOpen"]);

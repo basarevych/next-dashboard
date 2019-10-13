@@ -185,14 +185,14 @@ function Layout(props) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const statusCode = useSelector(appSelectors.getStatusCode);
-  const isStopped = useSelector(appSelectors.isStopped);
+  const isStopped = useSelector(appSelectors.getIsStopped);
   const isDisconnected = useSelector(
     state =>
-      appSelectors.isStarted(state) &&
-      !appSelectors.isStopped(state) &&
-      !appSelectors.isConnected(state)
+      appSelectors.getIsStarted(state) &&
+      !appSelectors.getIsStopped(state) &&
+      !appSelectors.getIsConnected(state)
   );
-  const isAuthModalOpen = useSelector(appSelectors.isAuthModalOpen);
+  const isAuthModalOpen = useSelector(appSelectors.getIsAuthModalOpen);
 
   const handleSidebarToggle = useCallback(() => {
     setIsSidebarOpen(!isSidebarOpen);

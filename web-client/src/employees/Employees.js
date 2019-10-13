@@ -91,7 +91,7 @@ function Employees(props) {
   const { environment } = useContext(RelayContext);
 
   const [subTrigger, setSubTrigger] = useState(0);
-  const isSubscribed = useSelector(appSelectors.isSubscribed);
+  const isSubscribed = useSelector(appSelectors.getIsSubscribed);
 
   const [employees, setEmployees] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
