@@ -5,6 +5,7 @@ const Injectt = require("injectt");
 const CacheService = require("../../Cache");
 const AuthService = require("../../Auth");
 const AuthRoute = require("../OAuth");
+const ModelDashboard = require("../../models/Dashboard");
 
 jest.mock("ioredis", () => {
   const Redis = require("ioredis-mock");
@@ -46,6 +47,7 @@ describe("Auth route", () => {
     di.registerClass(CacheService);
     di.registerClass(AuthService);
     di.registerClass(AuthRoute);
+    di.registerClass(ModelDashboard);
 
     await di.get("cache").init();
     await di.get("auth").init();
