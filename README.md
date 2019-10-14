@@ -24,7 +24,7 @@ https://dashboard.daemon-notes.com
 
 - Email/password or Twitter/Google/Facebook authorization using Passport.js
 
-- Additionally: MapboxGL and DeckGL, Victory Chart, React Virtualized, etc.
+- Additionally: MapboxGL and DeckGL, D3 and Victory charts, React Virtualized, etc.
 
 - Caching service worker from Google Workbox
 
