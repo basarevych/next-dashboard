@@ -1,10 +1,25 @@
-vendor/
-node_modules/
-coverage/
-.tmp/
-.next/
-out/
-public/
-**/__generated__/
-**/__mocks__/
+# See https://help.github.com/ignore-files/ for more about ignoring files.
+
+# dependencies
+node_modules
+
+# testing
+/coverage
+
+# production
+/build
+/dist
+/out
+/public/assets
+/.next
+/.tmp
+**/__mocks__
+**/__generated__
+
+# misc
 *.config.js
+.DS_Store
+.env
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

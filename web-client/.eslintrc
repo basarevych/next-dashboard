@@ -31,7 +31,6 @@
       "error",
       { "varsIgnorePattern": "[iI]gnored", "argsIgnorePattern": "^next$" }
     ],
-    "lodash/prefer-constant": "off",
     "react-hooks/rules-of-hooks": "error"
   }
 }

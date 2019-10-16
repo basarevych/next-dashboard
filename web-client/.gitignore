@@ -1,8 +1,23 @@
-node_modules/
-coverage/
-**/__generated__/
-.tmp/
-.next/
-out/
-public/assets/
+# See https://help.github.com/ignore-files/ for more about ignoring files.
+
+# dependencies
+node_modules
+
+# testing
+/coverage
+
+# production
+/build
+/dist
+/out
+/public/assets
+/.next
+/.tmp
+**/__generated__
+
+# misc
+.DS_Store
 .env
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
