@@ -11,6 +11,7 @@ node_modules
 /dist
 /out
 /public/assets
+/public/manifest.json
 /.next
 /.tmp
 **/__generated__
