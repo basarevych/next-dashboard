@@ -7,10 +7,6 @@ import themes from "../../../styles/themes";
 Map({
   created: Number, // timestamp
   statusCode: Number, // current HTTP status code
-  appServer: String,
-  apiServer: String,
-  ssrApiServer: String,
-  mapboxToken: null,
   locale: String,
   theme: String,
   isStarted: Boolean,
@@ -39,52 +35,6 @@ const statusCodeReducer = (state = 200, action) => {
     case types.SET_STATUS_CODE:
       if (Number.isFinite(action.code) && action.code >= 200)
         return action.code;
-      break;
-  }
-  return state;
-};
-
-const appServerReducer = (state = "", action) => {
-  switch (action.type) {
-    case types.CREATE:
-      if (typeof action.appServer !== "undefined") return action.appServer;
-      break;
-  }
-  return state;
-};
-
-const apiServerReducer = (state = "", action) => {
-  switch (action.type) {
-    case types.CREATE:
-      if (typeof action.apiServer !== "undefined") return action.apiServer;
-      break;
-  }
-  return state;
-};
-
-const ssrApiServerReducer = (state = "", action) => {
-  switch (action.type) {
-    case types.CREATE:
-      if (typeof action.ssrApiServer !== "undefined")
-        return action.ssrApiServer;
-      break;
-  }
-  return state;
-};
-
-const wsServerReducer = (state = "", action) => {
-  switch (action.type) {
-    case types.CREATE:
-      if (typeof action.wsServer !== "undefined") return action.wsServer;
-      break;
-  }
-  return state;
-};
-
-const mapboxTokenReducer = (state = "", action) => {
-  switch (action.type) {
-    case types.CREATE:
-      if (typeof action.mapboxToken !== "undefined") return action.mapboxToken;
       break;
   }
   return state;
@@ -158,13 +108,8 @@ const isAuthModalOpenReducer = (state = false, action) => {
 const reducer = combineReducers({
   created: createdReducer,
   statusCode: statusCodeReducer,
-  appServer: appServerReducer,
-  apiServer: apiServerReducer,
-  ssrApiServer: ssrApiServerReducer,
-  wsServer: wsServerReducer,
   locale: localeReducer,
   theme: themeReducer,
-  mapboxToken: mapboxTokenReducer,
   isStarted: isStartedReducer,
   isStopped: isStoppedReducer,
   isConnected: isConnectedReducer,

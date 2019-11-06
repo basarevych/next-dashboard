@@ -154,7 +154,6 @@ function SalesMap(props) {
   const bearingAnimation = useAnimation(bearingDuration);
 
   const theme = useSelector(appSelectors.getTheme);
-  const mapboxToken = useSelector(appSelectors.getMapboxToken);
   const isSubscribed = useSelector(appSelectors.getIsSubscribed);
 
   const updateViewState = useCallback(
@@ -379,7 +378,7 @@ function SalesMap(props) {
             onViewStateChange={updateViewState}
           >
             <StaticMap
-              mapboxApiAccessToken={mapboxToken}
+              mapboxApiAccessToken={process.env.MAPBOX_TOKEN}
               mapStyle={`mapbox://styles/mapbox/${theme}-v9`}
             >
               <div className={classes.controls}>

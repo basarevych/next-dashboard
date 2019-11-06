@@ -242,7 +242,7 @@ function Dashboard(props) {
           width={width}
           id="visitors"
           label="DASHBOARD_VISITORS_LABEL"
-          data={(props.viewer || {}).visitorsValues}
+          data={(props.viewer || {}).visitorsValues || null}
           isAnimated={isAnimated}
         />
       );
@@ -256,7 +256,7 @@ function Dashboard(props) {
         width={width}
         id="load"
         label="DASHBOARD_LOAD_LABEL"
-        data={(props.viewer || {}).loadValues}
+        data={(props.viewer || {}).loadValues || null}
         percent
         precision={1}
         isAnimated={isAnimated}
@@ -271,7 +271,7 @@ function Dashboard(props) {
         width={width}
         id="memory"
         label="DASHBOARD_MEMORY_LABEL"
-        data={(props.viewer || {}).memoryValues}
+        data={(props.viewer || {}).memoryValues || null}
         percent
         precision={1}
         isAnimated={isAnimated}
@@ -286,7 +286,7 @@ function Dashboard(props) {
         width={width}
         id="operations"
         label="DASHBOARD_OPERATIONS_LABEL"
-        data={(props.viewer || {}).operationsValues}
+        data={(props.viewer || {}).operationsValues || null}
         isAnimated={isAnimated}
       />
     ),
@@ -299,7 +299,7 @@ function Dashboard(props) {
         width={width}
         id="avgTime"
         label="DASHBOARD_AVG_TIME_LABEL"
-        data={(props.viewer || {}).avgTimeValues}
+        data={(props.viewer || {}).avgTimeValues || null}
         precision={2}
         isAnimated={isAnimated}
       />

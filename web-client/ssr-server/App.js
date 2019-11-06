@@ -5,9 +5,9 @@ if (!global._) global._ = require("lodash");
 const nextApp = require("next");
 const path = require("path");
 const express = require("express");
+const middleware = require("./middleware");
 const Redis = require("ioredis");
 const Cache = require("../common/src/cache");
-const constants = require("../common/constants");
 const l10n = require("../common/locales");
 const styles = require("../styles/themes");
 
@@ -71,38 +71,40 @@ class App {
     this.express.set("port", this.config.appPort);
     this.express.set("trust proxy", this.config.appTrustProxy);
 
-    // Next
-    this.next = nextApp({ dev: process.env.NODE_ENV === "development" });
-
-    // Cache (Redis)
-    this.redis = new Redis(this.config.redisUrl, { lazyConnect: true });
-    this.cache = new Cache(this.redis);
+    // Middleware
+    this.middleware = middleware(this);
   }
 
-  checkConfig() {
+  async init({ mainServer }) {
+    if (!Array.isArray(this.config.appOrigins)) {
+      console.error(
+        "APP_ORIGINS env variable should be a JSON string of an array of strings"
+      );
+      process.exit(1);
+    }
+
     if (!this.config.appApiServer) {
       console.error("Please define env variable APP_API_SERVER");
       process.exit(1);
     }
+
     if (!this.config.appWsServer) {
       console.error("Please define env variable APP_WS_SERVER");
       process.exit(1);
     }
-    if (!this.config.mapboxToken) {
-      console.error("Please define env variable MAPBOX_TOKEN");
-      process.exit(1);
-    }
-    if (!Array.isArray(this.config.appOrigins)) {
-      throw new Error(
-        "APP_ORIGINS env variable should be a JSON string of an array of strings"
-      );
-    }
-  }
 
-  async init({ mainServer }) {
-    this.checkConfig();
     if (!this.config.sessionSecret) {
       console.error("Please define env variable SESSION_SECRET");
+      process.exit(1);
+    }
+
+    if (!this.config.redisUrl) {
+      console.error("Please define env variable REDIS_URL");
+      process.exit(1);
+    }
+
+    if (!this.config.mapboxToken) {
+      console.error("Please define env variable MAPBOX_TOKEN");
       process.exit(1);
     }
 
@@ -110,47 +112,30 @@ class App {
     this.server = mainServer;
 
     // Initialize Next
+    this.next = nextApp({ dev: process.env.NODE_ENV === "development" });
     await this.next.prepare();
 
-    // Initialize Redis
+    // Initialize Cache
     process.stdout.write("> Redis... ");
+    this.redis = new Redis(this.config.redisUrl, { lazyConnect: true });
+    this.cache = new Cache(this.redis);
     await this.redis.connect();
     console.log("online");
 
-    // Middleware, order matters
-    this.middleware = [
-      "Early",
-      "Parse",
-      "Session",
-      "Helpers",
-      "Routes",
-      "Render",
-      "Late",
-      "Error"
-    ].reduce(async (acc, cur) => {
-      const Middleware = require(`./middleware/${cur}`);
-      const instance = new Middleware(this);
-      await instance.accept({ express: this.express });
-      return (await acc).set(cur, instance);
-    }, Promise.resolve(new Map()));
+    // Attach middleware
+    await Array.from(this.middleware.values()).reduce(
+      (acc, cur) => acc.then(() => cur.init()),
+      Promise.resolve()
+    );
   }
 
   /**
-   * This is what Next's getInitialProps() will see
+   * This is what getInitialProps()'s "query" param will be
    */
-  async analyzeRequest({ path, query, locale, theme } = {}) {
-    this.checkConfig();
-
-    return Object.assign({}, constants.pages[path] || {}, {
-      query: Object.assign({}, query || {}, {
-        appServer: this.config.appOrigins[0],
-        apiServer: this.config.appApiServer,
-        ssrApiServer: this.config.appSsrApiServer,
-        wsServer: this.config.appWsServer,
-        locale: locale || l10n.defaultLocale || null,
-        theme: theme || styles.defaultTheme || null,
-        mapboxToken: this.config.mapboxToken || null
-      })
+  async getQuery({ query, params, locale, theme } = {}) {
+    return Object.assign({}, query || {}, params || {}, {
+      locale: locale || l10n.defaultLocale || null,
+      theme: theme || styles.defaultTheme || null
     });
   }
 }

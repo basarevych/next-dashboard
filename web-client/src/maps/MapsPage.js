@@ -51,7 +51,6 @@ function MapsPage(props) {
   const classes = useStyles(props);
 
   const theme = useSelector(appSelectors.getTheme);
-  const mapboxToken = useSelector(appSelectors.getMapboxToken);
 
   const [viewMode, setViewMode] = useState("contour");
   const [viewState, setViewState] = useState(initialViewState);
@@ -161,7 +160,10 @@ function MapsPage(props) {
         getCursor={crosshair}
         onViewStateChange={updateViewState}
       >
-        <StaticMap mapboxApiAccessToken={mapboxToken} mapStyle={mapStyle}>
+        <StaticMap
+          mapboxApiAccessToken={process.env.MAPBOX_TOKEN}
+          mapStyle={mapStyle}
+        >
           <div className={classes.controls}>
             <NavigationControl onViewportChange={updateViewportNoPitch} />
 

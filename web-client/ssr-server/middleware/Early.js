@@ -13,9 +13,9 @@ class Early {
     this.maxAge = "365d";
   }
 
-  async accept({ express }) {
+  async init() {
     // CORS
-    express.use(
+    this.app.express.use(
       cors({
         credentials: true,
         origin: (origin, callback) => {
@@ -30,33 +30,33 @@ class Early {
     );
 
     // HTTP compression
-    express.use(compression());
+    this.app.express.use(compression());
 
     // Log request
-    if (process.env.NODE_ENV !== "test") express.use(logger("short"));
+    if (process.env.NODE_ENV !== "test") this.app.express.use(logger("short"));
 
     // Service Worker (Google Workbox)
-    express.use(
+    this.app.express.use(
       "/sw.js",
       Express.static(path.join(__dirname, "..", "..", ".next", "sw.js"))
     );
 
     // Shortcuts to static
-    express.use(
+    this.app.express.use(
       "/_next",
       Express.static(path.join(__dirname, "..", "..", ".next"), {
         maxAge: this.maxAge,
         fallthrough: false
       })
     );
-    express.use(
+    this.app.express.use(
       Express.static(path.join(__dirname, "..", "..", "public"), {
         maxAge: this.maxAge
       })
     );
 
     // Default headers for non-static
-    express.use((req, res, next) => {
+    this.app.express.use((req, res, next) => {
       res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
       return next();
     });

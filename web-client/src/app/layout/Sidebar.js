@@ -1,7 +1,7 @@
 import React, { useContext, useCallback, useMemo } from "react";
 import PropTypes from "prop-types";
 import { useRouter } from "next/router";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useIntl, FormattedMessage } from "react-intl";
 import { makeStyles } from "@material-ui/styles";
 import Link from "@material-ui/core/Link";
@@ -21,7 +21,7 @@ import TypographyIcon from "@material-ui/icons/BrightnessAuto";
 import IconsIcon from "@material-ui/icons/Pets";
 import UsersIcon from "@material-ui/icons/People";
 import constants from "../../../common/constants";
-import { appSelectors, appOperations } from "../../app/state";
+import { appOperations } from "../../app/state";
 import { UserContext } from "../providers/User";
 
 const useStyles = makeStyles(theme => ({
@@ -119,8 +119,6 @@ function Sidebar(props) {
 
   const user = useContext(UserContext);
 
-  const apiServer = useSelector(appSelectors.getApiServer);
-
   const handleLoginClick = useCallback(
     () => dispatch(appOperations.showAuthModal()),
     []
@@ -135,19 +133,27 @@ function Sidebar(props) {
   );
 
   const handleRedirectClick = useCallback(
-    () => window.open(apiServer + constants.apiBase + "/redirect/github"),
-    [apiServer]
+    () =>
+      window.open(
+        process.env.API_SERVER + constants.apiBase + "/redirect/github"
+      ),
+    []
   );
 
   const handleBenchmarksClick = useCallback(
-    () => window.open(apiServer + constants.apiBase + "/redirect/benchmarks"),
-    [apiServer]
+    () =>
+      window.open(
+        process.env.API_SERVER + constants.apiBase + "/redirect/benchmarks"
+      ),
+    []
   );
 
   const handleResponsivenessClick = useCallback(
     () =>
-      window.open(apiServer + constants.apiBase + "/redirect/responsiveness"),
-    [apiServer]
+      window.open(
+        process.env.API_SERVER + constants.apiBase + "/redirect/responsiveness"
+      ),
+    []
   );
 
   const { isAuthenticated, userId, name, email } = user;
@@ -159,7 +165,7 @@ function Sidebar(props) {
           alt="Avatar"
           src={
             isAuthenticated && userId
-              ? apiServer +
+              ? process.env.API_SERVER +
                 constants.apiBase +
                 "/avatars/" +
                 userId +
@@ -177,7 +183,7 @@ function Sidebar(props) {
         )}
       </div>
     );
-  }, [classes, isAuthenticated, userId, name, email, apiServer]);
+  }, [classes, isAuthenticated, userId, name, email]);
 
   const renderItem = path => {
     const { page, icon, menu, isAllowed } = constants.pages[path] || {};

@@ -10,8 +10,8 @@ class Helpers {
     this.app = app;
   }
 
-  async accept({ express }) {
-    express.use(async (req, res, next) => {
+  async init() {
+    this.app.express.use(async (req, res, next) => {
       try {
         // Set locale
         let locale = null;
@@ -52,14 +52,6 @@ class Helpers {
                         me {
                           isAuthenticated
                           userId
-                          name
-                          email
-                          isEmailVerified
-                          roles
-                          providers {
-                            name
-                            isLinked
-                          }
                         }
                       }
                     }`
@@ -73,7 +65,7 @@ class Helpers {
           }
 
           const isAuthenticated = user && user.isAuthenticated;
-          req.session.user = isAuthenticated ? user : null;
+          req.session.userId = isAuthenticated ? user.userId : null;
           req.session.accessToken = isAuthenticated ? accessToken : null;
           req.session.refreshToken = isAuthenticated ? refreshToken : null;
 

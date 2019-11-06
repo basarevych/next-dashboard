@@ -22,27 +22,13 @@ export const showAuthModal = actions.showAuthModal;
 export const hideAuthModal = actions.hideAuthModal;
 
 // called in App.getInitialProps()
-export const create = ({
-  statusCode,
-  locale,
-  theme,
-  appServer,
-  apiServer,
-  ssrApiServer,
-  wsServer,
-  mapboxToken
-}) => async dispatch => {
+export const create = ({ statusCode, locale, theme }) => async dispatch => {
   return dispatch(
     actions.create({
       created: Date.now(),
       statusCode,
       locale,
-      theme,
-      appServer,
-      apiServer,
-      ssrApiServer,
-      wsServer,
-      mapboxToken
+      theme
     })
   );
 };
@@ -181,10 +167,10 @@ export const linkProvider = ({ provider }) => async (
 
   let redirect = window.location.href;
   if (Router.asPath.startsWith("/auth") && Router.asPath !== "/auth/profile")
-    redirect = selectors.getAppServer(getState());
+    redirect = process.env.APP_SERVER;
 
   window.location.href =
-    selectors.getApiServer(getState()) +
+    process.env.API_SERVER +
     constants.apiBase +
     "/oauth/" +
     provider.toLowerCase() +

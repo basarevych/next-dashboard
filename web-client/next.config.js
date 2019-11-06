@@ -15,6 +15,9 @@ const l10n = require("./common/locales");
 const theme = require("./styles/themes/dark");
 const pkg = require("./package.json");
 
+const App = require("./ssr-server/App");
+const app = new App();
+
 const manifest = {
   short_name: "dashboard",
   name: "Next™ React™ Dashboard",
@@ -91,8 +94,16 @@ module.exports = withPlugins(plugins, {
       new EnvironmentPlugin({
         // pass NODE_ENV var to the code
         NODE_ENV: "production",
-        // define this var when exporting to static site
-        STATIC_SITE: false
+
+        // this is truthy when exporting to static site
+        STATIC_SITE: false,
+
+        // App variables
+        APP_SERVER: app.config.appOrigins[0],
+        API_SERVER: app.config.appApiServer,
+        SSR_API_SERVER: app.config.appSsrApiServer,
+        WS_SERVER: app.config.appWsServer,
+        MAPBOX_TOKEN: app.config.mapboxToken
       })
     );
 
@@ -185,12 +196,18 @@ module.exports = withPlugins(plugins, {
 
   useFileSystemPublicRoutes: false,
   exportPathMap: async () => {
-    const App = require("./ssr-server/App");
-    const app = new App();
     return Object.keys(constants.pages).reduce(
       (acc, cur) =>
         acc.then(async map => {
-          map[cur] = await app.analyzeRequest({ path: cur });
+          const route = constants.pages[cur];
+          if (typeof route.exportPathMap === "function") {
+            Object.assign(map, await route.exportPathMap());
+          } else {
+            map[cur] = {
+              page: route.page,
+              query: await app.getQuery({ path: cur })
+            };
+          }
           return map;
         }),
       Promise.resolve({})

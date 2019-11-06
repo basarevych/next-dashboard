@@ -93,7 +93,7 @@ class Fetcher {
         try {
           await this.fetch({
             method: "POST",
-            resource: appSelectors.getAppServer(this.getState()) + "/session",
+            resource: process.env.APP_SERVER + "/session",
             data: {
               accessToken,
               refreshToken
@@ -192,20 +192,8 @@ class Fetcher {
    */
   async fetch({ method, resource, data, token }) {
     if (!/^https?:\/\//.test(resource)) {
-      if (this.isSsr)
-        resource = appSelectors.getSsrApiServer(this.getState()) + resource;
-      else resource = appSelectors.getApiServer(this.getState()) + resource;
-    }
-
-    if (!/^https?:\/\//.test(resource)) {
-      throw new Error(
-        "Could not get absolute URL for: " +
-          resource +
-          "\nssrApiServer: " +
-          appSelectors.getSsrApiServer(this.getState()) +
-          "\napiServer: " +
-          appSelectors.getApiServer(this.getState())
-      );
+      if (this.isSsr) resource = process.env.SSR_API_SERVER + resource;
+      else resource = process.env.API_SERVER + resource;
     }
 
     const headers = {
@@ -294,7 +282,7 @@ class Fetcher {
     if (this.subClient) return;
 
     this.subClient = new SubscriptionClient(
-      appSelectors.getWsServer(this.getState()) + constants.graphqlBase,
+      process.env.WS_SERVER + constants.graphqlBase,
       {
         reconnect: true,
         reconnectionAttempts: Number.MAX_SAFE_INTEGER,

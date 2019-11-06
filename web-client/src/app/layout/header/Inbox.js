@@ -1,6 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { useSelector } from "react-redux";
 import { useIntl } from "react-intl";
 import { makeStyles } from "@material-ui/styles";
 import { lighten } from "@material-ui/core/styles/colorManipulator";
@@ -11,7 +10,6 @@ import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
 import constants from "../../../../common/constants";
 import moment from "../../../../common/src/moment";
-import { appSelectors } from "../../state";
 
 const useStyles = makeStyles(theme => ({
   menu: {
@@ -53,8 +51,6 @@ function Inbox(props) {
   const intl = useIntl();
   const classes = useStyles(props);
 
-  const apiServer = useSelector(appSelectors.getApiServer);
-
   return (
     <Menu
       classes={{ paper: classes.menu }}
@@ -70,7 +66,7 @@ function Inbox(props) {
             className={classes.inboxAvatar}
             alt="Mitch Stigall"
             src={
-              apiServer +
+              process.env.API_SERVER +
               constants.apiBase +
               "/avatars/x0?size=small&t=" +
               Date.now()
@@ -107,7 +103,7 @@ function Inbox(props) {
             className={classes.inboxAvatar}
             alt="Marie Wineinger"
             src={
-              apiServer +
+              process.env.API_SERVER +
               constants.apiBase +
               "/avatars/x1?size=small&t=" +
               Date.now()
@@ -144,7 +140,7 @@ function Inbox(props) {
             className={classes.inboxAvatar}
             alt="Ted Eriksson"
             src={
-              apiServer +
+              process.env.API_SERVER +
               constants.apiBase +
               "/avatars/x2?size=small&t=" +
               Date.now()
@@ -181,7 +177,7 @@ function Inbox(props) {
             className={classes.inboxAvatar}
             alt="Martin Murry"
             src={
-              apiServer +
+              process.env.API_SERVER +
               constants.apiBase +
               "/avatars/x3?size=small&t=" +
               Date.now()

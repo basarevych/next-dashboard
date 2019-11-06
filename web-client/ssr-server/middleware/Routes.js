@@ -11,8 +11,8 @@ class Routes {
     this.router.post("/session", this.postSession.bind(this));
   }
 
-  async accept({ express }) {
-    express.use(this.router);
+  async init() {
+    this.app.express.use(this.router);
   }
 
   /**

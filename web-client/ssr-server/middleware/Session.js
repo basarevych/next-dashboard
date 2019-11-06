@@ -10,13 +10,13 @@ class Session {
     this.cookie = "next.dashboard.ssr";
   }
 
-  async accept({ express }) {
+  async init() {
     const store = new RedisStore({
       client: this.app.redis,
       disableTouch: true
     });
 
-    express.use(
+    this.app.express.use(
       session({
         name: this.cookie,
         secret: this.app.config.sessionSecret,

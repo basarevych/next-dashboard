@@ -79,9 +79,7 @@ class Socket {
   connect() {
     if (!process.browser || this.socket) return;
 
-    const wsServer = appSelectors.getWsServer(this.getState());
-
-    this.socket = io(wsServer, { path: constants.socketsBase });
+    this.socket = io(process.env.WS_SERVER, { path: constants.socketsBase });
     this.socket.on(constants.messages.HELLO, this.onHello.bind(this));
     this.socket.on(constants.messages.AUTH, this.onAuth.bind(this));
     this.socket.on(constants.messages.TOAST, this.onToast.bind(this));

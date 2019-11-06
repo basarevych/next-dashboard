@@ -1,3 +1,5 @@
+const constants = require("../../common/constants");
+
 /**
  * Render and possibly cache the page using Next.JS
  */
@@ -6,19 +8,19 @@ class Render {
     this.app = app;
   }
 
-  async accept({ express }) {
-    express.get("*", this.renderPage.bind(this));
-    //express.get(this.app.next.getRequestHandler());
+  async init() {
+    for (let path of Object.keys(constants.pages)) {
+      this.app.express.get(
+        path,
+        this.renderPage.bind(this, constants.pages[path])
+      );
+    }
   }
 
-  async renderPage(req, res, next) {
-    const { page, query, isAllowed } = await this.app.analyzeRequest(req);
-    if (!page) return next();
-
-    const user = req.session.user || {};
-    const userId = user.userId || null;
-    if (typeof isAllowed === "function" && !isAllowed(user))
-      res.status(user.isAuthenticated ? 403 : 401);
+  async renderPage(route, req, res, next) {
+    const { page } = route;
+    const query = await this.app.getQuery(req);
+    const userId = req.session.userId || null;
 
     try {
       let html = null;

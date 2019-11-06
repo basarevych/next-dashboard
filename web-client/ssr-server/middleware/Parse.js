@@ -9,10 +9,10 @@ class Parse {
     this.app = app;
   }
 
-  async accept({ express }) {
-    express.use(bodyParser.json());
-    express.use(bodyParser.urlencoded({ extended: true }));
-    express.use(cookieParser());
+  async init() {
+    this.app.express.use(bodyParser.json());
+    this.app.express.use(bodyParser.urlencoded({ extended: true }));
+    this.app.express.use(cookieParser());
   }
 }
 

@@ -46,12 +46,7 @@ class MyApp extends App {
         appOperations.create({
           statusCode,
           locale: query && query.locale,
-          theme: query && query.theme,
-          appServer: query && query.appServer,
-          apiServer: query && query.apiServer,
-          ssrApiServer: query && query.ssrApiServer,
-          wsServer: query && query.wsServer,
-          mapboxToken: query && query.mapboxToken
+          theme: query && query.theme
         })
       );
     } else {
