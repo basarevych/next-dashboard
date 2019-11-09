@@ -74,8 +74,10 @@ SingleChartPage.propTypes = {
 };
 
 SingleChartPage.getInitialProps = async ({ query }) => {
+  let chart = parseInt(query.chart);
+  if (!Number.isFinite(chart) || chart < 1 || chart > 6) chart = null;
   return {
-    chart: query.chart || null
+    chart
   };
 };
 
