@@ -54,9 +54,6 @@ const useStyles = makeStyles(theme => ({
     flex: 1,
     padding: theme.spacing(2)
   },
-  paper: {
-    background: theme.main.paper
-  },
   header: {
     marginTop: "3rem",
     marginBottom: "1rem",
@@ -324,7 +321,7 @@ function DeptEmployees(props) {
 
   const renderTable = useCallback(
     ({ width }) => (
-      <Paper style={{ width }} className={classes.paper}>
+      <Paper style={{ width }}>
         <AppBar position="static">
           <Tabs
             variant="scrollable"

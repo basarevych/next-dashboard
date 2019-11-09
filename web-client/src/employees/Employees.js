@@ -56,9 +56,6 @@ const useStyles = makeStyles(theme => ({
     flex: 1,
     padding: theme.spacing(2)
   },
-  paper: {
-    background: theme.main.paper
-  },
   header: {
     marginTop: "3rem",
     marginBottom: "1rem",
@@ -395,7 +392,7 @@ function Employees(props) {
           </Button>
         </div>
 
-        <Paper className={classes.paper}>
+        <Paper>
           <EmployeesTable
             selectors={employeesSelectors}
             operations={employeesOperations}

@@ -27,6 +27,19 @@ module.exports = {
     ACCOUNTING: "ACCOUNTING"
   },
 
+  /**
+   * Page definition:
+   *
+   * "express-route": {
+   *    page: "page filename in /pages",
+   *    icon: "icon name in Layout component", // optional
+   *    menu: "I18N key for the sidebar menu entry", // optional
+   *    title: "I18N key for the page title", // optional
+   *    isAllowed: user => Boolean, // optional, defaults to allow
+   *    exportPathMap: () => Promise, // optional, defines all the paths for the
+   *                                  // static export, see "/charts/:chart" example below
+   * }
+   */
   pages: {
     "/": {
       page: "/dashboard",
@@ -39,6 +52,36 @@ module.exports = {
       icon: "forms",
       menu: "MENU_FORMS",
       title: "TITLE_FORMS"
+    },
+    "/charts/:chart": {
+      page: "/charts/[chart]",
+      title: "TITLE_CHARTS",
+      exportPathMap: async () => ({
+        "/charts/1": {
+          page: "/charts/[chart]",
+          query: { chart: 1 }
+        },
+        "/charts/2": {
+          page: "/charts/[chart]",
+          query: { chart: 2 }
+        },
+        "/charts/3": {
+          page: "/charts/[chart]",
+          query: { chart: 3 }
+        },
+        "/charts/4": {
+          page: "/charts/[chart]",
+          query: { chart: 4 }
+        },
+        "/charts/5": {
+          page: "/charts/[chart]",
+          query: { chart: 5 }
+        },
+        "/charts/6": {
+          page: "/charts/[chart]",
+          query: { chart: 6 }
+        }
+      })
     },
     "/charts": {
       page: "/charts",

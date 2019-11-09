@@ -64,7 +64,7 @@ function Chart4(props) {
             theme={theme({ theme: materialTheme })}
           >
             <VictoryPie
-              style={{ labels: { fill: "$000000" } }}
+              style={{ labels: { fill: "$000000", pointerEvents: "none" } }}
               innerRadius={100}
               labelRadius={120}
               labels={({ datum }) => `# ${datum.y}`}
