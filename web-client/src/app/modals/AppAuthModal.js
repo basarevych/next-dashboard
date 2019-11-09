@@ -2,7 +2,7 @@ import React, { useContext, useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { FormattedMessage } from "react-intl";
 import { makeStyles } from "@material-ui/styles";
-import { lighten } from "@material-ui/core/styles/colorManipulator";
+import { darken } from "@material-ui/core/styles/colorManipulator";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -30,7 +30,7 @@ const useStyles = makeStyles(theme => ({
     paddingBottom: "1rem"
   },
   credentialsPaper: {
-    background: lighten(theme.palette.background.paper, 0.15),
+    background: darken(theme.palette.background.paper, 0.15),
     height: "100%",
     padding: "1rem 1rem 2rem"
   },
@@ -242,7 +242,11 @@ function AppAuthModal(props) {
     [classes, facebookIcon, googleIcon, twitterIcon]
   );
 
-  return <Form schema={schema} onSubmit={submit} render={renderForm} />;
+  return (
+    <Form schema={schema} onSubmit={submit}>
+      {renderForm}
+    </Form>
+  );
 }
 
 export default AppAuthModal;

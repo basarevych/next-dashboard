@@ -1,5 +1,5 @@
 import io from "socket.io-client";
-import { appSelectors, appOperations } from "../state";
+import { appOperations } from "../state";
 import constants from "../../../common/constants";
 import pkg from "../../../package.json";
 

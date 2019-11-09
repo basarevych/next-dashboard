@@ -2,7 +2,7 @@ import fetch from "isomorphic-unfetch";
 import { Observable } from "relay-runtime";
 import { SubscriptionClient } from "subscriptions-transport-ws";
 import constants from "../../../common/constants";
-import { appSelectors, appOperations } from "../state";
+import { appOperations } from "../state";
 
 /**
  * Fetch API facade

@@ -98,7 +98,7 @@ function FormField(props) {
     ]
   );
 
-  return <Field name={name} render={render} />;
+  return <Field name={name}>{render}</Field>;
 }
 
 FormField.propTypes = {

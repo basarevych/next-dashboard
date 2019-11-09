@@ -1,10 +1,4 @@
-import React, {
-  useRef,
-  useState,
-  useCallback,
-  useEffect,
-  useLayoutEffect
-} from "react";
+import React, { useRef, useState, useCallback } from "react";
 import classNames from "classnames";
 import { FormattedMessage } from "react-intl";
 import { AutoSizer } from "react-virtualized";
@@ -34,8 +28,6 @@ import ConfirmForm from "./ConfirmForm";
 import MessageModal from "../app/modals/MessageModal";
 import shippingSchema from "../../common/forms/shipping";
 import billingSchema from "../../common/forms/billing";
-
-const useIsomorphicLayoutEffect = process.browser ? useLayoutEffect : useEffect;
 
 const shippingFields = Object.keys(shippingSchema.fields);
 const billingFields = Object.keys(billingSchema.fields);
@@ -169,32 +161,14 @@ const useStyles = makeStyles(theme => ({
 function FormsPage(props) {
   const classes = useStyles(props);
 
-  const [trigger, setTrigger] = useState(0);
-
   const [currentStep, setCurrentStep] = useState(0);
   const [isMessageOpen, setIsMessageOpen] = useState(false);
 
   const shippingForm = useRef(null);
-  const [shippingValues, setShippingValues] = useState({});
-  const [shippingErrors, setShippingErrors] = useState({});
-  const [shippingTouched, setShippingTouched] = useState(false);
+  const [isShippingTouched, setIsShippingTouched] = useState(false);
 
   const billingForm = useRef(null);
-  const [billingValues, setBillingValues] = useState({});
-  const [billingErrors, setBillingErrors] = useState({});
-  const [billingTouched, setBillingTouched] = useState(false);
-
-  useIsomorphicLayoutEffect(() => {
-    const bag = shippingForm.current && shippingForm.current.getFormikBag();
-    setShippingValues(bag ? bag.values : {});
-    setShippingErrors(bag ? bag.errors : {});
-  }, [trigger]);
-
-  useIsomorphicLayoutEffect(() => {
-    const bag = billingForm.current && billingForm.current.getFormikBag();
-    setBillingValues(bag ? bag.values : {});
-    setBillingErrors(bag ? bag.errors : {});
-  }, [trigger]);
+  const [isBillingTouched, setIsBillingTouched] = useState(false);
 
   const handleMessageOpen = useCallback(() => {
     setIsMessageOpen(true);
@@ -213,14 +187,16 @@ function FormsPage(props) {
       case 0:
         return (
           currentStep != 0 &&
-          shippingTouched &&
-          Object.keys(shippingErrors).length
+          isShippingTouched &&
+          shippingForm.current &&
+          Object.keys(shippingForm.current.errors).length
         );
       case 1:
         return (
           currentStep != 1 &&
-          billingTouched &&
-          Object.keys(billingErrors).length
+          isBillingTouched &&
+          billingForm.current &&
+          Object.keys(billingForm.current.errors).length
         );
     }
     return false;
@@ -231,14 +207,16 @@ function FormsPage(props) {
       case 0:
         return (
           currentStep != 0 &&
-          shippingTouched &&
-          !Object.keys(shippingErrors).length
+          isShippingTouched &&
+          shippingForm.current &&
+          !Object.keys(shippingForm.current.errors).length
         );
       case 1:
         return (
           currentStep != 1 &&
-          billingTouched &&
-          !Object.keys(billingErrors).length
+          isBillingTouched &&
+          billingForm.current &&
+          !Object.keys(billingForm.current.errors).length
         );
     }
     return false;
@@ -272,7 +250,7 @@ function FormsPage(props) {
       );
 
       await shippingForm.current.validateForm();
-      setShippingTouched(true);
+      setIsShippingTouched(true);
     }
 
     if (currentStep === 1 || newStep === 2) {
@@ -286,11 +264,10 @@ function FormsPage(props) {
       );
 
       await billingForm.current.validateForm();
-      setBillingTouched(true);
+      setIsBillingTouched(true);
     }
 
     setCurrentStep(newStep);
-    setTrigger(value => value + 1);
   };
 
   const renderHeaderStep = step => {
@@ -482,15 +459,25 @@ function FormsPage(props) {
                   <div className={classes.form}>
                     <BillingForm
                       ref={billingForm}
-                      shippingValues={shippingValues}
+                      shippingValues={
+                        shippingForm.current ? shippingForm.current.values : {}
+                      }
                     />
                   </div>
                   <div className={classes.form}>
                     <ConfirmForm
-                      shippingValues={shippingValues}
-                      shippingErrors={shippingErrors}
-                      billingValues={billingValues}
-                      billingErrors={billingErrors}
+                      shippingValues={
+                        shippingForm.current ? shippingForm.current.values : {}
+                      }
+                      shippingErrors={
+                        shippingForm.current ? shippingForm.current.errors : {}
+                      }
+                      billingValues={
+                        billingForm.current ? billingForm.current.values : {}
+                      }
+                      billingErrors={
+                        billingForm.current ? billingForm.current.errors : {}
+                      }
                     />
                   </div>
                 </SwipeableViews>

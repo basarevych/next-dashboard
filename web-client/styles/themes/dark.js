@@ -13,40 +13,54 @@ const primaryBackground = "#80838f";
 const secondaryColor = "rgba(255, 255, 255, 0.9)";
 const secondaryBackground = "#c5511d";
 
+const errorColor = "#ffffff";
+const errorBackgound = red[300];
+
+const infoColor = "#ffffff";
+const infoBackground = blueGrey[400];
+
 const bgNormal = "#3b3f4d";
 const bgPaper = "#585e6e";
 
 const textPrimary = "rgba(255, 255, 255, 0.9)";
 const textSecondary = "rgba(255, 255, 255, 0.6)";
 const textDisabled = "rgba(255, 255, 255, 0.35)";
-const textError = red[400];
-const textInfo = blueGrey[200];
 
 const fontSize = 14;
 
 module.exports = {
   name: "dark",
   palette: {
+    type: "dark",
     primary: {
+      light: lighten(primaryBackground, 0.3),
       main: primaryBackground,
+      dark: darken(primaryBackground, 0.3),
       contrastText: primaryColor
     },
     secondary: {
+      light: lighten(secondaryBackground, 0.3),
       main: secondaryBackground,
+      dark: darken(secondaryBackground, 0.3),
       contrastText: secondaryColor
+    },
+    error: {
+      light: lighten(errorBackgound, 0.3),
+      main: errorBackgound,
+      dark: darken(errorBackgound, 0.3),
+      contrastText: errorColor
     },
     background: {
       default: bgNormal,
-      paper: bgPaper
+      paper: bgPaper,
+      level1: bgNormal,
+      level2: darken(bgNormal, 0.1)
     },
     text: {
       primary: textPrimary,
       secondary: textSecondary,
       disabled: textDisabled,
       hint: textDisabled
-    },
-    error: {
-      main: textError
     },
     divider: "rgba(255, 255, 255, 0.12)"
   },
@@ -56,6 +70,24 @@ module.exports = {
   },
   shape: {
     borderRadius: 3
+  },
+  main: {
+    background: bgNormal,
+    color: textPrimary,
+    backdrop: "rgba(0, 0, 0, 0.85)",
+    spinner: "#ffffff",
+    error: {
+      background: errorBackgound,
+      color: errorColor,
+      borderRadius: 3,
+      padding: "1rem 2rem"
+    },
+    info: {
+      background: infoBackground,
+      color: infoColor,
+      borderRadius: 3,
+      padding: "1rem 2rem"
+    }
   },
   header: {
     color: [primaryColor, "!important"],
@@ -94,31 +126,13 @@ module.exports = {
     gridColor: textDisabled,
     lineColor: textPrimary,
     dotColor: "#ffffff",
-    areaColor: fade(textInfo, 0.5)
+    areaColor: fade(infoBackground, 0.5)
   },
   form: {
     stepperBackground: fade(primaryBackground, 0.65),
     stepperLine: textDisabled,
     stepperColor: textDisabled,
     stepperActive: textPrimary
-  },
-  main: {
-    background: bgNormal,
-    color: textPrimary,
-    backdrop: "rgba(0, 0, 0, 0.85)",
-    spinner: "#ffffff",
-    error: {
-      background: fade(textError, 0.65),
-      color: "#ffffff",
-      borderRadius: 3,
-      padding: "1rem 2rem"
-    },
-    info: {
-      background: fade(textInfo, 0.65),
-      color: "#ffffff",
-      borderRadius: 3,
-      padding: "1rem 2rem"
-    }
   },
   props: {
     MuiLink: {
@@ -132,12 +146,6 @@ module.exports = {
     MuiLink: {
       root: {
         cursor: "pointer"
-      }
-    },
-    MuiPaper: {
-      root: {
-        background: bgPaper,
-        color: textPrimary
       }
     },
     MuiAvatar: {
@@ -281,7 +289,7 @@ module.exports = {
         "&$focused": {
           background: [lighten(bgNormal, 0.2), "!important"],
           "&$error": {
-            color: [textError, "!important"]
+            color: [errorBackgound, "!important"]
           }
         },
         "&$underline": {
@@ -301,13 +309,13 @@ module.exports = {
         "&$focused": {
           color: [textPrimary, "!important"],
           "&$error": {
-            color: [textError, "!important"]
+            color: [errorBackgound, "!important"]
           }
         },
         "&$filled": {
           color: [textSecondary, "!important"],
           "&$error": {
-            color: [textError, "!important"]
+            color: [errorBackgound, "!important"]
           }
         }
       }
@@ -341,9 +349,10 @@ module.exports = {
     },
     MuiSwitch: {
       track: {
-        "&:not($checked)": {
-          opacity: 0.25
-        }
+        backgroundColor: textDisabled
+      },
+      thumb: {
+        backgroundColor: textSecondary
       }
     }
   }

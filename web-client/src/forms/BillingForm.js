@@ -121,8 +121,9 @@ function BillingForm(props) {
       schema={billingSchema}
       initialValues={initialValues}
       onSubmit={doSubmit}
-      render={render}
-    />
+    >
+      {render}
+    </Form>
   );
 }
 
@@ -132,9 +133,9 @@ BillingForm.propTypes = {
 };
 BillingForm.formName = "billingForm";
 
-const MyBillingForm = forwardRef((props, ref) => {
-  return <BillingForm {...props} forwardedRef={ref} />;
-});
-MyBillingForm.displayName = "MyBillingForm";
+const BillingFormContainer = forwardRef((props, ref) => (
+  <BillingForm {...props} forwardedRef={ref} />
+));
+BillingFormContainer.displayName = "BillingFormContainer";
 
-export default MyBillingForm;
+export default BillingFormContainer;

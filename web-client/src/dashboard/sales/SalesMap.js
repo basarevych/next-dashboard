@@ -343,7 +343,8 @@ function SalesMap(props) {
           lineWidthMinPixels: 1,
           lineWidthMaxPixels: 1,
           autoHighlight: true,
-          highlightColor: [160, 160, 180, 100],
+          highlightColor:
+            theme === "dark" ? [160, 160, 180, 100] : [0, 0, 0, 25],
           getFillColor: [160, 160, 180, 25],
           getLineColor: theme === "dark" ? [255, 255, 255, 100] : [0, 0, 0, 25],
           onHover: handleHover,

@@ -36,22 +36,28 @@ class Early {
     if (process.env.NODE_ENV !== "test") this.app.express.use(logger("short"));
 
     // Service Worker (Google Workbox)
-    this.app.express.use(
+    this.app.express.get(
       "/sw.js",
       Express.static(path.join(__dirname, "..", "..", ".next", "sw.js"))
     );
 
     // Shortcuts to static
-    this.app.express.use(
-      "/_next",
-      Express.static(path.join(__dirname, "..", "..", ".next"), {
-        maxAge: this.maxAge,
-        fallthrough: false
-      })
-    );
-    this.app.express.use(
+    if (process.env.NODE_ENV === "production") {
+      this.app.express.get(
+        "/_next/*",
+        Express.static(path.join(__dirname, "..", "..", ".next"), {
+          maxAge: this.maxAge,
+          fallthrough: false
+        })
+      );
+    } else {
+      this.app.express.get("/_next/*", this.app.next.getRequestHandler());
+    }
+    this.app.express.get(
+      "/*",
       Express.static(path.join(__dirname, "..", "..", "public"), {
-        maxAge: this.maxAge
+        maxAge: this.maxAge,
+        fallthrough: true
       })
     );
 

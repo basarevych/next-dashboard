@@ -149,7 +149,7 @@ function StateSales(props) {
               <feGaussianBlur in="SourceAlpha" stdDeviation="2" />
               <feOffset dx="2" dy="2" result="offsetblur" />
               <feComponentTransfer>
-                <feFuncA type="linear" slope="0.2"></feFuncA>
+                <feFuncA type="linear" slope="0.7"></feFuncA>
               </feComponentTransfer>
               <feMerge>
                 <feMergeNode />
@@ -180,8 +180,7 @@ function StateSales(props) {
                     filter: "url(#stateChartShadow)"
                   },
                   labels: {
-                    fill: "#ffffff",
-                    textShadow: "0 0 3px #000000"
+                    fill: theme.name === "dark" ? "#ffffff" : "#000000"
                   }
                 }
               },

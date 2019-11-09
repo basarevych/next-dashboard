@@ -97,12 +97,9 @@ function ShippingForm(props) {
   });
 
   return (
-    <Form
-      ref={props.forwardedRef}
-      schema={shippingSchema}
-      onSubmit={doSubmit}
-      render={render}
-    />
+    <Form ref={props.forwardedRef} schema={shippingSchema} onSubmit={doSubmit}>
+      {render}
+    </Form>
   );
 }
 
@@ -111,9 +108,9 @@ ShippingForm.propTypes = {
 };
 ShippingForm.formName = "shippingForm";
 
-const MyShippingForm = forwardRef((props, ref) => {
-  return <ShippingForm {...props} forwardedRef={ref} />;
-});
-MyShippingForm.displayName = "MyShippingForm";
+const ShippingFormContainer = forwardRef((props, ref) => (
+  <ShippingForm {...props} forwardedRef={ref} />
+));
+ShippingFormContainer.displayName = "ShippingFormContainer";
 
-export default MyShippingForm;
+export default ShippingFormContainer;

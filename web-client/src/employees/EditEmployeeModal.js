@@ -10,7 +10,6 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
-import red from "@material-ui/core/colors/red";
 import { QueryRenderer } from "../app/providers/RelayProvider";
 import { Form, Field, Status } from "../app/forms";
 import constants from "../../common/constants";
@@ -21,11 +20,11 @@ import ErrorMessage from "../app/errors/ErrorMessage";
 
 const useStyles = makeStyles(theme => ({
   error: {
-    color: red[500]
+    color: theme.palette.error.main
   },
   radioError: {
     marginLeft: 16,
-    borderTop: `2px solid ${theme.palette.text.secondary}`
+    borderTop: `2px solid ${theme.palette.error.main}`
   },
   actions: {
     paddingLeft: "1rem",
@@ -214,12 +213,9 @@ function EditEmployeeModal() {
   );
 
   const getForm = initialValues => (
-    <Form
-      schema={schema}
-      onSubmit={submit}
-      initialValues={initialValues}
-      render={renderForm}
-    />
+    <Form schema={schema} onSubmit={submit} initialValues={initialValues}>
+      {renderForm}
+    </Form>
   );
 
   const renderQuery = useCallback(({ error, props: renderProps }) => {
