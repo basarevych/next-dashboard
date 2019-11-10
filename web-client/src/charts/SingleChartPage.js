@@ -6,13 +6,13 @@ import { makeStyles } from "@material-ui/styles";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import OpenIcon from "@material-ui/icons/ZoomOut";
-import ErrorMessage from "../app/errors/ErrorMessage";
 import Chart1 from "./charts/Chart1";
 import Chart2 from "./charts/Chart2";
 import Chart3 from "./charts/Chart3";
 import Chart4 from "./charts/Chart4";
 import Chart5 from "./charts/Chart5";
 import Chart6 from "./charts/Chart6";
+import { appOperations } from "../app/state";
 
 const useStyles = makeStyles(theme => ({
   layout: {
@@ -42,7 +42,7 @@ function SingleChartPage(props) {
 
   const goBack = useCallback(() => router.push("/charts", "/charts"), []);
 
-  if (!props.chart) return <ErrorMessage statusCode={404} />;
+  if (!props.chart) return null;
 
   return (
     <div className={classes.layout}>
@@ -73,9 +73,12 @@ SingleChartPage.propTypes = {
   chart: PropTypes.string
 };
 
-SingleChartPage.getInitialProps = async ({ query }) => {
+SingleChartPage.getInitialProps = async ({ query, store }) => {
   let chart = parseInt(query.chart);
-  if (!Number.isFinite(chart) || chart < 1 || chart > 6) chart = null;
+  if (!Number.isFinite(chart) || chart < 1 || chart > 6) {
+    chart = null;
+    await store.dispatch(appOperations.setStatusCode({ code: 404 }));
+  }
   return {
     chart
   };

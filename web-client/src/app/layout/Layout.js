@@ -1,5 +1,12 @@
-import React, { useMemo, useState, useEffect, useCallback } from "react";
+import React, {
+  useMemo,
+  useState,
+  useLayoutEffect,
+  useEffect,
+  useCallback
+} from "react";
 import PropTypes from "prop-types";
+import classNames from "classnames";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import { PageTransition } from "next-page-transitions";
@@ -18,12 +25,14 @@ import ErrorMessage from "../errors/ErrorMessage";
 import AppAuthModal from "../modals/AppAuthModal";
 import constants from "../../../common/constants";
 import { appSelectors } from "../state";
-import logo from "../../../public/img/react-logo.svg";
+import loader from "../../../public/img/loader.svg";
 
 import "../../../styles";
 import styledScroll from "../../../styles/styledScroll";
 
 const TIMEOUT = 500;
+
+const useIsomorphicLayoutEffect = process.browser ? useLayoutEffect : useEffect;
 
 const useStyles = makeStyles(theme => ({
   "@global": {
@@ -42,85 +51,25 @@ const useStyles = makeStyles(theme => ({
       fontFamily: '"Roboto Mono", monospace'
     },
     ".page-transition-enter": {
-      flex: 1,
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "stretch",
-      justifyContent: "stretch",
       opacity: 0
     },
     ".page-transition-enter-active": {
-      flex: 1,
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "stretch",
-      justifyContent: "stretch",
       opacity: 1,
       transition: `opacity ${TIMEOUT}ms`
     },
     ".page-transition-enter-done": {
-      flex: 1,
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "stretch",
-      justifyContent: "stretch"
+      opacity: 1
     },
     ".page-transition-exit": {
-      flex: 1,
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "stretch",
-      justifyContent: "stretch",
       opacity: 1
     },
     ".page-transition-exit-active": {
-      flex: 1,
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "stretch",
-      justifyContent: "stretch",
       opacity: 0,
       transition: `opacity ${TIMEOUT}ms`
     },
     ".page-transition-exit-done": {
-      flex: 1,
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "stretch",
-      justifyContent: "stretch"
-    },
-    "@keyframes page-loader-rotation": {
-      from: {
-        transform: "rotate(0deg)"
-      },
-      to: {
-        transform: "rotate(359deg)"
-      }
+      opacity: 0
     }
-  },
-  loaderWrapper: {
-    position: "fixed",
-    top: "50vh",
-    left: "50vw",
-    width: "auto",
-    height: "auto",
-    transform: "translate3d(-50%, -50%, 0)",
-    display: "flex",
-    alignItems: "center",
-    padding: "10px 50px 10px 30px",
-    background: theme.palette.primary.main,
-    color: theme.palette.primary.contrastText
-  },
-  loaderIcon: {
-    animation: "page-loader-rotation 5s infinite linear",
-    "& svg": {
-      height: 40,
-      fill: "currentColor",
-      verticalAlign: "middle"
-    }
-  },
-  loaderText: {
-    fontSize: 32
   },
   app: {
     position: "relative"
@@ -172,6 +121,34 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.down("xs")]: {
       marginLeft: 0
     }
+  },
+  loaderWrapper: {
+    position: "fixed",
+    top: "50vh",
+    left: "50vw",
+    width: "auto",
+    height: "auto",
+    transform: "translate3d(-50%, -50%, 0)",
+    display: "flex",
+    alignItems: "center"
+  },
+  loaderIcon: {
+    "& svg": {
+      width: 60,
+      height: 60,
+      fill: "currentColor",
+      verticalAlign: "middle"
+    }
+  },
+  contentWrapper: {
+    flex: 1,
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "stretch",
+    justifyContent: "stretch"
+  },
+  contentTransitioning: {
+    opacity: 0
   }
 }));
 
@@ -183,6 +160,7 @@ function Layout(props) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isUpdateNeeded, setIsUpdateNeeded] = useState(!!global.__updateReady);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
   const statusCode = useSelector(appSelectors.getStatusCode);
   const isStopped = useSelector(appSelectors.getIsStopped);
@@ -228,24 +206,38 @@ function Layout(props) {
     };
   }, []);
 
-  const loader = useMemo(
-    () => (
-      <Paper className={classes.loaderWrapper} elevation={5}>
-        <div className={classes.loaderIcon}>
-          <span dangerouslySetInnerHTML={{ __html: logo }} />
-        </div>
-        <div className={classes.loaderText}>
-          <FormattedMessage id="LAYOUT_LOADING_MESSAGE" />
-        </div>
-      </Paper>
-    ),
-    [classes, logo]
-  );
+  useIsomorphicLayoutEffect(() => {
+    const handleRouteChangeStart = () => {
+      setIsTransitioning(true);
+    };
+    const handleRouteChangeComplete = () => {
+      setIsTransitioning(false);
+    };
+    router.events.on("routeChangeStart", handleRouteChangeStart);
+    router.events.on("routeChangeComplete", handleRouteChangeComplete);
+    return () => {
+      router.events.off("routeChangeStart", handleRouteChangeStart);
+      router.events.off("routeChangeComplete", handleRouteChangeComplete);
+    };
+  }, [router, setIsTransitioning]);
 
   if (isStopped) return null;
 
-  const page = constants.pages[router.asPath] || {};
+  const page = constants.pages[props.path] || {};
   const title = page.title;
+
+  const content =
+    statusCode === 200 ? (
+      <PageTransition
+        timeout={TIMEOUT}
+        classNames="page-transition"
+        loadingTimeout={0}
+      >
+        {props.children}
+      </PageTransition>
+    ) : (
+      <ErrorMessage statusCode={statusCode} />
+    );
 
   return (
     <div className="app">
@@ -271,38 +263,54 @@ function Layout(props) {
         />
       )}
 
-      <Hidden implementation="css" smUp>
-        <SwipeableDrawer
-          open={isSidebarOpen}
-          classes={{ paper: classes.sidebar }}
-          onOpen={handleSidebarOpen}
-          onClose={handleSidebarClose}
-        >
-          <Sidebar onMenuClick={handleSidebarClose} />
-        </SwipeableDrawer>
-      </Hidden>
+      {props.path === "/pwa" && props.children}
 
-      <Hidden implementation="css" xsDown>
-        <Drawer variant="permanent" open classes={{ paper: classes.sidebar }}>
-          <Sidebar onMenuClick={handleSidebarClose} />
-        </Drawer>
-      </Hidden>
+      {props.path !== "/pwa" && (
+        <>
+          <Hidden implementation="css" smUp>
+            <SwipeableDrawer
+              open={isSidebarOpen}
+              classes={{ paper: classes.sidebar }}
+              onOpen={handleSidebarOpen}
+              onClose={handleSidebarClose}
+            >
+              <Sidebar onMenuClick={handleSidebarClose} />
+            </SwipeableDrawer>
+          </Hidden>
 
-      <main className={classes.main}>
-        <Header onSidebarToggle={handleSidebarToggle} />
-        {statusCode === 200 && (
-          <PageTransition
-            timeout={TIMEOUT}
-            classNames="page-transition"
-            loadingComponent={loader}
-            loadingDelay={300}
-            loadingTimeout={0}
-          >
-            {props.children}
-          </PageTransition>
-        )}
-        {statusCode !== 200 && <ErrorMessage statusCode={statusCode} />}
-      </main>
+          <Hidden implementation="css" xsDown>
+            <Drawer
+              variant="permanent"
+              open
+              classes={{ paper: classes.sidebar }}
+            >
+              <Sidebar onMenuClick={handleSidebarClose} />
+            </Drawer>
+          </Hidden>
+
+          <main className={classes.main}>
+            <Header onSidebarToggle={handleSidebarToggle} />
+
+            {isTransitioning && (
+              <div className={classes.loaderWrapper}>
+                <div
+                  className={classes.loaderIcon}
+                  dangerouslySetInnerHTML={{ __html: loader }}
+                />
+              </div>
+            )}
+
+            <div
+              className={classNames([
+                classes.contentWrapper,
+                isTransitioning && classes.contentTransitioning
+              ])}
+            >
+              {content}
+            </div>
+          </main>
+        </>
+      )}
 
       {isAuthModalOpen && <AppAuthModal />}
     </div>
@@ -310,6 +318,7 @@ function Layout(props) {
 }
 
 Layout.propTypes = {
+  path: PropTypes.string,
   children: PropTypes.oneOfType([
     PropTypes.node,
     PropTypes.arrayOf(PropTypes.node)

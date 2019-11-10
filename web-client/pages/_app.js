@@ -140,7 +140,6 @@ class MyApp extends App {
 
   render() {
     const { Component, pageProps } = this.props;
-    if (process.browser) pageProps.key = this.props.router.route;
 
     return (
       <ReduxProvider store={this.reduxStore}>
@@ -150,14 +149,9 @@ class MyApp extends App {
               <DateProvider>
                 <ToastProvider>
                   <UserProvider>
-                    {this.props.router.route === "/pwa" && (
+                    <Layout path={this.props.router.query.path}>
                       <Component {...pageProps} />
-                    )}
-                    {this.props.router.route !== "/pwa" && (
-                      <Layout>
-                        <Component {...pageProps} />
-                      </Layout>
-                    )}
+                    </Layout>
                   </UserProvider>
                 </ToastProvider>
               </DateProvider>

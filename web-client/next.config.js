@@ -201,11 +201,15 @@ module.exports = withPlugins(plugins, {
         acc.then(async map => {
           const route = constants.pages[cur];
           if (typeof route.exportPathMap === "function") {
-            Object.assign(map, await route.exportPathMap());
+            const newMap = await route.exportPathMap();
+            const query = await app.getQuery(cur);
+            for (let item of Object.keys(newMap))
+              newMap[item].query = Object.assign({}, query, newMap[item].query);
+            Object.assign(map, newMap);
           } else {
             map[cur] = {
               page: route.page,
-              query: await app.getQuery({ path: cur })
+              query: await app.getQuery(cur)
             };
           }
           return map;

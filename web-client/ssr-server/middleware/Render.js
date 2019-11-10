@@ -10,16 +10,13 @@ class Render {
 
   async init() {
     for (let path of Object.keys(constants.pages)) {
-      this.app.express.get(
-        path,
-        this.renderPage.bind(this, constants.pages[path])
-      );
+      this.app.express.get(path, this.renderPage.bind(this, path));
     }
   }
 
-  async renderPage(route, req, res, next) {
-    const { page } = route;
-    const query = await this.app.getQuery(req);
+  async renderPage(path, req, res, next) {
+    const { page } = constants.pages[path];
+    const query = await this.app.getQuery(path, req);
     const userId = req.session.userId || null;
 
     try {
