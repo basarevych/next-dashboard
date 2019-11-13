@@ -199,17 +199,19 @@ module.exports = withPlugins(plugins, {
     return Object.keys(constants.pages).reduce(
       (acc, cur) =>
         acc.then(async map => {
-          const route = constants.pages[cur];
-          if (typeof route.exportPathMap === "function") {
-            const newMap = await route.exportPathMap();
-            const query = await app.getQuery(cur);
-            for (let item of Object.keys(newMap))
+          const { page, exportPathMap } = constants.pages[cur];
+          if (typeof exportPathMap === "function") {
+            const newMap = await exportPathMap();
+            for (let item of Object.keys(newMap)) {
+              const query = await app.getQuery({ path: item });
               newMap[item].query = Object.assign({}, query, newMap[item].query);
+            }
             Object.assign(map, newMap);
           } else {
+            const query = await app.getQuery({ path: cur });
             map[cur] = {
-              page: route.page,
-              query: await app.getQuery(cur)
+              page,
+              query
             };
           }
           return map;

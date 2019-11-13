@@ -10,22 +10,22 @@ class Render {
   }
 
   async init() {
+    this.defaultUser = getCurrentUser(this.app.config.appSsrApiServer, null);
+    if (!this.defaultUser) throw new Error("Could not get default user");
+
     for (let path of Object.keys(constants.pages)) {
       this.app.express.get(path, this.renderPage.bind(this, path));
     }
   }
 
-  async getUser(req) {
-    if (req.session.user) return req.session.user;
-    const user = getCurrentUser(this.app.config.appSsrApiServer, null);
-    if (!user) throw new Error("Could not get default user");
-    return user;
-  }
-
   async renderPage(path, req, res, next) {
+    if (!req.session.user) req.session.user = this.defaultUser;
+
+    const getUserId = () => ((req.session || {}).user || {}).userId || null;
+
     const { page } = constants.pages[path];
-    const query = await this.app.getQuery(path, req);
-    const userId = (await this.getUser(req)).userId;
+    const query = await this.app.getQuery(req);
+    const userId = getUserId();
 
     try {
       let html = null;
@@ -37,7 +37,7 @@ class Render {
           process.env.NODE_ENV === "production" &&
           html &&
           res.statusCode === 200 &&
-          (await this.getUser(req)).userId === userId
+          getUserId() === userId
         ) {
           await this.app.cache.setPage({ page, query, userId, html });
         }

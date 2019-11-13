@@ -7,9 +7,7 @@ const envFactory = (di, initialState) => {
     fetcher.subscribe.bind(fetcher)
   );
   const store = new Store(new RecordSource(initialState || undefined));
-  const env = new Environment({ network, store });
-  di.registerInstance(env, "env");
-  return env;
+  return new Environment({ network, store });
 };
 
 const __NEXT_RELAY_ENVIRONMENT__ = "__NEXT_RELAY_ENVIRONMENT__";
@@ -30,6 +28,8 @@ export default function getRelayEnviroment(di, initialState) {
       );
     }
   }
+
+  di.registerInstance(relayEnvironment, "env");
 
   return relayEnvironment;
 }

@@ -3,11 +3,13 @@ import "../src/app/lib/init";
 import React from "react";
 import App from "next/app";
 import { Provider as ReduxProvider } from "react-redux";
+import constants from "../common/constants";
 import serialize from "../common/src/serialize";
 import deserialize from "../common/src/deserialize";
 import getDiContainer from "../src/app/lib/getDiContainer";
 import getReduxStore from "../src/app/lib/getReduxStore";
 import getRelayEnvironment from "../src/app/lib/getRelayEnvironment";
+import getCurrentUser from "../src/app/lib/getCurrentUser";
 import { appOperations, appSelectors } from "../src/app/state";
 import RelayProvider, { fetchQuery } from "../src/app/providers/RelayProvider";
 import StylesProvider from "../src/app/providers/StylesProvider";
@@ -18,7 +20,7 @@ import Layout from "../src/app/layout/Layout";
 import startServiceWorker from "../src/app/lib/startServiceWorker";
 
 class MyApp extends App {
-  static async getInitialProps({ Component, ctx }) {
+  static async getInitialProps({ Component, router, ctx }) {
     const { req, res, err, query } = ctx;
 
     // Initial status code
@@ -38,43 +40,73 @@ class MyApp extends App {
 
     // Redux Store
     const store = getReduxStore(di);
+
+    // Relay Environment
+    const environment = getRelayEnvironment(di);
+
+    // Let Fetcher know we are doing SSR right now
+    if (isSsr && !isExported) di.get("fetcher").setSsrMode(req, res);
+
+    // Initialize the store
     if (!appSelectors.getCreated(store.getState())) {
+      let user = ((req || {}).session || {}).user || null;
+      if (!user) {
+        user = await getCurrentUser(
+          isSsr && !isExported
+            ? process.env.SSR_API_SERVER
+            : process.env.API_SERVER,
+          await di.get("fetcher").getAccessToken()
+        );
+      }
       await store.dispatch(
         appOperations.create({
           statusCode,
           locale: query && query.locale,
           theme: query && query.theme,
-          user: ((req || {}).session || {}).user || null
+          user
         })
       );
     } else {
       await store.dispatch(appOperations.setStatusCode({ code: statusCode }));
     }
 
-    // Relay Environment
-    const environment = getRelayEnvironment(di);
+    // Is current user allowed here?
+    if (appSelectors.getStatusCode(store.getState()) === 200) {
+      const page = Object.values(constants.pages).find(
+        item => item.page === router.route
+      );
+      if (page && typeof page.isAllowed === "function") {
+        const user = appSelectors.getUser(store.getState());
+        const isAllowed = page.isAllowed(user);
+        if (!isAllowed) {
+          await store.dispatch(
+            appOperations.setStatusCode({
+              code: user.isAuthenticated ? 403 : 401
+            })
+          );
+        }
+      }
+    }
 
     /* eslint-disable require-atomic-updates */
+    ctx.router = router;
     ctx.di = di;
     ctx.store = store;
+    ctx.environment = environment;
     ctx.fetchQuery = fetchQuery(environment);
+    ctx.statusCode = appSelectors.getStatusCode(store.getState());
     ctx.isSsr = isSsr;
     ctx.isExported = isExported;
     /* eslint-enable require-atomic-updates */
 
-    if (isSsr && !isExported) {
-      // Let Fetcher know we are doing SSR right now
-      di.get("fetcher").setSsrMode(req, res);
-    }
-
+    // Run .getInitialProps() of the page
     let pageProps = {};
     if (Component.getInitialProps) {
-      // Run .getInitialProps() of the page
       try {
         pageProps = (await Component.getInitialProps(ctx)) || {};
       } catch (error) {
         console.error(error);
-        if (statusCode === 200)
+        if (appSelectors.getStatusCode(store.getState()) === 200)
           await store.dispatch(appOperations.setStatusCode({ code: 500 }));
       }
     }

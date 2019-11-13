@@ -1,6 +1,5 @@
 import React, { useState, useCallback } from "react";
 import PropTypes from "prop-types";
-import Router from "next/router";
 import { useDispatch } from "react-redux";
 import { FormattedMessage } from "react-intl";
 import { makeStyles } from "@material-ui/styles";
@@ -38,8 +37,7 @@ function VerifyEmailPage(props) {
     const success = await dispatch(
       appOperations.finishEmailVerification({ token: props.token })
     );
-    if (success) return Router.push("/auth/profile");
-    setMessage("VERIFY_FAILED_MESSAGE");
+    if (!success) setMessage("VERIFY_FAILED_MESSAGE");
   }, []);
 
   return (

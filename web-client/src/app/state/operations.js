@@ -42,7 +42,8 @@ export const create = ({
 // called in App.componentDidMount() client-side
 export const start = () => {
   return async (dispatch, getState, di) => {
-    di.singletons(); // instantiates singletons
+    // Instantiate singletons
+    di.singletons();
 
     // first thing to do on the client is to refresh the tokens
     di.get("fetcher")
@@ -82,6 +83,7 @@ export const signIn = ({ email, password }) => async (
         ((data.data || {}).signIn || {}).accessToken || null,
         ((data.data || {}).signIn || {}).refreshToken || null
       );
+    Router.push(Router.route, Router.asPath);
     return true;
   }
   return getFormErrors(data, "APP_AUTH_FAILED");
@@ -101,6 +103,7 @@ export const signUp = ({ email, password }) => async (
         ((data.data || {}).signUp || {}).accessToken || null,
         ((data.data || {}).signUp || {}).refreshToken || null
       );
+    Router.push(Router.route, Router.asPath);
     return true;
   }
   return getFormErrors(data, "APP_AUTH_EMAIL_TAKEN");
@@ -109,9 +112,8 @@ export const signUp = ({ email, password }) => async (
 export const signOut = () => async (dispatch, getState, di) => {
   let data = await SignOutMutation(di);
   if (((data.data || {}).signOut || {}).success) {
-    await dispatch(stop());
     await di.get("fetcher").setTokens(null, null);
-    window.location.href = "/";
+    Router.push(Router.route, Router.asPath);
     return true;
   }
   return false;
@@ -140,6 +142,7 @@ export const finishEmailVerification = ({ token }) => async (
         ((data.data || {}).verifyEmail || {}).accessToken || null,
         ((data.data || {}).verifyEmail || {}).refreshToken || null
       );
+    Router.push(constants.pages["/auth/profile"].page, "/auth/profile");
     return true;
   }
   return false;
@@ -230,8 +233,8 @@ export const unlinkProvider = ({ provider }) => async (
 export const deleteProfile = () => async (dispatch, getState, di) => {
   let data = await DeleteProfileMutation(di);
   if (((data.data || {}).deleteProfile || {}).success) {
-    await dispatch(stop());
     await di.get("fetcher").setTokens(null, null);
+    await dispatch(stop());
     window.location.href = "/";
     return true;
   }

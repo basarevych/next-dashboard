@@ -132,9 +132,8 @@ class App {
   /**
    * This is what getInitialProps()'s "query" param will be
    */
-  async getQuery(path, { query, params, locale, theme } = {}) {
+  async getQuery({ query, params, locale, theme } = {}) {
     return Object.assign({}, query || {}, params || {}, {
-      path,
       locale: locale || l10n.defaultLocale || null,
       theme: theme || styles.defaultTheme || null
     });

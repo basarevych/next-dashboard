@@ -50,12 +50,12 @@ function SingleChartPage(props) {
         <FormattedMessage id="TITLE_CHARTS" />/{props.chart}
       </Typography>
       <div className={classes.container}>
-        {props.chart === "1" && <Chart1 />}
-        {props.chart === "2" && <Chart2 />}
-        {props.chart === "3" && <Chart3 />}
-        {props.chart === "4" && <Chart4 />}
-        {props.chart === "5" && <Chart5 />}
-        {props.chart === "6" && <Chart6 />}
+        {props.chart === 1 && <Chart1 />}
+        {props.chart === 2 && <Chart2 />}
+        {props.chart === 3 && <Chart3 />}
+        {props.chart === 4 && <Chart4 />}
+        {props.chart === 5 && <Chart5 />}
+        {props.chart === 6 && <Chart6 />}
         <Button
           variant="contained"
           color="primary"
@@ -70,7 +70,7 @@ function SingleChartPage(props) {
 }
 
 SingleChartPage.propTypes = {
-  chart: PropTypes.string
+  chart: PropTypes.number
 };
 
 SingleChartPage.getInitialProps = async ({ query, store }) => {

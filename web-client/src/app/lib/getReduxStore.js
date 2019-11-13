@@ -18,11 +18,7 @@ const storeFactory = (di, initialState) => {
   let middleware = applyMiddleware(thunk.withExtraArgument(di));
   if (process.env.NODE_ENV === "development")
     middleware = composeWithDevTools(middleware);
-  const store = createStore(rootReducer, initialState || undefined, middleware);
-  di.registerInstance(store, "store");
-  di.registerInstance(store.getState.bind(store), "getState");
-  di.registerInstance(store.dispatch.bind(store), "dispatch");
-  return store;
+  return createStore(rootReducer, initialState || undefined, middleware);
 };
 
 const __NEXT_REDUX_STORE__ = "__NEXT_REDUX_STORE__";
@@ -37,6 +33,10 @@ export default function getReduxStore(di, initialState) {
     if (window[__NEXT_REDUX_STORE__]) store = window[__NEXT_REDUX_STORE__];
     else store = window[__NEXT_REDUX_STORE__] = storeFactory(di, initialState);
   }
+
+  di.registerInstance(store, "store");
+  di.registerInstance(store.getState.bind(store), "getState");
+  di.registerInstance(store.dispatch.bind(store), "dispatch");
 
   return store;
 }
