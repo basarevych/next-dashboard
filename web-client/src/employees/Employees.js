@@ -1,6 +1,5 @@
 import React, {
   useState,
-  useContext,
   useCallback,
   useLayoutEffect,
   useEffect
@@ -8,7 +7,7 @@ import React, {
 import PropTypes from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
 import { FormattedMessage } from "react-intl";
-import { graphql, requestSubscription } from "react-relay";
+import { graphql } from "react-relay";
 import { makeStyles } from "@material-ui/styles";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
@@ -20,10 +19,9 @@ import { lighten } from "@material-ui/core/styles/colorManipulator";
 import EmployeesTable from "./EmployeesTable";
 import EditEmployeeModal from "./EditEmployeeModal";
 import ConfirmModal from "../app/modals/ConfirmModal";
-import { RelayContext } from "../app/providers/RelayProvider";
-import constants from "../../common/constants";
 import { appSelectors } from "../app/state";
 import { employeesOperations, employeesSelectors } from "./state";
+import useSubscription from "../app/lib/useSubscription";
 
 const useIsomorphicLayoutEffect = process.browser ? useLayoutEffect : useEffect;
 
@@ -85,9 +83,7 @@ const subscription = graphql`
 function Employees(props) {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { environment } = useContext(RelayContext);
 
-  const [subTrigger, setSubTrigger] = useState(0);
   const isSubscribed = useSelector(appSelectors.getIsSubscribed);
 
   const [employees, setEmployees] = useState([]);
@@ -243,45 +239,12 @@ function Employees(props) {
     ]
   );
 
-  useEffect(
+  useSubscription(
     // subscribe and refresh the page on any subscription event
-    // changing subTrigger state variable will force resubscribing
-    () => {
-      let isDetroyed = false;
-
-      const request = requestSubscription(environment, {
-        subscription,
-        onNext: refresh,
-        onCompleted: () =>
-          setTimeout(() => {
-            if (!isDetroyed) setSubTrigger(n => n + 1);
-          }, 1000),
-        onError: () =>
-          setTimeout(() => {
-            if (!isDetroyed) setSubTrigger(n => n + 1);
-          }, 1000)
-      });
-
-      const handleIdentityChange = () => {
-        if (!isDetroyed) setSubTrigger(n => n + 1);
-      };
-
-      // reconnect after logging in
-      window.addEventListener(
-        constants.events.IDENTITY_CHANGED,
-        handleIdentityChange
-      );
-
-      return () => {
-        isDetroyed = true;
-        request.dispose();
-        window.removeEventListener(
-          constants.events.IDENTITY_CHANGED,
-          handleIdentityChange
-        );
-      };
-    },
-    [subTrigger, refresh]
+    {
+      subscription,
+      onNext: refresh
+    }
   );
 
   useEffect(

@@ -1,19 +1,10 @@
-import React, {
-  useMemo,
-  useState,
-  useLayoutEffect,
-  useEffect,
-  useCallback
-} from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
-import classNames from "classnames";
-import { useRouter } from "next/router";
 import Head from "next/head";
 import { PageTransition } from "next-page-transitions";
 import { useSelector } from "react-redux";
 import { useIntl, FormattedMessage } from "react-intl";
 import { makeStyles } from "@material-ui/styles";
-import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
 import Hidden from "@material-ui/core/Hidden";
 import Snackbar from "@material-ui/core/Snackbar";
@@ -21,18 +12,14 @@ import Drawer from "@material-ui/core/Drawer";
 import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
+import Content, { timeout } from "./Content";
 import ErrorMessage from "../errors/ErrorMessage";
 import AppAuthModal from "../modals/AppAuthModal";
 import constants from "../../../common/constants";
 import { appSelectors } from "../state";
-import loader from "../../../public/img/loader.svg";
 
 import "../../../styles";
 import styledScroll from "../../../styles/styledScroll";
-
-const TIMEOUT = 500;
-
-const useIsomorphicLayoutEffect = process.browser ? useLayoutEffect : useEffect;
 
 const useStyles = makeStyles(theme => ({
   "@global": {
@@ -49,26 +36,6 @@ const useStyles = makeStyles(theme => ({
     ),
     pre: {
       fontFamily: '"Roboto Mono", monospace'
-    },
-    ".page-transition-enter": {
-      opacity: 0
-    },
-    ".page-transition-enter-active": {
-      opacity: 1,
-      transition: `opacity ${TIMEOUT}ms`
-    },
-    ".page-transition-enter-done": {
-      opacity: 1
-    },
-    ".page-transition-exit": {
-      opacity: 1
-    },
-    ".page-transition-exit-active": {
-      opacity: 0,
-      transition: `opacity ${TIMEOUT}ms`
-    },
-    ".page-transition-exit-done": {
-      opacity: 0
     }
   },
   app: {
@@ -121,46 +88,16 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.down("xs")]: {
       marginLeft: 0
     }
-  },
-  loaderWrapper: {
-    position: "fixed",
-    top: "50vh",
-    left: "50vw",
-    width: "auto",
-    height: "auto",
-    transform: "translate3d(-50%, -50%, 0)",
-    display: "flex",
-    alignItems: "center"
-  },
-  loaderIcon: {
-    "& svg": {
-      width: 60,
-      height: 60,
-      fill: "currentColor",
-      verticalAlign: "middle"
-    }
-  },
-  contentWrapper: {
-    flex: 1,
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "stretch",
-    justifyContent: "stretch"
-  },
-  contentTransitioning: {
-    opacity: 0
   }
 }));
 
 function Layout(props) {
   const classes = useStyles(props);
   const intl = useIntl();
-  const router = useRouter();
 
   const [isLoaded, setIsLoaded] = useState(false);
   const [isUpdateNeeded, setIsUpdateNeeded] = useState(!!global.__updateReady);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [isTransitioning, setIsTransitioning] = useState(false);
 
   const statusCode = useSelector(appSelectors.getStatusCode);
   const isStopped = useSelector(appSelectors.getIsStopped);
@@ -206,38 +143,12 @@ function Layout(props) {
     };
   }, []);
 
-  useIsomorphicLayoutEffect(() => {
-    const handleRouteChangeStart = () => {
-      setIsTransitioning(true);
-    };
-    const handleRouteChangeComplete = () => {
-      setIsTransitioning(false);
-    };
-    router.events.on("routeChangeStart", handleRouteChangeStart);
-    router.events.on("routeChangeComplete", handleRouteChangeComplete);
-    return () => {
-      router.events.off("routeChangeStart", handleRouteChangeStart);
-      router.events.off("routeChangeComplete", handleRouteChangeComplete);
-    };
-  }, [router, setIsTransitioning]);
-
   if (isStopped) return null;
 
-  const page = constants.pages[props.path] || {};
-  const title = page.title;
-
-  const content =
-    statusCode === 200 ? (
-      <PageTransition
-        timeout={TIMEOUT}
-        classNames="page-transition"
-        loadingTimeout={0}
-      >
-        {props.children}
-      </PageTransition>
-    ) : (
-      <ErrorMessage statusCode={statusCode} />
-    );
+  const page = Object.values(constants.pages).find(
+    item => item.page === props.route
+  );
+  const title = (page || {}).title;
 
   return (
     <div className="app">
@@ -263,9 +174,9 @@ function Layout(props) {
         />
       )}
 
-      {props.path === "/pwa" && props.children}
+      {props.route === "/pwa" && props.children}
 
-      {props.path !== "/pwa" && (
+      {props.route !== "/pwa" && (
         <>
           <Hidden implementation="css" smUp>
             <SwipeableDrawer
@@ -291,23 +202,22 @@ function Layout(props) {
           <main className={classes.main}>
             <Header onSidebarToggle={handleSidebarToggle} />
 
-            {isTransitioning && (
-              <div className={classes.loaderWrapper}>
-                <div
-                  className={classes.loaderIcon}
-                  dangerouslySetInnerHTML={{ __html: loader }}
-                />
-              </div>
+            {statusCode === 200 && (
+              <PageTransition
+                tag={Content}
+                timeout={timeout}
+                classNames="page-transition"
+                loadingTimeout={0}
+              >
+                {props.children}
+              </PageTransition>
             )}
 
-            <div
-              className={classNames([
-                classes.contentWrapper,
-                isTransitioning && classes.contentTransitioning
-              ])}
-            >
-              {content}
-            </div>
+            {statusCode !== 200 && (
+              <Content>
+                <ErrorMessage statusCode={statusCode} />
+              </Content>
+            )}
           </main>
         </>
       )}
@@ -318,7 +228,7 @@ function Layout(props) {
 }
 
 Layout.propTypes = {
-  path: PropTypes.string,
+  route: PropTypes.string,
   children: PropTypes.oneOfType([
     PropTypes.node,
     PropTypes.arrayOf(PropTypes.node)

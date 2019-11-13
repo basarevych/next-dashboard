@@ -10,7 +10,7 @@ const logger = require("morgan");
 class Early {
   constructor(app) {
     this.app = app;
-    this.maxAge = "365d";
+    this.maxAge = 365 * 24 * 60 * 60;
   }
 
   async init() {
@@ -36,27 +36,32 @@ class Early {
     if (process.env.NODE_ENV !== "test") this.app.express.use(logger("short"));
 
     // Service Worker (Google Workbox)
-    this.app.express.get(
-      "/sw.js",
-      Express.static(path.join(__dirname, "..", "..", ".next", "sw.js"))
+    this.app.express.get("/sw.js", (req, res, next) =>
+      res.sendFile(path.join(__dirname, "..", "..", ".next", "sw.js"), {
+        headers: { "Content-Type": "text/javascript" }
+      })
     );
 
     // Shortcuts to static
-    if (process.env.NODE_ENV === "production") {
+    if (process.env.NODE_ENV === "development") {
+      this.app.express.get("/_next/*", this.app.next.getRequestHandler());
+    } else {
       this.app.express.get(
         "/_next/*",
+        (req, res, next) => {
+          req.url = req.url.replace(/^\/_next/, "");
+          return next();
+        },
         Express.static(path.join(__dirname, "..", "..", ".next"), {
-          maxAge: this.maxAge,
+          maxAge: this.maxAge * 1000,
           fallthrough: false
         })
       );
-    } else {
-      this.app.express.get("/_next/*", this.app.next.getRequestHandler());
     }
     this.app.express.get(
       "/*",
       Express.static(path.join(__dirname, "..", "..", "public"), {
-        maxAge: this.maxAge,
+        maxAge: this.maxAge * 1000,
         fallthrough: true
       })
     );

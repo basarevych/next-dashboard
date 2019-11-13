@@ -1,5 +1,5 @@
-import React, { useContext, useCallback } from "react";
-import { useDispatch } from "react-redux";
+import React, { useCallback } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { FormattedMessage } from "react-intl";
 import { makeStyles } from "@material-ui/styles";
 import { darken } from "@material-ui/core/styles/colorManipulator";
@@ -19,8 +19,7 @@ import facebookIcon from "../../../public/img/facebook.svg";
 import googleIcon from "../../../public/img/google.svg";
 import twitterIcon from "../../../public/img/twitter.svg";
 import schema from "../../../common/forms/auth";
-import { appOperations } from "../state";
-import { UserContext } from "../providers/User";
+import { appSelectors, appOperations } from "../state";
 
 const useStyles = makeStyles(theme => ({
   error: theme.main.error,
@@ -82,7 +81,7 @@ function AppAuthModal(props) {
   const classes = useStyles(props);
   const dispatch = useDispatch();
 
-  const user = useContext(UserContext);
+  const user = useSelector(appSelectors.getUser);
 
   const handleProvider = useCallback(
     provider => dispatch(appOperations.linkProvider({ provider })),

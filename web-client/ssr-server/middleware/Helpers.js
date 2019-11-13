@@ -1,6 +1,6 @@
-const constants = require("../../common/constants");
 const l10n = require("../../common/locales");
 const themes = require("../../styles/themes");
+const getCurrentUser = require("../../src/app/lib/getCurrentUser");
 
 /**
  * Helper functions on req/res objects
@@ -34,40 +34,15 @@ class Helpers {
 
         // Save tokens
         req.setTokens = async (accessToken, refreshToken) => {
-          let user = null;
-          if (accessToken) {
-            const response = await fetch(
-              this.app.config.appSsrApiServer + constants.graphqlBase,
-              {
-                method: "POST",
-                credentials: "include",
-                headers: {
-                  "Content-Type": "application/json",
-                  Accept: "application/json",
-                  Authorization: `Bearer ${accessToken}`
-                },
-                body: JSON.stringify({
-                  query: `{
-                      viewer {
-                        me {
-                          isAuthenticated
-                          userId
-                        }
-                      }
-                    }`
-                })
-              }
-            );
-            if (response.status === 200) {
-              const result = await response.json();
-              user = ((result.data || {}).viewer || {}).me || null;
-            }
-          }
+          const user = await getCurrentUser(
+            this.app.config.appSsrApiServer,
+            accessToken
+          );
+          if (!user) throw new Error("Could not fetch current user");
 
-          const isAuthenticated = user && user.isAuthenticated;
-          req.session.userId = isAuthenticated ? user.userId : null;
-          req.session.accessToken = isAuthenticated ? accessToken : null;
-          req.session.refreshToken = isAuthenticated ? refreshToken : null;
+          req.session.user = user;
+          req.session.accessToken = user.isAuthenticated ? accessToken : null;
+          req.session.refreshToken = user.isAuthenticated ? refreshToken : null;
 
           return new Promise((resolve, reject) => {
             req.session.save(error => {

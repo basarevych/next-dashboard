@@ -1,4 +1,5 @@
 const constants = require("../../common/constants");
+const getCurrentUser = require("../../src/app/lib/getCurrentUser");
 
 /**
  * Render and possibly cache the page using Next.JS
@@ -14,10 +15,17 @@ class Render {
     }
   }
 
+  async getUser(req) {
+    if (req.session.user) return req.session.user;
+    const user = getCurrentUser(this.app.config.appSsrApiServer, null);
+    if (!user) throw new Error("Could not get default user");
+    return user;
+  }
+
   async renderPage(path, req, res, next) {
     const { page } = constants.pages[path];
     const query = await this.app.getQuery(path, req);
-    const userId = req.session.userId || null;
+    const userId = (await this.getUser(req)).userId;
 
     try {
       let html = null;
@@ -29,7 +37,7 @@ class Render {
           process.env.NODE_ENV === "production" &&
           html &&
           res.statusCode === 200 &&
-          req.session.userId === userId
+          (await this.getUser(req)).userId === userId
         ) {
           await this.app.cache.setPage({ page, query, userId, html });
         }

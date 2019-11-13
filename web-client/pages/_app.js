@@ -14,9 +14,6 @@ import StylesProvider from "../src/app/providers/StylesProvider";
 import IntlProvider from "../src/app/providers/IntlProvider";
 import DateProvider from "../src/app/providers/DateProvider";
 import ToastProvider from "../src/app/providers/ToastProvider";
-import UserProvider, {
-  query as userProviderQuery
-} from "../src/app/providers/UserProvider";
 import Layout from "../src/app/layout/Layout";
 import startServiceWorker from "../src/app/lib/startServiceWorker";
 
@@ -46,7 +43,8 @@ class MyApp extends App {
         appOperations.create({
           statusCode,
           locale: query && query.locale,
-          theme: query && query.theme
+          theme: query && query.theme,
+          user: ((req || {}).session || {}).user || null
         })
       );
     } else {
@@ -67,9 +65,6 @@ class MyApp extends App {
     if (isSsr && !isExported) {
       // Let Fetcher know we are doing SSR right now
       di.get("fetcher").setSsrMode(req, res);
-
-      // Prepopulate user info context
-      await ctx.fetchQuery(userProviderQuery);
     }
 
     let pageProps = {};
@@ -110,11 +105,6 @@ class MyApp extends App {
       this.di,
       deserialize(props.relayState, "relay")
     );
-
-    if (process.browser) {
-      // Start the app
-      this.reduxStore.dispatch(appOperations.start()).catch(console.error);
-    }
   }
 
   componentDidMount() {
@@ -129,6 +119,9 @@ class MyApp extends App {
       this.iddle = null;
       startServiceWorker();
     });
+
+    // Start the app
+    this.reduxStore.dispatch(appOperations.start()).catch(console.error);
   }
 
   componentWillUnmount() {
@@ -148,11 +141,9 @@ class MyApp extends App {
             <IntlProvider>
               <DateProvider>
                 <ToastProvider>
-                  <UserProvider>
-                    <Layout path={this.props.router.query.path}>
-                      <Component {...pageProps} />
-                    </Layout>
-                  </UserProvider>
+                  <Layout route={this.props.router.route}>
+                    <Component key={this.props.router.route} {...pageProps} />
+                  </Layout>
                 </ToastProvider>
               </DateProvider>
             </IntlProvider>

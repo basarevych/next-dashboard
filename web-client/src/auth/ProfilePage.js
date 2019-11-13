@@ -1,6 +1,6 @@
-import React, { useContext, useState, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import Router from "next/router";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { FormattedMessage } from "react-intl";
 import { makeStyles } from "@material-ui/styles";
 import Paper from "@material-ui/core/Paper";
@@ -15,8 +15,7 @@ import ConfirmModal from "../app/modals/ConfirmModal";
 import facebookIcon from "../../public/img/facebook.svg";
 import googleIcon from "../../public/img/google.svg";
 import twitterIcon from "../../public/img/twitter.svg";
-import { appOperations } from "../app/state";
-import { UserContext } from "../app/providers/User";
+import { appSelectors, appOperations } from "../app/state";
 import useTimer from "../app/lib/useTimer";
 
 const useStyles = makeStyles(theme => ({
@@ -85,12 +84,12 @@ function ProfilePage(props) {
   const isMessageShown = useTimer(messageTimeout);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
-  const user = useContext(UserContext);
+  const user = useSelector(appSelectors.getUser);
 
   const showMessage = useCallback(message => {
     setMessage(message);
     setMessageTimeout(0);
-    setMessageTimeout(10000);
+    setMessageTimeout(5000);
   }, []);
 
   const save = useCallback(
@@ -283,12 +282,9 @@ function ProfilePage(props) {
   return (
     <div className={classes.layout}>
       <Paper className={classes.profile}>
-        <Form
-          schema={schema}
-          initialValues={user}
-          onSubmit={save}
-          render={renderForm}
-        />
+        <Form schema={schema} initialValues={user} onSubmit={save}>
+          {renderForm}
+        </Form>
 
         {isConfirmOpen && (
           <ConfirmModal

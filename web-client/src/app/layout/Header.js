@@ -1,9 +1,10 @@
-import React, { useContext, useState, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import PropTypes from "prop-types";
+import { useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/styles";
 import Hidden from "@material-ui/core/Hidden";
 import HeaderBar from "./header/HeaderBar";
-import { UserContext } from "../providers/User";
+import { appSelectors } from "../state";
 
 const useStyles = makeStyles(() => ({
   spacer: {
@@ -26,7 +27,7 @@ const useStyles = makeStyles(() => ({
 function Header(props) {
   const classes = useStyles(props);
 
-  const user = useContext(UserContext);
+  const user = useSelector(appSelectors.getUser);
   const isAuthenticated = user ? user.isAuthenticated : false;
 
   const [isVisible, setIsVisible] = useState(false);

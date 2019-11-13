@@ -27,6 +27,13 @@ export const setTheme = ({ theme }) => {
   };
 };
 
+export const setUser = ({ user }) => {
+  return {
+    type: types.SET_USER,
+    user
+  };
+};
+
 export const setConnected = ({ isConnected }) => ({
   type: types.SET_CONNECTED,
   isConnected

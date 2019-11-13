@@ -6,5 +6,6 @@ export const SET_CONNECTED = "app/app/SET_CONNECTED";
 export const SET_SUBSCRIBED = "app/app/SET_SUBSCRIBED";
 export const SET_LOCALE = "app/app/SET_LOCALE";
 export const SET_THEME = "app/app/SET_THEME";
+export const SET_USER = "app/app/SET_USER";
 export const SHOW_AUTH_MODAL = "app/app/SHOW_AUTH_MODAL";
 export const HIDE_AUTH_MODAL = "app/app/HIDE_AUTH_MODAL";

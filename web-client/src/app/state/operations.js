@@ -22,13 +22,19 @@ export const showAuthModal = actions.showAuthModal;
 export const hideAuthModal = actions.hideAuthModal;
 
 // called in App.getInitialProps()
-export const create = ({ statusCode, locale, theme }) => async dispatch => {
+export const create = ({
+  statusCode,
+  locale,
+  theme,
+  user
+}) => async dispatch => {
   return dispatch(
     actions.create({
       created: Date.now(),
       statusCode,
       locale,
-      theme
+      theme,
+      user
     })
   );
 };
@@ -38,9 +44,7 @@ export const start = () => {
   return async (dispatch, getState, di) => {
     di.singletons(); // instantiates singletons
 
-    // first thing to do on the client is to refresh the tokens,
-    // this will fire a IDENTITY_CHANGED event, which will start
-    // application's and subscriptions' WebSockets
+    // first thing to do on the client is to refresh the tokens
     di.get("fetcher")
       .refreshTokens()
       .catch(console.error);
@@ -52,6 +56,16 @@ export const start = () => {
 export const stop = () => {
   return async dispatch => {
     return dispatch(actions.stop());
+  };
+};
+
+export const setUser = ({ user }) => {
+  return async dispatch => {
+    await dispatch(actions.setUser({ user }));
+    if (process.browser) {
+      // let the app know that the user info has been updated
+      window.dispatchEvent(new CustomEvent(constants.events.IDENTITY_CHANGED));
+    }
   };
 };
 
@@ -142,7 +156,7 @@ export const updateProfile = ({ email, name, password }) => async (
     password
   });
   if (((data.data || {}).updateProfile || {}).success) {
-    window.dispatchEvent(new CustomEvent(constants.events.PROFILE_CHANGED));
+    await di.get("fetcher").refreshSession();
     return true;
   }
   return getFormErrors(data);
@@ -207,7 +221,7 @@ export const unlinkProvider = ({ provider }) => async (
 ) => {
   let data = await UnlinkProviderMutation(di, { provider });
   if (((data.data || {}).unlinkProvider || {}).success) {
-    window.dispatchEvent(new CustomEvent(constants.events.PROFILE_CHANGED));
+    await di.get("fetcher").refreshSession();
     return true;
   }
   return getFormErrors(data);

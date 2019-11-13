@@ -3,6 +3,7 @@ import { Observable } from "relay-runtime";
 import { SubscriptionClient } from "subscriptions-transport-ws";
 import constants from "../../../common/constants";
 import { appOperations } from "../state";
+import getCurrentUser from "../lib/getCurrentUser";
 
 /**
  * Fetch API facade
@@ -77,6 +78,46 @@ class Fetcher {
   }
 
   /**
+   * Refresh SSR server session by reporting the tokens
+   * and get the current user info into Redux
+   */
+  async refreshSession() {
+    try {
+      let user = null;
+      if (process.env.STATIC_SITE) {
+        // in static export mode we don't have an SSR server
+        // so we get the current user info by ourself
+        user = await getCurrentUser(
+          process.env.API_SERVER,
+          await this.getAccessToken()
+        );
+      } else if (this.isSsr) {
+        // in the SSR phase the user info has been fetched already
+        user = ((this.req || {}).session || {}).user || null;
+      } else {
+        // otherwise the SSR server will report the current user info
+        // after refreshing the session
+        const response = await this.fetch({
+          method: "POST",
+          resource: process.env.APP_SERVER + "/session",
+          data: {
+            accessToken: await this.getAccessToken(),
+            refreshToken: await this.getRefreshToken()
+          }
+        });
+        if (response.ok) {
+          const data = await response.json();
+          if (data.success) user = data.user;
+        }
+      }
+
+      await this.dispatch(appOperations.setUser({ user }));
+    } catch (error) {
+      console.error(error.message);
+    }
+  }
+
+  /**
    * Store JWTs
    * @param {string} accessToken
    * @param {string} refreshToken
@@ -87,43 +128,37 @@ class Fetcher {
     } else {
       this.storage.set("accessToken", accessToken);
       this.storage.set("refreshToken", refreshToken);
-
-      if (!process.env.STATIC_SITE) {
-        // Report the tokens to the SSR server
-        try {
-          await this.fetch({
-            method: "POST",
-            resource: process.env.APP_SERVER + "/session",
-            data: {
-              accessToken,
-              refreshToken
-            }
-          });
-        } catch (error) {
-          console.error(error.message);
-        }
-      }
-
-      window.dispatchEvent(new CustomEvent(constants.events.IDENTITY_CHANGED));
     }
+    return this.refreshSession();
   }
 
   /**
    * Get new JWTs
    */
-  async getTokens() {
+  async fetchTokens() {
+    const started = Date.now();
+
     const done = async (accessToken, refreshToken) => {
       try {
         await this.setTokens(accessToken, refreshToken);
       } catch (error) {
         console.log(error);
       }
+
+      // fetching tokens takes at least one second
+      // to limit the rate of our requests
+      const delta = Date.now() - started;
+      if (delta < 1000)
+        await new Promise(resolve => setTimeout(resolve, delta));
     };
 
     for (;;) {
       try {
         let refreshToken = await this.getRefreshToken();
         if (!refreshToken) return done(null, null);
+
+        if (process.env.NODE_ENV === "development")
+          console.log("Fetching new tokens...");
 
         const params = {
           method: "POST",
@@ -147,7 +182,7 @@ class Fetcher {
 
         const response = await this.fetch(params);
 
-        if (response.status !== 200)
+        if (!response.ok)
           throw new Error(`GraphQL: GetToken Response ${response.status}`);
 
         let data = await response.json();
@@ -163,7 +198,7 @@ class Fetcher {
           return done(null, null);
         }
       } catch (error) {
-        console.error(error);
+        console.error(error.message);
       }
 
       if (!process.browser) return done(null, null);
@@ -176,7 +211,7 @@ class Fetcher {
    */
   async refreshTokens() {
     if (this.refreshingPromise) return this.refreshingPromise;
-    this.refreshingPromise = this.getTokens().then(() => {
+    this.refreshingPromise = this.fetchTokens().then(() => {
       this.refreshingPromise = null;
     });
     return this.refreshingPromise;
@@ -232,7 +267,7 @@ class Fetcher {
 
         const response = await this.fetch(params);
 
-        if (response.status !== 200)
+        if (!response.ok)
           throw new Error(`GraphQL: Response ${response.status}`);
 
         let result = await response.json();
@@ -241,18 +276,26 @@ class Fetcher {
         if (token && result.errors) {
           for (let error of result.errors) {
             if (error.code === "E_UNAUTHORIZED") {
+              // we get this code when we supply an expired token
               isUnauthorized = true;
               break;
             }
           }
         }
-        if (isUnauthorized) await this.refreshTokens();
-        else return result;
+        if (isUnauthorized) {
+          // refresh the tokens and retry immediately
+          await this.refreshTokens();
+        } else {
+          // return what we got
+          return result;
+        }
       } catch (error) {
         console.error(error.message);
         if (process.browser || (this.req || {}).aborted === false) {
+          // wait a bit and retry
           await new Promise(resolve => setTimeout(resolve, 1000));
         } else {
+          // fail the request
           return { errors: [{ message: error.message }] };
         }
       }
@@ -278,6 +321,9 @@ class Fetcher {
     );
   }
 
+  /**
+   * Connect subscription socket
+   */
   subConnect() {
     if (this.subClient) return;
 
@@ -285,8 +331,10 @@ class Fetcher {
       process.env.WS_SERVER + constants.graphqlBase,
       {
         reconnect: true,
-        reconnectionAttempts: Number.MAX_SAFE_INTEGER,
-        connectionParams: async () => ({ token: await this.getAccessToken() })
+        connectionParams: async () => {
+          if (this.refreshingPromise) await this.refreshingPromise;
+          return { token: await this.getAccessToken() };
+        }
       }
     );
     this.subClient.maxConnectTimeGenerator.duration = () =>
@@ -297,6 +345,9 @@ class Fetcher {
     this.subClient.onError(this.onSubError.bind(this));
   }
 
+  /**
+   * Disconnect subsctiption socket
+   */
   subDisconnect() {
     if (this.subClient) {
       this.subClient.unsubscribeAll();
@@ -305,6 +356,9 @@ class Fetcher {
     }
   }
 
+  /**
+   * Subscription socket has connected
+   */
   async onSubConnected() {
     if (process.env.NODE_ENV === "development")
       console.log("[Subscription] connected");
@@ -312,6 +366,9 @@ class Fetcher {
     this.dispatch(appOperations.setSubscribed({ isSubscribed: true }));
   }
 
+  /**
+   * Subscription socket has reconnected
+   */
   async onSubReconnected() {
     if (process.env.NODE_ENV === "development")
       console.log("[Subscription] reconnected");
@@ -319,18 +376,32 @@ class Fetcher {
     this.dispatch(appOperations.setSubscribed({ isSubscribed: true }));
   }
 
+  /**
+   * Subscription socket has disconnected
+   */
   async onSubDisconnected() {
     if (process.env.NODE_ENV === "development")
       console.log("[Subscription] disconnected");
 
     this.dispatch(appOperations.setSubscribed({ isSubscribed: false }));
+
+    // there is no way with this transport to see why we are disconnected
+    // so let's refresh tokens in case the reason was an expired token
+    // refreshing tokens is rate limited anyway
+    await this.refreshTokens();
   }
 
+  /**
+   * An error in subsction socket
+   */
   onSubError(error) {
-    if (process.env.NODE_ENV === "development")
-      console.error("[Subscription] error", error);
-
-    this.dispatch(appOperations.setSubscribed({ isSubscribed: false }));
+    if (process.env.NODE_ENV === "development") {
+      console.error(
+        `[Subscription] error: ${
+          error.message ? error.message : JSON.stringify(error)
+        }`
+      );
+    }
   }
 }
 

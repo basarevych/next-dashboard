@@ -108,9 +108,7 @@ class GraphQL {
               // context.token equals to:
               //    undefined - when no token was provided (anonymous),
               //    payload - token payload when token is valid
-
               // if provided token is invalid reject the connection
-
               if (connectionParams.token) {
                 let token = await this.auth.useToken(connectionParams.token);
                 if (token === false) return false;

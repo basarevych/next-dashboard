@@ -25,9 +25,10 @@ class Routes {
     try {
       const { accessToken, refreshToken } = req.body;
       await req.setTokens(accessToken, refreshToken);
-      res.json({ success: true });
+      res.json({ success: true, user: req.session.user });
     } catch (error) {
-      next(error);
+      console.error(error);
+      res.json({ success: false });
     }
   }
 }

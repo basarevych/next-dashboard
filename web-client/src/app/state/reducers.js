@@ -1,3 +1,4 @@
+import { fromJS, Map } from "immutable";
 import { combineReducers } from "redux-immutable";
 import * as types from "./types";
 import l10n from "../../../common/locales";
@@ -9,6 +10,21 @@ Map({
   statusCode: Number, // current HTTP status code
   locale: String,
   theme: String,
+  user: Map({ // current user
+    isAuthenticated: Boolean,
+    userId: String,
+    name: String,
+    email: String,
+    isEmailVerified: Boolean,
+    roles: List([role: String, ...]),
+    providers: List([
+      Map({
+        name: String,
+        isLinked: Boolean,
+      }),
+      ...
+    ])
+  }),
   isStarted: Boolean,
   isStopped: Boolean,
   isConnected: Boolean, // WebSocket
@@ -55,6 +71,27 @@ const themeReducer = (state = themes.defaultTheme, action) => {
     case types.CREATE:
     case types.SET_THEME:
       if (typeof action.theme !== "undefined") return action.theme;
+      break;
+  }
+  return state;
+};
+
+const defaultUser = {
+  isAuthenticated: false,
+  userId: null,
+  name: "Anonymous",
+  email: null,
+  isEmailVerified: false,
+  roles: [],
+  providers: []
+};
+
+const userReducer = (state = Map(defaultUser), action) => {
+  switch (action.type) {
+    case types.CREATE:
+    case types.SET_USER:
+      if (typeof action.user !== "undefined")
+        return fromJS(action.user || defaultUser);
       break;
   }
   return state;
@@ -110,6 +147,7 @@ const reducer = combineReducers({
   statusCode: statusCodeReducer,
   locale: localeReducer,
   theme: themeReducer,
+  user: userReducer,
   isStarted: isStartedReducer,
   isStopped: isStoppedReducer,
   isConnected: isConnectedReducer,

@@ -1,5 +1,5 @@
 import io from "socket.io-client";
-import { appOperations } from "../state";
+import { appOperations, appSelectors } from "../state";
 import constants from "../../../common/constants";
 import pkg from "../../../package.json";
 
@@ -21,8 +21,9 @@ class Socket {
     if (process.browser) {
       window.addEventListener(
         constants.events.IDENTITY_CHANGED,
-        this.reconnect.bind(this)
+        this.onIdentityChanged.bind(this)
       );
+      this.connect();
     }
   }
 
@@ -105,6 +106,22 @@ class Socket {
   }
 
   /**
+   * Send our identity to the server
+   */
+  async sendAuth() {
+    try {
+      // store last user ID so we could see when it changes
+      const token = await this.fetcher.getAccessToken();
+      const { userId } = appSelectors.getUser(this.getState());
+      this.userId = userId;
+
+      this.emit(constants.messages.AUTH, { token });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  /**
    * HELLO received
    * @param {Object} msg
    */
@@ -119,10 +136,7 @@ class Socket {
       }
 
       await this.dispatch(appOperations.setConnected({ isConnected: true }));
-
-      this.emit(constants.messages.AUTH, {
-        token: await this.fetcher.getAccessToken()
-      });
+      await this.sendAuth();
     } catch (error) {
       console.error(error);
     }
@@ -140,7 +154,7 @@ class Socket {
         );
 
       if ((await this.fetcher.getRefreshToken()) && !msg.isValid)
-        this.fetcher.refreshTokens().catch(console.error);
+        await this.fetcher.refreshTokens();
     } catch (error) {
       console.error(error);
     }
@@ -170,9 +184,20 @@ class Socket {
       if (process.env.NODE_ENV === "development")
         console.log("[WS] disconnected");
 
+      this.userId = undefined;
       await this.dispatch(appOperations.setConnected({ isConnected: false }));
     } catch (error) {
       console.error(error);
+    }
+  }
+
+  /**
+   * User identity has changed
+   */
+  async onIdentityChanged() {
+    if (typeof this.userId !== "undefined") {
+      const { userId } = appSelectors.getUser(this.getState());
+      if (userId !== this.userId) return this.sendAuth();
     }
   }
 }

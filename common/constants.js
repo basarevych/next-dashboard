@@ -163,13 +163,7 @@ module.exports = {
   // client-side custom window events
   events: {
     // user identity might have changed,
-    // websockets should reconnect to the server
-    // with new access tokens
     IDENTITY_CHANGED: "IDENTITY_CHANGED",
-
-    // profile might have been changed,
-    // user info should be refetched
-    PROFILE_CHANGED: "PROFILE_CHANGED",
 
     // service worker wants to update
     UPDATE_READY: "UPDATE_READY",
