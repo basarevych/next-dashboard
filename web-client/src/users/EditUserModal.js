@@ -83,7 +83,6 @@ function EditUserModal() {
         );
       }
       if (result === true) {
-        setSubmitting(false);
         dispatch(usersOperations.hideEditModal());
       } else {
         let { _status, ...errors } = result;

@@ -102,7 +102,6 @@ function AppAuthModal(props) {
         ? await dispatch(appOperations.signUp({ email, password }))
         : await dispatch(appOperations.signIn({ email, password }));
       if (result === true) {
-        setSubmitting(false);
         dispatch(appOperations.hideAuthModal());
       } else {
         let { _status, ...errors } = result;

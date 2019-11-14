@@ -98,7 +98,6 @@ function EditEmployeeModal() {
         );
       }
       if (result === true) {
-        setSubmitting(false);
         dispatch(employeesOperations.hideEditModal());
       } else {
         let { _status, ...errors } = result;
