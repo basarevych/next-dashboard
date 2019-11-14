@@ -150,32 +150,30 @@ module.exports = withPlugins(plugins, {
       );
     }
 
-    if (!isServer) {
-      config.plugins.push(
-        // Service Worker
-        new GenerateSW({
-          cacheId: pkg.name,
-          clientsClaim: true,
-          skipWaiting: true,
-          cleanupOutdatedCaches: true,
-          swDest: "sw.js",
-          importWorkboxFrom: "local",
-          exclude: [/\.next\//],
-          runtimeCaching: [
-            {
-              urlPattern: /^https?:\/\/.*$/,
-              handler: "NetworkFirst"
-            }
-          ]
-        })
-      );
+    // Service Worker
+    config.plugins.push(
+      new GenerateSW({
+        cacheId: pkg.name,
+        clientsClaim: true,
+        skipWaiting: true,
+        cleanupOutdatedCaches: true,
+        swDest: "sw.js",
+        importWorkboxFrom: "local",
+        exclude: [/\.next\//],
+        runtimeCaching: [
+          {
+            urlPattern: /^https?:\/\/.*$/,
+            handler: "NetworkFirst"
+          }
+        ]
+      })
+    );
 
-      // Manifest
-      pwaManifest.writeSync(
-        path.resolve(__dirname, "public"),
-        pwaManifest.sync(manifest)
-      );
-    }
+    // Manifest
+    pwaManifest.writeSync(
+      path.resolve(__dirname, "public"),
+      pwaManifest.sync(manifest)
+    );
 
     const originalEntry = config.entry;
     config.entry = async () => {

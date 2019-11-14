@@ -20,6 +20,17 @@ async function finishExport() {
 `
   );
 
+  // copy the service worker to the root
+  await fs.copy(root(".next/sw.js"), root("out/sw.js"));
+  for (let file of await fs.readdir(root(".next"))) {
+    if (/^workbox-/.test(file)) {
+      await fs.mkdir(root("out/_next/" + file));
+      await fs.copy(root(".next/" + file), root("out/_next/" + file));
+    } else if (/^precache-manifest\./.test(file)) {
+      await fs.copy(root(".next/" + file), root("out/_next/" + file));
+    }
+  }
+
   // cleanup exported .next
   await fs.remove(root(".next"));
 }
