@@ -10,7 +10,10 @@ class Render {
   }
 
   async init() {
-    this.defaultUser = getCurrentUser(this.app.config.appSsrApiServer, null);
+    this.defaultUser = await getCurrentUser(
+      this.app.config.appSsrApiServer,
+      null
+    );
     if (!this.defaultUser) throw new Error("Could not get default user");
 
     for (let path of Object.keys(constants.pages)) {

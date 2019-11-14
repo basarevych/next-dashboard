@@ -1,4 +1,4 @@
-import { fromJS, Map } from "immutable";
+import { fromJS } from "immutable";
 import { combineReducers } from "redux-immutable";
 import * as types from "./types";
 import l10n from "../../../common/locales";

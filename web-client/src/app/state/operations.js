@@ -182,11 +182,12 @@ export const linkProvider = ({ provider }) => async (
       oneTimeToken = ((data.data || {}).getToken || {}).token || null;
   }
 
+  await dispatch(stop());
+
   let redirect = window.location.href;
   if (Router.asPath.startsWith("/auth") && Router.asPath !== "/auth/profile")
     redirect = process.env.APP_SERVER;
 
-  await dispatch(stop());
   window.location.href =
     process.env.API_SERVER +
     constants.apiBase +
