@@ -86,7 +86,7 @@ const defaultUser = {
   providers: []
 };
 
-const userReducer = (state = Map(defaultUser), action) => {
+const userReducer = (state = fromJS(defaultUser), action) => {
   switch (action.type) {
     case types.CREATE:
     case types.SET_USER:
