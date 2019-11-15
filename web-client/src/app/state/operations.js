@@ -12,6 +12,7 @@ import UpdateProfileMutation from "../mutations/UpdateProfile";
 import UnlinkProviderMutation from "../mutations/UnlinkProvider";
 import DeleteProfileMutation from "../mutations/DeleteProfile";
 import GetTokenMutation from "../mutations/GetToken";
+import getCurrentUser from "../lib/getCurrentUser";
 
 export const setStatusCode = actions.setStatusCode;
 export const setConnected = actions.setConnected;
@@ -22,19 +23,22 @@ export const showAuthModal = actions.showAuthModal;
 export const hideAuthModal = actions.hideAuthModal;
 
 // called in App.getInitialProps()
-export const create = ({
-  statusCode,
-  locale,
-  theme,
-  user
-}) => async dispatch => {
+export const create = ({ server, statusCode, locale, theme, user }) => async (
+  dispatch,
+  getState,
+  di
+) => {
+  const initialUser =
+    user ||
+    (await getCurrentUser(server, await di.get("fetcher").getAccessToken()));
+
   return dispatch(
     actions.create({
       created: Date.now(),
       statusCode,
       locale,
       theme,
-      user
+      user: initialUser
     })
   );
 };

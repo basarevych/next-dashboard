@@ -9,7 +9,6 @@ import deserialize from "../common/src/deserialize";
 import getDiContainer from "../src/app/lib/getDiContainer";
 import getReduxStore from "../src/app/lib/getReduxStore";
 import getRelayEnvironment from "../src/app/lib/getRelayEnvironment";
-import getCurrentUser from "../src/app/lib/getCurrentUser";
 import { appOperations, appSelectors } from "../src/app/state";
 import RelayProvider, { fetchQuery } from "../src/app/providers/RelayProvider";
 import StylesProvider from "../src/app/providers/StylesProvider";
@@ -35,7 +34,7 @@ class MyApp extends App {
 
     // Dependency Injection Container
     // Available in Thunk as the third argument, i.e.:
-    // (dispatch, getState, di) => Promise
+    // (dispatch, getState, di) => Promise(action)
     const di = getDiContainer();
 
     // Redux Store
@@ -49,21 +48,16 @@ class MyApp extends App {
 
     // Initialize the store
     if (!appSelectors.getCreated(store.getState())) {
-      let user = ((req || {}).session || {}).user || null;
-      if (!user) {
-        user = await getCurrentUser(
-          isSsr && !isExported
-            ? process.env.SSR_API_SERVER
-            : process.env.API_SERVER,
-          await di.get("fetcher").getAccessToken()
-        );
-      }
       await store.dispatch(
         appOperations.create({
+          server:
+            isSsr && !isExported
+              ? process.env.SSR_API_SERVER
+              : process.env.API_SERVER,
           statusCode,
           locale: query && query.locale,
           theme: query && query.theme,
-          user
+          user: ((req || {}).session || {}).user || null
         })
       );
     } else {
