@@ -1,6 +1,6 @@
 "use strict";
 
-require("full-icu");
+require("../common/src/intl");
 
 const nextApp = require("next");
 const path = require("path");

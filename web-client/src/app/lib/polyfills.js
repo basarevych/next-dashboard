@@ -42,66 +42,37 @@ if (!global.requestIdleCallback) {
 }
 
 // Intl polyfill
-if (global.Intl) {
-  if (!process.browser) {
-    if (!require("intl-locales-supported")(locales)) {
-      const IntlPolyfill = require("intl");
-      Intl.NumberFormat = IntlPolyfill.NumberFormat;
-      Intl.DateTimeFormat = IntlPolyfill.DateTimeFormat;
-    }
-  }
-
-  if (!Intl.PluralRules) {
-    promises.push(
-      new Promise((resolve, reject) => {
-        require.ensure(
-          [],
-          require => {
-            require("intl-pluralrules");
-            resolve();
-          },
-          error => reject(error),
-          "polyfills"
-        );
-      })
-    );
-  }
-
-  if (!Intl.RelativeTimeFormat) {
-    promises.push(
-      new Promise((resolve, reject) => {
-        require.ensure(
-          [],
-          require => {
-            require("@formatjs/intl-relativetimeformat/polyfill");
-            for (let locale of locales) {
-              require("@formatjs/intl-relativetimeformat/dist/locale-data/" +
-                locale +
-                ".js");
-            }
-            resolve();
-          },
-          error => reject(error),
-          "polyfills"
-        );
-      })
-    );
-  }
-} else {
+if (!Intl.PluralRules) {
   promises.push(
     new Promise((resolve, reject) => {
       require.ensure(
         [],
         require => {
-          require("intl");
-          for (let locale of locales)
-            require("intl/locale-data/jsonp/" + locale + ".js");
-          require("intl-pluralrules");
+          require("@formatjs/intl-pluralrules/polyfill");
+          for (let locale of locales) {
+            require("@formatjs/intl-pluralrules/dist/locale-data/" +
+              locale.slice(0, 2));
+          }
+          resolve();
+        },
+        error => reject(error),
+        "polyfills"
+      );
+    })
+  );
+}
+
+// Intl polyfill
+if (!Intl.RelativeTimeFormat) {
+  promises.push(
+    new Promise((resolve, reject) => {
+      require.ensure(
+        [],
+        require => {
           require("@formatjs/intl-relativetimeformat/polyfill");
           for (let locale of locales) {
             require("@formatjs/intl-relativetimeformat/dist/locale-data/" +
-              locale +
-              ".js");
+              locale.slice(0, 2));
           }
           resolve();
         },

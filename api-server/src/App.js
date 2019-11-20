@@ -1,7 +1,7 @@
 "use strict";
 
-require("full-icu");
 require("regenerator-runtime/runtime");
+require("../common/src/intl");
 
 const Injectt = require("injectt");
 const path = require("path");
