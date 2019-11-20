@@ -12,6 +12,7 @@ node_modules
 /out
 /public/assets
 /public/manifest.json
+/public/service-worker.js
 /.next
 /.tmp
 **/__generated__

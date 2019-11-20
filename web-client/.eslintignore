@@ -11,6 +11,7 @@ node_modules
 /dist
 /out
 /public/assets
+/public/service-worker.js
 /.next
 /.tmp
 **/__mocks__

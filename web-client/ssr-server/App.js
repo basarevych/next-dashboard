@@ -1,6 +1,6 @@
 "use strict";
 
-if (!global._) global._ = require("lodash");
+require("full-icu");
 
 const nextApp = require("next");
 const path = require("path");

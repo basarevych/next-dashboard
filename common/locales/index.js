@@ -28,6 +28,7 @@ function parse(source) {
 module.exports = {
   defaultLocale: "en",
   locales: ["en", "ru"],
+  intl: { en: "en", ru: "ru" }, // official locale name in react-intl
   flags: { en: "US", ru: "RU" },
   names: { en: "English", ru: "Русский язык" },
   messages: {

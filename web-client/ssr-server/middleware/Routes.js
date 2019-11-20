@@ -27,7 +27,7 @@ class Routes {
       await req.setTokens(accessToken, refreshToken);
       res.json({ success: true, user: req.session.user });
     } catch (error) {
-      console.error(error);
+      console.error(error.message);
       res.json({ success: false });
     }
   }

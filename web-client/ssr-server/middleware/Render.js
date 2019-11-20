@@ -16,9 +16,10 @@ class Render {
     );
     if (!this.defaultUser) throw new Error("Could not get default user");
 
-    for (let path of Object.keys(constants.pages)) {
+    for (let path of Object.keys(constants.pages))
       this.app.express.get(path, this.renderPage.bind(this, path));
-    }
+
+    this.app.express.get("/_next/*", this.app.next.getRequestHandler());
   }
 
   async renderPage(path, req, res, next) {

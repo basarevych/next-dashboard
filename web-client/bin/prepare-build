@@ -17,8 +17,13 @@ async function prepareBuild() {
   if (await fs.pathExists(root("node_modules/.tmp")))
     await fs.remove(root("node_modules/.tmp"));
 
+  await fs.remove(root(".tmp"));
   await fs.remove(root(".next"));
   await fs.remove(root("public/assets"));
+  await fs.remove(root("public/manifest.json"));
+  await fs.remove(root("public/service-worker.js"));
+
+  await fs.mkdir(root(".tmp"));
 }
 
 prepareBuild().catch(error => {

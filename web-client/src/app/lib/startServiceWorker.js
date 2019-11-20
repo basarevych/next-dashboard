@@ -16,7 +16,7 @@ export default function initServiceWorker() {
     });
   } else {
     promise = navigator.serviceWorker
-      .register("sw.js", { scope: "/" })
+      .register("/service-worker.js", { scope: "/" })
       .then(reg => {
         reg.onupdatefound = () => {
           // Check if update is needed

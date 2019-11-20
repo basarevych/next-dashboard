@@ -8,6 +8,7 @@ const { GenerateSW } = require("workbox-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 const RelayCompilerWebpackPlugin = require("relay-compiler-webpack-plugin");
 const withCSS = require("@zeit/next-css");
+const withOffline = require("next-offline");
 const withBundleAnalyzer = require("@zeit/next-bundle-analyzer");
 const withPlugins = require("next-compose-plugins");
 const constants = require("./common/constants");
@@ -62,6 +63,40 @@ const plugins = [
           analyzerMode: "static",
           reportFilename: "browser-analyze.html"
         }
+      }
+    }
+  ],
+  [
+    withOffline,
+    {
+      transformManifest: manifest => ["/"].concat(manifest), // add the homepage to the cache
+      dontAutoRegisterSw: true,
+      workboxOpts: {
+        cacheId: pkg.name,
+        clientsClaim: true,
+        skipWaiting: true,
+        cleanupOutdatedCaches: true,
+        swDest: path.resolve(__dirname, "public", "service-worker.js"),
+        runtimeCaching: [
+          {
+            urlPattern: /^https?:\/\/[^/]+\/ws.*$/,
+            handler: "NetworkOnly"
+          },
+          {
+            urlPattern: /^wss?:\/\/.*$/,
+            handler: "NetworkOnly"
+          },
+          {
+            urlPattern: /^https?:\/\/.*$/,
+            handler: "NetworkFirst",
+            options: {
+              networkTimeoutSeconds: 15,
+              cacheableResponse: {
+                statuses: [0, 200]
+              }
+            }
+          }
+        ]
       }
     }
   ],
@@ -130,11 +165,16 @@ module.exports = withPlugins(plugins, {
 
     // bundle only the locales we actually use
     let locales = new RegExp(
-      "^\\.[/\\\\](" + l10n.locales.join("|") + ")\\.js$"
+      "^\\.[/\\\\](" +
+        l10n.locales.map(item => l10n.intl[item].slice(0, 2)).join("|") +
+        ")"
     );
     config.plugins.push(
       new ContextReplacementPlugin(/moment[/\\]locale$/, locales),
-      new ContextReplacementPlugin(/intl[/\\]locale-data[/\\]jsonp$/, locales),
+      new ContextReplacementPlugin(
+        /@formatjs[/\\]intl-pluralrules[/\\]dist[/\\]locale-data$/,
+        locales
+      ),
       new ContextReplacementPlugin(
         /@formatjs[/\\]intl-relativetimeformat[/\\]dist[/\\]locale-data$/,
         locales
@@ -149,25 +189,6 @@ module.exports = withPlugins(plugins, {
         })
       );
     }
-
-    // Service Worker
-    config.plugins.push(
-      new GenerateSW({
-        cacheId: pkg.name,
-        clientsClaim: true,
-        skipWaiting: true,
-        cleanupOutdatedCaches: true,
-        swDest: "sw.js",
-        importWorkboxFrom: "local",
-        exclude: [/\.next\//],
-        runtimeCaching: [
-          {
-            urlPattern: /^https?:\/\/.*$/,
-            handler: "NetworkFirst"
-          }
-        ]
-      })
-    );
 
     // Manifest
     pwaManifest.writeSync(
