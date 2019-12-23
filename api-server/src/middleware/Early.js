@@ -29,7 +29,7 @@ class Early {
           if (match) return callback(null, true);
           console.log(`CORS! ${origin}`);
           let error = new Error("Not allowed by CORS");
-          error.status = 403;
+          error.statusCode = 403;
           return callback(error);
         }
       })
