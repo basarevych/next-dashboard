@@ -273,6 +273,14 @@ function Users(props) {
     [users]
   );
 
+  useIsomorphicLayoutEffect(
+    // refresh when params has changed
+    () => {
+      refresh();
+    },
+    [params]
+  );
+
   return (
     <React.Fragment>
       <div className={classes.layout}>

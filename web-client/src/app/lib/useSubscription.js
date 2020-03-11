@@ -5,7 +5,7 @@ import { RelayContext } from "../providers/RelayProvider";
 import { appSelectors } from "../state";
 
 export default function useSubscription(
-  { subscription, variables, onNext, onCompleted, onError },
+  { subscription, variables, updater, onNext, onCompleted, onError },
   dependencies
 ) {
   const { environment } = useContext(RelayContext);
@@ -37,6 +37,7 @@ export default function useSubscription(
     const request = requestSubscription(environment, {
       subscription,
       variables,
+      updater,
       onNext,
       onCompleted: (...args) => {
         if (onCompleted) onCompleted(...args);

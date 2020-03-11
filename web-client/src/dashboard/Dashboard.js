@@ -1,13 +1,13 @@
-import React, { useContext, useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
 import { FormattedMessage } from "react-intl";
-import { graphql, requestSubscription } from "react-relay";
+import { graphql } from "react-relay";
 import { AutoSizer } from "react-virtualized";
 import { makeStyles } from "@material-ui/styles";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
-import { RelayContext } from "../app/providers/RelayProvider";
+import useSubscription from "../app/lib/useSubscription";
 import VisitorsStat from "./stat/VisitorsStatContainer";
 import LoadStat from "./stat/LoadStatContainer";
 import MemoryStat from "./stat/MemoryStatContainer";
@@ -18,7 +18,6 @@ import StateSalesQuery from "./sales/StateSalesQuery";
 import DeptEmployeesQuery from "./employees/DeptEmployeesQuery";
 import { appOperations, appSelectors } from "../app/state";
 import { dashboardOperations, dashboardSelectors } from "./state";
-import constants from "../../common/constants";
 
 const useStyles = makeStyles(theme => ({
   layout: {
@@ -68,9 +67,6 @@ const subscription = graphql`
 function Dashboard(props) {
   const classes = useStyles(props);
   const dispatch = useDispatch();
-  const { environment } = useContext(RelayContext);
-
-  const [subTrigger, setSubTrigger] = useState(0);
 
   const [usStates, setUsStates] = useState(null);
   const [usCities, setUsCities] = useState(null);
@@ -78,7 +74,7 @@ function Dashboard(props) {
   const isAnimated = useSelector(dashboardSelectors.getIsAnimated);
   const isStarted = useSelector(appSelectors.getIsStarted);
 
-  const toggleIsAnimatated = useCallback(
+  const toggleIsAnimated = useCallback(
     () =>
       dispatch(dashboardOperations.setIsAnimated({ isAnimated: !isAnimated })),
     [isAnimated]
@@ -148,91 +144,58 @@ function Dashboard(props) {
     [isStarted]
   );
 
-  useEffect(
+  useSubscription(
     // subscribe and listen to subscription events
-    // changing subTrigger state variable will force resubscribing
-    () => {
-      let isDetroyed = false;
+    {
+      subscription,
+      updater: store => {
+        const viewer = store.getRoot().getLinkedRecord("viewer");
+        if (!viewer) return;
 
-      const request = requestSubscription(environment, {
-        subscription,
-        updater: store => {
-          const viewer = store.getRoot().getLinkedRecord("viewer");
-          if (!viewer) return;
+        const rootField = store.getRootField("dashboardEvent");
+        if (!rootField) return;
 
-          const rootField = store.getRootField("dashboardEvent");
-          if (!rootField) return;
+        const newVisitors = rootField.getLinkedRecord("visitors");
+        const visitors = viewer.getLinkedRecord("visitorsValues");
+        if (visitors && newVisitors) {
+          const edges = visitors.getLinkedRecords("edges");
+          while (edges.length >= 10) edges.shift();
+          visitors.setLinkedRecords([...edges, newVisitors], "edges");
+        }
 
-          const newVisitors = rootField.getLinkedRecord("visitors");
-          const visitors = viewer.getLinkedRecord("visitorsValues");
-          if (visitors && newVisitors) {
-            const edges = visitors.getLinkedRecords("edges");
-            while (edges.length >= 10) edges.shift();
-            visitors.setLinkedRecords([...edges, newVisitors], "edges");
-          }
+        const newLoad = rootField.getLinkedRecord("load");
+        const load = viewer.getLinkedRecord("loadValues");
+        if (load && newLoad) {
+          const edges = load.getLinkedRecords("edges");
+          while (edges.length >= 10) edges.shift();
+          load.setLinkedRecords([...edges, newLoad], "edges");
+        }
 
-          const newLoad = rootField.getLinkedRecord("load");
-          const load = viewer.getLinkedRecord("loadValues");
-          if (load && newLoad) {
-            const edges = load.getLinkedRecords("edges");
-            while (edges.length >= 10) edges.shift();
-            load.setLinkedRecords([...edges, newLoad], "edges");
-          }
+        const newMemory = rootField.getLinkedRecord("memory");
+        const memory = viewer.getLinkedRecord("memoryValues");
+        if (memory && newMemory) {
+          const edges = memory.getLinkedRecords("edges");
+          while (edges.length >= 10) edges.shift();
+          memory.setLinkedRecords([...edges, newMemory], "edges");
+        }
 
-          const newMemory = rootField.getLinkedRecord("memory");
-          const memory = viewer.getLinkedRecord("memoryValues");
-          if (memory && newMemory) {
-            const edges = memory.getLinkedRecords("edges");
-            while (edges.length >= 10) edges.shift();
-            memory.setLinkedRecords([...edges, newMemory], "edges");
-          }
+        const newOperations = rootField.getLinkedRecord("operations");
+        const operations = viewer.getLinkedRecord("operationsValues");
+        if (operations && newOperations) {
+          const edges = operations.getLinkedRecords("edges");
+          while (edges.length >= 10) edges.shift();
+          operations.setLinkedRecords([...edges, newOperations], "edges");
+        }
 
-          const newOperations = rootField.getLinkedRecord("operations");
-          const operations = viewer.getLinkedRecord("operationsValues");
-          if (operations && newOperations) {
-            const edges = operations.getLinkedRecords("edges");
-            while (edges.length >= 10) edges.shift();
-            operations.setLinkedRecords([...edges, newOperations], "edges");
-          }
-
-          const newAvgTime = rootField.getLinkedRecord("avgTime");
-          const avgTime = viewer.getLinkedRecord("avgTimeValues");
-          if (avgTime && newAvgTime) {
-            const edges = avgTime.getLinkedRecords("edges");
-            while (edges.length >= 10) edges.shift();
-            avgTime.setLinkedRecords([...edges, newAvgTime], "edges");
-          }
-        },
-        onCompleted: () =>
-          setTimeout(() => {
-            if (!isDetroyed) setSubTrigger(n => n + 1);
-          }, 1000),
-        onError: () =>
-          setTimeout(() => {
-            if (!isDetroyed) setSubTrigger(n => n + 1);
-          }, 1000)
-      });
-
-      const handleIdentityChange = () => {
-        if (!isDetroyed) setSubTrigger(n => n + 1);
-      };
-
-      // reconnect after logging in
-      window.addEventListener(
-        constants.events.IDENTITY_CHANGED,
-        handleIdentityChange
-      );
-
-      return () => {
-        isDetroyed = true;
-        request.dispose();
-        window.removeEventListener(
-          constants.events.IDENTITY_CHANGED,
-          handleIdentityChange
-        );
-      };
-    },
-    [subTrigger]
+        const newAvgTime = rootField.getLinkedRecord("avgTime");
+        const avgTime = viewer.getLinkedRecord("avgTimeValues");
+        if (avgTime && newAvgTime) {
+          const edges = avgTime.getLinkedRecords("edges");
+          while (edges.length >= 10) edges.shift();
+          avgTime.setLinkedRecords([...edges, newAvgTime], "edges");
+        }
+      }
+    }
   );
 
   const renderVisitors = useCallback(
@@ -324,7 +287,7 @@ function Dashboard(props) {
               variant="contained"
               color="primary"
               size="small"
-              onClick={toggleIsAnimatated}
+              onClick={toggleIsAnimated}
             >
               <FormattedMessage
                 id={

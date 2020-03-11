@@ -1,4 +1,10 @@
-import React, { useMemo, useCallback, useEffect, useState } from "react";
+import React, {
+  useMemo,
+  useCallback,
+  useLayoutEffect,
+  useEffect,
+  useState
+} from "react";
 import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 import { AutoSizer } from "react-virtualized";
@@ -20,6 +26,8 @@ import {
 } from "../../../common/src/colors";
 import StateLegendLabel from "./StateLendendLabel";
 import { dashboardSelectors } from "../state";
+
+const useIsomorphicLayoutEffect = process.browser ? useLayoutEffect : useEffect;
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -45,6 +53,14 @@ function StateSales(props) {
   const state = useSelector(dashboardSelectors.getState);
 
   const [edges, setEdges] = useState([]);
+
+  useIsomorphicLayoutEffect(
+    // refresh when state has changed
+    () => {
+      props.retry();
+    },
+    [state]
+  );
 
   useEffect(() => {
     const newEdges = ((props.viewer || {}).stateCities || {}).edges;

@@ -43,7 +43,10 @@ function EmployeesQuery() {
     retryCallback = retry;
 
     return (
-      <Employees viewer={renderProps && renderProps.viewer} retry={doRetry} />
+      <Employees
+        viewer={(renderProps && renderProps.viewer) || null}
+        retry={doRetry}
+      />
     );
   }, []);
 

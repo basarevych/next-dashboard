@@ -6,14 +6,11 @@ function UsersPage() {
   return <UsersQuery />;
 }
 
-UsersPage.getInitialProps = async ({
-  isSsr,
-  isExported,
-  store,
-  fetchQuery
-}) => {
-  const params = usersSelectors.getTableParams(store.getState());
-  if (isSsr && !isExported) await fetchQuery(query, params);
+UsersPage.getInitialProps = async ({ isExported, store, fetchQuery }) => {
+  if (!isExported) {
+    const params = usersSelectors.getTableParams(store.getState());
+    await fetchQuery(query, params);
+  }
 };
 
 export default UsersPage;

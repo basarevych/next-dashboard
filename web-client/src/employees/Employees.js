@@ -301,6 +301,14 @@ function Employees(props) {
     [employees]
   );
 
+  useIsomorphicLayoutEffect(
+    // refresh when params has changed
+    () => {
+      refresh();
+    },
+    [params]
+  );
+
   return (
     <React.Fragment>
       <div className={classes.message}>

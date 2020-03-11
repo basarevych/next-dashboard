@@ -6,14 +6,11 @@ function TablesPage() {
   return <EmployeesQuery />;
 }
 
-TablesPage.getInitialProps = async ({
-  isSsr,
-  isExported,
-  store,
-  fetchQuery
-}) => {
-  const params = employeesSelectors.getTableParams(store.getState());
-  if (isSsr && !isExported) await fetchQuery(query, params);
+TablesPage.getInitialProps = async ({ isExported, store, fetchQuery }) => {
+  if (!isExported) {
+    const params = employeesSelectors.getTableParams(store.getState());
+    await fetchQuery(query, params);
+  }
 };
 
 export default TablesPage;

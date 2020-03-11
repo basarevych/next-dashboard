@@ -36,7 +36,7 @@ function FieldMessages(props) {
       result = result.concat(
         Array.isArray(props.messages)
           ? props.messages.map(item => ({ message: item }))
-          : [{ messages: props.messages }]
+          : [{ message: props.messages }]
       );
     }
     if (props.errors) {

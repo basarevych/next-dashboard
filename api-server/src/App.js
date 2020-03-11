@@ -44,16 +44,9 @@ let twitterAuthSecret = process.env.TWITTER_AUTH_SECRET;
  */
 class App {
   constructor() {
-    if (apiOrigins) {
-      try {
-        if (typeof apiOrigins === "string") apiOrigins = JSON.parse(apiOrigins);
-      } catch (error) {
-        console.error("Could not parse API_ORIGINS: ", error.message);
-        process.exit(1);
-      }
-    } else {
-      apiOrigins = [`http://localhost:${apiPort}`];
-    }
+    if (!apiOrigins) apiOrigins = [`http://localhost:${apiPort}`];
+    else if (typeof apiOrigins === "string")
+      apiOrigins = apiOrigins.split(",").map(item => item.trim());
 
     this.config = {
       apiHost,
@@ -109,13 +102,7 @@ class App {
       process.exit(1);
     }
     if (!this.config.jwtSecret) {
-      console.error("Please define JWT_SECRET");
-      process.exit(1);
-    }
-    if (!Array.isArray(this.config.apiOrigins)) {
-      console.error(
-        "API_ORIGINS env variable should be a JSON string of array of strings"
-      );
+      console.error("Please define env variable JWT_SECRET");
       process.exit(1);
     }
 

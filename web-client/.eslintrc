@@ -30,7 +30,6 @@
     "no-unused-vars": [
       "error",
       { "varsIgnorePattern": "[iI]gnored", "argsIgnorePattern": "^next$" }
-    ],
-    "react-hooks/rules-of-hooks": "error"
+    ]
   }
 }

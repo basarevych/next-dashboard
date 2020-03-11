@@ -38,16 +38,9 @@ class App {
    * Constructor
    */
   constructor() {
-    if (appOrigins) {
-      try {
-        if (typeof appOrigins === "string") appOrigins = JSON.parse(appOrigins);
-      } catch (error) {
-        console.error("Could not parse APP_ORIGINS: ", error.message);
-        process.exit(1);
-      }
-    } else {
-      appOrigins = [`http://localhost:${appPort}`];
-    }
+    if (!appOrigins) appOrigins = [`http://localhost:${appPort}`];
+    else if (typeof appOrigins === "string")
+      appOrigins = appOrigins.split(",").map(item => item.trim());
 
     this.config = {
       appHost,
@@ -76,13 +69,6 @@ class App {
   }
 
   async init({ mainServer }) {
-    if (!Array.isArray(this.config.appOrigins)) {
-      console.error(
-        "APP_ORIGINS env variable should be a JSON string of an array of strings"
-      );
-      process.exit(1);
-    }
-
     if (!this.config.appApiServer) {
       console.error("Please define env variable APP_API_SERVER");
       process.exit(1);

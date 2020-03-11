@@ -31,7 +31,10 @@ function DashboardQuery() {
     if (error) return <ErrorMessage error={error} />;
 
     return (
-      <Dashboard viewer={renderProps && renderProps.viewer} retry={retry} />
+      <Dashboard
+        viewer={(renderProps && renderProps.viewer) || null}
+        retry={retry}
+      />
     );
   }, []);
 

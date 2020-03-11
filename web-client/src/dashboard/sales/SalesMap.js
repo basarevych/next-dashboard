@@ -9,7 +9,6 @@ import PropTypes from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
 import { FormattedMessage } from "react-intl";
 import StaticMap, { NavigationControl } from "react-map-gl";
-import { PhongMaterial } from "@luma.gl/core";
 import DeckGL, {
   AmbientLight,
   PointLight,
@@ -52,12 +51,12 @@ const lightingEffects = [
   })
 ];
 
-const material = new PhongMaterial({
+const material = {
   ambient: 0.64,
   diffuse: 0.6,
   shininess: 32,
   specularColor: [100, 100, 100]
-});
+};
 
 const colorRangeDark = [
   [251, 140, 0, 200],
@@ -100,10 +99,17 @@ const useStyles = makeStyles(theme => ({
     textShadow:
       theme.name === "dark" ? "2px 2px 3px #000000" : "2px 2px 3px #ffffff"
   },
-  map: {
+  paper: {
     width: "100%",
     height: "100%",
-    minHeight: 500
+    minHeight: 500,
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "stretch",
+    alignItems: "stretch"
+  },
+  map: {
+    flex: 1
   },
   controls: {
     position: "absolute",
@@ -112,6 +118,7 @@ const useStyles = makeStyles(theme => ({
     right: "10px"
   },
   links: {
+    fontSize: "9px",
     display: "flex",
     justifyContent: "space-between"
   },
@@ -363,7 +370,7 @@ function SalesMap(props) {
       onMouseOverCapture={handleMouseOver}
       onMouseOutCapture={handleMouseOut}
     >
-      <Paper>
+      <Paper className={classes.paper}>
         <div className={classes.title}>
           <Typography variant="h4" color="inherit">
             <FormattedMessage id="DASHBOARD_US_SALES_LABEL" />

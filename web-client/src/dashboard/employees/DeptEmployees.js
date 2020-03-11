@@ -283,6 +283,14 @@ function DeptEmployees(props) {
     [pageNumber, pageSize, totalCount, dept, params]
   );
 
+  useIsomorphicLayoutEffect(
+    // refresh when params has changed
+    () => {
+      refresh();
+    },
+    [params]
+  );
+
   const renderTable = useCallback(
     ({ width }) => (
       <Paper style={{ width }}>

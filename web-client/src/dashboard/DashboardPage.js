@@ -8,20 +8,15 @@ function DashboardPage() {
   return <DashboardQuery />;
 }
 
-DashboardPage.getInitialProps = async ({
-  isSsr,
-  isExported,
-  store,
-  fetchQuery
-}) => {
-  if (isSsr && !isExported) {
+DashboardPage.getInitialProps = async ({ isExported, store, fetchQuery }) => {
+  if (!isExported) {
     const stateSalesState = dashboardSelectors.getState(store.getState());
     const deptEmployeesParams = dashboardSelectors.getTableParams(
       store.getState()
     );
     await Promise.all([
       fetchQuery(dashboardQuery),
-      fetchQuery(stateSalesQuery, { state: stateSalesState }),
+      fetchQuery(stateSalesQuery, { stateName: stateSalesState }),
       fetchQuery(deptEmployeesQuery, deptEmployeesParams)
     ]);
   }

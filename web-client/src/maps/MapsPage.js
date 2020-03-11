@@ -1,5 +1,9 @@
 import React, { useState, useCallback, useMemo } from "react";
-import StaticMap, { NavigationControl, FlyToInterpolator } from "react-map-gl";
+import StaticMap, {
+  _MapContext as MapContext,
+  NavigationControl,
+  FlyToInterpolator
+} from "react-map-gl";
 import DeckGL from "deck.gl";
 import { useSelector } from "react-redux";
 import { fade } from "@material-ui/core/styles/colorManipulator";
@@ -13,6 +17,17 @@ import SatelliteViewIcon from "@material-ui/icons/Satellite";
 import { appSelectors } from "../app/state";
 
 const useStyles = makeStyles(theme => ({
+  "@global": {
+    ".mapboxgl-ctrl-compass-arrow": {
+      display: "block",
+      width: "100%",
+      height: "100%",
+      backgroundRepeat: "no-repeat",
+      backgroundPosition: "50%",
+      backgroundImage:
+        'url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0nMjknIGhlaWdodD0nMjknIHZpZXdCb3g9JzAgMCAyOSAyOScgeG1sbnM9J2h0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnJyBmaWxsPScjMzMzJz48cGF0aCBkPSdNMTAuNSAxNGw0LTggNCA4aC04eicvPjxwYXRoIGQ9J00xMC41IDE2bDQgOCA0LThoLTh6JyBmaWxsPScjY2NjJy8+PC9zdmc+")'
+    }
+  },
   layout: {
     width: "100%",
     flex: 1,
@@ -26,8 +41,8 @@ const useStyles = makeStyles(theme => ({
     }
   },
   controls: {
-    position: "absolute",
     zIndex: 100,
+    position: "absolute",
     top: "100px",
     right: "10px"
   },
@@ -159,87 +174,91 @@ function MapsPage(props) {
         viewState={viewState}
         getCursor={crosshair}
         onViewStateChange={updateViewState}
+        ContextProvider={MapContext.Provider}
       >
         <StaticMap
           mapboxApiAccessToken={process.env.MAPBOX_TOKEN}
           mapStyle={mapStyle}
-        >
-          <div className={classes.controls}>
-            <NavigationControl onViewportChange={updateViewportNoPitch} />
+        />
 
-            <div className={classes.controlsSpacer} />
+        <div className={classes.controls}>
+          <NavigationControl
+            visualizePitch={false}
+            onViewportChange={updateViewportNoPitch}
+          />
 
-            <div className="mapboxgl-ctrl mapboxgl-ctrl-group ">
-              <button
-                title="My Location"
-                className="mapboxgl-ctrl-icon "
-                onClick={locateUser}
-              >
-                <LocateUserIcon />
-              </button>
-            </div>
+          <div className={classes.controlsSpacer} />
 
-            <div className={classes.controlsSpacer} />
-
-            <div className="mapboxgl-ctrl mapboxgl-ctrl-group ">
-              <button
-                title="Flat Mode"
-                className={
-                  "mapboxgl-ctrl-icon " +
-                  (viewState.pitch ? "" : classes.controlsSelected)
-                }
-                onClick={() => updateMapMode("flat")}
-              >
-                <FlatModeIcon />
-              </button>
-              <button
-                title="3D Mode"
-                className={
-                  "mapboxgl-ctrl-icon " +
-                  (viewState.pitch ? classes.controlsSelected : "")
-                }
-                onClick={() => updateMapMode("perspective")}
-              >
-                <ThreeDModeIcon />
-              </button>
-            </div>
-
-            <div className={classes.controlsSpacer} />
-
-            <div className="mapboxgl-ctrl mapboxgl-ctrl-group ">
-              <button
-                title="Contour View"
-                className={
-                  "mapboxgl-ctrl-icon " +
-                  (viewMode === "contour" ? classes.controlsSelected : "")
-                }
-                onClick={() => setViewMode("contour")}
-              >
-                <ContourViewIcon />
-              </button>
-              <button
-                title="Streets View"
-                className={
-                  "mapboxgl-ctrl-icon " +
-                  (viewMode === "streets" ? classes.controlsSelected : "")
-                }
-                onClick={() => setViewMode("streets")}
-              >
-                <StreetsViewIcon />
-              </button>
-              <button
-                title="Satellite View"
-                className={
-                  "mapboxgl-ctrl-icon " +
-                  (viewMode === "satellite" ? classes.controlsSelected : "")
-                }
-                onClick={() => setViewMode("satellite")}
-              >
-                <SatelliteViewIcon />
-              </button>
-            </div>
+          <div className="mapboxgl-ctrl mapboxgl-ctrl-group ">
+            <button
+              title="My Location"
+              className="mapboxgl-ctrl-icon "
+              onClick={locateUser}
+            >
+              <LocateUserIcon />
+            </button>
           </div>
-        </StaticMap>
+
+          <div className={classes.controlsSpacer} />
+
+          <div className="mapboxgl-ctrl mapboxgl-ctrl-group ">
+            <button
+              title="Flat Mode"
+              className={
+                "mapboxgl-ctrl-icon " +
+                (viewState.pitch ? "" : classes.controlsSelected)
+              }
+              onClick={() => updateMapMode("flat")}
+            >
+              <FlatModeIcon />
+            </button>
+            <button
+              title="3D Mode"
+              className={
+                "mapboxgl-ctrl-icon " +
+                (viewState.pitch ? classes.controlsSelected : "")
+              }
+              onClick={() => updateMapMode("perspective")}
+            >
+              <ThreeDModeIcon />
+            </button>
+          </div>
+
+          <div className={classes.controlsSpacer} />
+
+          <div className="mapboxgl-ctrl mapboxgl-ctrl-group ">
+            <button
+              title="Contour View"
+              className={
+                "mapboxgl-ctrl-icon " +
+                (viewMode === "contour" ? classes.controlsSelected : "")
+              }
+              onClick={() => setViewMode("contour")}
+            >
+              <ContourViewIcon />
+            </button>
+            <button
+              title="Streets View"
+              className={
+                "mapboxgl-ctrl-icon " +
+                (viewMode === "streets" ? classes.controlsSelected : "")
+              }
+              onClick={() => setViewMode("streets")}
+            >
+              <StreetsViewIcon />
+            </button>
+            <button
+              title="Satellite View"
+              className={
+                "mapboxgl-ctrl-icon " +
+                (viewMode === "satellite" ? classes.controlsSelected : "")
+              }
+              onClick={() => setViewMode("satellite")}
+            >
+              <SatelliteViewIcon />
+            </button>
+          </div>
+        </div>
       </DeckGL>
     </div>
   );
