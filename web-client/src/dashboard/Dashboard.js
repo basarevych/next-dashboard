@@ -85,29 +85,13 @@ function Dashboard(props) {
     () => {
       if (!isStarted) return;
 
-      let isDestroyed = false;
-      let iddle = requestIdleCallback(async () => {
-        iddle = null;
-        if (isDestroyed) return;
+      (async () => {
         const response = await dispatch(appOperations.fetchUsStates());
-        if (isDestroyed) return;
         if (response.status === 200) {
-          iddle = requestIdleCallback(async () => {
-            iddle = null;
-            if (isDestroyed) return;
-            const usStates = await response.json();
-            if (!isDestroyed) setUsStates(usStates);
-          });
+          const usStates = await response.json();
+          setUsStates(usStates);
         }
-      });
-
-      return () => {
-        isDestroyed = true;
-        if (iddle) {
-          cancelIdleCallback(iddle);
-          iddle = null;
-        }
-      };
+      })();
     },
     [isStarted]
   );
@@ -117,29 +101,13 @@ function Dashboard(props) {
     () => {
       if (!isStarted) return;
 
-      let isDestroyed = false;
-      let iddle = requestIdleCallback(async () => {
-        iddle = null;
-        if (isDestroyed) return;
+      (async () => {
         const response = await dispatch(appOperations.fetchUsCities());
-        if (isDestroyed) return;
         if (response.status === 200) {
-          iddle = requestIdleCallback(async () => {
-            iddle = null;
-            if (isDestroyed) return;
-            const usCities = await response.json();
-            if (!isDestroyed) setUsCities(usCities);
-          });
+          const usCities = await response.json();
+          setUsCities(usCities);
         }
-      });
-
-      return () => {
-        isDestroyed = true;
-        if (iddle) {
-          cancelIdleCallback(iddle);
-          iddle = null;
-        }
-      };
+      })();
     },
     [isStarted]
   );

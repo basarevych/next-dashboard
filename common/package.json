@@ -3,26 +3,26 @@
   "version": "0.4.1",
   "private": true,
   "dependencies": {
-    "@formatjs/intl-pluralrules": "~1.5.2",
-    "@formatjs/intl-relativetimeformat": "~4.5.9",
+    "@formatjs/intl-pluralrules": "~2.2.1",
+    "@formatjs/intl-relativetimeformat": "~5.2.1",
     "base64util": "~2.1.0",
-    "country-telephone-data": "~0.6.0",
+    "country-telephone-data": "~0.6.2",
     "immutable": "^4.0.0-rc.12",
     "intl": "~1.2.5",
     "json-immutable": "~0.4.0",
-    "moment": "~2.24.0",
-    "moment-timezone": "~0.5.28",
+    "moment": "~2.26.0",
+    "moment-timezone": "~0.5.31",
     "pako": "~1.0.11",
     "utf8": "~3.0.0",
-    "validator": "~12.2.0",
-    "yup": "~0.28.3"
+    "validator": "~13.0.0",
+    "yup": "~0.29.1"
   },
   "devDependencies": {
-    "@babel/core": "~7.8.7",
+    "@babel/core": "~7.10.1",
     "babel-eslint": "~10.1.0",
-    "babel-jest": "~25.1.0",
-    "eslint": "~6.8.0",
-    "jest": "~25.1.0"
+    "babel-jest": "~26.0.1",
+    "eslint": "~7.1.0",
+    "jest": "~26.0.1"
   },
   "engines": {
     "node": ">=10.0"

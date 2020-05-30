@@ -29,7 +29,6 @@ export const query = graphql`
 function DashboardQuery() {
   const renderQuery = useCallback(({ error, props: renderProps, retry }) => {
     if (error) return <ErrorMessage error={error} />;
-
     return (
       <Dashboard
         viewer={(renderProps && renderProps.viewer) || null}

@@ -54,14 +54,6 @@ function StateSales(props) {
 
   const [edges, setEdges] = useState([]);
 
-  useIsomorphicLayoutEffect(
-    // refresh when state has changed
-    () => {
-      props.retry();
-    },
-    [state]
-  );
-
   useEffect(() => {
     const newEdges = ((props.viewer || {}).stateCities || {}).edges;
     if (typeof newEdges !== "undefined") setEdges(newEdges);
