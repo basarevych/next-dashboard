@@ -18,6 +18,11 @@ import ToastProvider from "../src/app/providers/ToastProvider";
 import Layout from "../src/app/layout/Layout";
 import startServiceWorker from "../src/app/lib/startServiceWorker";
 
+import "react-virtualized/styles.css";
+import "react-toastify/dist/ReactToastify.css";
+import "react-credit-cards/es/styles-compiled.css";
+import "mapbox-gl/dist/mapbox-gl.css";
+
 class MyApp extends App {
   static async getInitialProps({ Component, router, ctx }) {
     const { req, res, err, query } = ctx;

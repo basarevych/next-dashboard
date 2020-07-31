@@ -18,7 +18,6 @@ import AppAuthModal from "../modals/AppAuthModal";
 import constants from "../../../common/constants";
 import { appSelectors } from "../state";
 
-import "../../../styles";
 import styledScroll from "../../../styles/styledScroll";
 
 const useStyles = makeStyles(theme => ({

@@ -32,8 +32,8 @@ function copyAssets({ url, relativePath }, { from }) {
   return "/assets/" + hashedName;
 }
 
-module.exports = () => {
-  const plugins = {
+module.exports = {
+  plugins: {
     "postcss-url": {
       url: copyAssets
     },
@@ -49,13 +49,11 @@ module.exports = () => {
         }
       }
     }
-  };
-
-  if (process.env.NODE_ENV === "production")
-    plugins["postcss-clean"] = {
-      inline: false,
-      level: { 1: { specialComments: 0 } }
-    };
-
-  return { plugins };
+  }
 };
+
+if (process.env.NODE_ENV === "production")
+  module.exports.plugins["postcss-clean"] = {
+    inline: false,
+    level: { 1: { specialComments: 0 } }
+  };

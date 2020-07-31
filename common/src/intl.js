@@ -10,9 +10,9 @@ const { locales } = require("../locales");
 
 require("@formatjs/intl-pluralrules/polyfill");
 for (let locale of locales)
-  require("@formatjs/intl-pluralrules/dist/locale-data/" + locale.slice(0, 2));
+  require("@formatjs/intl-pluralrules/locale-data/" + locale.slice(0, 2));
 
 require("@formatjs/intl-relativetimeformat/polyfill");
 for (let locale of locales)
-  require("@formatjs/intl-relativetimeformat/dist/locale-data/" +
+  require("@formatjs/intl-relativetimeformat/locale-data/" +
     locale.slice(0, 2));

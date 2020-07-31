@@ -7,7 +7,6 @@ const pwaManifest = require("@pwa/manifest");
 const { GenerateSW } = require("workbox-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 const RelayCompilerWebpackPlugin = require("relay-compiler-webpack-plugin");
-const withCSS = require("@zeit/next-css");
 const withOffline = require("next-offline");
 const withBundleAnalyzer = require("@zeit/next-bundle-analyzer");
 const withPlugins = require("next-compose-plugins");
@@ -99,8 +98,7 @@ const plugins = [
         ]
       }
     }
-  ],
-  [withCSS, { cssModules: false }]
+  ]
 ];
 
 module.exports = withPlugins(plugins, {
@@ -172,11 +170,11 @@ module.exports = withPlugins(plugins, {
     config.plugins.push(
       new ContextReplacementPlugin(/moment[/\\]locale$/, locales),
       new ContextReplacementPlugin(
-        /@formatjs[/\\]intl-pluralrules[/\\]dist[/\\]locale-data$/,
+        /@formatjs[/\\]intl-pluralrules[/\\]]locale-data$/,
         locales
       ),
       new ContextReplacementPlugin(
-        /@formatjs[/\\]intl-relativetimeformat[/\\]dist[/\\]locale-data$/,
+        /@formatjs[/\\]intl-relativetimeformat[/\\]locale-data$/,
         locales
       )
     );
