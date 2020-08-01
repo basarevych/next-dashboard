@@ -14,8 +14,8 @@ module.exports = {
 
   oauthProviders: {
     GOOGLE: "GOOGLE",
-    FACEBOOK: "FACEBOOK",
-    TWITTER: "TWITTER"
+    TWITTER: "TWITTER",
+    LINKEDIN: "LINKEDIN"
   },
 
   depts: {

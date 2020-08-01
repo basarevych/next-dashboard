@@ -34,10 +34,10 @@ let emailUsername = process.env.EMAIL_USERNAME;
 let emailPassword = process.env.EMAIL_PASSWORD;
 let googleAuthId = process.env.GOOGLE_AUTH_ID;
 let googleAuthSecret = process.env.GOOGLE_AUTH_SECRET;
-let facebookAuthId = process.env.FACEBOOK_AUTH_ID;
-let facebookAuthSecret = process.env.FACEBOOK_AUTH_SECRET;
 let twitterAuthKey = process.env.TWITTER_AUTH_KEY;
 let twitterAuthSecret = process.env.TWITTER_AUTH_SECRET;
+let linkedinAuthId = process.env.LINKEDIN_AUTH_ID;
+let linkedinAuthSecret = process.env.LINKEDIN_AUTH_SECRET;
 
 /**
  * The application
@@ -71,10 +71,10 @@ class App {
       emailPassword,
       googleAuthId,
       googleAuthSecret,
-      facebookAuthId,
-      facebookAuthSecret,
       twitterAuthKey,
-      twitterAuthSecret
+      twitterAuthSecret,
+      linkedinAuthId,
+      linkedinAuthSecret
     };
 
     // Express

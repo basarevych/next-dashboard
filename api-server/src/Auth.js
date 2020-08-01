@@ -21,7 +21,7 @@ class Auth {
     this.tokenLifetime = {
       refresh: "30d",
       access: "15m",
-      oneTime: "1h",
+      oneTime: "1h"
     };
 
     this.maxSessions = 10;
@@ -39,7 +39,7 @@ class Auth {
       "model.user.provider",
       "i18n",
       "cache",
-      "mailer",
+      "mailer"
     ];
   }
 
@@ -53,30 +53,13 @@ class Auth {
     return {
       providerName: constants.oauthProviders.GOOGLE.toLowerCase(),
       providerOptions: {
-        scope: ["profile", "email"],
+        scope: ["profile", "email"]
       },
       Strategy: require("passport-google-oauth").OAuth2Strategy,
       strategyOptions: {
         clientID: this.config.googleAuthId,
-        clientSecret: this.config.googleAuthSecret,
-      },
-    };
-  }
-
-  get facebookProvider() {
-    if (!this.config.facebookAuthId || !this.config.facebookAuthSecret)
-      return null;
-
-    return {
-      providerName: constants.oauthProviders.FACEBOOK.toLowerCase(),
-      providerOptions: {
-        scope: ["email", "public_profile"],
-      },
-      Strategy: require("passport-facebook").Strategy,
-      strategyOptions: {
-        clientID: this.config.facebookAuthId,
-        clientSecret: this.config.facebookAuthSecret,
-      },
+        clientSecret: this.config.googleAuthSecret
+      }
     };
   }
 
@@ -87,24 +70,40 @@ class Auth {
     return {
       providerName: constants.oauthProviders.TWITTER.toLowerCase(),
       providerOptions: {
-        scope: [],
+        scope: []
       },
       Strategy: require("passport-twitter").Strategy,
       strategyOptions: {
         consumerKey: this.config.twitterAuthKey,
         consumerSecret: this.config.twitterAuthSecret,
         userProfileURL:
-          "https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true",
-      },
+          "https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true"
+      }
+    };
+  }
+
+  get linkedinProvider() {
+    if (!this.config.linkedinAuthId || !this.config.linkedinAuthSecret)
+      return null;
+
+    return {
+      providerName: constants.oauthProviders.LINKEDIN.toLowerCase(),
+      providerOptions: {},
+      Strategy: require("passport-linkedin-oauth2").Strategy,
+      strategyOptions: {
+        clientID: this.config.linkedinAuthId,
+        clientSecret: this.config.linkedinAuthSecret,
+        scope: ["r_liteprofile", "r_emailaddress"]
+      }
     };
   }
 
   get providers() {
     return [
       this.googleProvider,
-      this.facebookProvider,
       this.twitterProvider,
-    ].filter((item) => !!item);
+      this.linkedinProvider
+    ].filter(item => !!item);
   }
 
   async init() {
@@ -130,7 +129,7 @@ class Auth {
       }
     });
 
-    const getEmail = (profile) => {
+    const getEmail = profile => {
       for (let item of profile.emails) {
         if (item.type === "work" && validator.isEmail(item.value))
           return item.value;
@@ -159,7 +158,7 @@ class Auth {
         new provider.Strategy(
           Object.assign(
             {
-              profileFields: ["id", "displayName", "email", "photos"],
+              profileFields: ["id", "displayName", "email", "photos"]
             },
             provider.strategyOptions
           ),
@@ -172,7 +171,7 @@ class Auth {
                 } else {
                   client = new this.userClient.model({
                     agent: req.get("User-Agent"),
-                    ip: req.ip,
+                    ip: req.ip
                   });
                   user.clients.push(client.toObject());
                 }
@@ -193,7 +192,7 @@ class Auth {
 
             const returnFailure = () => next(null, false);
 
-            const returnError = (error) =>
+            const returnError = error =>
               next(error || new Error("An error occured"), false);
 
             req.user = null;
@@ -211,7 +210,7 @@ class Auth {
               // Look in the database for a user associated with this account.
               let user = await this.user.model.findOne({
                 "providers.name": provider.providerName,
-                "providers.profile.id": profile.id,
+                "providers.profile.id": profile.id
               });
 
               if (curUser) {
@@ -275,7 +274,7 @@ class Auth {
                     name: provider.providerName,
                     profile,
                     accessToken,
-                    refreshToken,
+                    refreshToken
                   });
                   curUser.providers.push(prov.toObject());
 
@@ -331,7 +330,7 @@ class Auth {
                     name: provider.providerName,
                     profile,
                     accessToken,
-                    refreshToken,
+                    refreshToken
                   });
                   user = new this.user.model({
                     email,
@@ -339,7 +338,7 @@ class Auth {
                     // random password because the field cannot be empty
                     password: this.chance.string({ length: 30 }),
                     clients: [],
-                    providers: [prov.toObject()],
+                    providers: [prov.toObject()]
                   });
 
                   return returnSuccess(user, null);
@@ -379,7 +378,7 @@ class Auth {
   createEmailSecret() {
     return this.chance.string({
       length: 20,
-      pool: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
+      pool: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
     });
   }
 
@@ -394,12 +393,12 @@ class Auth {
       {
         type,
         userId: user.id,
-        clientId: client.id,
+        clientId: client.id
       },
       payload
     );
     return jwt.sign(data, this.config.jwtSecret, {
-      expiresIn: this.tokenLifetime[type] || "10m",
+      expiresIn: this.tokenLifetime[type] || "10m"
     });
   }
 
@@ -446,7 +445,7 @@ class Auth {
       }
       providers.push({
         name: item.providerName,
-        isLinked,
+        isLinked
       });
     }
 
@@ -457,7 +456,7 @@ class Auth {
       isEmailVerified: user ? user.isEmailVerified : false,
       name: user ? user.name : "Anonymous",
       roles: user ? user.roles : [],
-      providers,
+      providers
     };
   }
 
@@ -468,7 +467,7 @@ class Auth {
     } else {
       client = new this.userClient.model({
         agent: context.get("User-Agent"),
-        ip: context.ip,
+        ip: context.ip
       });
       user.clients.push(client.toObject());
 
@@ -487,8 +486,8 @@ class Auth {
     this.cache.pubsub.publish("signIn", {
       signIn: {
         user: user.toObject({ getters: true, virtuals: true }),
-        client: client.toObject({ getters: true, virtuals: true }),
-      },
+        client: client.toObject({ getters: true, virtuals: true })
+      }
     });
 
     let refreshToken = await this.createToken("refresh", user, client);
@@ -505,8 +504,8 @@ class Auth {
     this.cache.pubsub.publish("signOut", {
       signOut: {
         user: user.toObject({ getters: true, virtuals: true }),
-        client: client.toObject({ getters: true, virtuals: true }),
-      },
+        client: client.toObject({ getters: true, virtuals: true })
+      }
     });
   }
 
@@ -517,7 +516,7 @@ class Auth {
       from: this.config.emailFrom,
       subject: this.i18n.translate("VERIFY_EMAIL_SUBJECT", { url }, locale),
       text: this.i18n.translate("VERIFY_EMAIL_TEXT", { url }, locale),
-      html: this.i18n.translate("VERIFY_EMAIL_HTML", { url }, locale),
+      html: this.i18n.translate("VERIFY_EMAIL_HTML", { url }, locale)
     });
   }
 }

@@ -15,7 +15,7 @@ import Hidden from "@material-ui/core/Hidden";
 import AnonymousIcon from "@material-ui/icons/VisibilityOff";
 import { Form, Field, Status } from "../forms";
 import constants from "../../../common/constants";
-import facebookIcon from "../../../public/img/facebook.svg";
+import linkedinIcon from "../../../public/img/linkedin.svg";
 import googleIcon from "../../../public/img/google.svg";
 import twitterIcon from "../../../public/img/twitter.svg";
 import schema from "../../../common/forms/auth";
@@ -51,14 +51,6 @@ const useStyles = makeStyles(theme => ({
       verticalAlign: "middle"
     }
   },
-  facebook: {
-    width: "100%",
-    color: theme.palette.primary.contrastText,
-    background: ["#3b5998", "!important"],
-    "&:hover": {
-      background: ["#1b3978", "!important"]
-    }
-  },
   google: {
     width: "100%",
     color: theme.palette.primary.contrastText,
@@ -73,6 +65,14 @@ const useStyles = makeStyles(theme => ({
     background: ["#38A1F3", "!important"],
     "&:hover": {
       background: ["#1881d3", "!important"]
+    }
+  },
+  linkedin: {
+    width: "100%",
+    color: theme.palette.primary.contrastText,
+    background: ["#0e76a8", "!important"],
+    "&:hover": {
+      background: ["#0c1958", "!important"]
     }
   }
 }));
@@ -137,12 +137,6 @@ function AppAuthModal(props) {
             <Hidden xsDown>
               <FormattedMessage id="APP_AUTH_SERVICE_BUTTON" />
             </Hidden>
-            {name === "facebook" && (
-              <span
-                dangerouslySetInnerHTML={{ __html: facebookIcon }}
-                className={classes.serviceLogo}
-              />
-            )}
             {name === "google" && (
               <span
                 dangerouslySetInnerHTML={{ __html: googleIcon }}
@@ -152,6 +146,12 @@ function AppAuthModal(props) {
             {name === "twitter" && (
               <span
                 dangerouslySetInnerHTML={{ __html: twitterIcon }}
+                className={classes.serviceLogo}
+              />
+            )}
+            {name === "linkedin" && (
+              <span
+                dangerouslySetInnerHTML={{ __html: linkedinIcon }}
                 className={classes.serviceLogo}
               />
             )}
@@ -189,13 +189,13 @@ function AppAuthModal(props) {
                   </Button>
                 </Grid>
                 <Grid item xs={12}>
-                  {renderButton(constants.oauthProviders.FACEBOOK)}
-                </Grid>
-                <Grid item xs={12}>
                   {renderButton(constants.oauthProviders.GOOGLE)}
                 </Grid>
                 <Grid item xs={12}>
                   {renderButton(constants.oauthProviders.TWITTER)}
+                </Grid>
+                <Grid item xs={12}>
+                  {renderButton(constants.oauthProviders.LINKEDIN)}
                 </Grid>
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -237,7 +237,7 @@ function AppAuthModal(props) {
         </Dialog>
       );
     },
-    [classes, facebookIcon, googleIcon, twitterIcon]
+    [classes, googleIcon, twitterIcon, linkedinIcon]
   );
 
   return (
