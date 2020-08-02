@@ -1,6 +1,6 @@
 # Next™ React™ Dashboard
 
-A complete React/Redux/Relay/Next.js dashboard template with perfect benchmarks using Material UI and friends.
+A complete React/Redux/Relay/Next.js dashboard example with perfect benchmarks using Material UI and friends.
 
 https://dashboard.daemon-notes.com
 
