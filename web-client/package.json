@@ -76,7 +76,7 @@
     "relay-runtime": "~10.0.1",
     "requestidlecallback": "~0.3.0",
     "reselect": "~4.0.0",
-    "socket.io": "~2.3.0",
+    "socket.io": "~2.4.0",
     "subscriptions-transport-ws": "~0.9.17",
     "svg-inline-loader": "~0.8.2",
     "victory": "~35.0.8",
